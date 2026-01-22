@@ -23,7 +23,7 @@
 </p>
 
 <p align="center">
-  <strong>Created by <a href="https://www.linkedin.com/in/tadeopiana/">Tadeo Piana</a></strong>
+  <strong><a href="https://www.linkedin.com/in/tadeopiana/">follow me</a></strong>
 </p>
 
 ---
