@@ -1,6 +1,6 @@
 {
   "name": "@pulsar-framework/ui",
-  "version": "0.1.0",
+  "version": "0.7.0-alpha",
   "description": "Component library for the Pulsar framework",
   "type": "module",
   "main": "./dist/index.js",
