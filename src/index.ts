@@ -1,9 +1,12 @@
 /**
- * Atomos Prime - Design System
+ * Pulsar UI - Component Library
  * Main package entry point
  */
 
-// Design system
+// Re-export design system from @pulsar/design-tokens
+export * from '@pulsar/design-tokens'
+
+// Design system re-exports (for backward compatibility)
 export * from './design'
 
 // Component utilities

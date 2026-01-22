@@ -3,7 +3,7 @@
  * Prototype-based builder for creating component configurations
  */
 
-import { ComponentColor } from '../../../design'
+import { ComponentColor } from '@pulsar/design-tokens'
 import { type IComponentConfigBuilder } from './component-config-builder.type'
 import { active } from './prototype/active'
 import { border } from './prototype/border'

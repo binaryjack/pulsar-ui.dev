@@ -1,0 +1,1 @@
+{"version":3,"file":"variant.d.ts","sourceRoot":"","sources":["../../../../src/components/interfaces/prototype/variant.ts"],"names":[],"mappings":"AAAA;;GAEG;AAEH,OAAO,EAAE,KAAK,gBAAgB,EAAE,MAAM,iDAAiD,CAAA;AACvF,OAAO,EAAE,KAAK,wBAAwB,EAAE,MAAM,wCAAwC,CAAA;AAEtF,eAAO,MAAM,OAAO,GAClB,MAAM,wBAAwB,EAC9B,OAAO,gBAAgB,KACtB,wBAGF,CAAA"}

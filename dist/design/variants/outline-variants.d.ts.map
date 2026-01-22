@@ -1,0 +1,1 @@
+{"version":3,"file":"outline-variants.d.ts","sourceRoot":"","sources":["../../../src/design/variants/outline-variants.ts"],"names":[],"mappings":"AAAA;;GAEG;AAEH,OAAO,EAAE,KAAK,cAAc,EAAE,MAAM,wBAAwB,CAAA;AAC5D,OAAO,EAAE,KAAK,cAAc,EAAE,MAAM,4BAA4B,CAAA;AAEhE,eAAO,MAAM,eAAe,EAAE;IAAE,QAAQ,EAAE,CAAC,IAAI,cAAc,GAAG,cAAc;CAyH7E,CAAA"}
