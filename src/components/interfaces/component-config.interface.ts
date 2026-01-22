@@ -3,8 +3,7 @@
  * Used across all components to provide consistent styling configuration
  */
 
-import { type ComponentSize } from '@pulsar/design-tokens'
-import { type ComponentColor, type ComponentVariant } from '@pulsar/design-tokens'
+import { type ComponentColor, type ComponentSize, type ComponentVariant } from '@pulsar/design-tokens'
 
 export interface IComponentConfig {
   // Visual style

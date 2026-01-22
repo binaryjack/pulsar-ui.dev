@@ -2,8 +2,8 @@
  * Spinner component type definitions
  */
 
-import type { Pulsar } from 'pulsar'
 import type { ComponentSize } from '@pulsar/design-tokens'
+import type { Pulsar } from 'pulsar'
 
 /**
  * Spinner component props
