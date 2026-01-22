@@ -1,1 +1,0 @@
-// [COPILOT] this may contains up to 3 buttons resposive  thin mobiles stacks desktop inline
