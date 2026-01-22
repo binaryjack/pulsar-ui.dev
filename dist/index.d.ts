@@ -1,7 +1,8 @@
 /**
- * Atomos Prime - Design System
+ * Pulsar UI - Component Library
  * Main package entry point
  */
+export * from '@pulsar/design-tokens';
 export * from './design';
 export * from './components/utils';
 export * from './components/atoms/checkbox';
