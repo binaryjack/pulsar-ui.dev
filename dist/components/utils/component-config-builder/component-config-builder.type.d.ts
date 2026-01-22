@@ -1,12 +1,12 @@
 /**
  * Component configuration builder interface
  */
-import { type ComponentRoundedSize } from '../../../design/sizes/component-rounded-size.type';
-import { type ComponentShadowSize } from '../../../design/sizes/component-shadow-size.type';
-import { type ComponentSize } from '../../../design/sizes/component-size.type';
-import { type TransitionDuration } from '../../../design/tokens/legacy/transition-duration.type';
-import { type ComponentColor } from '../../../design/variants/component-color.type';
-import { type ComponentVariant } from '../../../design/variants/component-variant.type';
+import { type ComponentRoundedSize } from '@pulsar/design-tokens';
+import { type ComponentShadowSize } from '@pulsar/design-tokens';
+import { type ComponentSize } from '@pulsar/design-tokens';
+import { type TransitionDuration } from '@pulsar/design-tokens';
+import { type ComponentColor } from '@pulsar/design-tokens';
+import { type ComponentVariant } from '@pulsar/design-tokens';
 import { type IComponentConfig } from './component-config.type';
 export interface IComponentConfigBuilder {
     new (color: ComponentColor): IComponentConfigBuilder;

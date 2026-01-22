@@ -6,9 +6,6 @@
 // Re-export design system from @pulsar/design-tokens
 export * from '@pulsar/design-tokens'
 
-// Design system re-exports (for backward compatibility)
-export * from './design'
-
 // Component utilities
 export * from './components/utils'
 

@@ -2,7 +2,7 @@
  * Color prototype method for ComponentConfigBuilder
  */
 
-import { type ComponentColor } from '../../../../design/variants/component-color.type'
+import { type ComponentColor } from '@pulsar/design-tokens'
 import { type IComponentConfigBuilder } from '../component-config-builder.type'
 
 export const color = function (this: IComponentConfigBuilder, colorValue?: ComponentColor): IComponentConfigBuilder {

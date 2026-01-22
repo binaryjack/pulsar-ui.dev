@@ -3,7 +3,7 @@
  */
 
 import type { Pulsar } from 'pulsar'
-import type { ComponentSize } from '../../../design/sizes'
+import type { ComponentSize } from '@pulsar/design-tokens'
 
 /**
  * Spinner component props
