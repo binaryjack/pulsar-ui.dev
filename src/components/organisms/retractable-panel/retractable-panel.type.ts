@@ -1,0 +1,1 @@
+// [COPILOT] this panel contains a header a body a footer and it can be collapsed horizontally / vertically  

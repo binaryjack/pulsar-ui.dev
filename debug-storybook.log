@@ -1,0 +1,59 @@
+[06:33:34.927] [INFO] storybook v10.1.11
+[06:33:35.483] [INFO] Loading main config failed as the file does not seem to be valid ESM. Trying a temporary fix, please ensure the main config is valid ESM.
+[06:33:36.027] [DEBUG] Getting package.json info for E:/Sources/visual-schema-builder/packages/atomos-prime.dev/package.json...
+[06:33:36.029] [WARN] You are currently using Storybook [1m10.1.11[22m but you have packages which are incompatible with it:
+
+- @storybook/addon-essentials@8.6.14 which depends on 8.6.14
+ Repo: https://github.com/storybookjs/storybook/tree/next/code/addons/essentials
+
+Please consider updating your packages or contacting the maintainers for compatibility details.
+
+For more details on compatibility guidance, see:
+https://github.com/storybookjs/storybook/issues/32836
+[06:33:36.044] [ERROR] [38;2;241;97;97mSB_CORE-SERVER_0002 (CriticalPresetLoadError): Storybook failed to load the following preset: E:/Sources/visual-schema-builder/packages/atomos-prime.dev/.storybook/main.ts.
+
+Please check whether your setup is correct, the Storybook dependencies (and their peer dependencies) are installed correctly and there are no package version clashes.
+
+If you believe this is a bug, please open an issue on Github.
+
+ReferenceError: require is not defined in ES module scope, you can use import instead
+    at getAbsolutePath (file:///E:/Sources/visual-schema-builder/packages/atomos-prime.dev/.storybook/main.ts:3:18)
+    at file:///E:/Sources/visual-schema-builder/packages/atomos-prime.dev/.storybook/main.ts:8:5
+    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:660:26)
+    at async importModule (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/_node-chunks/chunk-O7UZQAUS.js:732:11)
+    at async loadMainConfig (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/_node-chunks/chunk-Q4DOC7HF.js:11670:12)
+    at async buildDevStandalone (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/core-server/index.js:7149:16)
+    at async withTelemetry (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/_node-chunks/chunk-2372JZ52.js:209:12)
+    at async dev (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/bin/core.js:2734:3)
+    at async _Command.<anonymous> (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/bin/core.js:2801:92)
+
+More info: 
+[39m
+    at loadPreset (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/_node-chunks/chunk-Q4DOC7HF.js:10101:13)
+    at async Promise.all (index 1)
+    at async loadPresets (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/_node-chunks/chunk-Q4DOC7HF.js:10110:73)
+    at async getPresets (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/_node-chunks/chunk-Q4DOC7HF.js:10141:23)
+    at async buildDevStandalone (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/core-server/index.js:7163:17)
+    at async withTelemetry (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/_node-chunks/chunk-2372JZ52.js:209:12)
+    at async dev (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/bin/core.js:2734:3)
+    at async _Command.<anonymous> (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/bin/core.js:2801:92)
+[06:33:36.046] [WARN] Broken build, fix the error above.
+You may need to refresh the browser.
+[06:33:36.048] [WARN]   Failed to load preset: "E:/Sources/visual-schema-builder/packages/atomos-prime.dev/.storybook/main.ts"
+[06:33:36.048] [ERROR] [38;2;241;97;97mReferenceError: require is not defined in ES module scope, you can use import instead[39m
+    at getAbsolutePath (file:///E:/Sources/visual-schema-builder/packages/atomos-prime.dev/.storybook/main.ts:3:18)
+    at file:///E:/Sources/visual-schema-builder/packages/atomos-prime.dev/.storybook/main.ts:8:5
+    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:660:26)
+    at async importModule (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/_node-chunks/chunk-O7UZQAUS.js:732:11)
+    at async loadMainConfig (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/_node-chunks/chunk-Q4DOC7HF.js:11670:12)
+    at async buildDevStandalone (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/core-server/index.js:7149:16)
+    at async withTelemetry (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/_node-chunks/chunk-2372JZ52.js:209:12)
+    at async dev (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/bin/core.js:2734:3)
+    at async _Command.<anonymous> (file:///E:/Sources/visual-schema-builder/node_modules/.pnpm/storybook@10.1.11_@testing-_c793ff74c36ac01104cd0e2ad18c46f1/node_modules/storybook/dist/bin/core.js:2801:92)
+[06:37:08.357] [PROMPT] Would you like to send anonymous crash reports to improve Storybook and fix bugs faster? {"choice":true}
+[06:37:08.359] [INFO] Storybook collects completely anonymous usage telemetry. We use it to shape Storybook's roadmap and prioritize features. You can learn more, including how to opt out, at https://storybook.js.org/telemetry
+[06:37:08.363] [INFO] Loading main config failed as the file does not seem to be valid ESM. Trying a temporary fix, please ensure the main config is valid ESM.
+[06:37:08.792] [INFO] Loading main config failed as the file does not seem to be valid ESM. Trying a temporary fix, please ensure the main config is valid ESM.
+[06:37:08.805] [INFO] Loading main config failed as the file does not seem to be valid ESM. Trying a temporary fix, please ensure the main config is valid ESM.

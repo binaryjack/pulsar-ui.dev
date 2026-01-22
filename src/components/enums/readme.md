@@ -1,0 +1,1 @@
+this folder contains all common enums that's not applies to feature slice pattern
