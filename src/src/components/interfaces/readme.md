@@ -1,0 +1,1 @@
+this folder contains all common interfaces that's not applies to feature slice pattern
