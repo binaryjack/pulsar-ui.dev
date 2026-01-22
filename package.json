@@ -1,7 +1,7 @@
 {
-  "name": "@atomos/prime",
+  "name": "@pulsar/ui",
   "version": "0.1.0",
-  "description": "Pulsar-based design system with TailwindCSS",
+  "description": "Pulsar UI component library with TailwindCSS",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
