@@ -3,7 +3,7 @@
 //  * Organism: Page header with logo, navigation, and actions
 //  */
 
-import { cn } from '../../../design/utility'
+import { cn } from '@pulsar-framework/design-tokens'
 import { Skeleton } from '../../atoms/skeleton'
 import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
 import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder'

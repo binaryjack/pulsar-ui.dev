@@ -4,7 +4,7 @@
  * Organism: Card with header, body, and footer sections
  */
 
-import { cn, roundedClasses, shadowClasses } from '../../../design/utility'
+import { cn, roundedClasses, shadowClasses } from '@pulsar-framework/design-tokens'
 import { Skeleton } from '../../atoms/skeleton'
 import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
 import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder'

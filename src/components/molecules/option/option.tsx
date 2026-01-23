@@ -1,6 +1,6 @@
 
 
-import { cn } from '../../../design/utility'
+import { cn } from '@pulsar-framework/design-tokens'
 import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
 import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder'
 import { type IOptionProps } from './option.type'

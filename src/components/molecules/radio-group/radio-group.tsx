@@ -4,7 +4,7 @@
  * Molecule: Composes multiple Radio atoms with labels
  */
 
-import { cn } from '../../../design/utility'
+import { cn } from '@pulsar-framework/design-tokens'
 import { Radio } from '../../atoms/radio'
 import { Skeleton } from '../../atoms/skeleton'
 import { Typography } from '../../atoms/typography'

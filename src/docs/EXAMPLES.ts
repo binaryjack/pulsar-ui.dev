@@ -7,7 +7,7 @@ import {
     Button,
     ComponentConfigBuilder,
     Input
-} from '@pulsar/ui'
+} from '../index'
 
 // ============================================
 // Button Examples (Atomic - Single Element)

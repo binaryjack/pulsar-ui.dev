@@ -4,7 +4,7 @@
  * Molecule: Label with optional helper text and required indicator
  */
 
-import { cn } from '../../../design/utility'
+import { cn } from '@pulsar-framework/design-tokens'
 import { Skeleton } from '../../atoms/skeleton'
 import { Typography } from '../../atoms/typography'
 import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
