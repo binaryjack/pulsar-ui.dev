@@ -20,5 +20,5 @@ export interface IButtonProps extends Pulsar.HtmlExtends<'button'> {
   readonly type?: ButtonType
   
   // Button content
-  readonly children?: JSX.Child | JSX.Child[]
+  readonly children?: JSX.Children
 }
