@@ -3,8 +3,7 @@
  * Framework: Pulsar
  */
 
-import { componentSizes } from '@pulsar-framework/design-tokens'
-import { cn, roundedClasses, shadowClasses, transitionDurationClasses } from '@pulsar-framework/design-tokens'
+import { cn, componentSizes, roundedClasses, shadowClasses, transitionDurationClasses } from '@pulsar-framework/design-tokens'
 import { Skeleton } from '../../atoms/skeleton'
 import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
 import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder'
