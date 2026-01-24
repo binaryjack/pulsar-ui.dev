@@ -24,7 +24,7 @@ export const Skeleton = ({
         className
       )}
       role="status"
-      aria-label="Loading"
+      ariaLabel="Loading"
       {...rest}
     />
   )

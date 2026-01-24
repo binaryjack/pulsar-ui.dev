@@ -9,6 +9,7 @@ export interface IBadgeProps extends Pulsar.HtmlExtends<'span'> {
     readonly config?: IComponentConfig;
     readonly styling?: IComponentStyling;
     readonly label?: string;
+    readonly children?: string | number | HTMLElement | Array<string | number | HTMLElement>;
     readonly icon?: HTMLElement;
     readonly iconPosition?: 'left' | 'right';
     readonly dot?: boolean;

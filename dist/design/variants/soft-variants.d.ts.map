@@ -1,1 +1,0 @@
-{"version":3,"file":"soft-variants.d.ts","sourceRoot":"","sources":["../../../src/design/variants/soft-variants.ts"],"names":[],"mappings":"AAAA;;GAEG;AAEH,OAAO,EAAE,KAAK,cAAc,EAAE,MAAM,wBAAwB,CAAA;AAC5D,OAAO,EAAE,KAAK,cAAc,EAAE,MAAM,4BAA4B,CAAA;AAEhE,eAAO,MAAM,YAAY,EAAE;IAAE,QAAQ,EAAE,CAAC,IAAI,cAAc,GAAG,cAAc;CAyH1E,CAAA"}

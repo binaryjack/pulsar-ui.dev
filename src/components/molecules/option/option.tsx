@@ -1,5 +1,3 @@
-
-
 import { cn } from '@pulsar-framework/design-tokens'
 import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
 import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder'
@@ -26,7 +24,7 @@ export const Option = ({
   children,
   ...rest
 }: IOptionProps): HTMLElement => 
-  <option
+  <option  
     value={value}
     selected={selected}
     className={cn(
