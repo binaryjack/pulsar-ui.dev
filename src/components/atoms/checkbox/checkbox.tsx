@@ -3,7 +3,7 @@
  * Framework: Pulsar
  */
 
-import { checkboxSizeClasses, cn, roundedClasses } from '../../../design/utility'
+import { checkboxSizeClasses, cn, roundedClasses } from '@pulsar-framework/design-tokens'
 import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
 import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder'
 import { Skeleton } from '../skeleton'

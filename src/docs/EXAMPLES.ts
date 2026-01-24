@@ -1,5 +1,5 @@
 /**
- * Atomos Prime - Usage Examples
+ * Pulsar UI - Usage Examples
  * Demonstrating the new Builder Pattern API
  */
 
@@ -7,7 +7,7 @@ import {
     Button,
     ComponentConfigBuilder,
     Input
-} from '@atomos/prime'
+} from '../index'
 
 // ============================================
 // Button Examples (Atomic - Single Element)

@@ -1,16 +1,6 @@
 /**
- * Rounded classes utility
- * Maps rounded size values to Tailwind CSS classes
+ * Re-export rounded class utilities
  */
 
-import { type ComponentRoundedSize } from '../sizes/component-rounded-size.type'
+export { roundedClasses } from '@pulsar-framework/design-tokens';
 
-export const roundedClasses: Record<ComponentRoundedSize, string> = {
-  none: 'rounded-none',
-  sm: 'rounded-sm',
-  md: 'rounded-md',
-  lg: 'rounded-lg',
-  xl: 'rounded-xl',
-  '2xl': 'rounded-2xl',
-  full: 'rounded-full'
-}

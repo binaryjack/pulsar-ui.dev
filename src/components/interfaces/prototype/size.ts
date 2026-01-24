@@ -2,7 +2,7 @@
  * Set size
  */
 
-import { type ComponentSize } from '../../../design/sizes/component-size.type'
+import { type ComponentSize } from '@pulsar/design-tokens'
 import { type IComponentConfigInternal } from '../component-config-internal.interface'
 
 export const size = function(

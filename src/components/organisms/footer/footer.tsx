@@ -4,7 +4,7 @@
  * Organism: Page footer with copyright and links
  */
 
-import { cn } from '../../../design/utility'
+import { cn } from '@pulsar-framework/design-tokens'
 import { Skeleton } from '../../atoms/skeleton'
 import { Typography } from '../../atoms/typography'
 import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'

@@ -4,7 +4,7 @@
  * Type: Atom
  */
 
-import { cn } from '../../../design/utility'
+import { cn } from '@pulsar-framework/design-tokens'
 import type { ISpinnerProps } from './spinner.type'
 
 // External - compiled ONCE

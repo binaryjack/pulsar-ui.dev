@@ -1,24 +1,65 @@
-# Atomos Prime
+<p align="center">
+  <img src="https://raw.githubusercontent.com/binaryjack/pulsar-design-system/main/art-kit/SVG/pulsar-logo.svg" alt="Pulsar UI" width="400"/>
+</p>
 
-A design system built with Pulsar framework and TailwindCSS.
+<p align="center">
+  <strong>Component library for the Pulsar framework</strong>
+</p>
 
-## Features
+<p align="center">
+  <img src="https://img.shields.io/badge/version-0.1.0-blue" alt="Version 0.1.0"/>
+  <img src="https://img.shields.io/badge/TypeScript-5.0+-blue" alt="TypeScript 5.0+"/>
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License"/>
+  <img src="https://img.shields.io/badge/Pulsar-0.3.0--alpha-blueviolet" alt="Pulsar 0.3.0-alpha"/>
+</p>
 
-- 🎨 **Design Tokens**: Comprehensive color, spacing, typography, and shadow tokens
-- 📏 **Size System**: Consistent sizing across all components (xs, sm, md, lg, xl)
+<p align="center">
+  <a href="#about">About</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#quick-start">Quick Start</a> •
+  <a href="#components">Components</a> •
+  <a href="#roadmap">Roadmap</a> •
+  <a href="#contributing">Contributing</a>
+</p>
+
+<p align="center">
+  <strong><a href="https://www.linkedin.com/in/tadeopiana/">follow me</a></strong>
+</p>
+
+---
+
+## About
+
+**@pulsar/ui** is the official component library for the Pulsar framework. It provides production-ready, accessible UI components built with fine-grained reactivity, TailwindCSS styling, and a fluent builder API for configuration.
+
+### Key Features
+
+- 🎨 **Design Tokens**: Uses [@pulsar/design-tokens](https://github.com/binaryjack/pulsar-design-system) for consistent styling
+- 📏 **Size System**: Standardized sizing (xs, sm, md, lg, xl) across all components
 - 🎭 **Variant System**: Multiple style variants (solid, outline, ghost, soft)
-- �️ **Builder Pattern**: Fluent API for component configuration
+- 🏗️ **Builder Pattern**: Fluent API for component configuration
 - 🎯 **Type-Safe**: Full TypeScript support with strict typing
 - ♿ **Accessible**: ARIA attributes and keyboard navigation built-in
-- 🚀 **Pulsar-Based**: Built for the Pulsar framework (no React dependencies)
+- 🚀 **Pulsar-Native**: Built specifically for Pulsar's reactivity system
 - 💅 **TailwindCSS**: Utility-first styling with custom configuration
-- 📦 **One Item Per File**: Clean, maintainable architecture
+- 📦 **Modular**: Clean architecture with one item per file
+
+---
 
 ## Installation
 
 ```bash
-pnpm install
+pnpm add @pulsar/ui
 ```
+
+### Dependencies
+
+The component library requires:
+- `pulsar` - The Pulsar framework
+- `@pulsar/design-tokens` - Design system tokens
+- `tailwindcss` - Utility-first CSS framework
+
+---
 
 ## Quick Start
 
@@ -27,7 +68,7 @@ pnpm install
 All components use a fluent builder pattern for configuration:
 
 ```typescript
-import { ComponentConfig, Button } from '@atomos/prime'
+import { ComponentConfig, Button } from '@pulsar/ui'
 
 // Create a configuration
 const config = new ComponentConfig('primary')  // Start with color
@@ -46,96 +87,60 @@ const myButton = Button({
 })
 ```
 
-### Components
-
-#### Button
+### Simple Usage
 
 ```typescript
-import { Button, PrimaryButton, ComponentConfig } from '@atomos/prime'
+import { PrimaryButton, Input, Badge } from '@pulsar/ui'
 
-// Using custom configuration
-const config = new ComponentConfig('primary')
-  .size('md')
-  .rounded('lg')
-  .build()
-
-const myButton = Button({
-  config,
+// Use factory variants for quick setup
+const saveButton = PrimaryButton({ 
   label: 'Save Changes',
-  icon: '<svg>...</svg>',
-  onclick: () => console.log('Saving...')
+  onclick: () => saveFn()
 })
-
-// Using factory variants
-const primary = PrimaryButton({ 
-  label: 'Primary Action',
-  onclick: () => {}
-})
-
-const danger = DangerButton({ 
-  label: 'Delete',
-  onclick: () => {}
-})
-```
-
-**Props**: Extends `Pulsar.HtmlExtends<'button'>`
-- `config?: IComponentConfig` - Component configuration (built with ComponentConfig)
-- `label?: string` - Button text
-- `icon?: HTMLElement | string` - Icon element or HTML string
-- `iconPosition?: 'left' | 'right'` - Icon position
-- `iconOnly?: boolean` - Icon-only mode
-- `loading?: boolean` - Loading state
-- `ripple?: boolean` - Ripple effect on click
-- All standard HTML button attributes via `...rest`
-
-#### Input
-
-```typescript
-import { Input, ComponentConfig } from '@atomos/prime'
-
-const config = new ComponentConfig('primary')
-  .size('md')
-  .fullWidth()
-  .build()
 
 const emailInput = Input({
-  config,
   type: 'email',
   placeholder: 'your@email.com',
-  required: true,
-  oninput: (e) => console.log(e.target.value)
-})
-
-// With error state
-const errorInput = Input({
-  type: 'password',
-  error: true,
-  errorMessage: 'Password is required',
   required: true
 })
 
-// With prefix/suffix
-const priceInput = Input({
-  type: 'number',
-  prefix: '$',
-  suffix: 'USD',
-  placeholder: '0.00'
+const statusBadge = Badge({
+  label: 'Active',
+  color: 'success'
 })
 ```
 
-**Props**: Extends `Pulsar.HtmlExtends<'input'>`
-- `config?: IComponentConfig` - Component configuration
-- `type?: InputType` - Input type (text, email, password, etc.)
-- `error?: boolean` - Error state
-- `errorMessage?: string` - Error message to display
-- `prefix?: string | HTMLElement` - Prefix element
-- `suffix?: string | HTMLElement` - Suffix element
-- All standard HTML input attributes via `...rest`
+---
 
-### ComponentConfig Builder Methods
+## Components
+
+### Atoms
+
+- **Button** - Interactive button with variants, sizes, icons, loading states
+- **Input** - Text input with prefix/suffix, error states, validation
+- **Checkbox** - Accessible checkbox with indeterminate state
+- **Radio** - Radio button for single selections
+- **Toggle** - Switch/toggle component for boolean states
+- **Textarea** - Multi-line text input
+- **Spinner** - Loading spinner with size variants
+- **Skeleton** - Skeleton loader for content placeholders
+- **Typography** - Heading, paragraph, and text components
+
+### Molecules
+
+- **Badge** - Status and label badges with colors and variants
+- **Button Group** - Grouped buttons with shared configuration
+- **Label** - Form labels with required indicators
+- **Radio Group** - Radio button groups with shared state
+
+### Organisms
+
+- **Card** - Container with header, body, footer sections
+
+### ComponentConfig Builder API
 
 ```typescript
-new ComponentConfig(color)      // Constructor: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'neutral'
+new ComponentConfig(color)      // 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'neutral'
   .variant(value)                // 'solid' | 'outline' | 'ghost' | 'soft'
   .size(value)                   // 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   .rounded(value)                // 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
@@ -153,39 +158,87 @@ new ComponentConfig(color)      // Constructor: 'primary' | 'secondary' | 'succe
   .build()                       // Returns IComponentConfig
 ```
 
-## Design System
+---
 
-### Tokens
+## Roadmap
 
-- **Colors**: primary, secondary, success, warning, error, neutral (50-950 shades)
-- **Spacing**: xs, sm, md, lg, xl, 2xl, 3xl, 4xl
-- **Typography**: Font families, sizes, weights, line heights
-- **Shadows**: none, sm, md, lg, xl, 2xl, inner
-- **Borders**: Radius tokens for consistent rounded corners
-- **Transitions**: Duration and timing functions
+### ✅ v0.1.0 - Foundation (Current)
+- ✅ Atoms: Button, Input, Checkbox, Radio, Toggle, Textarea, Spinner, Skeleton, Typography
+- ✅ Molecules: Badge, Button Group, Label, Radio Group
+- ✅ Organisms: Card
+- ✅ Builder pattern API
+- ✅ Design token integration
+- ✅ TypeScript strict mode
+- ✅ TailwindCSS integration
 
-### Architecture Principles
+### 🚧 v0.2.0 - Enhanced Components (Q2 2026)
+- 🔄 **Select** - Dropdown select with search and multi-select
+- 🔄 **Modal** - Dialog and modal components
+- 🔄 **Dropdown** - Menu dropdown with keyboard navigation
+- 🔄 **Tabs** - Tab navigation component
+- 🔄 **Accordion** - Collapsible content panels
+- 🔄 **Toast** - Toast notifications system
+- 🔄 **Tooltip** - Contextual tooltips
+- 🔄 **Popover** - Popover content containers
 
-1. **One Item Per File**: Each type, enum, interface in separate file
-2. **Prototype-Based Classes**: No ES6 classes, function constructors only
-3. **Builder Pattern**: Fluent API for configuration
-4. **Type Safety**: No `any` types, full type coverage
-5. **Pulsar.HtmlExtends**: Type-safe HTML element props extension
-6. **Declarative TSX**: Components return JSX syntax
+### 🎯 v0.3.0 - Advanced Components (Q3 2026)
+- 📋 **Table** - Data table with sorting, filtering, pagination
+- 📊 **Chart** - Basic chart components (bar, line, pie)
+- 📅 **Date Picker** - Calendar date selection
+- 🎨 **Color Picker** - Color selection component
+- 📁 **File Upload** - Drag-and-drop file upload
+- 🔍 **Search** - Search input with suggestions
+- 🏷️ **Tag Input** - Multi-tag input component
+- 📝 **Rich Text Editor** - WYSIWYG editor
 
-## Advanced Usage
+### 🌟 v1.0.0 - Production Ready (Q4 2026)
+- 🎨 **Theming System** - Custom theme creation and switching
+- 📱 **Responsive Utilities** - Mobile-first responsive components
+- 🌙 **Dark Mode** - Complete dark mode support
+- ♿ **A11y Audit** - Full accessibility compliance
+- 📖 **Storybook** - Interactive component documentation
+- 🧪 **Test Coverage 90%+** - Comprehensive test suite
+- 📦 **Tree Shaking** - Optimized bundle sizes
+- 🎭 **Animation Library** - Pre-built animation presets
 
-See [EXAMPLES.ts](./EXAMPLES.ts) for comprehensive usage examples including:
-- Custom configurations
-- Form compositions
-- Error handling
-- Loading states
-- Icon buttons
-- Responsive designs
+---
 
-## Development
+## Ecosystem
+
+Part of the Pulsar framework ecosystem:
+
+| Package | Description | Repository |
+|---------|-------------|------------|
+| **pulsar.dev** | Main reactive framework | [GitHub](https://github.com/binaryjack/pulsar.dev) |
+| **@pulsar/ui** | Component library (this package) | [GitHub](https://github.com/binaryjack/pulsar-ui.dev) |
+| **@pulsar/design-tokens** | Design tokens & brand assets | [GitHub](https://github.com/binaryjack/pulsar-design-system) |
+| **@pulsar/transformer** | JSX transformer | [GitHub](https://github.com/binaryjack/pulsar-transformer) |
+| **@pulsar/vite-plugin** | Vite integration | [GitHub](https://github.com/binaryjack/pulsar-vite-plugin) |
+| **pulsar-demo** | Example applications | [GitHub](https://github.com/binaryjack/pulsar-demo) |
+
+---
+
+## Contributing
+
+Contributions welcome! We need help with:
+
+- 🎨 **New Components** - Build additional UI components
+- ♿ **Accessibility** - Improve ARIA support and keyboard navigation
+- 📖 **Documentation** - Add examples and usage guides
+- 🧪 **Tests** - Increase test coverage
+- 🐛 **Bug Fixes** - Report and fix issues
+- 💡 **Feature Requests** - Suggest new components or improvements
+
+### Development Setup
 
 ```bash
+# Clone the repository
+git clone https://github.com/binaryjack/pulsar-ui.dev.git
+cd pulsar-ui.dev
+
+# Install dependencies
+pnpm install
+
 # Build
 pnpm build
 
@@ -193,6 +246,43 @@ pnpm build
 pnpm dev
 ```
 
+### Code Guidelines
+
+- ✅ One item per file (interfaces, types, implementations)
+- ✅ TypeScript strict mode (no `any` types)
+- ✅ Prototype-based classes for components
+- ✅ Use `Pulsar.HtmlExtends<T>` for HTML props
+- ✅ Builder pattern for component configuration
+- ✅ Comprehensive JSDoc comments
+
+---
+
 ## License
 
-MIT
+MIT License - Copyright (c) 2026 Pulsar Framework
+
+See [LICENSE](./LICENSE) for full details.
+
+---
+
+## Acknowledgments
+
+Built with ⚡ by [Tadeo Piana](https://www.linkedin.com/in/tadeopiana/) and contributors.
+
+Design inspiration from:
+- [Radix UI](https://www.radix-ui.com/) - Accessible component primitives
+- [shadcn/ui](https://ui.shadcn.com/) - Beautiful component design
+- [Headless UI](https://headlessui.com/) - Unstyled accessible components
+
+---
+
+<p align="center">
+  <strong>@pulsar/ui - v0.1.0</strong><br/>
+  Component library for the Pulsar framework
+</p>
+
+<p align="center">
+  <a href="https://github.com/binaryjack/pulsar-ui.dev">GitHub</a> •
+  <a href="https://github.com/binaryjack/pulsar.dev">Pulsar Framework</a> •
+  <a href="https://www.linkedin.com/in/tadeopiana/">Connect with the Creator</a>
+</p>

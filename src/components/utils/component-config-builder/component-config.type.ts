@@ -2,12 +2,7 @@
  * Component configuration interface
  */
 
-import { type ComponentRoundedSize } from '../../../design/sizes/component-rounded-size.type'
-import { type ComponentShadowSize } from '../../../design/sizes/component-shadow-size.type'
-import { type ComponentSize } from '../../../design/sizes/component-size.type'
-import { type TransitionDuration } from '../../../design/tokens/legacy/transition-duration.type'
-import { type ComponentColor } from '../../../design/variants/component-color.type'
-import { type ComponentVariant } from '../../../design/variants/component-variant.type'
+import { type ComponentColor, type ComponentRoundedSize, type ComponentShadowSize, type ComponentSize, type ComponentVariant, type TransitionDuration } from '@pulsar/design-tokens'
 
 export interface IComponentConfig {
   // Visual style

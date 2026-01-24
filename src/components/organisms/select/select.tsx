@@ -4,7 +4,7 @@
  * Organism: Native select with options
  */
 
-import { cn, inputSizeClasses, roundedClasses } from '../../../design/utility'
+import { cn, inputSizeClasses, roundedClasses } from '@pulsar-framework/design-tokens'
 import { Skeleton } from '../../atoms/skeleton'
 import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
 import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder'
@@ -57,8 +57,7 @@ export const Select = ({
       )}
       value={value ?? defaultValue}
       disabled={config.disabled}
-      ariaBusy={config.loading ? 'true' : 'false'}
-      ariaLabel={ariaLabel || placeholder || 'Select an option'}
+      title={ariaLabel || placeholder || 'Select an option'}
       onchange={(e: Event) => {
         if (onChange) {
           onChange((e.target as HTMLSelectElement).value)
@@ -68,6 +67,9 @@ export const Select = ({
     />
   
   if (!config.loading) {
+    // Set aria attributes programmatically
+    select.setAttribute('aria-label', ariaLabel || placeholder || 'Select an option')
+    select.setAttribute('aria-busy', config.loading ? 'true' : 'false')
     // Manually append options to the select element
     if (placeholder) {
       const placeholderOption = document.createElement('option')

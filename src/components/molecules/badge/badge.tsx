@@ -4,7 +4,7 @@
  * Molecule: Composes text and optional icon
  */
 
-import { badgeSizeClasses, cn, roundedClasses } from '../../../design/utility'
+import { badgeSizeClasses, cn, roundedClasses } from '@pulsar-framework/design-tokens'
 import { Skeleton } from '../../atoms/skeleton'
 import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
 import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder'

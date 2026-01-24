@@ -2,7 +2,7 @@
  * Set variant
  */
 
-import { type ComponentVariant } from '../../../design/variants/component-variant.type'
+import { type ComponentVariant } from '@pulsar/design-tokens'
 import { type IComponentConfigInternal } from '../component-config-internal.interface'
 
 export const variant = function(

@@ -19,7 +19,9 @@
     "skipLibCheck": true,
     "types": ["vite/client"],
     "paths": {
-      "pulsar": ["../pulsar/dist/index.d.ts"]
+      "pulsar": ["../pulsar.dev/dist/index.d.ts"],
+      "pulsar/jsx-runtime": ["../pulsar.dev/dist/jsx-runtime.d.ts"],
+      "pulsar/jsx-dev-runtime": ["../pulsar.dev/dist/jsx-runtime.d.ts"]
     }
   },
   "include": [
@@ -28,7 +30,7 @@
     "src/**/*.type.ts",
     "src/**/*.interface.ts",
     "src/**/*.enum.ts",
-    "../pulsar/pulsar.d.ts"
+    "../pulsar.dev/pulsar.d.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }

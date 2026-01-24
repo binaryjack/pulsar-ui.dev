@@ -3,7 +3,7 @@
  * Framework: Pulsar
  */
 
-import { cn, toggleSizeClasses } from '../../../design/utility'
+import { cn, toggleSizeClasses } from '@pulsar-framework/design-tokens'
 import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
 import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder'
 import { Skeleton } from '../skeleton'
