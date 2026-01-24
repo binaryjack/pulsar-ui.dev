@@ -29,27 +29,45 @@ export const Toggle = ({
   styling = toggleDefaultStyling,
   checked = false,
   ...rest
-}: IToggleProps): HTMLElement => 
-  config.loading ?
-    <Skeleton 
+}: IToggleProps): HTMLElement => {
+  if (config.loading) {
+    return <Skeleton 
       width={config.size ? toggleSizeClasses[config.size].split(' ')[0] : 'w-11'} 
       height={config.size ? toggleSizeClasses[config.size].split(' ')[1] : 'h-6'} 
       rounded="full" 
-    /> :
-    <button
-      type="button"
-      role="switch"
-      ariaChecked={checked ? 'true' : 'false'}
-      className={cn(
-        styling.base,
-        styling.focus,
-        styling.background,
-        config.size ? toggleSizeClasses[config.size] : '',
-        config.disabled ? styling.disabled : '',
-        config.className,
-        styling.custom
-      )}
-      disabled={config.disabled}
-      ariaBusy={config.loading ? 'true' : 'false'}
-      {...rest}
     />
+  }
+
+  const button = document.createElement('button')
+  button.type = 'button'
+  button.setAttribute('role', 'switch')
+  button.setAttribute('aria-checked', checked ? 'true' : 'false')
+  button.className = cn(
+    styling.base,
+    styling.focus,
+    styling.background,
+    config.size ? toggleSizeClasses[config.size] : '',
+    config.disabled ? styling.disabled : '',
+    config.className,
+    styling.custom
+  )
+  if (config.disabled) {
+    button.disabled = true
+  }
+  button.setAttribute('aria-busy', config.loading ? 'true' : 'false')
+
+  // Handle other props including event listeners
+  Object.keys(rest).forEach((key) => {
+    const value = (rest as Record<string, unknown>)[key]
+    if (key.startsWith('on') && typeof value === 'function') {
+      const eventName = key.toLowerCase().substring(2)
+      button.addEventListener(eventName, value as EventListener)
+    } else if (key.startsWith('aria') || key.startsWith('data')) {
+      button.setAttribute(key.replace(/([A-Z])/g, '-$1').toLowerCase(), String(value))
+    } else if (typeof value !== 'undefined' && value !== null) {
+      (button as unknown as Record<string, unknown>)[key] = value
+    }
+  })
+
+  return button
+}

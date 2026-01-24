@@ -35,25 +35,72 @@ export const Badge = ({
   icon,
   iconPosition = 'left',
   dot = false,
+  children,
   ...rest
-}: IBadgeProps): HTMLElement => 
-  config.loading ?
-    <Skeleton width="w-16" height="h-6" rounded={config.rounded} /> :
-    <span
-      className={cn(
-        styling.base,
-        styling.background,
-        styling.border,
-        config.size ? badgeSizeClasses[config.size] : '',
-        config.rounded ? roundedClasses[config.rounded] : '',
-        config.className,
-        styling.custom
-      )}
-      ariaBusy={config.loading ? 'true' : 'false'}
-      {...rest}
-    >
-      {dot ? <span className="w-1.5 h-1.5 rounded-full bg-current" /> : null}
-      {iconPosition === 'left' && icon ? icon : null}
-      {label}
-      {iconPosition === 'right' && icon ? icon : null}
-    </span>
+}: IBadgeProps): HTMLElement => {
+  if (config.loading) {
+    return <Skeleton width="w-16" height="h-6" rounded={config.rounded} />
+  }
+
+  const span = document.createElement('span')
+  span.className = cn(
+    styling.base,
+    styling.background,
+    styling.border,
+    config.size ? badgeSizeClasses[config.size] : '',
+    config.rounded ? roundedClasses[config.rounded] : '',
+    config.className,
+    styling.custom
+  )
+  span.setAttribute('aria-busy', config.loading ? 'true' : 'false')
+
+  // Handle other props
+  Object.keys(rest).forEach((key) => {
+    const value = (rest as Record<string, unknown>)[key]
+    if (key.startsWith('on') && typeof value === 'function') {
+      const eventName = key.toLowerCase().substring(2)
+      span.addEventListener(eventName, value as EventListener)
+    } else if (key.startsWith('aria') || key.startsWith('data') || key === 'role') {
+      span.setAttribute(key.replace(/([A-Z])/g, '-$1').toLowerCase(), String(value))
+    } else if (typeof value !== 'undefined' && value !== null) {
+      (span as unknown as Record<string, unknown>)[key] = value
+    }
+  })
+
+  // Add dot
+  if (dot) {
+    const dotSpan = document.createElement('span')
+    dotSpan.className = 'w-1.5 h-1.5 rounded-full bg-current'
+    span.appendChild(dotSpan)
+  }
+
+  // Add icon (left)
+  if (iconPosition === 'left' && icon) {
+    span.appendChild(icon)
+  }
+
+  // Add content (children or label)
+  const content = children || label
+  if (content) {
+    if (typeof content === 'string' || typeof content === 'number') {
+      span.appendChild(document.createTextNode(String(content)))
+    } else if (content instanceof Node) {
+      span.appendChild(content)
+    } else if (Array.isArray(content)) {
+      content.forEach((child) => {
+        if (child instanceof Node) {
+          span.appendChild(child)
+        } else if (typeof child === 'string' || typeof child === 'number') {
+          span.appendChild(document.createTextNode(String(child)))
+        }
+      })
+    }
+  }
+
+  // Add icon (right)
+  if (iconPosition === 'right' && icon) {
+    span.appendChild(icon)
+  }
+
+  return span
+}

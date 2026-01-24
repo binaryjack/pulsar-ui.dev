@@ -31,30 +31,53 @@ export const Checkbox = ({
   checked,
   defaultChecked,
   ...rest
-}: ICheckboxProps): HTMLElement => 
-  config.loading ?
-    <Skeleton 
+}: ICheckboxProps): HTMLElement => {
+  if (config.loading) {
+    return <Skeleton 
       width={config.size ? checkboxSizeClasses[config.size] : 'w-5'} 
       height={config.size ? checkboxSizeClasses[config.size].split(' ')[1] : 'h-5'} 
       rounded={config.rounded} 
-    /> :
-    <input
-      type="checkbox"
-      className={cn(
-        styling.base,
-        styling.transition,
-        styling.border,
-        styling.focus,
-        styling.background,
-        config.size ? checkboxSizeClasses[config.size] : '',
-        config.disabled ? styling.disabled : '',
-        config.rounded ? roundedClasses[config.rounded] : '',
-        config.className,
-        styling.custom
-      )}
-      checked={checked}
-      defaultChecked={defaultChecked}
-      disabled={config.disabled}
-      ariaBusy={config.loading ? 'true' : 'false'}
-      {...rest}
     />
+  }
+
+  const input = document.createElement('input')
+  input.type = 'checkbox'
+  input.className = cn(
+    styling.base,
+    styling.transition,
+    styling.border,
+    styling.focus,
+    styling.background,
+    config.size ? checkboxSizeClasses[config.size] : '',
+    config.disabled ? styling.disabled : '',
+    config.rounded ? roundedClasses[config.rounded] : '',
+    config.className,
+    styling.custom
+  )
+
+  if (checked !== undefined) {
+    input.checked = Boolean(checked)
+  }
+  if (defaultChecked !== undefined) {
+    input.defaultChecked = Boolean(defaultChecked)
+  }
+  if (config.disabled) {
+    input.disabled = true
+  }
+  input.setAttribute('aria-busy', config.loading ? 'true' : 'false')
+
+  // Handle other props including event listeners
+  Object.keys(rest).forEach((key) => {
+    const value = (rest as Record<string, unknown>)[key]
+    if (key.startsWith('on') && typeof value === 'function') {
+      const eventName = key.toLowerCase().substring(2)
+      input.addEventListener(eventName, value as EventListener)
+    } else if (key.startsWith('aria') || key.startsWith('data') || key === 'role') {
+      input.setAttribute(key.replace(/([A-Z])/g, '-$1').toLowerCase(), String(value))
+    } else if (typeof value !== 'undefined' && value !== null) {
+      (input as unknown as Record<string, unknown>)[key] = value
+    }
+  })
+
+  return input
+}

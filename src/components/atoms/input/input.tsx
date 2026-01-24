@@ -33,27 +33,54 @@ export const Input = ({
   value,
   defaultValue,
   ...rest
-}: IInputProps): HTMLElement => 
-  config.loading ?
-    <Skeleton width={config.fullWidth ? 'w-full' : 'w-64'} height="h-10" rounded={config.rounded} /> :
-    <input
-      type={type}
-      className={cn(
-        styling.base,
-        styling.transition,
-        styling.border,
-        styling.focus,
-        config.size ? inputSizeClasses[config.size] : '',
-        config.disabled ? styling.disabled : 'readOnly' in rest && rest.readOnly ? styling.readOnly : styling.background,
-        config.rounded ? roundedClasses[config.rounded] : '',
-        config.fullWidth ? 'w-full' : '',
-        config.className,
-        styling.custom
-      )}
-      value={value}
-      defaultValue={defaultValue}
-      disabled={config.disabled}
-      ariaBusy={config.loading ? 'true' : 'false'}
-      {...rest}
-    />
+}: IInputProps): HTMLElement => {
+  if (config.loading) {
+    return <Skeleton width={config.fullWidth ? 'w-full' : 'w-64'} height="h-10" rounded={config.rounded} />
+  }
+
+  const input = document.createElement('input')
+  input.type = type
+  input.className = cn(
+    styling.base,
+    styling.transition,
+    styling.border,
+    styling.focus,
+    config.size ? inputSizeClasses[config.size] : '',
+    config.disabled ? styling.disabled : 'readOnly' in rest && rest.readOnly ? styling.readOnly : styling.background,
+    config.rounded ? roundedClasses[config.rounded] : '',
+    config.fullWidth ? 'w-full' : '',
+    config.className,
+    styling.custom
+  )
+
+  if (value !== undefined) {
+    input.value = String(value)
+  }
+  if (defaultValue !== undefined) {
+    input.defaultValue = String(defaultValue)
+  }
+  if (config.disabled) {
+    input.disabled = true
+  }
+  input.setAttribute('aria-busy', config.loading ? 'true' : 'false')
+
+  // Handle other props including event listeners
+  Object.keys(rest).forEach((key) => {
+    const value = (rest as Record<string, unknown>)[key]
+    if (key.startsWith('on') && typeof value === 'function') {
+      const eventName = key.toLowerCase().substring(2)
+      input.addEventListener(eventName, value as EventListener)
+    } else if (key === 'placeholder') {
+      input.placeholder = String(value)
+    } else if (key === 'readOnly') {
+      input.readOnly = Boolean(value)
+    } else if (key.startsWith('aria') || key.startsWith('data') || key === 'role') {
+      input.setAttribute(key.replace(/([A-Z])/g, '-$1').toLowerCase(), String(value))
+    } else if (typeof value !== 'undefined' && value !== null) {
+      (input as unknown as Record<string, unknown>)[key] = value
+    }
+  })
+
+  return input
+}
 
