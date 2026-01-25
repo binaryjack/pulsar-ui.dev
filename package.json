@@ -27,7 +27,7 @@
     "tailwind"
   ],
   "dependencies": {
-    "@pulsar-framework/core": "workspace:*",
+    "@pulsar-framework/pulsar.dev": "workspace:*",
     "@pulsar-framework/design-tokens": "workspace:^"
   },
   "devDependencies": {
