@@ -4,8 +4,8 @@
  * Type: Atom
  */
 
-import { cn } from '@pulsar-framework/design-tokens'
-import type { ISpinnerProps } from './spinner.type'
+import { cn } from '@pulsar-framework/design-tokens';
+import type { ISpinnerProps } from './spinner.type';
 
 // External - compiled ONCE
 const spinnerSizes = {
@@ -13,8 +13,8 @@ const spinnerSizes = {
   sm: 'w-4 h-4',
   md: 'w-5 h-5',
   lg: 'w-6 h-6',
-  xl: 'w-8 h-8'
-} as const
+  xl: 'w-8 h-8',
+} as const;
 
 /**
  * Spinner component
@@ -33,7 +33,7 @@ export const Spinner = ({
       className
     )}
     role="status"
-    aria-label={label}
+    ariaLabel={label}
     {...rest}
   />
-)
+);

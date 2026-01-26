@@ -3,11 +3,17 @@
  * Framework: Pulsar
  */
 
-import { cn, componentSizes, roundedClasses, shadowClasses, transitionDurationClasses } from '@pulsar-framework/design-tokens'
-import { Skeleton } from '../../atoms/skeleton'
-import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
-import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder'
-import { type IButtonProps } from './button.type'
+import {
+  cn,
+  componentSizes,
+  roundedClasses,
+  shadowClasses,
+  transitionDurationClasses,
+} from '@pulsar-framework/design-tokens';
+import { Skeleton } from '../../atoms/skeleton';
+import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder';
+import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder';
+import { type IButtonProps } from './button.type';
 
 // External to the component so it's compiled ONCE!
 const buttonDefaultConfig = new ComponentConfigBuilder('primary')
@@ -15,7 +21,7 @@ const buttonDefaultConfig = new ComponentConfigBuilder('primary')
   .size('md')
   .rounded('md')
   .transition(true)
-  .build()
+  .build();
 
 // External to the component so it's compiled ONCE!
 const buttonDefaultStyling = new ComponentStylingBuilder()
@@ -25,7 +31,7 @@ const buttonDefaultStyling = new ComponentStylingBuilder()
   .focus('focus:ring-2 focus:ring-offset-2 focus:ring-primary-500')
   .active('active:scale-95')
   .disabled('opacity-50 cursor-not-allowed')
-  .build()
+  .build();
 
 /**
  * Button component
@@ -40,16 +46,16 @@ export const Button = ({
   ...rest
 }: IButtonProps): HTMLElement => {
   if (config.loading) {
-    return <Skeleton 
-      width={config.fullWidth ? 'w-full' : 'w-32'} 
-      height={config.size ? componentSizes[config.size].height : 'h-10'} 
-      rounded={config.rounded} 
-    />
+    return (
+      <Skeleton
+        width={config.fullWidth ? 'w-full' : 'w-32'}
+        height={config.size ? componentSizes[config.size].height : 'h-10'}
+        rounded={config.rounded}
+      />
+    );
   }
 
-  const button = document.createElement('button')
-  button.type = type
-  button.className = cn(
+  const className = cn(
     styling.base,
     styling.transition,
     config.size ? componentSizes[config.size].padding : '',
@@ -64,39 +70,18 @@ export const Button = ({
     config.active ? styling.active : '',
     config.className,
     styling.custom
-  )
-  button.disabled = config.disabled || false
-  button.setAttribute('aria-busy', config.loading ? 'true' : 'false')
+  );
 
-  // Handle event listeners
-  if (onclick) {
-    button.addEventListener('click', onclick as EventListener)
-  }
-
-  // Handle other props
-  Object.keys(rest).forEach((key) => {
-    const value = (rest as Record<string, unknown>)[key]
-    if (key.startsWith('on') && typeof value === 'function') {
-      const eventName = key.toLowerCase().substring(2)
-      button.addEventListener(eventName, value as EventListener)
-    } else if (key.startsWith('aria') || key.startsWith('data') || key === 'role') {
-      button.setAttribute(key.replace(/([A-Z])/g, '-$1').toLowerCase(), String(value))
-    } else if (typeof value !== 'undefined' && value !== null) {
-      (button as unknown as Record<string, unknown>)[key] = value
-    }
-  })
-
-  // Add children
-  if (children) {
-    const childArray = Array.isArray(children) ? children : [children]
-    childArray.forEach((child) => {
-      if (child instanceof Node) {
-        button.appendChild(child)
-      } else if (typeof child === 'string' || typeof child === 'number') {
-        button.appendChild(document.createTextNode(String(child)))
-      }
-    })
-  }
-
-  return button
-}
+  return (
+    <button
+      type={type}
+      className={className}
+      disabled={config.disabled || false}
+      ariaBusy={config.loading ? 'true' : 'false'}
+      onclick={onclick}
+      {...rest}
+    >
+      {children}
+    </button>
+  );
+};

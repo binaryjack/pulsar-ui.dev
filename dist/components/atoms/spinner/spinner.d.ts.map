@@ -1,1 +1,1 @@
-{"version":3,"file":"spinner.d.ts","sourceRoot":"","sources":["../../../../src/components/atoms/spinner/spinner.tsx"],"names":[],"mappings":"AAAA;;;;GAIG;AAGH,OAAO,KAAK,EAAE,aAAa,EAAE,MAAM,gBAAgB,CAAA;AAWnD;;;GAGG;AACH,eAAO,MAAM,OAAO,GAAI,qCAKrB,aAAa,KAAG,WAWlB,CAAA"}
+{"version":3,"file":"spinner.d.ts","sourceRoot":"","sources":["../../../../src/components/atoms/spinner/spinner.tsx"],"names":[],"mappings":"AAAA;;;;GAIG;AAGH,OAAO,KAAK,EAAE,aAAa,EAAE,MAAM,gBAAgB,CAAC;AAWpD;;;GAGG;AACH,eAAO,MAAM,OAAO,GAAI,qCAKrB,aAAa,KAAG,WAWlB,CAAC"}
