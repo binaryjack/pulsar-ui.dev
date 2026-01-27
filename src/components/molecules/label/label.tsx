@@ -4,20 +4,18 @@
  * Molecule: Label with optional helper text and required indicator
  */
 
-import { cn } from '@pulsar-framework/design-tokens'
-import { Skeleton } from '../../atoms/skeleton'
-import { Typography } from '../../atoms/typography'
-import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
-import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder'
-import { type ILabelProps } from './label.type'
+import { cn } from '@pulsar-framework/design-tokens';
+import { Skeleton } from '../../atoms/skeleton';
+import { Typography } from '../../atoms/typography';
+import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder';
+import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder';
+import { type ILabelProps } from './label.type';
 
 // External to the component so it's compiled ONCE!
-const labelDefaultConfig = new ComponentConfigBuilder('primary').build()
+const labelDefaultConfig = new ComponentConfigBuilder('primary').build();
 
 // External to the component so it's compiled ONCE!
-const labelDefaultStyling = new ComponentStylingBuilder()
-  .base('block mb-2')
-  .build()
+const labelDefaultStyling = new ComponentStylingBuilder().base('block mb-2').build();
 
 /**
  * Label component
@@ -33,9 +31,10 @@ export const Label = ({
   helperText,
   errorText,
   ...rest
-}: ILabelProps): HTMLElement => 
-  config.loading ?
-    <Skeleton width="w-32" height="h-5" rounded="sm" /> :
+}: ILabelProps): HTMLElement =>
+  config.loading ? (
+    <Skeleton width="w-32" height="h-5" rounded="sm" />
+  ) : (
     <label
       htmlFor={htmlFor}
       className={cn(
@@ -47,14 +46,11 @@ export const Label = ({
       ariaBusy={config.loading ? 'true' : 'false'}
       {...rest}
     >
-      <Typography
-        variant="body2"
-        config={new ComponentConfigBuilder('primary').build()}
-      >
+      <Typography variant="body2" config={new ComponentConfigBuilder('primary').build()}>
         {text}
-        {required ? <span className="text-error-600 ml-1">*</span> : null}
+        {required && <span className="text-error-600 ml-1">*</span>}
       </Typography>
-      
+
       {errorText ? (
         <Typography
           variant="caption"
@@ -71,3 +67,4 @@ export const Label = ({
         </Typography>
       ) : null}
     </label>
+  );
