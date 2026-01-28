@@ -13,10 +13,11 @@
   },
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
-    "dev": "vite",
+    "dev": "vite --config vite.showcase.config.ts",
     "typecheck": "tsc --noEmit",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "showcase:dev": "vite --config vite.showcase.config.ts",
+    "showcase:build": "vite build --config vite.showcase.config.ts",
+    "showcase:preview": "vite preview --config vite.showcase.config.ts"
   },
   "keywords": [
     "pulsar",
@@ -27,22 +28,16 @@
     "tailwind"
   ],
   "dependencies": {
-    "@pulsar-framework/pulsar.dev": "workspace:*",
-    "@pulsar-framework/design-tokens": "workspace:^"
+    "@pulsar-framework/design-tokens": "workspace:^",
+    "@pulsar-framework/pulsar.dev": "workspace:*"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "8.6.14",
-    "@storybook/addon-interactions": "8.6.14",
-    "@storybook/addon-links": "8.6.14",
-    "@storybook/blocks": "8.6.14",
-    "@storybook/html": "8.6.14",
-    "@storybook/html-vite": "8.6.14",
-    "@storybook/test": "8.6.14",
+    "@pulsar-framework/vite-plugin": "workspace:^",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.33",
-    "storybook": "8.6.14",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite": "^6.0.0"
   },
   "author": "Tadeo Piana <https://www.linkedin.com/in/tadeopiana/>",
   "license": "MIT",

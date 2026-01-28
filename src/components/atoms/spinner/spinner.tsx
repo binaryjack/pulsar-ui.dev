@@ -33,7 +33,7 @@ export const Spinner = ({
       className
     )}
     role="status"
-    ariaLabel={label}
+    aria-label={label}
     {...rest}
   />
 );

@@ -66,7 +66,7 @@ export const Select = ({
       value={value ?? defaultValue}
       disabled={config.disabled}
       title={ariaLabel || placeholder || 'Select an option'}
-      ariaLabel={ariaLabel || placeholder || 'Select an option'}
+      aria-label={ariaLabel || placeholder || 'Select an option'}
       ariaBusy={config.loading ? 'true' : 'false'}
       onchange={(e: Event) => {
         if (onChange) {
