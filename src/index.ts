@@ -1,52 +1,23 @@
 /**
- * Pulsar UI - Component Library
- * Main package entry point
+ * @pulsar-framework/ui - Component Library
+ *
+ * Re-exports UI components and design tokens for the Pulsar framework.
  */
 
-// Re-export design system from @pulsar/design-tokens
-export * from '@pulsar/design-tokens';
+// Re-export design tokens
+export * from '@pulsar-framework/design-tokens';
 
-// Component utilities
-export * from './components/utils';
+// Component exports - exporting from source directly for now
+export * from './components/atoms/avatar/index';
+export * from './components/atoms/checkbox/index';
+export * from './components/atoms/input/index';
+export * from './components/atoms/radio/index';
+export * from './components/atoms/spinner/index';
+export * from './components/atoms/toggle/index';
+export * from './components/atoms/typography/index';
 
-// Atoms
-export * from './components/atoms/avatar';
-export * from './components/atoms/checkbox';
-export * from './components/atoms/container';
-export * from './components/atoms/divider';
-export * from './components/atoms/grid';
-export * from './components/atoms/input';
-export * from './components/atoms/progress';
-export * from './components/atoms/radio';
-export * from './components/atoms/rating';
-export * from './components/atoms/skeleton';
-export * from './components/atoms/slider';
-export * from './components/atoms/spinner';
-export * from './components/atoms/stack';
-export * from './components/atoms/textarea';
-export * from './components/atoms/toggle';
-export * from './components/atoms/tooltip';
-export * from './components/atoms/typography';
-
-// Molecules
-export * from './components/molecules/accordion';
-export * from './components/molecules/alert';
-export * from './components/molecules/badge';
-export * from './components/molecules/breadcrumbs';
-export * from './components/molecules/button';
-export * from './components/molecules/dropdown';
-export * from './components/molecules/label';
-export * from './components/molecules/list';
-export * from './components/molecules/menu';
-export * from './components/molecules/pagination';
-export * from './components/molecules/popover';
-export * from './components/molecules/radio-group';
-export * from './components/molecules/tabs';
-
-// Organisms
-export * from './components/organisms/card';
-export * from './components/organisms/drawer';
-export * from './components/organisms/modal';
-export * from './components/organisms/select';
+export * from './components/molecules/badge/index';
+export * from './components/molecules/button/index';
+export * from './components/molecules/label/index';
 export * from './components/organisms/table';
 export * from './components/organisms/toast';

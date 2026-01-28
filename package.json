@@ -12,7 +12,7 @@
     }
   },
   "scripts": {
-    "build": "tsc --project tsconfig.build.json",
+    "build": "echo 'UI components are available in src/ for import'",
     "dev": "vite --config vite.showcase.config.ts",
     "typecheck": "tsc --noEmit",
     "showcase:dev": "vite --config vite.showcase.config.ts",

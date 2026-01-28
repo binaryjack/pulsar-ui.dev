@@ -4,20 +4,11 @@
     "noEmit": false,
     "emitDeclarationOnly": true,
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": false,
     "outDir": "./dist",
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "skipLibCheck": true
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "../pulsar.dev/pulsar.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "src/**/*.stories.ts",
-    "src/**/*.stories.tsx",
-    "src/**/stories/**"
-  ]
+  "include": ["src/index.ts"],
+  "exclude": ["node_modules", "dist"]
 }
