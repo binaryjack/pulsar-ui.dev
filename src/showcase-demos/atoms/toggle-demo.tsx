@@ -19,7 +19,7 @@ export const ToggleDemo = (): HTMLElement => {
       </div>
 
       <DemoSection title="Basic Toggle" description="Simple toggle switches">
-        <Stack direction="column" spacing="lg">
+        <Stack direction="vertical" spacing="lg">
           <label class="flex items-center justify-between max-w-xs">
             <span>Enable notifications</span>
             <Toggle />
@@ -46,19 +46,19 @@ export const ToggleDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Sizes" description="Different toggle sizes">
-        <Stack direction="column" spacing="lg">
+        <Stack direction="vertical" spacing="lg">
           <label class="flex items-center gap-3">
-            <Toggle size="sm" checked />
+            <Toggle checked />
             <span class="text-sm">Small toggle</span>
           </label>
 
           <label class="flex items-center gap-3">
-            <Toggle size="md" checked />
+            <Toggle checked />
             <span>Medium toggle (default)</span>
           </label>
 
           <label class="flex items-center gap-3">
-            <Toggle size="lg" checked />
+            <Toggle checked />
             <span class="text-lg">Large toggle</span>
           </label>
         </Stack>
@@ -70,7 +70,7 @@ export const ToggleDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="States" description="Toggle states">
-        <Stack direction="column" spacing="lg">
+        <Stack direction="vertical" spacing="lg">
           <label class="flex items-center gap-3">
             <Toggle />
             <span>Off state</span>
@@ -103,7 +103,7 @@ export const ToggleDemo = (): HTMLElement => {
         title="With Labels and Descriptions"
         description="Toggles with detailed information"
       >
-        <Stack direction="column" spacing="xl">
+        <Stack direction="vertical" spacing="xl">
           <label class="flex items-start justify-between gap-4 max-w-2xl">
             <div class="flex-1">
               <div class="font-medium mb-1">Email notifications</div>
@@ -158,9 +158,9 @@ export const ToggleDemo = (): HTMLElement => {
           <div>
             <h3 class="text-lg font-semibold mb-4">Privacy Settings</h3>
             <Stack
-              direction="column"
+              direction="vertical"
               spacing="lg"
-              class="border border-gray-200 dark:border-gray-700 rounded-lg divide-y divide-gray-200 dark:divide-gray-700"
+              className="border border-gray-200 dark:border-gray-700 rounded-lg divide-y divide-gray-200 dark:divide-gray-700"
             >
               <label class="flex items-center justify-between gap-4 p-4">
                 <div>
@@ -193,9 +193,9 @@ export const ToggleDemo = (): HTMLElement => {
           <div>
             <h3 class="text-lg font-semibold mb-4">Accessibility</h3>
             <Stack
-              direction="column"
+              direction="vertical"
               spacing="lg"
-              class="border border-gray-200 dark:border-gray-700 rounded-lg divide-y divide-gray-200 dark:divide-gray-700"
+              className="border border-gray-200 dark:border-gray-700 rounded-lg divide-y divide-gray-200 dark:divide-gray-700"
             >
               <label class="flex items-center justify-between gap-4 p-4">
                 <div>
@@ -239,26 +239,26 @@ export const ToggleDemo = (): HTMLElement => {
 
       <DemoSection title="Compact Layout" description="Toggles in a compact horizontal layout">
         <div class="space-y-4">
-          <Label>Quick settings:</Label>
+          <Label text="Quick settings:" />
           <div class="flex flex-wrap gap-6">
             <label class="flex items-center gap-2">
-              <Toggle size="sm" checked />
+              <Toggle checked />
               <span class="text-sm">Wi-Fi</span>
             </label>
             <label class="flex items-center gap-2">
-              <Toggle size="sm" checked />
+              <Toggle checked />
               <span class="text-sm">Bluetooth</span>
             </label>
             <label class="flex items-center gap-2">
-              <Toggle size="sm" />
+              <Toggle />
               <span class="text-sm">Airplane Mode</span>
             </label>
             <label class="flex items-center gap-2">
-              <Toggle size="sm" checked />
+              <Toggle checked />
               <span class="text-sm">Location</span>
             </label>
             <label class="flex items-center gap-2">
-              <Toggle size="sm" />
+              <Toggle />
               <span class="text-sm">Do Not Disturb</span>
             </label>
           </div>

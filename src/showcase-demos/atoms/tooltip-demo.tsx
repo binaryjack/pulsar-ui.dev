@@ -2,12 +2,12 @@
  * Tooltip Component Demo
  */
 
+import { Grid } from '../../components/atoms/grid';
+import { Stack } from '../../components/atoms/stack';
 import { Tooltip } from '../../components/atoms/tooltip';
 import { Button } from '../../components/molecules/button';
-import { Stack } from '../../components/atoms/stack';
-import { Grid } from '../../components/atoms/grid';
-import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
+import { DemoSection } from '../../showcase-components/demo-section';
 
 export const TooltipDemo = (): HTMLElement => {
   return (
@@ -20,25 +20,25 @@ export const TooltipDemo = (): HTMLElement => {
       </div>
 
       <DemoSection title="Placements" description="Tooltip can appear on all four sides">
-        <Grid cols={2} gap="lg" class="max-w-md mx-auto">
+        <Grid columns={2} gap="lg" className="max-w-md mx-auto">
           <div class="flex justify-center">
             <Tooltip content="Top tooltip" placement="top">
-              <Button variant="outline">Top</Button>
+              <Button>Top</Button>
             </Tooltip>
           </div>
           <div class="flex justify-center">
             <Tooltip content="Right tooltip" placement="right">
-              <Button variant="outline">Right</Button>
+              <Button>Right</Button>
             </Tooltip>
           </div>
           <div class="flex justify-center">
             <Tooltip content="Bottom tooltip" placement="bottom">
-              <Button variant="outline">Bottom</Button>
+              <Button>Bottom</Button>
             </Tooltip>
           </div>
           <div class="flex justify-center">
             <Tooltip content="Left tooltip" placement="left">
-              <Button variant="outline">Left</Button>
+              <Button>Left</Button>
             </Tooltip>
           </div>
         </Grid>
@@ -52,13 +52,13 @@ export const TooltipDemo = (): HTMLElement => {
       <DemoSection title="Custom Delays" description="Control show and hide delays">
         <Stack spacing="md" justify="center">
           <Tooltip content="Quick tooltip" showDelay={0} hideDelay={0}>
-            <Button variant="outline">No Delay</Button>
+            <Button>No Delay</Button>
           </Tooltip>
           <Tooltip content="Normal tooltip" showDelay={200} hideDelay={100}>
-            <Button variant="outline">200ms Delay</Button>
+            <Button>200ms Delay</Button>
           </Tooltip>
           <Tooltip content="Slow tooltip" showDelay={500} hideDelay={200}>
-            <Button variant="outline">500ms Delay</Button>
+            <Button>500ms Delay</Button>
           </Tooltip>
         </Stack>
         <CodeBlock
@@ -75,7 +75,10 @@ export const TooltipDemo = (): HTMLElement => {
       <DemoSection title="On Icons" description="Commonly used with icon buttons">
         <Stack spacing="md" justify="center">
           <Tooltip content="Edit item">
-            <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+            <button
+              aria-label="Edit item"
+              class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+            >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
@@ -87,7 +90,10 @@ export const TooltipDemo = (): HTMLElement => {
             </button>
           </Tooltip>
           <Tooltip content="Delete item">
-            <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+            <button
+              aria-label="Delete item"
+              class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+            >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
@@ -99,7 +105,10 @@ export const TooltipDemo = (): HTMLElement => {
             </button>
           </Tooltip>
           <Tooltip content="Share item">
-            <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+            <button
+              aria-label="Share item"
+              class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+            >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"

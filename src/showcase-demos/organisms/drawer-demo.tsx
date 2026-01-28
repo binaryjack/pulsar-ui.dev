@@ -3,12 +3,12 @@
  */
 
 import { useState } from '@pulsar-framework/pulsar.dev';
-import { Drawer } from '../../components/organisms/drawer';
-import { Button } from '../../components/molecules/button';
-import { Stack } from '../../components/atoms/stack';
 import { Grid } from '../../components/atoms/grid';
-import { DemoSection } from '../../showcase-components/demo-section';
+import { Stack } from '../../components/atoms/stack';
+import { Button } from '../../components/molecules/button';
+import { Drawer } from '../../components/organisms/drawer';
 import { CodeBlock } from '../../showcase-components/code-block';
+import { DemoSection } from '../../showcase-components/demo-section';
 
 export const DrawerDemo = (): HTMLElement => {
   const [leftOpen, setLeftOpen] = useState(false);
@@ -28,56 +28,48 @@ export const DrawerDemo = (): HTMLElement => {
       </div>
 
       <DemoSection title="Placements" description="Drawer can slide in from all four sides">
-        <Grid cols={2} gap="md" class="max-w-lg mx-auto">
-          <Button variant="outline" onClick={() => setLeftOpen(true)}>
-            Open Left
-          </Button>
-          <Button variant="outline" onClick={() => setRightOpen(true)}>
-            Open Right
-          </Button>
-          <Button variant="outline" onClick={() => setTopOpen(true)}>
-            Open Top
-          </Button>
-          <Button variant="outline" onClick={() => setBottomOpen(true)}>
-            Open Bottom
-          </Button>
+        <Grid columns={2} gap="md" className="max-w-lg mx-auto">
+          <Button onclick={() => setLeftOpen(true)}>Open Left</Button>
+          <Button onclick={() => setRightOpen(true)}>Open Right</Button>
+          <Button onclick={() => setTopOpen(true)}>Open Top</Button>
+          <Button onclick={() => setBottomOpen(true)}>Open Bottom</Button>
         </Grid>
 
-        <Drawer open={leftOpen} onClose={() => setLeftOpen(false)} placement="left">
+        <Drawer open={leftOpen()} onClose={() => setLeftOpen(false)} placement="left">
           <div class="p-6">
             <h2 class="text-2xl font-bold mb-4">Left Drawer</h2>
             <p class="text-gray-600 dark:text-gray-400 mb-4">
               This drawer slides in from the left side.
             </p>
-            <Button onClick={() => setLeftOpen(false)}>Close</Button>
+            <Button onclick={() => setLeftOpen(false)}>Close</Button>
           </div>
-        </Drawer
+        </Drawer>
 
-        <Drawer open={rightOpen} onClose={() => setRightOpen(false)} placement="right">
+        <Drawer open={rightOpen()} onClose={() => setRightOpen(false)} placement="right">
           <div class="p-6">
             <h2 class="text-2xl font-bold mb-4">Right Drawer</h2>
             <p class="text-gray-600 dark:text-gray-400 mb-4">
               This drawer slides in from the right side.
             </p>
-            <Button onClick={() => setRightOpen(false)}>Close</Button>
+            <Button onclick={() => setRightOpen(false)}>Close</Button>
           </div>
         </Drawer>
 
-        <Drawer open={topOpen} onClose={() => setTopOpen(false)} placement="top">
+        <Drawer open={topOpen()} onClose={() => setTopOpen(false)} placement="top">
           <div class="p-6">
             <h2 class="text-2xl font-bold mb-4">Top Drawer</h2>
             <p class="text-gray-600 dark:text-gray-400 mb-4">This drawer slides in from the top.</p>
-            <Button onClick={() => setTopOpen(false)}>Close</Button>
+            <Button onclick={() => setTopOpen(false)}>Close</Button>
           </div>
         </Drawer>
 
-        <Drawer open={bottomOpen} onClose={() => setBottomOpen(false)} placement="bottom">
+        <Drawer open={bottomOpen()} onClose={() => setBottomOpen(false)} placement="bottom">
           <div class="p-6">
             <h2 class="text-2xl font-bold mb-4">Bottom Drawer</h2>
             <p class="text-gray-600 dark:text-gray-400 mb-4">
               This drawer slides in from the bottom.
             </p>
-            <Button onClick={() => setBottomOpen(false)}>Close</Button>
+            <Button onclick={() => setBottomOpen(false)}>Close</Button>
           </div>
         </Drawer>
 
@@ -100,15 +92,11 @@ export const DrawerDemo = (): HTMLElement => {
 
       <DemoSection title="Sizes" description="Five size options for different use cases">
         <Stack spacing="md" justify="center">
-          <Button variant="outline" onClick={() => setSmOpen(true)}>
-            Small Drawer
-          </Button>
-          <Button variant="outline" onClick={() => setLgOpen(true)}>
-            Large Drawer
-          </Button>
+          <Button onclick={() => setSmOpen(true)}>Small Drawer</Button>
+          <Button onclick={() => setLgOpen(true)}>Large Drawer</Button>
         </Stack>
 
-        <Drawer open={smOpen} onClose={() => setSmOpen(false)} size="sm" placement="right">
+        <Drawer open={smOpen()} onClose={() => setSmOpen(false)} size="sm" placement="right">
           <div class="p-6">
             <h2 class="text-xl font-bold mb-4">Small Drawer</h2>
             <p class="text-sm text-gray-600 dark:text-gray-400">
@@ -117,7 +105,7 @@ export const DrawerDemo = (): HTMLElement => {
           </div>
         </Drawer>
 
-        <Drawer open={lgOpen} onClose={() => setLgOpen(false)} size="lg" placement="right">
+        <Drawer open={lgOpen()} onClose={() => setLgOpen(false)} size="lg" placement="right">
           <div class="p-6">
             <h2 class="text-2xl font-bold mb-4">Large Drawer</h2>
             <p class="text-gray-600 dark:text-gray-400 mb-4">

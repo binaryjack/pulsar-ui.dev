@@ -19,9 +19,7 @@ export const PopoverDemo = (): HTMLElement => {
       <p class="text-sm text-gray-600 dark:text-gray-400">
         This is the popover content. It can contain any elements.
       </p>
-      <Button size="sm" variant="primary">
-        Action
-      </Button>
+      <Button>Action</Button>
     </div>
   );
 
@@ -36,8 +34,13 @@ export const PopoverDemo = (): HTMLElement => {
 
       <DemoSection title="Click Trigger" description="Click to open/close popover">
         <div class="flex justify-center py-8">
-          <Popover open={open1} onOpenChange={setOpen1} content={popoverContent} trigger="click">
-            <Button variant="outline">Click Me</Button>
+          <Popover
+            isOpen={open1()}
+            onToggle={setOpen1}
+            triggerElement={<Button>Click Me</Button>}
+            trigger="click"
+          >
+            {popoverContent}
           </Popover>
         </div>
         <CodeBlock
@@ -61,15 +64,10 @@ export const PopoverDemo = (): HTMLElement => {
 
       <DemoSection title="Hover Trigger" description="Hover to show popover">
         <div class="flex justify-center py-8">
-          <Popover
-            content={
-              <div class="p-3">
-                <p class="text-sm">This appears on hover</p>
-              </div>
-            }
-            trigger="hover"
-          >
-            <Button variant="outline">Hover Me</Button>
+          <Popover triggerElement={<Button>Hover Me</Button>} trigger="hover">
+            <div class="p-3">
+              <p class="text-sm">This appears on hover</p>
+            </div>
           </Popover>
         </div>
         <CodeBlock
@@ -83,53 +81,33 @@ export const PopoverDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Placements" description="Popover can appear on all four sides">
-        <Grid cols={2} gap="lg" class="max-w-2xl mx-auto py-8">
+        <Grid columns={2} gap="lg" className="max-w-2xl mx-auto py-8">
           <div class="flex justify-center">
-            <Popover
-              placement="top"
-              content={
-                <div class="p-3">
-                  <p class="text-sm">Top placement</p>
-                </div>
-              }
-            >
-              <Button variant="outline">Top</Button>
+            <Popover placement="top" triggerElement={<Button>Top</Button>}>
+              <div class="p-3">
+                <p class="text-sm">Top placement</p>
+              </div>
             </Popover>
           </div>
           <div class="flex justify-center">
-            <Popover
-              placement="right"
-              content={
-                <div class="p-3">
-                  <p class="text-sm">Right placement</p>
-                </div>
-              }
-            >
-              <Button variant="outline">Right</Button>
+            <Popover placement="right" triggerElement={<Button>Right</Button>}>
+              <div class="p-3">
+                <p class="text-sm">Right placement</p>
+              </div>
             </Popover>
           </div>
           <div class="flex justify-center">
-            <Popover
-              placement="bottom"
-              content={
-                <div class="p-3">
-                  <p class="text-sm">Bottom placement</p>
-                </div>
-              }
-            >
-              <Button variant="outline">Bottom</Button>
+            <Popover placement="bottom" triggerElement={<Button>Bottom</Button>}>
+              <div class="p-3">
+                <p class="text-sm">Bottom placement</p>
+              </div>
             </Popover>
           </div>
           <div class="flex justify-center">
-            <Popover
-              placement="left"
-              content={
-                <div class="p-3">
-                  <p class="text-sm">Left placement</p>
-                </div>
-              }
-            >
-              <Button variant="outline">Left</Button>
+            <Popover placement="left" triggerElement={<Button>Left</Button>}>
+              <div class="p-3">
+                <p class="text-sm">Left placement</p>
+              </div>
             </Popover>
           </div>
         </Grid>
@@ -143,32 +121,26 @@ export const PopoverDemo = (): HTMLElement => {
       <DemoSection title="Rich Content" description="Popover can contain complex content">
         <div class="flex justify-center py-8">
           <Popover
-            open={open2}
-            onOpenChange={setOpen2}
-            content={
-              <div class="p-4 space-y-3 w-64">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 bg-blue-500 rounded-full" />
-                  <div>
-                    <h4 class="font-semibold">John Doe</h4>
-                    <p class="text-xs text-gray-500">john@example.com</p>
-                  </div>
-                </div>
-                <p class="text-sm text-gray-600 dark:text-gray-400">
-                  Software engineer with 5+ years of experience.
-                </p>
-                <div class="flex gap-2">
-                  <Button size="sm" variant="primary">
-                    Follow
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    Message
-                  </Button>
+            isOpen={open2()}
+            onToggle={setOpen2}
+            triggerElement={<Button>User Profile</Button>}
+          >
+            <div class="p-4 space-y-3 w-64">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-500 rounded-full" />
+                <div>
+                  <h4 class="font-semibold">John Doe</h4>
+                  <p class="text-xs text-gray-500">john@example.com</p>
                 </div>
               </div>
-            }
-          >
-            <Button variant="outline">User Profile</Button>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                Software engineer with 5+ years of experience.
+              </p>
+              <div class="flex gap-2">
+                <Button>Follow</Button>
+                <Button>Message</Button>
+              </div>
+            </div>
           </Popover>
         </div>
         <CodeBlock

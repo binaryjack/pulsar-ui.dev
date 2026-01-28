@@ -3,10 +3,10 @@
  */
 
 import { useState } from '@pulsar-framework/pulsar.dev';
-import { Dropdown, DropdownItem } from '../../components/molecules/dropdown';
 import { Button } from '../../components/molecules/button';
-import { DemoSection } from '../../showcase-components/demo-section';
+import { Dropdown, DropdownItem } from '../../components/molecules/dropdown';
 import { CodeBlock } from '../../showcase-components/code-block';
+import { DemoSection } from '../../showcase-components/demo-section';
 
 export const DropdownDemo = (): HTMLElement => {
   const [open1, setOpen1] = useState(false);
@@ -23,11 +23,7 @@ export const DropdownDemo = (): HTMLElement => {
       </div>
 
       <DemoSection title="Basic Dropdown" description="Click to open dropdown menu">
-        <Dropdown
-          open={open1}
-          onOpenChange={setOpen1}
-          trigger={<Button variant="outline">Open Menu</Button>}
-        >
+        <Dropdown open={open1} onOpenChange={setOpen1} trigger={<Button>Open Menu</Button>}>
           <DropdownItem onClick={() => console.log('Action 1')}>Action 1</DropdownItem>
           <DropdownItem onClick={() => console.log('Action 2')}>Action 2</DropdownItem>
           <DropdownItem onClick={() => console.log('Action 3')}>Action 3</DropdownItem>
@@ -49,11 +45,7 @@ export const DropdownDemo = (): HTMLElement => {
 
       <DemoSection title="With Selection" description="Track selected item">
         <div class="space-y-4">
-          <Dropdown
-            open={open2}
-            onOpenChange={setOpen2}
-            trigger={<Button variant="outline">{selected}</Button>}
-          >
+          <Dropdown open={open2} onOpenChange={setOpen2} trigger={<Button>{selected}</Button>}>
             <DropdownItem
               onClick={() => {
                 setSelected('Option 1');
@@ -93,7 +85,7 @@ export const DropdownDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Disabled Items" description="Dropdown items can be disabled">
-        <Dropdown trigger={<Button variant="outline">Actions</Button>}>
+        <Dropdown trigger={<Button>Actions</Button>}>
           <DropdownItem onClick={() => console.log('Edit')}>Edit</DropdownItem>
           <DropdownItem onClick={() => console.log('Duplicate')}>Duplicate</DropdownItem>
           <DropdownItem disabled onClick={() => console.log('Delete')}>

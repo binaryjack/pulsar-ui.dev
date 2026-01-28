@@ -5,8 +5,8 @@
 import { useState } from '@pulsar-framework/pulsar.dev';
 import { Slider } from '../../components/atoms/slider';
 import { Stack } from '../../components/atoms/stack';
-import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
+import { DemoSection } from '../../showcase-components/demo-section';
 
 export const SliderDemo = (): HTMLElement => {
   const [value1, setValue1] = useState(50);
@@ -24,7 +24,7 @@ export const SliderDemo = (): HTMLElement => {
 
       <DemoSection title="Basic Slider" description="Simple slider with value display">
         <div class="space-y-6">
-          <Slider value={value1} onChange={setValue1} showValue />
+          <Slider value={value1()} onChange={setValue1} showValue />
           <p class="text-sm text-gray-600 dark:text-gray-400">Value: {value1}</p>
         </div>
         <CodeBlock
@@ -39,11 +39,11 @@ export const SliderDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Variants" description="Different color variants">
-        <Stack direction="column" spacing="xl">
-          <Slider value={value2} onChange={setValue2} variant="primary" showValue />
-          <Slider value={value2} onChange={setValue2} variant="success" showValue />
-          <Slider value={value2} onChange={setValue2} variant="warning" showValue />
-          <Slider value={value2} onChange={setValue2} variant="error" showValue />
+        <Stack direction="vertical" spacing="xl">
+          <Slider value={value2()} onChange={setValue2} variant="primary" showValue />
+          <Slider value={value2()} onChange={setValue2} variant="success" showValue />
+          <Slider value={value2()} onChange={setValue2} variant="warning" showValue />
+          <Slider value={value2()} onChange={setValue2} variant="error" showValue />
         </Stack>
         <CodeBlock
           code={`<Slider variant="primary" />
@@ -56,7 +56,7 @@ export const SliderDemo = (): HTMLElement => {
       <DemoSection title="Custom Range" description="Set min, max, and step values">
         <div class="space-y-6">
           <Slider
-            value={value3}
+            value={value3()}
             onChange={setValue3}
             min={0}
             max={100}

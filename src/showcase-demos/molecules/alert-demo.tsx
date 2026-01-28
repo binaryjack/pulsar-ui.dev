@@ -4,12 +4,7 @@
 
 import { useState } from '@pulsar-framework/pulsar.dev';
 import { Stack } from '../../components/atoms/stack';
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-} from '../../components/molecules/alert';
+import { Alert, AlertDescription, AlertTitle } from '../../components/molecules/alert';
 import { CodeBlock } from '../../showcase-components/code-block';
 import { DemoSection } from '../../showcase-components/demo-section';
 
@@ -30,27 +25,23 @@ export const AlertDemo = (): HTMLElement => {
         title="Variants"
         description="Four contextual variants for different message types"
       >
-        <Stack direction="column" spacing="md">
+        <Stack direction="vertical" spacing="md">
           <Alert variant="info">
-            <AlertIcon />
             <AlertTitle>Information</AlertTitle>
             <AlertDescription>This is an informational message.</AlertDescription>
           </Alert>
 
           <Alert variant="success">
-            <AlertIcon />
             <AlertTitle>Success</AlertTitle>
             <AlertDescription>Your action was completed successfully.</AlertDescription>
           </Alert>
 
           <Alert variant="warning">
-            <AlertIcon />
             <AlertTitle>Warning</AlertTitle>
             <AlertDescription>Please review this warning before proceeding.</AlertDescription>
           </Alert>
 
           <Alert variant="error">
-            <AlertIcon />
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>An error occurred while processing your request.</AlertDescription>
           </Alert>
@@ -65,22 +56,24 @@ export const AlertDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Closable Alerts" description="Alerts can be dismissed by the user">
-        <Stack direction="column" spacing="md">
-          {showAlert1 && (
+        <Stack direction="vertical" spacing="md">
+          {showAlert1() ? (
             <Alert variant="info" closable onClose={() => setShowAlert1(false)}>
-              <AlertIcon />
               <AlertTitle>Tip</AlertTitle>
               <AlertDescription>
                 You can close this alert by clicking the X button.
               </AlertDescription>
             </Alert>
+          ) : (
+            <></>
           )}
 
-          {showAlert2 && (
+          {showAlert2() ? (
             <Alert variant="warning" closable onClose={() => setShowAlert2(false)}>
-              <AlertIcon />
               <AlertDescription>This is a warning that can be dismissed.</AlertDescription>
             </Alert>
+          ) : (
+            <></>
           )}
         </Stack>
         <CodeBlock
@@ -95,7 +88,7 @@ export const AlertDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Without Icon" description="Alerts don't require an icon">
-        <Stack direction="column" spacing="md">
+        <Stack direction="vertical" spacing="md">
           <Alert variant="info">
             <AlertTitle>Simple Alert</AlertTitle>
             <AlertDescription>This alert has no icon.</AlertDescription>

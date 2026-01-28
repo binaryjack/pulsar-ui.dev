@@ -28,49 +28,26 @@ export const ToastDemo = (): HTMLElement => {
       </div>
 
       <DemoSection title="Variants" description="Four contextual variants">
-        <Grid cols={2} gap="md" class="max-w-lg mx-auto">
+        <Grid columns={2} gap="md" className="max-w-lg mx-auto">
           <Button
             config={outlineConfig}
-            onclick={() =>
-              toast.info({
-                title: 'Information',
-                description: 'This is an info toast message',
-              })
-            }
+            onclick={() => toast.info('This is an info toast message')}
           >
             Info Toast
           </Button>
           <Button
             config={outlineConfig}
-            onclick={() =>
-              toast.success({
-                title: 'Success',
-                description: 'Operation completed successfully',
-              })
-            }
+            onclick={() => toast.success('Operation completed successfully')}
           >
             Success Toast
           </Button>
           <Button
             config={outlineConfig}
-            onclick={() =>
-              toast.warning({
-                title: 'Warning',
-                description: 'Please review this warning',
-              })
-            }
+            onclick={() => toast.warning('Please review this warning')}
           >
             Warning Toast
           </Button>
-          <Button
-            config={outlineConfig}
-            onclick={() =>
-              toast.error({
-                title: 'Error',
-                description: 'An error occurred',
-              })
-            }
-          >
+          <Button config={outlineConfig} onclick={() => toast.error('An error occurred')}>
             Error Toast
           </Button>
         </Grid>
@@ -90,71 +67,23 @@ toast.error({
       </DemoSection>
 
       <DemoSection title="Positions" description="Six position options">
-        <Grid cols={3} gap="md" class="max-w-2xl mx-auto">
-          <Button
-            config={outlineSmConfig}
-            onclick={() =>
-              toast.info({
-                title: 'Top Left',
-                position: 'top-left',
-              })
-            }
-          >
+        <Grid columns={3} gap="md" className="max-w-2xl mx-auto">
+          <Button config={outlineSmConfig} onclick={() => toast.info('Top Left')}>
             Top Left
           </Button>
-          <Button
-            config={outlineSmConfig}
-            onclick={() =>
-              toast.info({
-                title: 'Top Center',
-                position: 'top-center',
-              })
-            }
-          >
+          <Button config={outlineSmConfig} onclick={() => toast.info('Top Center')}>
             Top Center
           </Button>
-          <Button
-            config={outlineSmConfig}
-            onclick={() =>
-              toast.info({
-                title: 'Top Right',
-                position: 'top-right',
-              })
-            }
-          >
+          <Button config={outlineSmConfig} onclick={() => toast.info('Top Right')}>
             Top Right
           </Button>
-          <Button
-            config={outlineSmConfig}
-            onclick={() =>
-              toast.info({
-                title: 'Bottom Left',
-                position: 'bottom-left',
-              })
-            }
-          >
+          <Button config={outlineSmConfig} onclick={() => toast.info('Bottom Left')}>
             Bottom Left
           </Button>
-          <Button
-            config={outlineSmConfig}
-            onclick={() =>
-              toast.info({
-                title: 'Bottom Center',
-                position: 'bottom-center',
-              })
-            }
-          >
+          <Button config={outlineSmConfig} onclick={() => toast.info('Bottom Center')}>
             Bottom Center
           </Button>
-          <Button
-            config={outlineSmConfig}
-            onclick={() =>
-              toast.info({
-                title: 'Bottom Right',
-                position: 'bottom-right',
-              })
-            }
-          >
+          <Button config={outlineSmConfig} onclick={() => toast.info('Bottom Right')}>
             Bottom Right
           </Button>
         </Grid>
@@ -168,27 +97,12 @@ toast.error({
 
       <DemoSection title="Auto Dismiss" description="Control how long toasts stay visible">
         <Stack spacing="md" justify="center">
-          <Button
-            config={outlineConfig}
-            onclick={() =>
-              toast.info({
-                title: 'Quick Toast',
-                description: 'Dismisses in 2 seconds',
-                duration: 2000,
-              })
-            }
-          >
+          <Button config={outlineConfig} onclick={() => toast.info('Dismisses in 2 seconds', 2000)}>
             2 Second Toast
           </Button>
           <Button
             config={outlineConfig}
-            onclick={() =>
-              toast.info({
-                title: 'Persistent Toast',
-                description: 'Stays until manually closed',
-                duration: Infinity,
-              })
-            }
+            onclick={() => toast.info('Stays until manually closed', Infinity)}
           >
             No Auto-Dismiss
           </Button>
@@ -207,17 +121,7 @@ toast.info({
       </DemoSection>
 
       <DemoSection title="Closable" description="Allow users to manually close toasts">
-        <Button
-          config={outlineConfig}
-          onclick={() =>
-            toast.info({
-              title: 'Closable Toast',
-              description: 'Click the X to close',
-              closable: true,
-              duration: Infinity,
-            })
-          }
-        >
+        <Button config={outlineConfig} onclick={() => toast.info('Click the X to close', Infinity)}>
           Show Closable Toast
         </Button>
         <CodeBlock
@@ -236,10 +140,7 @@ toast.info({
           config={outlineConfig}
           onclick={() => {
             for (let i = 1; i <= 7; i++) {
-              toast.info({
-                title: `Toast ${i}`,
-                description: `This is toast number ${i}`,
-              });
+              toast.info(`This is toast number ${i}`);
             }
           }}
         >
