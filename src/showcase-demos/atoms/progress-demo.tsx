@@ -2,8 +2,8 @@
  * Progress Component Demo
  */
 
-import { Progress } from '../../../components/atoms/progress';
-import { Stack } from '../../../components/atoms/stack';
+import { Progress } from '../../components/atoms/progress';
+import { Stack } from '../../components/atoms/stack';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 

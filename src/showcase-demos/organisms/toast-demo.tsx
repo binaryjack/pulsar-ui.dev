@@ -2,15 +2,18 @@
  * Toast Component Demo
  */
 
-import { useToast } from '../../../components/organisms/toast';
-import { Button } from '../../../components/molecules/button';
-import { Stack } from '../../../components/atoms/stack';
-import { Grid } from '../../../components/atoms/grid';
+import { useToast } from '../../components/organisms/toast';
+import { Button } from '../../components/molecules/button';
+import { ComponentConfigBuilder } from '../../components/utils/component-config-builder/component-config-builder';
+import { Stack } from '../../components/atoms/stack';
+import { Grid } from '../../components/atoms/grid';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 
 export const ToastDemo = (): HTMLElement => {
   const toast = useToast();
+  const outlineConfig = new ComponentConfigBuilder('primary').variant('outline').build();
+  const outlineSmConfig = new ComponentConfigBuilder('primary').variant('outline').size('sm').build();
 
   return (
     <div class="space-y-8">
@@ -24,8 +27,8 @@ export const ToastDemo = (): HTMLElement => {
       <DemoSection title="Variants" description="Four contextual variants">
         <Grid cols={2} gap="md" class="max-w-lg mx-auto">
           <Button
-            variant="outline"
-            onClick={() =>
+            config={outlineConfig}
+            onclick={() =>
               toast.info({
                 title: 'Information',
                 description: 'This is an info toast message',
@@ -35,8 +38,8 @@ export const ToastDemo = (): HTMLElement => {
             Info Toast
           </Button>
           <Button
-            variant="outline"
-            onClick={() =>
+            config={outlineConfig}
+            onclick={() =>
               toast.success({
                 title: 'Success',
                 description: 'Operation completed successfully',
@@ -46,8 +49,8 @@ export const ToastDemo = (): HTMLElement => {
             Success Toast
           </Button>
           <Button
-            variant="outline"
-            onClick={() =>
+            config={outlineConfig}
+            onclick={() =>
               toast.warning({
                 title: 'Warning',
                 description: 'Please review this warning',
@@ -57,8 +60,8 @@ export const ToastDemo = (): HTMLElement => {
             Warning Toast
           </Button>
           <Button
-            variant="outline"
-            onClick={() =>
+            config={outlineConfig}
+            onclick={() =>
               toast.error({
                 title: 'Error',
                 description: 'An error occurred',
@@ -86,9 +89,8 @@ toast.error({
       <DemoSection title="Positions" description="Six position options">
         <Grid cols={3} gap="md" class="max-w-2xl mx-auto">
           <Button
-            size="sm"
-            variant="outline"
-            onClick={() =>
+            config={outlineSmConfig}
+            onclick={() =>
               toast.info({
                 title: 'Top Left',
                 position: 'top-left',
@@ -98,9 +100,8 @@ toast.error({
             Top Left
           </Button>
           <Button
-            size="sm"
-            variant="outline"
-            onClick={() =>
+            config={outlineSmConfig}
+            onclick={() =>
               toast.info({
                 title: 'Top Center',
                 position: 'top-center',
@@ -110,9 +111,8 @@ toast.error({
             Top Center
           </Button>
           <Button
-            size="sm"
-            variant="outline"
-            onClick={() =>
+            config={outlineSmConfig}
+            onclick={() =>
               toast.info({
                 title: 'Top Right',
                 position: 'top-right',
@@ -122,9 +122,8 @@ toast.error({
             Top Right
           </Button>
           <Button
-            size="sm"
-            variant="outline"
-            onClick={() =>
+            config={outlineSmConfig}
+            onclick={() =>
               toast.info({
                 title: 'Bottom Left',
                 position: 'bottom-left',
@@ -134,9 +133,8 @@ toast.error({
             Bottom Left
           </Button>
           <Button
-            size="sm"
-            variant="outline"
-            onClick={() =>
+            config={outlineSmConfig}
+            onclick={() =>
               toast.info({
                 title: 'Bottom Center',
                 position: 'bottom-center',
@@ -146,9 +144,8 @@ toast.error({
             Bottom Center
           </Button>
           <Button
-            size="sm"
-            variant="outline"
-            onClick={() =>
+            config={outlineSmConfig}
+            onclick={() =>
               toast.info({
                 title: 'Bottom Right',
                 position: 'bottom-right',
@@ -169,8 +166,8 @@ toast.error({
       <DemoSection title="Auto Dismiss" description="Control how long toasts stay visible">
         <Stack spacing="md" justify="center">
           <Button
-            variant="outline"
-            onClick={() =>
+            config={outlineConfig}
+            onclick={() =>
               toast.info({
                 title: 'Quick Toast',
                 description: 'Dismisses in 2 seconds',
@@ -181,8 +178,8 @@ toast.error({
             2 Second Toast
           </Button>
           <Button
-            variant="outline"
-            onClick={() =>
+            config={outlineConfig}
+            onclick={() =>
               toast.info({
                 title: 'Persistent Toast',
                 description: 'Stays until manually closed',
@@ -208,8 +205,8 @@ toast.info({
 
       <DemoSection title="Closable" description="Allow users to manually close toasts">
         <Button
-          variant="outline"
-          onClick={() =>
+          config={outlineConfig}
+          onclick={() =>
             toast.info({
               title: 'Closable Toast',
               description: 'Click the X to close',
@@ -233,7 +230,8 @@ toast.info({
         description="Multiple toasts are queued (max 5 visible)"
       >
         <Button
-          onClick={() => {
+          config={outlineConfig}
+          onclick={() => {
             for (let i = 1; i <= 7; i++) {
               toast.info({
                 title: `Toast ${i}`,

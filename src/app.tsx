@@ -26,23 +26,23 @@ export const App = (): HTMLElement => {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const mainClasses = cn('flex-1 transition-all duration-300', sidebarOpen ? 'ml-64' : 'ml-0');
+  const mainClasses = cn('flex-1 transition-all duration-300', sidebarOpen() ? 'ml-64' : 'ml-0');
 
   return (
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Header onToggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
+      <Header onToggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen()} />
 
       <Sidebar
-        open={sidebarOpen}
-        activeCategory={activeCategory}
-        activeComponent={activeComponent}
+        open={sidebarOpen()}
+        activeCategory={activeCategory()}
+        activeComponent={activeComponent()}
         onCategoryChange={handleCategoryChange}
         onComponentChange={handleComponentChange}
       />
 
       <main class={mainClasses}>
         <div class="max-w-7xl mx-auto px-4 py-8">
-          <ComponentShowcase category={activeCategory} component={activeComponent} />
+          <ComponentShowcase category={activeCategory()} component={activeComponent()} />
         </div>
       </main>
     </div>

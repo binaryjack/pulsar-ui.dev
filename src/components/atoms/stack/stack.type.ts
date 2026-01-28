@@ -2,7 +2,7 @@
  * Stack component props interface
  */
 
-import type { Pulsar } from 'pulsar';
+import type { Pulsar } from '@pulsar-framework/pulsar.dev';
 import type { StackAlign, StackJustify, Spacing } from '../enums';
 
 export interface IStackProps extends Pulsar.HtmlExtends<'div'> {

@@ -8,8 +8,8 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from '../../../components/organisms/table';
-import { Badge } from '../../../components/molecules/badge';
+} from '../../components/organisms/table';
+import { Badge } from '../../components/molecules/badge';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 

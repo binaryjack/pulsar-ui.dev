@@ -4,7 +4,7 @@
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
-    "jsxImportSource": "pulsar",
+    "jsxImportSource": "@pulsar-framework/pulsar.dev",
     "declaration": true,
     "declarationMap": true,
     "outDir": "./dist",
@@ -19,9 +19,10 @@
     "skipLibCheck": true,
     "types": ["vite/client"],
     "paths": {
-      "pulsar": ["../pulsar.dev/dist/index.d.ts"],
-      "pulsar/jsx-runtime": ["../pulsar.dev/dist/jsx-runtime.d.ts"],
-      "pulsar/jsx-dev-runtime": ["../pulsar.dev/dist/jsx-runtime.d.ts"]
+      "@pulsar-framework/pulsar.dev": ["../pulsar.dev/dist/index.d.ts"],
+      "@pulsar-framework/pulsar.dev/*": ["../pulsar.dev/dist/*"],
+      "@pulsar-framework/formular.dev": ["../formular.dev/dist/index.d.ts"],
+      "@pulsar-framework/formular.dev/*": ["../formular.dev/dist/*"]
     }
   },
   "include": [

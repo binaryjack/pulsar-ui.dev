@@ -1,4 +1,4 @@
-import { useEffect, useState, useKeyBindings } from 'pulsar';
+import { useEffect, useState, useKeyBindings } from '@pulsar-framework/pulsar.dev';
 
 import { setCurrentDatePickerContext, IDatePickerContext } from './components/date-picker.context';
 import DatePickerDrawerUI from './components/date-picker.drawer.content.ui';

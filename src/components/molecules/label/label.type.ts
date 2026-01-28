@@ -3,7 +3,7 @@
  * Molecule: Composes Typography with form input
  */
 
-import type { Pulsar } from 'pulsar'
+import type { Pulsar } from '@pulsar-framework/pulsar.dev'
 import { type IComponentConfig } from '../../utils/component-config-builder/component-config.type'
 import { type IComponentStyling } from '../../utils/component-styling-builder/component-styling.type'
 

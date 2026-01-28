@@ -2,9 +2,9 @@
  * Menu Component Demo
  */
 
-import { Menu, MenuItem, MenuDivider } from '../../../components/molecules/menu';
-import { DemoSection } from '../../showcase-components/demo-section';
+import { Menu, MenuDivider, MenuItem } from '../../components/molecules/menu';
 import { CodeBlock } from '../../showcase-components/code-block';
+import { DemoSection } from '../../showcase-components/demo-section';
 
 export const MenuDemo = (): HTMLElement => {
   return (

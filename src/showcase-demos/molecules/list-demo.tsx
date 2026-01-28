@@ -2,8 +2,8 @@
  * List Component Demo
  */
 
-import { List, ListItem } from '../../../components/molecules/list';
-import { Stack } from '../../../components/atoms/stack';
+import { List, ListItem } from '../../components/molecules/list';
+import { Stack } from '../../components/atoms/stack';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 

@@ -6,7 +6,7 @@
  * const config = new ComponentConfig('primary').size('sm').shadow('md').build()
  */
 
-import { type ComponentColor } from '@pulsar/design-tokens'
+import { type ComponentColor } from '@pulsar-framework/design-tokens'
 import { type IComponentConfigInternal } from './component-config-internal.interface'
 
 /**

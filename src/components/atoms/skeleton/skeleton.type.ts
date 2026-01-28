@@ -2,7 +2,7 @@
  * Skeleton component props interface
  */
 
-import type { Pulsar } from 'pulsar'
+import type { Pulsar } from '@pulsar-framework/pulsar.dev'
 
 export interface ISkeletonProps extends Pulsar.HtmlExtends<'div'> {
   readonly width?: string

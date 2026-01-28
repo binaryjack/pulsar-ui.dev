@@ -1,4 +1,4 @@
-import { useEffect, useToggleable } from 'pulsar';
+import { useEffect, useToggleable } from '@pulsar-framework/pulsar.dev';
 import { ToggleableStateType } from './toggleable.context';
 import { setCurrentToggleableContext } from './toggleable.context.hook';
 

@@ -3,10 +3,10 @@
  */
 
 import { useState } from '@pulsar-framework/pulsar.dev';
-import { Drawer } from '../../../components/organisms/drawer';
-import { Button } from '../../../components/molecules/button';
-import { Stack } from '../../../components/atoms/stack';
-import { Grid } from '../../../components/atoms/grid';
+import { Drawer } from '../../components/organisms/drawer';
+import { Button } from '../../components/molecules/button';
+import { Stack } from '../../components/atoms/stack';
+import { Grid } from '../../components/atoms/grid';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 
@@ -51,7 +51,7 @@ export const DrawerDemo = (): HTMLElement => {
             </p>
             <Button onClick={() => setLeftOpen(false)}>Close</Button>
           </div>
-        </Drawer>
+        </Drawer
 
         <Drawer open={rightOpen} onClose={() => setRightOpen(false)} placement="right">
           <div class="p-6">

@@ -3,8 +3,8 @@
  */
 
 import { useState } from '@pulsar-framework/pulsar.dev';
-import { Rating } from '../../../components/atoms/rating';
-import { Stack } from '../../../components/atoms/stack';
+import { Rating } from '../../components/atoms/rating';
+import { Stack } from '../../components/atoms/stack';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 

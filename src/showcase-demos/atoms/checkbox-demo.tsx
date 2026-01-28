@@ -2,9 +2,9 @@
  * Checkbox Component Demo
  */
 
-import { Checkbox } from '../../../components/atoms/checkbox';
-import { Stack } from '../../../components/atoms/stack';
-import { Label } from '../../../components/molecules/label';
+import { Checkbox } from '../../components/atoms/checkbox';
+import { Stack } from '../../components/atoms/stack';
+import { Label } from '../../components/molecules/label';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 

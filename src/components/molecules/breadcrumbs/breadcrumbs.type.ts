@@ -2,7 +2,7 @@
  * Breadcrumbs component props interface
  */
 
-import type { Pulsar } from 'pulsar';
+import type { Pulsar } from '@pulsar-framework/pulsar.dev';
 
 export interface IBreadcrumbsProps extends Pulsar.HtmlExtends<'nav'> {
   /**

@@ -2,7 +2,7 @@
  * Accordion Component Demo
  */
 
-import { Accordion, AccordionItem } from '../../../components/molecules/accordion';
+import { Accordion, AccordionItem } from '../../components/molecules/accordion';
 import { CodeBlock } from '../../showcase-components/code-block';
 import { DemoSection } from '../../showcase-components/demo-section';
 

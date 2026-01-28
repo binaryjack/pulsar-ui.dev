@@ -3,11 +3,11 @@
  */
 
 import { useState } from '@pulsar-framework/pulsar.dev';
-import { Popover } from '../../../components/molecules/popover';
-import { Button } from '../../../components/molecules/button';
-import { Grid } from '../../../components/atoms/grid';
-import { DemoSection } from '../../showcase-components/demo-section';
+import { Grid } from '../../components/atoms/grid';
+import { Button } from '../../components/molecules/button';
+import { Popover } from '../../components/molecules/popover';
 import { CodeBlock } from '../../showcase-components/code-block';
+import { DemoSection } from '../../showcase-components/demo-section';
 
 export const PopoverDemo = (): HTMLElement => {
   const [open1, setOpen1] = useState(false);

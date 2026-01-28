@@ -2,7 +2,7 @@
  * Tabs Component Demo
  */
 
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../../../components/molecules/tabs';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../../components/molecules/tabs';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 

@@ -4,7 +4,7 @@
  */
 
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'pulsar';
+import { useState } from '@pulsar-framework/pulsar.dev';
 import DatePicker from './date-picker';
 import { DateFormatsEnum } from './utils/date-utils';
 import './date-picker.css';

@@ -4,6 +4,7 @@
 
 import { cn } from '@pulsar-framework/design-tokens';
 import { Button } from '../components/molecules/button';
+import { ComponentConfigBuilder } from '../components/utils/component-config-builder/component-config-builder';
 import type { IHeaderProps } from '../types';
 
 export const Header = ({ onToggleSidebar, sidebarOpen }: IHeaderProps): HTMLElement => {
@@ -14,11 +15,16 @@ export const Header = ({ onToggleSidebar, sidebarOpen }: IHeaderProps): HTMLElem
     sidebarOpen && 'pl-64'
   );
 
+  const toggleButtonConfig = new ComponentConfigBuilder('primary')
+    .variant('ghost')
+    .size('sm')
+    .build();
+
   return (
     <header class={headerClasses}>
       <div class="flex items-center justify-between px-4 py-3">
         <div class="flex items-center gap-4">
-          <Button variant="ghost" size="sm" onClick={onToggleSidebar} ariaLabel="Toggle sidebar">
+          <Button config={toggleButtonConfig} onclick={onToggleSidebar} aria-label="Toggle sidebar">
             <svg
               class="w-6 h-6"
               fill="none"

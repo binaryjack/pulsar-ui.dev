@@ -3,7 +3,7 @@
  */
 
 import { useState } from '@pulsar-framework/pulsar.dev';
-import { Pagination } from '../../../components/molecules/pagination';
+import { Pagination } from '../../components/molecules/pagination';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 

@@ -2,7 +2,7 @@
  * Breadcrumbs Component Demo
  */
 
-import { Breadcrumbs, BreadcrumbItem } from '../../../components/molecules/breadcrumbs';
+import { Breadcrumbs, BreadcrumbItem } from '../../components/molecules/breadcrumbs';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 

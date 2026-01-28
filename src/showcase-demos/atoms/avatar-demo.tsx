@@ -2,8 +2,8 @@
  * Avatar Component Demo
  */
 
-import { Avatar } from '../../../components/atoms/avatar';
-import { Stack } from '../../../components/atoms/stack';
+import { Avatar } from '../../components/atoms/avatar';
+import { Stack } from '../../components/atoms/stack';
 import { CodeBlock } from '../../showcase-components/code-block';
 import { DemoSection } from '../../showcase-components/demo-section';
 

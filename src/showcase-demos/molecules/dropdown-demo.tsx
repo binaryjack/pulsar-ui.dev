@@ -3,8 +3,8 @@
  */
 
 import { useState } from '@pulsar-framework/pulsar.dev';
-import { Dropdown, DropdownItem } from '../../../components/molecules/dropdown';
-import { Button } from '../../../components/molecules/button';
+import { Dropdown, DropdownItem } from '../../components/molecules/dropdown';
+import { Button } from '../../components/molecules/button';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 

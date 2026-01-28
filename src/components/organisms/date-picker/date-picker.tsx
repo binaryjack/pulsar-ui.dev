@@ -1,4 +1,4 @@
-import { useState, useRef, useKeyBindings } from 'pulsar';
+import { useState, useRef, useKeyBindings } from '@pulsar-framework/pulsar.dev';
 import { useDrawerPosition } from '../../hooks/use-drawer-position';
 import { DatePickerSelectionModeType } from './core/date-picker.types';
 import './date-picker.css';

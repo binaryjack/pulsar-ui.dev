@@ -8,9 +8,9 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from '../../../components/organisms/modal';
-import { Button } from '../../../components/molecules/button';
-import { Stack } from '../../../components/atoms/stack';
+} from '../../components/organisms/modal';
+import { Button } from '../../components/molecules/button';
+import { Stack } from '../../components/atoms/stack';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 

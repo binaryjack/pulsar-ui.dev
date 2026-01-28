@@ -2,10 +2,10 @@
  * Tooltip Component Demo
  */
 
-import { Tooltip } from '../../../components/atoms/tooltip';
-import { Button } from '../../../components/molecules/button';
-import { Stack } from '../../../components/atoms/stack';
-import { Grid } from '../../../components/atoms/grid';
+import { Tooltip } from '../../components/atoms/tooltip';
+import { Button } from '../../components/molecules/button';
+import { Stack } from '../../components/atoms/stack';
+import { Grid } from '../../components/atoms/grid';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 

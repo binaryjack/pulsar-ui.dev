@@ -2,7 +2,7 @@
  * Breadcrumb Item component props interface
  */
 
-import type { Pulsar } from 'pulsar';
+import type { Pulsar } from '@pulsar-framework/pulsar.dev';
 
 export interface IBreadcrumbItemProps extends Pulsar.HtmlExtends<'li'> {
   /**

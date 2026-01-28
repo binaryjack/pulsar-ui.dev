@@ -2,11 +2,11 @@
  * Toggle Component Demo
  */
 
-import { Toggle } from '../../../components/atoms/toggle';
-import { Stack } from '../../../components/atoms/stack';
-import { Label } from '../../../components/molecules/label';
-import { DemoSection } from '../../showcase-components/demo-section';
+import { Stack } from '../../components/atoms/stack';
+import { Toggle } from '../../components/atoms/toggle';
+import { Label } from '../../components/molecules/label';
 import { CodeBlock } from '../../showcase-components/code-block';
+import { DemoSection } from '../../showcase-components/demo-section';
 
 export const ToggleDemo = (): HTMLElement => {
   return (

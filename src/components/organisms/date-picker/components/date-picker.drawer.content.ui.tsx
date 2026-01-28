@@ -1,4 +1,4 @@
-import { useEffect } from 'pulsar';
+import { useEffect } from '@pulsar-framework/pulsar.dev';
 
 import { DatePickerSelectionModeType } from '../core/date-picker.types';
 import { useObjectRef } from '../hooks/use-object-ref';

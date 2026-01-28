@@ -2,10 +2,10 @@
  * Radio Component Demo
  */
 
-import { Radio } from '../../../components/atoms/radio';
-import { RadioGroup } from '../../../components/molecules/radio-group';
-import { Stack } from '../../../components/atoms/stack';
-import { Label } from '../../../components/molecules/label';
+import { Radio } from '../../components/atoms/radio';
+import { RadioGroup } from '../../components/molecules/radio-group';
+import { Stack } from '../../components/atoms/stack';
+import { Label } from '../../components/molecules/label';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 

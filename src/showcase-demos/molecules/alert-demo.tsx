@@ -3,13 +3,13 @@
  */
 
 import { useState } from '@pulsar-framework/pulsar.dev';
-import { Stack } from '../../../components/atoms/stack';
+import { Stack } from '../../components/atoms/stack';
 import {
   Alert,
   AlertDescription,
   AlertIcon,
   AlertTitle,
-} from '../../../components/molecules/alert';
+} from '../../components/molecules/alert';
 import { CodeBlock } from '../../showcase-components/code-block';
 import { DemoSection } from '../../showcase-components/demo-section';
 

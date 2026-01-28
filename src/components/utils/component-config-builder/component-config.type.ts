@@ -2,7 +2,7 @@
  * Component configuration interface
  */
 
-import { type ComponentColor, type ComponentRoundedSize, type ComponentShadowSize, type ComponentSize, type ComponentVariant, type TransitionDuration } from '@pulsar/design-tokens'
+import { type ComponentColor, type ComponentRoundedSize, type ComponentShadowSize, type ComponentSize, type ComponentVariant, type TransitionDuration } from '@pulsar-framework/design-tokens'
 
 export interface IComponentConfig {
   // Visual style

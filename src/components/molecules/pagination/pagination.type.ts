@@ -2,7 +2,7 @@
  * Pagination component props interface
  */
 
-import type { Pulsar } from 'pulsar';
+import type { Pulsar } from '@pulsar-framework/pulsar.dev';
 
 export interface IPaginationProps extends Pulsar.HtmlExtends<'nav'> {
   /**

@@ -2,7 +2,7 @@
  * Drawer component props interface
  */
 
-import type { Pulsar } from 'pulsar';
+import type { Pulsar } from '@pulsar-framework/pulsar.dev';
 import type { DrawerPlacement, DrawerSize } from '../enums';
 
 export interface IDrawerProps extends Pulsar.HtmlExtends<'div'> {

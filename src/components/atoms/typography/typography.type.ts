@@ -9,7 +9,7 @@
  * [COPILOT] it must contains all regular ARIA that could be expected for this kid of component
  */
 
-import type { Pulsar } from 'pulsar'
+import type { Pulsar } from '@pulsar-framework/pulsar.dev'
 import { type TypographyTag } from '../../enums/typography-tag.type'
 import { type TypographyVariant } from '../../enums/typography-variant.type'
 import { type IComponentConfig } from '../../utils/component-config-builder/component-config.type'

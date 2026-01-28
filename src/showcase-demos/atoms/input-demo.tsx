@@ -2,9 +2,9 @@
  * Input Component Demo
  */
 
-import { Input } from '../../../components/atoms/input';
-import { Stack } from '../../../components/atoms/stack';
-import { Label } from '../../../components/molecules/label';
+import { Input } from '../../components/atoms/input';
+import { Stack } from '../../components/atoms/stack';
+import { Label } from '../../components/molecules/label';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 

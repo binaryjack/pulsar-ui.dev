@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'pulsar';
+import { useEffect, useMemo, useState } from '@pulsar-framework/pulsar.dev';
 
 import { DatePickerDisplayType } from '../core/date-picker.types';
 import { IDatePickerCell } from '../core/models/date-picker.models';

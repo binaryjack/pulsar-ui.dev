@@ -3,7 +3,7 @@
  * Organism: Page header with logo, navigation, and actions
  */
 
-import type { Pulsar } from 'pulsar'
+import type { Pulsar } from '@pulsar-framework/pulsar.dev'
 import { type IComponentConfig } from '../../utils/component-config-builder/component-config.type'
 import { type IComponentStyling } from '../../utils/component-styling-builder/component-styling.type'
 

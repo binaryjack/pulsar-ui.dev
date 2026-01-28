@@ -8,7 +8,7 @@
  * [COPILOT] it must contains all regular ARIA that could be expected for this kid of component
  */
 
-import type { Pulsar } from 'pulsar'
+import type { Pulsar } from '@pulsar-framework/pulsar.dev'
 import { type InputType } from '../../enums/input-type.type'
 import { type IComponentConfig } from '../../utils/component-config-builder/component-config.type'
 import { type IComponentStyling } from '../../utils/component-styling-builder/component-styling.type'

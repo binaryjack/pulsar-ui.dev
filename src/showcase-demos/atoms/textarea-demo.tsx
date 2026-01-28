@@ -2,9 +2,9 @@
  * Textarea Component Demo
  */
 
-import { Textarea } from '../../../components/atoms/textarea';
-import { Stack } from '../../../components/atoms/stack';
-import { Label } from '../../../components/molecules/label';
+import { Textarea } from '../../components/atoms/textarea';
+import { Stack } from '../../components/atoms/stack';
+import { Label } from '../../components/molecules/label';
 import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
 
