@@ -2,18 +2,21 @@
  * Toast Component Demo
  */
 
-import { useToast } from '../../components/organisms/toast';
-import { Button } from '../../components/molecules/button';
-import { ComponentConfigBuilder } from '../../components/utils/component-config-builder/component-config-builder';
-import { Stack } from '../../components/atoms/stack';
 import { Grid } from '../../components/atoms/grid';
-import { DemoSection } from '../../showcase-components/demo-section';
+import { Stack } from '../../components/atoms/stack';
+import { Button } from '../../components/molecules/button';
+import { useToast } from '../../components/organisms/toast';
+import { ComponentConfigBuilder } from '../../components/utils/component-config-builder/component-config-builder';
 import { CodeBlock } from '../../showcase-components/code-block';
+import { DemoSection } from '../../showcase-components/demo-section';
 
 export const ToastDemo = (): HTMLElement => {
   const toast = useToast();
   const outlineConfig = new ComponentConfigBuilder('primary').variant('outline').build();
-  const outlineSmConfig = new ComponentConfigBuilder('primary').variant('outline').size('sm').build();
+  const outlineSmConfig = new ComponentConfigBuilder('primary')
+    .variant('outline')
+    .size('sm')
+    .build();
 
   return (
     <div class="space-y-8">
