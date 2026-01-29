@@ -57,7 +57,7 @@ export const Avatar = ({
   };
 
   const avatarClasses = cn(
-    'relative inline-flex items-center justify-center rounded-full overflow-hidden',
+    'relative inline-flex items-center justify-center rounded-full overflow-hidden transition-all duration-200 hover:scale-105',
     sizeClasses[size],
     !src && (bg || 'bg-gray-300 dark:bg-gray-600'),
     className
@@ -66,15 +66,15 @@ export const Avatar = ({
   const initials = name ? getInitials(name) : '';
 
   return (
-    <div class={avatarClasses} {...rest}>
+    <div className={avatarClasses} {...rest}>
       {src ? (
-        <img src={src} alt={alt || name || 'Avatar'} class="w-full h-full object-cover" />
+        <img src={src} alt={alt || name || 'Avatar'} className="w-full h-full object-cover" />
       ) : (
-        <span class="font-medium text-gray-700 dark:text-gray-200">{initials}</span>
+        <span className="font-medium text-gray-700 dark:text-gray-200">{initials}</span>
       )}
       {status && (
         <span
-          class={cn(
+          className={cn(
             'absolute bottom-0 right-0 rounded-full border-2 border-white dark:border-gray-800',
             statusClasses[status],
             statusSizeClasses[size]

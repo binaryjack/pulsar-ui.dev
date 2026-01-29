@@ -1,0 +1,121 @@
+/**
+ * Motion System - Material Design 3
+ * 
+ * Provides consistent animation timing and easing curves
+ * following M3 motion principles for natural, expressive interactions.
+ */
+:root {
+    /* ==========================================
+   * M3 DURATION TOKENS
+   * ========================================== */
+    --motion-duration-short-1: 50ms;
+    /* Icon transitions */
+    --motion-duration-short-2: 100ms;
+    /* Small elements */
+    --motion-duration-medium-1: 250ms;
+    /* Most UI elements */
+    --motion-duration-medium-2: 300ms;
+    /* Dialogs, overlays */
+    --motion-duration-long-1: 450ms;
+    /* Complex transitions */
+    --motion-duration-long-2: 500ms;
+    /* Full-screen transitions */
+    /* ==========================================
+   * M3 EASING TOKENS
+   * ========================================== */
+    --motion-easing-standard: cubic-bezier(0.2, 0.0, 0, 1.0);
+    --motion-easing-emphasized: cubic-bezier(0.2, 0.0, 0, 1.0);
+    --motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1.0);
+    --motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0.0, 0.8, 0.15);
+    /* ==========================================
+   * COMBINED TRANSITIONS
+   * ========================================== */
+    --transition-quick: var(--motion-duration-short-2) var(--motion-easing-standard);
+    --transition-standard: var(--motion-duration-medium-1) var(--motion-easing-standard);
+    --transition-emphasized: var(--motion-duration-medium-2) var(--motion-easing-emphasized);
+    --transition-emphasized-in: var(--motion-duration-medium-2) var(--motion-easing-emphasized-decelerate);
+    --transition-emphasized-out: var(--motion-duration-medium-1) var(--motion-easing-emphasized-accelerate);
+}
+
+/* ==========================================
+ * UTILITY CLASSES
+ * ========================================== */
+.transition-quick {
+    transition: all var(--transition-quick);
+}
+
+.transition-standard {
+    transition: all var(--transition-standard);
+}
+
+.transition-emphasized {
+    transition: all var(--transition-emphasized);
+}
+
+/* ==========================================
+ * ENTRANCE ANIMATIONS
+ * ========================================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ==========================================
+ * ANIMATION UTILITY CLASSES
+ * ========================================== */
+.animate-fade-in {
+    animation: fadeIn var(--transition-standard) forwards;
+}
+
+.animate-slide-in-up {
+    animation: slideInUp var(--transition-emphasized-in) forwards;
+}
+
+.animate-slide-in-down {
+    animation: slideInDown var(--transition-emphasized-in) forwards;
+}
+
+.animate-scale-in {
+    animation: scaleIn var(--transition-emphasized-in) forwards;
+}

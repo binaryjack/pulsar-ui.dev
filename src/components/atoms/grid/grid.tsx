@@ -31,7 +31,7 @@ export const Grid = ({
   };
 
   const gridClasses = cn(
-    'grid',
+    'grid transition-all duration-300',
     gap && typeof gap === 'string' && gapClasses[gap as keyof typeof gapClasses],
     className
   );
@@ -49,7 +49,7 @@ export const Grid = ({
     .join('; ');
 
   return (
-    <div class={gridClasses} style={gridStyle} {...rest}>
+    <div className={gridClasses} style={gridStyle} {...rest}>
       {children}
     </div>
   );

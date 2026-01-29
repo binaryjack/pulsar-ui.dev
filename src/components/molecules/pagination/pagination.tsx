@@ -46,20 +46,21 @@ export const Pagination = ({
 
   const buttonClasses = (active = false, disabled = false) =>
     cn(
-      'px-3 py-2 text-sm font-medium rounded-md transition-colors',
+      'px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 touch-target state-layer',
+      'focus:outline-none focus:ring-4 focus:ring-primary-100',
       active
-        ? 'bg-blue-500 text-white'
+        ? 'bg-blue-500 text-white shadow-md'
         : disabled
           ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
-          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-105'
     );
 
   return (
-    <nav aria-label="Pagination" class={cn('flex items-center space-x-1', className)} {...rest}>
+    <nav aria-label="Pagination" className={cn('flex items-center space-x-1', className)} {...rest}>
       {/* First */}
       {showFirstLast && (
         <button
-          class={buttonClasses(false, currentPage === 1)}
+          className={buttonClasses(false, currentPage === 1)}
           disabled={currentPage === 1}
           onclick={() => currentPage > 1 && onPageChange(1)}
           aria-label="First page"
@@ -70,7 +71,7 @@ export const Pagination = ({
 
       {/* Previous */}
       <button
-        class={buttonClasses(false, currentPage === 1)}
+        className={buttonClasses(false, currentPage === 1)}
         disabled={currentPage === 1}
         onclick={() => currentPage > 1 && onPageChange(currentPage - 1)}
         aria-label="Previous page"
@@ -79,12 +80,12 @@ export const Pagination = ({
       </button>
 
       {/* Left ellipsis */}
-      {showLeftEllipsis && <span class="px-2 text-gray-500">...</span>}
+      {showLeftEllipsis && <span className="px-2 text-gray-500">...</span>}
 
       {/* Page numbers */}
       {pages.map((page) => (
         <button
-          class={buttonClasses(page === currentPage)}
+          className={buttonClasses(page === currentPage)}
           onclick={() => page !== currentPage && onPageChange(page)}
           aria-label={`Page ${page}`}
           aria-current={page === currentPage ? 'page' : undefined}
@@ -94,11 +95,11 @@ export const Pagination = ({
       ))}
 
       {/* Right ellipsis */}
-      {showRightEllipsis && <span class="px-2 text-gray-500">...</span>}
+      {showRightEllipsis && <span className="px-2 text-gray-500">...</span>}
 
       {/* Next */}
       <button
-        class={buttonClasses(false, currentPage === totalPages)}
+        className={buttonClasses(false, currentPage === totalPages)}
         disabled={currentPage === totalPages}
         onclick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
         aria-label="Next page"
@@ -109,7 +110,7 @@ export const Pagination = ({
       {/* Last */}
       {showFirstLast && (
         <button
-          class={buttonClasses(false, currentPage === totalPages)}
+          className={buttonClasses(false, currentPage === totalPages)}
           disabled={currentPage === totalPages}
           onclick={() => currentPage < totalPages && onPageChange(totalPages)}
           aria-label="Last page"

@@ -1,0 +1,617 @@
+/**
+ * Transitions & Interactions
+ * 
+ * Advanced animation system with entrance/exit animations,
+ * hover effects, loading states, and micro-interactions.
+ * All animations respect prefers-reduced-motion.
+ */
+/* ============================================
+   ENTRANCE ANIMATIONS
+   ============================================ */
+/* Fade Animations */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in var(--transition-normal) var(--easing-smooth) both;
+}
+
+.animate-fade-out {
+    animation: fade-out var(--transition-normal) var(--easing-smooth) both;
+}
+
+/* Slide Animations */
+@keyframes slide-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in-down {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in-left {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-in-right {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in-up {
+    animation: slide-in-up var(--transition-normal) var(--easing-smooth) both;
+}
+
+.animate-slide-in-down {
+    animation: slide-in-down var(--transition-normal) var(--easing-smooth) both;
+}
+
+.animate-slide-in-left {
+    animation: slide-in-left var(--transition-normal) var(--easing-smooth) both;
+}
+
+.animate-slide-in-right {
+    animation: slide-in-right var(--transition-normal) var(--easing-smooth) both;
+}
+
+/* Scale Animations */
+@keyframes scale-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes scale-out {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+}
+
+.animate-scale-in {
+    animation: scale-in var(--transition-normal) var(--easing-smooth) both;
+}
+
+.animate-scale-out {
+    animation: scale-out var(--transition-normal) var(--easing-smooth) both;
+}
+
+/* Zoom Animations (larger scale) */
+@keyframes zoom-in {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes zoom-out {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+.animate-zoom-in {
+    animation: zoom-in var(--transition-normal) var(--easing-smooth) both;
+}
+
+.animate-zoom-out {
+    animation: zoom-out var(--transition-normal) var(--easing-smooth) both;
+}
+
+/* Rotate + Scale Animations */
+@keyframes rotate-in {
+    from {
+        opacity: 0;
+        transform: rotate(-10deg) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+.animate-rotate-in {
+    animation: rotate-in var(--transition-normal) var(--easing-smooth) both;
+}
+
+/* ============================================
+     HOVER EFFECTS
+     ============================================ */
+/* Lift Effect */
+.hover-lift {
+    transition: transform var(--transition-fast) var(--easing-smooth),
+        box-shadow var(--transition-fast) var(--easing-smooth);
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.hover-lift:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Glow Effect */
+.hover-glow {
+    transition: box-shadow var(--transition-normal) var(--easing-smooth);
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 20px var(--color-primary-200),
+        0 0 40px var(--color-primary-100);
+}
+
+/* Scale on Hover */
+.hover-scale {
+    transition: transform var(--transition-fast) var(--easing-smooth);
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+.hover-scale:active {
+    transform: scale(0.98);
+}
+
+/* Underline Effect */
+.hover-underline {
+    position: relative;
+}
+
+.hover-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: width var(--transition-normal) var(--easing-smooth);
+}
+
+.hover-underline:hover::after {
+    width: 100%;
+}
+
+/* Bounce Effect */
+@keyframes bounce-hover {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.hover-bounce:hover {
+    animation: bounce-hover 0.5s var(--easing-smooth);
+}
+
+/* Pulse Effect */
+@keyframes pulse-hover {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.hover-pulse:hover {
+    animation: pulse-hover 1.5s var(--easing-smooth) infinite;
+}
+
+/* ============================================
+     LOADING STATES
+     ============================================ */
+/* Spin Animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+.animate-spin-slow {
+    animation: spin 2s linear infinite;
+}
+
+/* Pulse Loading */
+@keyframes pulse-loading {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(0.95);
+    }
+}
+
+.animate-pulse-loading {
+    animation: pulse-loading 2s var(--easing-smooth) infinite;
+}
+
+/* Skeleton Loading */
+@keyframes skeleton-loading {
+    0% {
+        background-position: -200px 0;
+    }
+
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.skeleton {
+    background-color: var(--color-surface-hover);
+    background-image: linear-gradient(90deg,
+            var(--color-surface-hover) 0px,
+            var(--color-surface) 40px,
+            var(--color-surface-hover) 80px);
+    background-size: 200px 100%;
+    background-repeat: no-repeat;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+/* Dots Loading */
+@keyframes dots-loading {
+
+    0%,
+    20% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.loading-dots span {
+    animation: dots-loading 1.4s infinite;
+}
+
+.loading-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* Progress Bar */
+@keyframes progress-indeterminate {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.progress-indeterminate::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    background: linear-gradient(90deg,
+            transparent,
+            var(--color-primary-500),
+            transparent);
+    animation: progress-indeterminate 1.5s ease-in-out infinite;
+}
+
+/* ============================================
+     FOCUS STATES
+     ============================================ */
+.focus-ring {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    transition: outline-color var(--transition-fast) var(--easing-smooth);
+}
+
+.focus-ring:focus-visible {
+    outline-color: var(--color-primary-500);
+}
+
+.focus-ring-inset {
+    box-shadow: 0 0 0 0 var(--color-primary-500);
+    transition: box-shadow var(--transition-fast) var(--easing-smooth);
+}
+
+.focus-ring-inset:focus-visible {
+    box-shadow: 0 0 0 3px var(--color-primary-200);
+}
+
+/* ============================================
+     STAGGER ANIMATIONS
+     ============================================ */
+.stagger-children>* {
+    animation-delay: calc(var(--stagger-delay, 50ms) * var(--stagger-index, 0));
+}
+
+/* Add stagger index via inline styles */
+.stagger-50 {
+    --stagger-delay: 50ms;
+}
+
+.stagger-100 {
+    --stagger-delay: 100ms;
+}
+
+.stagger-150 {
+    --stagger-delay: 150ms;
+}
+
+/* ============================================
+     TRANSITION UTILITIES
+     ============================================ */
+.transition-none {
+    transition: none !important;
+}
+
+.transition-all {
+    transition: all var(--transition-normal) var(--easing-smooth);
+}
+
+.transition-colors {
+    transition: color var(--transition-fast) var(--easing-smooth),
+        background-color var(--transition-fast) var(--easing-smooth),
+        border-color var(--transition-fast) var(--easing-smooth);
+}
+
+.transition-opacity {
+    transition: opacity var(--transition-normal) var(--easing-smooth);
+}
+
+.transition-transform {
+    transition: transform var(--transition-normal) var(--easing-smooth);
+}
+
+.transition-shadow {
+    transition: box-shadow var(--transition-normal) var(--easing-smooth);
+}
+
+/* Speed variants */
+.transition-fast {
+    transition-duration: var(--transition-fast);
+}
+
+.transition-normal {
+    transition-duration: var(--transition-normal);
+}
+
+.transition-slow {
+    transition-duration: var(--transition-slow);
+}
+
+/* Easing variants */
+.ease-linear {
+    transition-timing-function: linear;
+}
+
+.ease-smooth {
+    transition-timing-function: var(--easing-smooth);
+}
+
+.ease-emphasized {
+    transition-timing-function: var(--easing-emphasized);
+}
+
+/* ============================================
+     INTERACTIVE STATES
+     ============================================ */
+/* Disabled state */
+.disabled-opacity {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Active/pressed state */
+.active-scale:active {
+    transform: scale(0.97);
+}
+
+/* ============================================
+     SPECIAL EFFECTS
+     ============================================ */
+/* Shimmer Effect */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.shimmer {
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.1) 50%,
+            transparent 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* Shake Animation (for errors) */
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-4px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(4px);
+    }
+}
+
+.animate-shake {
+    animation: shake 0.5s var(--easing-smooth);
+}
+
+/* Wiggle Animation */
+@keyframes wiggle {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-3deg);
+    }
+
+    75% {
+        transform: rotate(3deg);
+    }
+}
+
+.animate-wiggle {
+    animation: wiggle 0.5s var(--easing-smooth);
+}
+
+/* Flip Animation */
+@keyframes flip {
+    from {
+        transform: perspective(400px) rotateY(0);
+    }
+
+    to {
+        transform: perspective(400px) rotateY(360deg);
+    }
+}
+
+.animate-flip {
+    animation: flip 1s var(--easing-smooth);
+}
+
+/* ============================================
+   ACCESSIBILITY - REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .skeleton {
+        animation: none;
+        background-image: none;
+    }
+}

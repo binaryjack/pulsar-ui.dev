@@ -4,21 +4,21 @@
  * Molecule: Composes multiple Radio atoms with labels
  */
 
-import { cn } from '@pulsar-framework/design-tokens'
-import { Radio } from '../../atoms/radio'
-import { Skeleton } from '../../atoms/skeleton'
-import { Typography } from '../../atoms/typography'
-import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
-import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder'
-import { type IRadioGroupProps } from './radio-group.type'
+import { cn } from '@pulsar-framework/design-tokens';
+import { Radio } from '../../atoms/radio';
+import { Skeleton } from '../../atoms/skeleton';
+import { Typography } from '../../atoms/typography';
+import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder';
+import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder';
+import { type IRadioGroupProps } from './radio-group.type';
 
 // External to the component so it's compiled ONCE!
-const radioGroupDefaultConfig = new ComponentConfigBuilder('primary').build()
+const radioGroupDefaultConfig = new ComponentConfigBuilder('primary').build();
 
 // External to the component so it's compiled ONCE!
 const radioGroupDefaultStyling = new ComponentStylingBuilder()
-  .base('flex gap-4')
-  .build()
+  .base('flex gap-4 transition-all duration-200')
+  .build();
 
 /**
  * RadioGroup component
@@ -34,9 +34,10 @@ export const RadioGroup = ({
   orientation = 'vertical',
   onChange,
   ...rest
-}: IRadioGroupProps): HTMLElement => 
-  config.loading ?
-    <Skeleton width="w-full" height="h-24" rounded="md" /> :
+}: IRadioGroupProps): HTMLElement =>
+  config.loading ? (
+    <Skeleton width="w-full" height="h-24" rounded="md" />
+  ) : (
     <div
       className={cn(
         styling.base,
@@ -65,16 +66,14 @@ export const RadioGroup = ({
               .build()}
             onchange={(e) => {
               if (onChange && (e.target as HTMLInputElement).checked) {
-                onChange(option.value)
+                onChange(option.value);
               }
             }}
           />
-          <Typography
-            variant="body2"
-            config={new ComponentConfigBuilder('primary').build()}
-          >
+          <Typography variant="body2" config={new ComponentConfigBuilder('primary').build()}>
             {option.label}
           </Typography>
         </label>
       ))}
     </div>
+  );

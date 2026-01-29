@@ -47,7 +47,7 @@ export const Tooltip = ({
     showTimeout = setTimeout(() => {
       if (tooltipElement) {
         tooltipElement.classList.remove('opacity-0', 'pointer-events-none');
-        tooltipElement.classList.add('opacity-100');
+        tooltipElement.classList.add('opacity-100', 'animate-fade-in');
       }
     }, showDelay) as unknown as number;
   };

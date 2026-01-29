@@ -15,7 +15,7 @@ const tableDefaultConfig = new ComponentConfigBuilder('primary').build();
 
 // External to the component so it's compiled ONCE!
 const tableDefaultStyling = new ComponentStylingBuilder()
-  .base('w-full border-collapse')
+  .base('w-full border-collapse transition-shadow duration-300')
   .border('border border-neutral-200 dark:border-neutral-700')
   .build();
 
@@ -63,7 +63,7 @@ export const Table = ({
   );
 
   if (responsive) {
-    return <div class="overflow-x-auto">{table}</div>;
+    return <div className="overflow-x-auto">{table}</div>;
   }
 
   return table;

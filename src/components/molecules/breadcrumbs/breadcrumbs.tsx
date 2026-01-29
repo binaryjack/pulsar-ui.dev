@@ -4,8 +4,8 @@
  */
 
 import { cn } from '@pulsar-framework/design-tokens';
-import type { IBreadcrumbsProps } from './breadcrumbs.type';
 import type { IBreadcrumbItemProps } from './breadcrumb-item.type';
+import type { IBreadcrumbsProps } from './breadcrumbs.type';
 
 /**
  * Breadcrumbs component
@@ -20,8 +20,8 @@ export const Breadcrumbs = ({
   const breadcrumbsClasses = cn('flex items-center space-x-2 text-sm', className);
 
   return (
-    <nav aria-label="Breadcrumb" class={breadcrumbsClasses} {...rest}>
-      <ol class="flex items-center space-x-2">{children}</ol>
+    <nav aria-label="Breadcrumb" className={breadcrumbsClasses} {...rest}>
+      <ol className="flex items-center space-x-2">{children}</ol>
     </nav>
   );
 };
@@ -38,7 +38,7 @@ export const BreadcrumbItem = ({
   ...rest
 }: IBreadcrumbItemProps): HTMLElement => {
   const itemClasses = cn(
-    'flex items-center',
+    'flex items-center transition-colors duration-150',
     current
       ? 'text-gray-900 dark:text-white font-medium'
       : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300',
@@ -46,15 +46,15 @@ export const BreadcrumbItem = ({
   );
 
   return (
-    <li class={itemClasses} {...rest}>
+    <li className={itemClasses} {...rest}>
       {href && !current ? (
-        <a href={href} class="hover:underline">
+        <a href={href} className="hover:underline transition-all duration-150 touch-target">
           {children}
         </a>
       ) : (
         <span aria-current={current ? 'page' : undefined}>{children}</span>
       )}
-      {!current && <span class="mx-2 text-gray-400">/</span>}
+      {!current && <span className="mx-2 text-gray-400">/</span>}
     </li>
   );
 };

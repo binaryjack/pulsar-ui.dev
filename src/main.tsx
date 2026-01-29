@@ -4,7 +4,12 @@
 
 import { bootstrapApp, createContext } from '@pulsar-framework/pulsar.dev';
 import { App } from './app';
+
+// Import design system and base styles FIRST
 import './showcase-styles.css';
+import './styles/design-system.css';
+import './styles/showcase-base.css';
+import './styles/transitions.css';
 
 // Define application context
 interface IAppContext {

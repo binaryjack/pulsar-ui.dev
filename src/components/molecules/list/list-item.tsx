@@ -19,8 +19,8 @@ export const ListItem = ({
   if (icon) {
     return (
       <li className={cn('flex items-center gap-2', className)} {...rest}>
-        <span class="flex-shrink-0">{icon}</span>
-        <span class="flex-1">{children}</span>
+        <span className="flex-shrink-0">{icon}</span>
+        <span className="flex-1">{children}</span>
       </li>
     );
   }

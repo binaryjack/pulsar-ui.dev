@@ -75,8 +75,8 @@ export const Modal = ({
         <div
           ref={(el) => (backdropElement = el)}
           className={cn(
-            'fixed inset-0 bg-black bg-opacity-50 z-40',
-            'transition-opacity duration-200',
+            'fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm z-40',
+            'transition-opacity duration-200 animate-fade-in',
             !isOpen && 'hidden opacity-0'
           )}
           onclick={handleBackdropClick}
@@ -86,8 +86,8 @@ export const Modal = ({
         ref={(el) => (modalElement = el)}
         className={cn(
           'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50',
-          'w-full bg-white rounded-lg shadow-xl',
-          'transition-all duration-200',
+          'w-full bg-white rounded-xl shadow-2xl',
+          'transition-all duration-200 animate-scale-in',
           sizeClasses[size],
           !isOpen && 'hidden opacity-0 scale-95',
           className

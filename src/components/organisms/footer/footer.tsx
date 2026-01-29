@@ -4,20 +4,20 @@
  * Organism: Page footer with copyright and links
  */
 
-import { cn } from '@pulsar-framework/design-tokens'
-import { Skeleton } from '../../atoms/skeleton'
-import { Typography } from '../../atoms/typography'
-import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
-import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder'
-import { type IFooterProps } from './footer.type'
+import { cn } from '@pulsar-framework/design-tokens';
+import { Skeleton } from '../../atoms/skeleton';
+import { Typography } from '../../atoms/typography';
+import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder';
+import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder';
+import { type IFooterProps } from './footer.type';
 
 // External to the component so it's compiled ONCE!
-const footerDefaultConfig = new ComponentConfigBuilder('primary').build()
+const footerDefaultConfig = new ComponentConfigBuilder('primary').build();
 
 // External to the component so it's compiled ONCE!
 const footerDefaultStyling = new ComponentStylingBuilder()
-  .base('bg-neutral-50 border-t border-neutral-200')
-  .build()
+  .base('bg-neutral-50/95 backdrop-blur-sm border-t border-neutral-200 transition-all duration-300')
+  .build();
 
 /**
  * Footer component
@@ -29,15 +29,12 @@ export const Footer = ({
   copyright,
   links,
   ...rest
-}: IFooterProps): HTMLElement => 
-  config.loading ?
-    <Skeleton width="w-full" height="h-32" rounded="none" /> :
+}: IFooterProps): HTMLElement =>
+  config.loading ? (
+    <Skeleton width="w-full" height="h-32" rounded="none" />
+  ) : (
     <footer
-      className={cn(
-        styling.base,
-        config.className,
-        styling.custom
-      )}
+      className={cn(styling.base, config.className, styling.custom)}
       ariaBusy={config.loading ? 'true' : 'false'}
       {...rest}
     >
@@ -53,3 +50,4 @@ export const Footer = ({
         ) : null}
       </div>
     </footer>
+  );

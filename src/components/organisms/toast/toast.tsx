@@ -23,10 +23,10 @@ export const Toast = ({
   let timeoutId: number | null = null;
 
   const variantClasses = {
-    success: 'bg-green-600 text-white',
-    warning: 'bg-yellow-600 text-white',
-    error: 'bg-red-600 text-white',
-    info: 'bg-blue-600 text-white',
+    success: 'bg-green-600 text-white border-l-4 border-green-800',
+    warning: 'bg-yellow-600 text-white border-l-4 border-yellow-800',
+    error: 'bg-red-600 text-white border-l-4 border-red-800',
+    info: 'bg-blue-600 text-white border-l-4 border-blue-800',
   };
 
   const handleClose = () => {
@@ -34,7 +34,7 @@ export const Toast = ({
       clearTimeout(timeoutId);
     }
     if (toastElement) {
-      toastElement.classList.add('opacity-0', 'translate-y-2');
+      toastElement.classList.add('opacity-0', 'translate-y-2', 'scale-95');
       setTimeout(() => {
         onClose?.(id);
       }, 200);

@@ -2,8 +2,8 @@
  * Drawer component - Side panel overlay
  */
 
-import { useEffect, Portal } from '@pulsar-framework/pulsar.dev';
 import { cn } from '@pulsar-framework/design-tokens';
+import { Portal, useEffect } from '@pulsar-framework/pulsar.dev';
 import type { IDrawerProps } from './drawer.type';
 
 export const Drawer = ({
@@ -70,14 +70,14 @@ export const Drawer = ({
   };
 
   const backdropClasses = cn(
-    'fixed inset-0 bg-black/50 backdrop-blur-sm z-40',
-    'transition-opacity duration-300',
+    'fixed inset-0 bg-black/60 backdrop-blur-sm z-40',
+    'transition-opacity duration-300 animate-fade-in',
     open ? 'opacity-100' : 'opacity-0'
   );
 
   const drawerClasses = cn(
     'fixed z-50 bg-white dark:bg-gray-800 shadow-2xl',
-    'transition-transform duration-300 ease-in-out',
+    'transition-all duration-300 ease-in-out',
     'overflow-y-auto overflow-x-hidden',
     sizeClasses[size],
     placementClasses[placement],
@@ -87,7 +87,7 @@ export const Drawer = ({
 
   const backdrop = showBackdrop ? (
     <div
-      class={backdropClasses}
+      className={backdropClasses}
       onClick={() => closeOnBackdropClick && onClose()}
       aria-hidden="true"
     />
@@ -97,7 +97,7 @@ export const Drawer = ({
     <Portal>
       {backdrop}
       <div
-        class={drawerClasses}
+        className={drawerClasses}
         role="dialog"
         aria-modal="true"
         aria-labelledby="drawer-title"

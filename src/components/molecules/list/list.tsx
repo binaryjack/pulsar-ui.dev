@@ -4,7 +4,7 @@
  * Molecule: Ordered or unordered list with spacing options
  */
 
-import { cn, spacingClasses } from '@pulsar-framework/design-tokens';
+import { cn } from '@pulsar-framework/design-tokens';
 import { Skeleton } from '../../atoms/skeleton';
 import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder';
 import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder';
@@ -14,7 +14,9 @@ import type { IListProps } from './list.type';
 const listDefaultConfig = new ComponentConfigBuilder('primary').build();
 
 // External to the component so it's compiled ONCE!
-const listDefaultStyling = new ComponentStylingBuilder().base('list-inside').build();
+const listDefaultStyling = new ComponentStylingBuilder()
+  .base('list-inside transition-all duration-200')
+  .build();
 
 /**
  * List component

@@ -46,6 +46,7 @@ export const Badge = ({
     styling.base,
     styling.background,
     styling.border,
+    'transition-all duration-200',
     config.size ? badgeSizeClasses[config.size] : '',
     config.rounded ? roundedClasses[config.rounded] : '',
     config.className,

@@ -15,7 +15,9 @@ import { type ILabelProps } from './label.type';
 const labelDefaultConfig = new ComponentConfigBuilder('primary').build();
 
 // External to the component so it's compiled ONCE!
-const labelDefaultStyling = new ComponentStylingBuilder().base('block mb-2').build();
+const labelDefaultStyling = new ComponentStylingBuilder()
+  .base('block mb-2 transition-colors duration-200')
+  .build();
 
 /**
  * Label component

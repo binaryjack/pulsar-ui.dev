@@ -3,19 +3,19 @@
 //  * Organism: Page header with logo, navigation, and actions
 //  */
 
-import { cn } from '@pulsar-framework/design-tokens'
-import { Skeleton } from '../../atoms/skeleton'
-import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder'
-import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder'
-import { type IHeaderProps } from './header.type'
+import { cn } from '@pulsar-framework/design-tokens';
+import { Skeleton } from '../../atoms/skeleton';
+import { ComponentConfigBuilder } from '../../utils/component-config-builder/component-config-builder';
+import { ComponentStylingBuilder } from '../../utils/component-styling-builder/component-styling-builder';
+import { type IHeaderProps } from './header.type';
 
 // External to the component so it's compiled ONCE!
-const headerDefaultConfig = new ComponentConfigBuilder('primary').build()
+const headerDefaultConfig = new ComponentConfigBuilder('primary').build();
 
 // External to the component so it's compiled ONCE!
 const headerDefaultStyling = new ComponentStylingBuilder()
-  .base('bg-white border-b border-neutral-200')
-  .build()
+  .base('bg-white/95 backdrop-blur-sm border-b border-neutral-200 transition-all duration-300')
+  .build();
 
 /**
  * Header component
@@ -29,9 +29,10 @@ export const Header = ({
   actions,
   sticky = false,
   ...rest
-}: IHeaderProps): HTMLElement => 
-  config.loading ?
-    <Skeleton width="w-full" height="h-16" rounded="none" /> :
+}: IHeaderProps): HTMLElement =>
+  config.loading ? (
+    <Skeleton width="w-full" height="h-16" rounded="none" />
+  ) : (
     <header
       className={cn(
         styling.base,
@@ -48,3 +49,4 @@ export const Header = ({
         {actions ? <div className="flex-shrink-0">{actions}</div> : null}
       </div>
     </header>
+  );

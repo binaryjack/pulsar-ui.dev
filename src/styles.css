@@ -1,20 +1,22 @@
+/**
+ * Pulsar UI - Legacy Styles File
+ * NOTE: This file is kept for backwards compatibility
+ * Main styles are now in:
+ * - styles/design-system.css (CSS variables)
+ * - styles/motion.css (M3 motion system)
+ * - styles/state-layers.css (interaction feedback)
+ * - styles/touch-targets.css (accessibility)
+ * - styles/utilities.css (common patterns)
+ * - styles/showcase-base.css (base styles)
+ * - showcase-styles.css (showcase-specific)
+ */
+/* Import design system files */
+@import './styles/design-system.css';
+@import './styles/motion.css';
+@import './styles/state-layers.css';
+@import './styles/touch-targets.css';
+@import './styles/utilities.css';
+@import './styles/transitions.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Custom base styles */
-@layer base {
-    body {
-        @apply bg-white text-neutral-900 font-sans;
-    }
-}
-
-/* Custom component styles */
-@layer components {
-    /* Add any global component styles here */
-}
-
-/* Custom utilities */
-@layer utilities {
-    /* Add any custom utilities here */
-}

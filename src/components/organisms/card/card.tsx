@@ -11,11 +11,11 @@ import { ComponentStylingBuilder } from '../../utils/component-styling-builder/c
 import { type ICardProps } from './card.type';
 
 // External to the component so it's compiled ONCE!
-const cardDefaultConfig = new ComponentConfigBuilder('primary').rounded('lg').shadow('md').build();
+const cardDefaultConfig = new ComponentConfigBuilder('primary').rounded('xl').shadow('sm').build();
 
 // External to the component so it's compiled ONCE!
 const cardDefaultStyling = new ComponentStylingBuilder()
-  .base('bg-white overflow-hidden')
+  .base('bg-white overflow-hidden transition-all duration-300 hover:shadow-lg')
   .border('border border-neutral-200')
   .build();
 

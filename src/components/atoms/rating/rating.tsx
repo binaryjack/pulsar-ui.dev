@@ -2,8 +2,8 @@
  * Rating component - Star rating display and input
  */
 
-import { useState } from '@pulsar-framework/pulsar.dev';
 import { cn } from '@pulsar-framework/design-tokens';
+import { useState } from '@pulsar-framework/pulsar.dev';
 import type { IRatingProps } from './rating.type';
 
 export const Rating = ({
@@ -64,7 +64,8 @@ export const Rating = ({
     const isHalfFilled = allowHalf && displayValue >= halfValue && displayValue < fullValue;
 
     const starClasses = cn(
-      'transition-colors duration-150',
+      'transition-all duration-150 hover:scale-110 touch-target',
+      'focus:outline-none focus:ring-2 focus:ring-primary-100 focus:ring-offset-1',
       sizeClasses[size],
       isFilled || isHalfFilled
         ? color || 'text-yellow-400 dark:text-yellow-500'
@@ -73,7 +74,7 @@ export const Rating = ({
 
     const starElement = (
       <svg
-        class={starClasses}
+        className={starClasses}
         fill={isFilled ? 'currentColor' : isHalfFilled ? 'url(#half-fill)' : 'none'}
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -104,7 +105,7 @@ export const Rating = ({
 
   return (
     <div
-      class={containerClasses}
+      className={containerClasses}
       onMouseLeave={handleMouseLeave}
       role="radiogroup"
       aria-label={`Rating: ${currentValue} out of ${max}`}

@@ -27,7 +27,8 @@ export const AccordionItem = ({
   const headerClasses = cn(
     'flex items-center justify-between w-full px-4 py-3',
     'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750',
-    'cursor-pointer select-none transition-colors',
+    'cursor-pointer select-none transition-all duration-200 touch-target state-layer',
+    'focus:outline-none focus:ring-4 focus:ring-primary-100',
     disabled && 'pointer-events-none'
   );
 
@@ -45,7 +46,7 @@ export const AccordionItem = ({
   // Default chevron icon
   const defaultIcon = (
     <svg
-      class={iconClasses}
+      className={iconClasses}
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
@@ -58,21 +59,21 @@ export const AccordionItem = ({
   const displayIcon = isOpen && expandedIcon ? expandedIcon : icon || defaultIcon;
 
   return (
-    <div class={containerClasses} {...rest}>
+    <div className={containerClasses} {...rest}>
       <button
-        class={headerClasses}
+        className={headerClasses}
         data-accordion-header
         aria-expanded={isOpen}
         aria-disabled={disabled}
         disabled={disabled}
         type="button"
       >
-        <div class="flex-1 text-left font-medium text-gray-900 dark:text-gray-100">{title}</div>
+        <div className="flex-1 text-left font-medium text-gray-900 dark:text-gray-100">{title}</div>
         {displayIcon}
       </button>
 
-      <div class={contentClasses} aria-hidden={!isOpen}>
-        <div class="text-gray-700 dark:text-gray-300">{children}</div>
+      <div className={contentClasses} aria-hidden={!isOpen}>
+        <div className="text-gray-700 dark:text-gray-300">{children}</div>
       </div>
     </div>
   );

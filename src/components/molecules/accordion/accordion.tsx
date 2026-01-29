@@ -91,7 +91,7 @@ export const Accordion = ({
   const classes = cn('space-y-2', className);
 
   return (
-    <div class={classes} role="region" {...rest}>
+    <div className={classes} role="region" {...rest}>
       {enhancedItems}
     </div>
   );

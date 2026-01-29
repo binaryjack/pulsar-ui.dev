@@ -15,11 +15,13 @@ const selectDefaultConfig = new ComponentConfigBuilder('primary').size('md').rou
 
 // External to the component so it's compiled ONCE!
 const selectDefaultStyling = new ComponentStylingBuilder()
-  .base('block border font-medium focus:outline-none appearance-none bg-white pr-10')
-  .transition('transition-colors duration-200')
+  .base(
+    'block border font-medium focus:outline-none appearance-none bg-white pr-10 touch-target state-layer'
+  )
+  .transition('transition-all duration-200')
   .border('border-neutral-300')
-  .focus('focus:ring-2 focus:ring-primary-500 focus:border-primary-600')
-  .disabled('bg-neutral-100 text-neutral-500 cursor-not-allowed')
+  .focus('focus:ring-4 focus:ring-primary-100 focus:border-primary-600 focus:shadow-md')
+  .disabled('bg-neutral-100 text-neutral-500 cursor-not-allowed opacity-50')
   .build();
 
 /**

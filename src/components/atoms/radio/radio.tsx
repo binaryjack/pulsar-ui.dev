@@ -14,10 +14,10 @@ const radioDefaultConfig = new ComponentConfigBuilder('primary').size('md').roun
 
 // External to the component so it's compiled ONCE!
 const radioDefaultStyling = new ComponentStylingBuilder()
-  .base('border cursor-pointer focus:outline-none rounded-full')
-  .transition('transition-colors duration-200')
+  .base('rounded-full border cursor-pointer focus:outline-none state-layer touch-target')
+  .transition('transition-all duration-200')
   .border('border-neutral-300')
-  .focus('focus:ring-2 focus:ring-primary-500 focus:border-primary-600')
+  .focus('focus:ring-4 focus:ring-primary-100 focus:border-primary-600')
   .background('bg-white checked:bg-primary-600 checked:border-primary-600')
   .disabled('bg-neutral-100 cursor-not-allowed')
   .build();

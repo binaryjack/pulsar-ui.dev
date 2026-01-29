@@ -45,8 +45,8 @@ export const Alert = ({
     <div
       ref={(el) => (alertElement = el)}
       className={cn(
-        'relative flex items-start gap-3 px-4 py-3 border rounded-lg',
-        'transition-all duration-200',
+        'relative flex items-start gap-3 px-4 py-3.5 border-l-4 rounded-r-lg shadow-sm',
+        'transition-all duration-200 animate-slide-in-up',
         variantClasses[variant],
         className
       )}

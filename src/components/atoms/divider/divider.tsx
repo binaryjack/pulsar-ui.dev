@@ -20,7 +20,7 @@ export const Divider = ({
   const isHorizontal = orientation === 'horizontal';
 
   const dividerClasses = cn(
-    'border-gray-300 dark:border-gray-600',
+    'border-gray-300 dark:border-gray-600 transition-opacity duration-300',
     isHorizontal
       ? `border-t ${spacing || 'my-4'}`
       : `border-l ${spacing || 'mx-4'} inline-block h-full`,
@@ -35,7 +35,7 @@ export const Divider = ({
 
   return (
     <hr
-      class={dividerClasses}
+      className={dividerClasses}
       style={style}
       role="separator"
       aria-orientation={orientation}

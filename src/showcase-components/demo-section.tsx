@@ -1,21 +1,33 @@
 /**
  * Pulsar UI Showcase - Demo Section Component
+ * Refactored to use Pulsar UI components
  */
 
-import { cn } from '@pulsar-framework/design-tokens';
+import { Divider } from '../components/atoms/divider';
+import { Typography } from '../components/atoms/typography';
+import { Card } from '../components/organisms/card';
 import type { IDemoSectionProps } from '../types';
 
 export const DemoSection = ({ title, description, children }: IDemoSectionProps): HTMLElement => {
   return (
-    <section class="space-y-4">
-      <div class="border-b border-gray-200 dark:border-gray-700 pb-2">
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
-        {description && <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{description}</p>}
+    <section class="mb-8">
+      {/* Section Header */}
+      <div class="mb-4">
+        <Typography variant="h3" weight="semibold" class="mb-2">
+          {title}
+        </Typography>
+        {description && (
+          <Typography variant="body2" color="muted">
+            {description}
+          </Typography>
+        )}
       </div>
+      <Divider class="mb-4" />
 
-      <div class="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+      {/* Demo Content Card */}
+      <Card elevation bordered>
         {children}
-      </div>
+      </Card>
     </section>
   );
 };

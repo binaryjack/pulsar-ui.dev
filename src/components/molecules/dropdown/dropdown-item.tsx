@@ -22,15 +22,15 @@ export const DropdownItem = ({
   return (
     <>
       <button
-        class={`dropdown-item${disabled ? ' dropdown-item-disabled' : ''}${className ? ` ${className}` : ''}`}
+        className={`dropdown-item state-layer touch-target${disabled ? ' dropdown-item-disabled' : ''}${className ? ` ${className}` : ''}`}
         onClick={handleClick}
         disabled={disabled}
         type="button"
       >
-        {icon && <span class="dropdown-item-icon">{icon}</span>}
-        <span class="dropdown-item-label">{children}</span>
+        {icon && <span className="dropdown-item-icon">{icon}</span>}
+        <span className="dropdown-item-label">{children}</span>
       </button>
-      {divider && <div class="dropdown-divider" />}
+      {divider && <div className="dropdown-divider" />}
     </>
   );
 };

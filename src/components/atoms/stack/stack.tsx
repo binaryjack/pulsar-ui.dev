@@ -46,7 +46,7 @@ export const Stack = ({
   };
 
   const stackClasses = cn(
-    'flex',
+    'flex transition-all duration-200',
     direction === 'vertical' ? 'flex-col' : 'flex-row',
     typeof spacing === 'string' && spacingClasses[spacing as keyof typeof spacingClasses],
     align && alignClasses[align],
@@ -58,7 +58,7 @@ export const Stack = ({
   const customStyle = typeof spacing !== 'string' ? `gap: ${spacing}` : undefined;
 
   return (
-    <div class={stackClasses} style={customStyle} {...rest}>
+    <div className={stackClasses} style={customStyle} {...rest}>
       {children}
     </div>
   );

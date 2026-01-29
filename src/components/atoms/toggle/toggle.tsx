@@ -18,11 +18,11 @@ const toggleDefaultConfig = new ComponentConfigBuilder('primary')
 // External to the component so it's compiled ONCE!
 const toggleDefaultStyling = new ComponentStylingBuilder()
   .base(
-    'relative inline-flex items-center rounded-full cursor-pointer focus:outline-none transition-colors duration-200'
+    'relative inline-flex items-center rounded-full cursor-pointer focus:outline-none transition-all duration-200 state-layer touch-target-comfortable'
   )
-  .focus('focus:ring-2 focus:ring-primary-500 focus:ring-offset-2')
+  .focus('focus:ring-4 focus:ring-primary-100 focus:ring-offset-2')
   .background('bg-neutral-300 aria-checked:bg-primary-600')
-  .disabled('opacity-50 cursor-not-allowed')
+  .disabled('opacity-40 cursor-not-allowed')
   .build();
 
 /**

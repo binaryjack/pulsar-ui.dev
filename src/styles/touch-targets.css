@@ -1,0 +1,41 @@
+/**
+ * Touch Target System
+ * 
+ * Ensures interactive elements meet WCAG AAA accessibility standards
+ * for touch target sizes (minimum 44x44px).
+ */
+
+/* ==========================================
+ * WCAG 2.1 AAA COMPLIANT TOUCH TARGETS
+ * ========================================== */
+
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.touch-target-comfortable {
+  min-height: 48px;
+  min-width: 48px;
+}
+
+.touch-target-generous {
+  min-height: 56px;
+  min-width: 56px;
+}
+
+/* ==========================================
+ * HIT AREA EXPANSION
+ * ========================================== */
+
+/* For small icons/elements that need larger click area */
+.expand-hit-area {
+  position: relative;
+}
+
+.expand-hit-area::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  /* Expands clickable area by 16px total (8px each side) */
+}

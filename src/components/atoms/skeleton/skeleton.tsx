@@ -3,9 +3,9 @@
  * Loading placeholder for content
  */
 
-import { cn } from '../../../design/utility/class-names'
-import { roundedClasses } from '../../../design/utility/rounded-classes'
-import { type ISkeletonProps } from './skeleton.type'
+import { cn } from '../../../design/utility/class-names';
+import { roundedClasses } from '../../../design/utility/rounded-classes';
+import { type ISkeletonProps } from './skeleton.type';
 
 export const Skeleton = ({
   width = 'w-full',
@@ -17,7 +17,7 @@ export const Skeleton = ({
   return (
     <div
       className={cn(
-        'animate-pulse bg-neutral-200',
+        'animate-pulse bg-neutral-200 animate-fade-in',
         width,
         height,
         roundedClasses[rounded],
@@ -27,5 +27,5 @@ export const Skeleton = ({
       aria-label="Loading"
       {...rest}
     />
-  )
-}
+  );
+};

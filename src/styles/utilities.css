@@ -1,0 +1,71 @@
+/**
+ * Utility Classes
+ * 
+ * Common patterns and utilities used across components
+ * for consistent interactions and visual effects.
+ */
+/* ==========================================
+ * FOCUS RING STANDARD
+ * ========================================== */
+.focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-shadow;
+}
+
+.focus-ring-enhanced {
+    @apply focus:outline-none focus:ring-4 focus:ring-primary-100 focus:ring-offset-2 transition-shadow duration-200;
+}
+
+/* ==========================================
+ * HOVER EFFECTS
+ * ========================================== */
+.hover-lift {
+    @apply transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg;
+}
+
+.hover-elevate {
+    @apply transition-shadow duration-200 hover:shadow-lg;
+}
+
+/* ==========================================
+ * ACTIVE/PRESSED EFFECTS
+ * ========================================== */
+.active-scale {
+    @apply active:scale-95 transition-transform duration-100;
+}
+
+.active-press {
+    @apply active:scale-98 transition-transform duration-100;
+}
+
+/* ==========================================
+ * SMOOTH TRANSITIONS
+ * ========================================== */
+.transition-smooth {
+    @apply transition-all duration-300 ease-in-out;
+}
+
+.transition-colors-smooth {
+    @apply transition-colors duration-200 ease-in-out;
+}
+
+/* ==========================================
+ * GLASS MORPHISM
+ * ========================================== */
+.glass {
+    @apply bg-white/80 dark:bg-neutral-900/80 backdrop-blur-lg border border-white/20;
+}
+
+.glass-strong {
+    @apply bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl border border-white/30;
+}
+
+/* ==========================================
+ * SURFACE TREATMENTS
+ * ========================================== */
+.surface-elevated {
+    @apply bg-gradient-to-br from-white to-neutral-50 dark:from-neutral-900 dark:to-neutral-950;
+}
+
+.surface-interactive {
+    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer;
+}

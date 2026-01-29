@@ -49,8 +49,8 @@ export const MenuItem = ({
       aria-disabled={disabled ? 'true' : 'false'}
       {...rest}
     >
-      {icon && <span class="flex-shrink-0">{icon}</span>}
-      <span class="flex-1">{children}</span>
+      {icon && <span className="flex-shrink-0">{icon}</span>}
+      <span className="flex-1">{children}</span>
     </div>
   );
 };

@@ -14,10 +14,10 @@ const inputDefaultConfig = new ComponentConfigBuilder('primary').size('md').roun
 
 // External to the component so it's compiled ONCE!
 const inputDefaultStyling = new ComponentStylingBuilder()
-  .base('block border font-medium focus:outline-none')
-  .transition('transition-colors duration-200')
+  .base('block border font-medium focus:outline-none touch-target')
+  .transition('transition-all duration-200')
   .border('border-neutral-300')
-  .focus('focus:ring-2 focus:ring-primary-500 focus:border-primary-600')
+  .focus('focus:ring-4 focus:ring-primary-100 focus:border-primary-600 focus:shadow-md')
   .background('bg-white text-neutral-900')
   .readOnly('bg-neutral-50 cursor-default')
   .disabled('bg-neutral-100 text-neutral-500 cursor-not-allowed')

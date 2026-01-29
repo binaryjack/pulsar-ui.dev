@@ -16,7 +16,7 @@ const menuDefaultConfig = new ComponentConfigBuilder('primary').build();
 // External to the component so it's compiled ONCE!
 const menuDefaultStyling = new ComponentStylingBuilder()
   .base(
-    'py-1 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg shadow-lg'
+    'py-1 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg shadow-lg animate-scale-in'
   )
   .build();
 

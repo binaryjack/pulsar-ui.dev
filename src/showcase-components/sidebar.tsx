@@ -1,9 +1,13 @@
 /**
  * Pulsar UI Showcase - Sidebar Component
+ * Refactored to use Pulsar UI components
  */
 
 import { cn } from '@pulsar-framework/design-tokens';
-import type { ISidebarProps, IComponent } from '../types';
+import { Badge } from '../components/molecules/badge';
+import { Button } from '../components/molecules/button';
+import { ComponentConfigBuilder } from '../components/utils/component-config-builder/component-config-builder';
+import type { IComponent, ISidebarProps } from '../types';
 
 const COMPONENTS: IComponent[] = [
   // Atoms
@@ -67,9 +71,9 @@ export const Sidebar = ({
   onComponentChange,
 }: ISidebarProps): HTMLElement => {
   const sidebarClasses = cn(
-    'fixed top-0 left-0 bottom-0 w-64 bg-white dark:bg-gray-800',
-    'border-r border-gray-200 dark:border-gray-700',
-    'transition-transform duration-300 z-20 overflow-y-auto pt-16',
+    'fixed top-0 left-0 bottom-0 overflow-y-auto',
+    'bg-surface border-r border-border',
+    'transition-transform z-fixed',
     open ? 'translate-x-0' : '-translate-x-full'
   );
 
@@ -94,50 +98,81 @@ export const Sidebar = ({
   const filteredComponents = COMPONENTS.filter((c) => c.category === activeCategory);
 
   return (
-    <aside class={sidebarClasses}>
-      <div class="p-4">
+    <aside
+      class={sidebarClasses}
+      style={{
+        width: 'var(--sidebar-width)',
+        paddingTop: 'var(--header-height)',
+      }}
+    >
+      <div class="p-md">
         {/* Category Tabs */}
-        <div class="flex gap-2 mb-4 border-b border-gray-200 dark:border-gray-700">
+        <div
+          class="flex gap-xs mb-md border-b border-border"
+          role="tablist"
+          aria-label="Component categories"
+        >
           {categories.map((cat) => {
             const isActive = activeCategory === cat.id;
-            const tabClasses = cn(
-              'flex-1 px-3 py-2 text-sm font-medium rounded-t-lg transition-colors cursor-pointer',
-              isActive
-                ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-b-2 border-blue-600'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-            );
+            const buttonConfig = new ComponentConfigBuilder(isActive ? 'primary' : 'secondary')
+              .variant(isActive ? 'solid' : 'ghost')
+              .size('sm')
+              .build();
 
             return (
-              <button class={tabClasses} onClick={() => onCategoryChange(cat.id)} type="button">
-                <div class="text-center">
+              <Button
+                config={buttonConfig}
+                onclick={() => onCategoryChange(cat.id)}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                aria-controls={`${cat.id}-panel`}
+                className="flex-1 rounded-t-lg"
+              >
+                <div class="text-center w-full">
                   <div>{cat.name}</div>
-                  <div class="text-xs opacity-70">{cat.count}</div>
+                  <Badge
+                    config={new ComponentConfigBuilder(isActive ? 'primary' : 'secondary')
+                      .size('sm')
+                      .build()}
+                    label={cat.count.toString()}
+                    className="mt-1 inline-flex"
+                  />
                 </div>
-              </button>
+              </Button>
             );
           })}
         </div>
 
         {/* Component List */}
-        <nav class="space-y-1">
+        <nav
+          class="space-y-1"
+          role="tabpanel"
+          id={`${activeCategory}-panel`}
+          aria-label={`${activeCategory} components`}
+        >
           {filteredComponents.map((component) => {
             const isActive = activeComponent === component.id;
-            const itemClasses = cn(
-              'block w-full text-left px-3 py-2 rounded-lg transition-colors cursor-pointer',
-              isActive
-                ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-medium'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-            );
+            const buttonConfig = new ComponentConfigBuilder(isActive ? 'primary' : 'secondary')
+              .variant(isActive ? 'solid' : 'ghost')
+              .size('sm')
+              .fullWidth(true)
+              .build();
 
             return (
-              <button
-                class={itemClasses}
-                onClick={() => onComponentChange(component.id)}
+              <Button
+                config={buttonConfig}
+                onclick={() => onComponentChange(component.id)}
                 type="button"
+                aria-label={`View ${component.name} component`}
+                aria-current={isActive ? 'page' : undefined}
+                className="justify-start text-left"
               >
-                <div class="font-medium">{component.name}</div>
-                <div class="text-xs opacity-70">{component.description}</div>
-              </button>
+                <div class="w-full text-left">
+                  <div class="font-medium text-sm">{component.name}</div>
+                  <div class="text-xs opacity-80">{component.description}</div>
+                </div>
+              </Button>
             );
           })}
         </nav>

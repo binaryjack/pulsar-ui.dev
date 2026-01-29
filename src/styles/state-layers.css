@@ -1,0 +1,55 @@
+/**
+ * State Layer System - Material Design 3
+ * 
+ * Provides consistent interaction feedback through opacity overlays
+ * following M3 state layer specifications.
+ */
+:root {
+    /* ==========================================
+   * STATE LAYER OPACITIES (M3 Spec)
+   * ========================================== */
+    --state-hover-opacity: 0.08;
+    --state-focus-opacity: 0.12;
+    --state-pressed-opacity: 0.16;
+    --state-dragged-opacity: 0.16;
+}
+
+/* ==========================================
+ * STATE LAYER BASE
+ * ========================================== */
+.state-layer {
+    position: relative;
+    overflow: hidden;
+}
+
+.state-layer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    opacity: 0;
+    transition: opacity var(--motion-duration-short-2, 100ms) ease;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ==========================================
+ * INTERACTION STATES
+ * ========================================== */
+.state-layer:hover::before {
+    opacity: var(--state-hover-opacity);
+}
+
+.state-layer:focus-visible::before {
+    opacity: var(--state-focus-opacity);
+}
+
+.state-layer:active::before {
+    opacity: var(--state-pressed-opacity);
+}
+
+/* Ensure content stays above state layer */
+.state-layer>* {
+    position: relative;
+    z-index: 1;
+}

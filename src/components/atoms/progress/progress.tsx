@@ -24,10 +24,10 @@ export const Progress = ({
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
 
   const variantClasses = {
-    primary: 'bg-blue-500',
-    success: 'bg-green-500',
-    warning: 'bg-yellow-500',
-    error: 'bg-red-500',
+    primary: 'bg-blue-500 transition-all duration-500',
+    success: 'bg-green-500 transition-all duration-500',
+    warning: 'bg-yellow-500 transition-all duration-500',
+    error: 'bg-red-500 transition-all duration-500',
   };
 
   const sizeClasses = {
@@ -48,18 +48,18 @@ export const Progress = ({
   );
 
   return (
-    <div class={cn('w-full', className)} {...rest}>
+    <div className={cn('w-full', className)} {...rest}>
       <div
-        class={progressClasses}
+        className={progressClasses}
         role="progressbar"
         aria-valuenow={indeterminate ? undefined : value}
         aria-valuemin={indeterminate ? undefined : 0}
         aria-valuemax={indeterminate ? undefined : max}
       >
-        <div class={barClasses} style={indeterminate ? undefined : `width: ${percentage}%`} />
+        <div className={barClasses} style={indeterminate ? undefined : `width: ${percentage}%`} />
       </div>
       {(showLabel || label) && (
-        <div class="mt-1 text-sm text-right text-gray-600 dark:text-gray-400">
+        <div className="mt-1 text-sm text-right text-gray-600 dark:text-gray-400">
           {label || `${Math.round(percentage)}%`}
         </div>
       )}

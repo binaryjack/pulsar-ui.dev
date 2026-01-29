@@ -11,13 +11,13 @@ import type {
 import './modal.css';
 
 export const ModalHeader = ({ children, class: className }: IModalHeaderProps) => {
-  return <div class={`modal-header${className ? ` ${className}` : ''}`}>{children}</div>;
+  return <div className={`modal-header${className ? ` ${className}` : ''}`}>{children}</div>;
 };
 
 export const ModalBody = ({ children, class: className }: IModalBodyProps) => {
-  return <div class={`modal-body${className ? ` ${className}` : ''}`}>{children}</div>;
+  return <div className={`modal-body${className ? ` ${className}` : ''}`}>{children}</div>;
 };
 
 export const ModalFooter = ({ children, class: className }: IModalFooterProps) => {
-  return <div class={`modal-footer${className ? ` ${className}` : ''}`}>{children}</div>;
+  return <div className={`modal-footer${className ? ` ${className}` : ''}`}>{children}</div>;
 };

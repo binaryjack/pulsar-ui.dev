@@ -1,0 +1,275 @@
+/**
+ * Pulsar Design System - CSS Custom Properties
+ * 
+ * Converts TypeScript design tokens to CSS variables for:
+ * - Runtime theme switching
+ * - Design consistency
+ * - Type-safe integration with Tailwind
+ * 
+ * Source: @pulsar-framework/design-tokens
+ */
+:root {
+    /* ==========================================
+   * COLOR TOKENS
+   * ========================================== */
+    /* Primary - Blue scale */
+    --color-primary-50: #eff6ff;
+    --color-primary-100: #dbeafe;
+    --color-primary-200: #bfdbfe;
+    --color-primary-300: #93c5fd;
+    --color-primary-400: #60a5fa;
+    --color-primary-500: #3b82f6;
+    --color-primary-600: #2563eb;
+    --color-primary-700: #1d4ed8;
+    --color-primary-800: #1e40af;
+    --color-primary-900: #1e3a8a;
+    --color-primary-950: #172554;
+    /* Secondary - Purple scale */
+    --color-secondary-50: #faf5ff;
+    --color-secondary-100: #f3e8ff;
+    --color-secondary-200: #e9d5ff;
+    --color-secondary-300: #d8b4fe;
+    --color-secondary-400: #c084fc;
+    --color-secondary-500: #a855f7;
+    --color-secondary-600: #9333ea;
+    --color-secondary-700: #7e22ce;
+    --color-secondary-800: #6b21a8;
+    --color-secondary-900: #581c87;
+    --color-secondary-950: #3b0764;
+    /* Neutral - Gray scale */
+    --color-neutral-50: #fafafa;
+    --color-neutral-100: #f4f4f5;
+    --color-neutral-200: #e4e4e7;
+    --color-neutral-300: #d4d4d8;
+    --color-neutral-400: #a1a1aa;
+    --color-neutral-500: #71717a;
+    --color-neutral-600: #52525b;
+    --color-neutral-700: #3f3f46;
+    --color-neutral-800: #27272a;
+    --color-neutral-900: #18181b;
+    --color-neutral-950: #09090b;
+    /* Success - Green scale */
+    --color-success-50: #f0fdf4;
+    --color-success-100: #dcfce7;
+    --color-success-200: #bbf7d0;
+    --color-success-300: #86efac;
+    --color-success-400: #4ade80;
+    --color-success-500: #22c55e;
+    --color-success-600: #16a34a;
+    --color-success-700: #15803d;
+    --color-success-800: #166534;
+    --color-success-900: #14532d;
+    --color-success-950: #052e16;
+    /* Warning - Yellow/Amber scale */
+    --color-warning-50: #fffbeb;
+    --color-warning-100: #fef3c7;
+    --color-warning-200: #fde68a;
+    --color-warning-300: #fcd34d;
+    --color-warning-400: #fbbf24;
+    --color-warning-500: #f59e0b;
+    --color-warning-600: #d97706;
+    --color-warning-700: #b45309;
+    --color-warning-800: #92400e;
+    --color-warning-900: #78350f;
+    --color-warning-950: #451a03;
+    /* Error - Red scale */
+    --color-error-50: #fef2f2;
+    --color-error-100: #fee2e2;
+    --color-error-200: #fecaca;
+    --color-error-300: #fca5a5;
+    --color-error-400: #f87171;
+    --color-error-500: #ef4444;
+    --color-error-600: #dc2626;
+    --color-error-700: #b91c1c;
+    --color-error-800: #991b1b;
+    --color-error-900: #7f1d1d;
+    --color-error-950: #450a0a;
+    /* Semantic colors - Light mode defaults */
+    --color-background: #ffffff;
+    --color-surface: #ffffff;
+    --color-surface-hover: #f7fafc;
+    --color-surface-translucent: rgba(255, 255, 255, 0.8);
+    --color-border: var(--color-neutral-200);
+    --color-border-hover: var(--color-neutral-300);
+    --color-text: var(--color-neutral-900);
+    --color-text-muted: var(--color-neutral-600);
+    --color-text-subtle: var(--color-neutral-400);
+    /* ==========================================
+   * SPACING TOKENS
+   * ========================================== */
+    --spacing-xs: 0.25rem;
+    /* 4px */
+    --spacing-sm: 0.5rem;
+    /* 8px */
+    --spacing-md: 1rem;
+    /* 16px */
+    --spacing-lg: 1.5rem;
+    /* 24px */
+    --spacing-xl: 2rem;
+    /* 32px */
+    --spacing-2xl: 3rem;
+    /* 48px */
+    --spacing-3xl: 4rem;
+    /* 64px */
+    --spacing-4xl: 6rem;
+    /* 96px */
+    /* ==========================================
+   * TYPOGRAPHY TOKENS
+   * ========================================== */
+    /* Font families */
+    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    /* Font sizes */
+    --font-size-xs: 0.75rem;
+    /* 12px */
+    --font-size-sm: 0.875rem;
+    /* 14px */
+    --font-size-base: 1rem;
+    /* 16px */
+    --font-size-lg: 1.125rem;
+    /* 18px */
+    --font-size-xl: 1.25rem;
+    /* 20px */
+    --font-size-2xl: 1.5rem;
+    /* 24px */
+    --font-size-3xl: 1.875rem;
+    /* 30px */
+    --font-size-4xl: 2.25rem;
+    /* 36px */
+    --font-size-5xl: 3rem;
+    /* 48px */
+    /* Font weights */
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    /* Line heights */
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+    /* ==========================================
+   * SHADOW TOKENS
+   * ========================================== */
+    --shadow-none: none;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+    /* ==========================================
+   * BORDER RADIUS TOKENS
+   * ========================================== */
+    --radius-none: 0;
+    --radius-sm: 0.125rem;
+    /* 2px */
+    --radius-md: 0.375rem;
+    /* 6px */
+    --radius-lg: 0.5rem;
+    /* 8px */
+    --radius-xl: 0.75rem;
+    /* 12px */
+    --radius-2xl: 1rem;
+    /* 16px */
+    --radius-full: 9999px;
+    /* ==========================================
+   * TRANSITION TOKENS
+   * ========================================== */
+    /* Durations */
+    --transition-duration-fast: 150ms;
+    --transition-duration-normal: 300ms;
+    --transition-duration-slow: 500ms;
+    /* Timing functions */
+    --transition-timing-linear: linear;
+    --transition-timing-ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --transition-timing-ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --transition-timing-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    /* Combined transitions (most common) */
+    --transition-fast: var(--transition-duration-fast) var(--transition-timing-ease-out);
+    --transition-base: var(--transition-duration-normal) var(--transition-timing-ease-in-out);
+    --transition-slow: var(--transition-duration-slow) var(--transition-timing-ease-in-out);
+    /* ==========================================
+   * Z-INDEX SCALE
+   * ========================================== */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+    /* ==========================================
+   * COMPONENT-SPECIFIC TOKENS
+   * ========================================== */
+    /* Header */
+    --header-height: 64px;
+    /* Sidebar */
+    --sidebar-width: 16rem;
+    /* 256px */
+    /* Focus ring */
+    --focus-ring-width: 2px;
+    --focus-ring-offset: 2px;
+    --focus-ring-color: var(--color-primary-500);
+}
+
+/* ==========================================
+ * DARK MODE OVERRIDES
+ * ========================================== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Semantic colors - Dark mode */
+        --color-background: var(--color-neutral-950);
+        --color-surface: var(--color-neutral-900);
+        --color-surface-hover: var(--color-neutral-800);
+        --color-surface-translucent: rgba(24, 24, 27, 0.8);
+        --color-border: var(--color-neutral-800);
+        --color-border-hover: var(--color-neutral-700);
+        --color-text: var(--color-neutral-50);
+        --color-text-muted: var(--color-neutral-400);
+        --color-text-subtle: var(--color-neutral-600);
+        /* Adjust shadows for dark mode */
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+        --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.6);
+    }
+}
+
+/* Explicit dark theme class (for manual theme switching) */
+[data-theme="dark"] {
+    --color-background: var(--color-neutral-950);
+    --color-surface: var(--color-neutral-900);
+    --color-surface-hover: var(--color-neutral-800);
+    --color-surface-translucent: rgba(24, 24, 27, 0.8);
+    --color-border: var(--color-neutral-800);
+    --color-border-hover: var(--color-neutral-700);
+    --color-text: var(--color-neutral-50);
+    --color-text-muted: var(--color-neutral-400);
+    --color-text-subtle: var(--color-neutral-600);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.6);
+}
+
+/* Explicit light theme class */
+[data-theme="light"] {
+    --color-background: #ffffff;
+    --color-surface: #ffffff;
+    --color-surface-hover: #f7fafc;
+    --color-surface-translucent: rgba(255, 255, 255, 0.8);
+    --color-border: var(--color-neutral-200);
+    --color-border-hover: var(--color-neutral-300);
+    --color-text: var(--color-neutral-900);
+    --color-text-muted: var(--color-neutral-600);
+    --color-text-subtle: var(--color-neutral-400);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}

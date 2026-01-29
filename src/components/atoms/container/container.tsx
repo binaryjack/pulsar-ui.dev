@@ -38,7 +38,7 @@ export const Container = ({
   };
 
   const containerClasses = cn(
-    'w-full',
+    'w-full transition-all duration-300',
     maxWidthClasses[maxWidth],
     paddingClasses[padding],
     centered && 'mx-auto',
@@ -46,7 +46,7 @@ export const Container = ({
   );
 
   return (
-    <div class={containerClasses} {...rest}>
+    <div className={containerClasses} {...rest}>
       {children}
     </div>
   );

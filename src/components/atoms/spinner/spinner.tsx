@@ -28,7 +28,7 @@ export const Spinner = ({
 }: ISpinnerProps): HTMLElement => (
   <span
     className={cn(
-      'inline-block border-2 border-current border-t-transparent rounded-full animate-spin',
+      'inline-block border-2 border-current border-t-transparent rounded-full animate-spin transition-all duration-300',
       spinnerSizes[size],
       className
     )}

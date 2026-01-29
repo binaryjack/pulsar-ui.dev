@@ -25,12 +25,17 @@ const buttonDefaultConfig = new ComponentConfigBuilder('primary')
 
 // External to the component so it's compiled ONCE!
 const buttonDefaultStyling = new ComponentStylingBuilder()
-  .base('inline-flex items-center justify-center font-medium border focus:outline-none')
-  .transition('transition-colors duration-200')
-  .hover('hover:opacity-90')
-  .focus('focus:ring-2 focus:ring-offset-2 focus:ring-primary-500')
-  .active('active:scale-95')
-  .disabled('opacity-50 cursor-not-allowed')
+  .base(
+    'inline-flex items-center justify-center font-medium border focus:outline-none state-layer touch-target relative'
+  )
+  .background('bg-primary-600 hover:bg-primary-700 active:bg-primary-800')
+  .border('border-transparent')
+  .transition('transition-all duration-200')
+  .hover('hover:shadow-lg hover:scale-[1.02]')
+  .focus('focus:ring-4 focus:ring-primary-100 focus:ring-offset-2 focus:shadow-lg')
+  .active('active:scale-[0.98] active:shadow-md')
+  .disabled('opacity-40 cursor-not-allowed pointer-events-none')
+  .custom('text-white')
   .build();
 
 /**
@@ -55,8 +60,23 @@ export const Button = ({
     );
   }
 
+  // Variant styling - using inline classes since builder styles are already set
+  const variantStyles = {
+    solid: 'bg-primary-600 hover:bg-primary-700 text-white border-transparent',
+    outline: 'bg-transparent border-primary-600 text-primary-600 hover:bg-primary-50',
+    ghost: 'bg-transparent border-transparent text-primary-600 hover:bg-primary-50',
+    text: 'bg-transparent border-transparent text-primary-600 hover:bg-primary-50',
+  };
+
+  const variantClass = config.variant
+    ? variantStyles[config.variant as keyof typeof variantStyles]
+    : '';
+
   const className = cn(
     styling.base,
+    variantClass || styling.background, // Use variant or default background
+    styling.border,
+    styling.custom, // Contains text-white
     styling.transition,
     config.size ? componentSizes[config.size].padding : '',
     config.size ? componentSizes[config.size].fontSize : '',
