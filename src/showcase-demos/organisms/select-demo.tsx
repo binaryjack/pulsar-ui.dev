@@ -3,13 +3,13 @@
  * Demonstrates native select dropdown patterns
  */
 
-import { Select } from '../../components/organisms/select';
-import { Typography } from '../../components/atoms/typography';
 import { Stack } from '../../components/atoms/stack';
+import { Typography } from '../../components/atoms/typography';
 import { Label } from '../../components/molecules/label';
+import { Select } from '../../components/organisms/select';
 import { ComponentConfigBuilder } from '../../components/utils/component-config-builder/component-config-builder';
-import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
+import { DemoSection } from '../../showcase-components/demo-section';
 
 export const SelectDemo = (): HTMLElement => {
   // Sample options
@@ -346,10 +346,7 @@ const options = [
       </DemoSection>
 
       {/* Common Patterns */}
-      <DemoSection
-        title="Common Form Patterns"
-        description="Real-world select usage in forms"
-      >
+      <DemoSection title="Common Form Patterns" description="Real-world select usage in forms">
         <Stack direction="vertical" spacing="md">
           {/* User Profile Form */}
           <Stack direction="vertical" spacing="md">

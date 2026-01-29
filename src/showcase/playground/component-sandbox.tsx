@@ -1,15 +1,15 @@
 /**
  * ComponentSandbox - Core Playground Presenter
  * Renders Story configurations with component, props, context, and event logging
- * 
+ *
  * This is the heart of the Pulsar Playground system.
  */
 
-import { Stack } from '../../components/atoms/stack';
-import { Card } from '../../components/organisms/card';
-import { Typography } from '../../components/atoms/typography';
 import { Divider } from '../../components/atoms/divider';
-import type { Story, LoggedEvent } from './story.types';
+import { Stack } from '../../components/atoms/stack';
+import { Typography } from '../../components/atoms/typography';
+import { Card } from '../../components/organisms/card';
+import type { LoggedEvent, Story } from './story.types';
 
 export interface IComponentSandboxProps {
   /** The story configuration to render */

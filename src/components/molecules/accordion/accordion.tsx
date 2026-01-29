@@ -2,8 +2,8 @@
  * Accordion component - Collapsible content panels
  */
 
-import { useState, useEffect, useKeyBindings } from '@pulsar-framework/pulsar.dev';
 import { cn } from '@pulsar-framework/design-tokens';
+import { useKeyBindings, useState } from '@pulsar-framework/pulsar.dev';
 import type { IAccordionProps } from './accordion.type';
 
 export const Accordion = ({

@@ -48,4 +48,4 @@ export interface IRetractablePanelProps extends Pulsar.HtmlExtends<'div'> {
 
   /** Animation duration in ms */
   animationDuration?: number;
-}  
+}

@@ -12,10 +12,7 @@ import { ComponentStylingBuilder } from '../../utils/component-styling-builder/c
 import { type IRetractablePanelProps } from './retractable-panel.type';
 
 // External to the component so it's compiled ONCE!
-const panelDefaultConfig = new ComponentConfigBuilder('primary')
-  .rounded('lg')
-  .shadow('md')
-  .build();
+const panelDefaultConfig = new ComponentConfigBuilder('primary').rounded('lg').shadow('md').build();
 
 // External to the component so it's compiled ONCE!
 const panelDefaultStyling = new ComponentStylingBuilder()
@@ -27,7 +24,7 @@ const panelDefaultStyling = new ComponentStylingBuilder()
  * RetractablePanel component
  * Creates a collapsible panel that can expand/collapse horizontally or vertically
  * Uses CSS transitions for smooth animations without imperative DOM manipulation
- * 
+ *
  * State is controlled by parent via isExpanded prop and onToggle callback
  */
 export const RetractablePanel = ({
@@ -80,7 +77,7 @@ export const RetractablePanel = ({
   // Build content style dynamically based on expanded state
   const transitionProp = direction === 'vertical' ? 'max-height' : 'max-width';
   const maxSize = direction === 'vertical' ? maxHeight : maxWidth;
-  
+
   const contentStyle = [
     `transition-duration: ${animationDuration}ms`,
     `transition-property: ${transitionProp}`,
@@ -89,7 +86,7 @@ export const RetractablePanel = ({
   ].join('; ');
 
   // Toggle icon rotation based on expanded state
-  const iconRotation = isExpanded ? '0deg' : (direction === 'vertical' ? '-180deg' : '-90deg');
+  const iconRotation = isExpanded ? '0deg' : direction === 'vertical' ? '-180deg' : '-90deg';
 
   // Default toggle icon (chevron) with rotation based on expanded state
   const defaultToggleIcon = (

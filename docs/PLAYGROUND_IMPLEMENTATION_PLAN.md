@@ -148,6 +148,7 @@ src/
 ## 🔍 Phase 1: Component Audit & Alignment
 
 ### Objectives
+
 - Document current state of all 42 components
 - Identify components needing refactoring
 - List incomplete/missing components
@@ -161,13 +162,13 @@ interface ComponentAuditResult {
   category: 'atoms' | 'molecules' | 'organisms';
   status: 'complete' | 'incomplete' | 'needs-refactor';
   issues: {
-    usesImperative?: boolean;          // DOM manipulation
-    hasAnyTypes?: boolean;             // Type safety
-    missingProps?: string[];           // Incomplete interface
-    needsContext?: string[];           // Required contexts
-    rendering?: 'working' | 'broken';  // Visual test result
+    usesImperative?: boolean; // DOM manipulation
+    hasAnyTypes?: boolean; // Type safety
+    missingProps?: string[]; // Incomplete interface
+    needsContext?: string[]; // Required contexts
+    rendering?: 'working' | 'broken'; // Visual test result
   };
-  dependencies: string[];              // Other components used
+  dependencies: string[]; // Other components used
 }
 ```
 
@@ -197,32 +198,32 @@ interface ComponentAuditResult {
 
 #### 2.1 Core Playground Components
 
-| Component | Type | Priority | Purpose |
-|-----------|------|----------|---------|
-| `RetractablePanel` | Organism | P0 | Bottom panel for event logs |
-| `CodeHighlighter` | Molecule | P0 | Syntax highlighting (uses Prism.js) |
-| `ColorPicker` | Molecule | P1 | Color prop editor |
-| `Slider` | Atom | P1 | Number prop editor |
-| `ObjectEditor` | Molecule | P1 | JSON-like prop editor |
-| `EventLogCard` | Molecule | P1 | Single event display |
-| `EventLogViewer` | Organism | P1 | Event log container |
+| Component          | Type     | Priority | Purpose                             |
+| ------------------ | -------- | -------- | ----------------------------------- |
+| `RetractablePanel` | Organism | P0       | Bottom panel for event logs         |
+| `CodeHighlighter`  | Molecule | P0       | Syntax highlighting (uses Prism.js) |
+| `ColorPicker`      | Molecule | P1       | Color prop editor                   |
+| `Slider`           | Atom     | P1       | Number prop editor                  |
+| `ObjectEditor`     | Molecule | P1       | JSON-like prop editor               |
+| `EventLogCard`     | Molecule | P1       | Single event display                |
+| `EventLogViewer`   | Organism | P1       | Event log container                 |
 
 #### 2.2 Context Providers
 
-| Context | Priority | Purpose |
-|---------|----------|---------|
-| `GeneralFormContext` | P1 | Lightweight form state (NOT formular) |
-| `DropdownContext` | P2 | Check if exists, create if needed |
-| `ToggleableContext` | P2 | Check if exists, create if needed |
-| `AppContext` | P0 | Global app state |
+| Context              | Priority | Purpose                               |
+| -------------------- | -------- | ------------------------------------- |
+| `GeneralFormContext` | P1       | Lightweight form state (NOT formular) |
+| `DropdownContext`    | P2       | Check if exists, create if needed     |
+| `ToggleableContext`  | P2       | Check if exists, create if needed     |
+| `AppContext`         | P0       | Global app state                      |
 
 #### 2.3 Navigation Components
 
-| Component | Type | Priority | Purpose |
-|-----------|------|----------|---------|
-| `SidebarNav` | Organism | P0 | Retractable navigation |
-| `DashboardHeader` | Molecule | P0 | Logo + description |
-| `RouteRegistry` | Utility | P0 | Type-safe route management |
+| Component         | Type     | Priority | Purpose                    |
+| ----------------- | -------- | -------- | -------------------------- |
+| `SidebarNav`      | Organism | P0       | Retractable navigation     |
+| `DashboardHeader` | Molecule | P0       | Logo + description         |
+| `RouteRegistry`   | Utility  | P0       | Type-safe route management |
 
 ### Component Development Pattern
 
@@ -267,6 +268,7 @@ export const ComponentName = ({
 ## 📄 Phase 3: Raw Component Gallery
 
 ### Purpose
+
 Visual regression testing - render all components in default state for immediate inspection.
 
 ### File Structure
@@ -313,7 +315,7 @@ export const RawGallery = (): HTMLElement => {
   return (
     <div class="p-8">
       <h1 class="text-3xl font-bold mb-8">Raw Component Gallery</h1>
-      
+
       <section class="mb-12">
         <h2 class="text-2xl font-bold mb-4">Atoms</h2>
         <div class="grid grid-cols-3 gap-4">
@@ -322,14 +324,14 @@ export const RawGallery = (): HTMLElement => {
           {/* ... all atoms */}
         </div>
       </section>
-      
+
       <section class="mb-12">
         <h2 class="text-2xl font-bold mb-4">Molecules</h2>
         <div class="grid grid-cols-2 gap-4">
           {/* ... all molecules */}
         </div>
       </section>
-      
+
       <section>
         <h2 class="text-2xl font-bold mb-4">Organisms</h2>
         <div class="grid grid-cols-1 gap-4">
@@ -352,16 +354,16 @@ export const RawGallery = (): HTMLElement => {
 export interface Story {
   // Component to render
   component: (props: any) => HTMLElement;
-  
+
   // Component props with values
   props: Record<string, unknown>;
-  
+
   // Optional context wrapper
   context?: {
     provider: (props: any) => HTMLElement;
     value: unknown;
   };
-  
+
   // Story metadata
   metadata: {
     name: string;
@@ -369,10 +371,10 @@ export interface Story {
     description?: string;
     tags?: string[];
   };
-  
+
   // Event handlers
   events?: Record<string, (data: unknown) => void>;
-  
+
   // Extra data (collections, etc.)
   data?: {
     collections?: Record<string, unknown[]>;
@@ -403,18 +405,18 @@ export const buttonStoryConfig = {
   variants: ['solid', 'outline', 'ghost'],
   colors: ['primary', 'secondary', 'success', 'warning', 'error'],
   sizes: ['sm', 'md', 'lg'],
-  states: ['default', 'disabled', 'loading']
+  states: ['default', 'disabled', 'loading'],
 } as const;
 
 // button.story.data.ts
 export const buttonStoryData = {
   defaultProps: {
-    children: 'Click me'
+    children: 'Click me',
   },
   testData: {
     longText: 'This is a very long button label',
-    shortText: 'OK'
-  }
+    shortText: 'OK',
+  },
 };
 
 // button.story.tsx
@@ -429,17 +431,17 @@ export const ButtonStories: Story[] = [
     component: Button,
     props: {
       config: new ComponentConfigBuilder('primary').build(),
-      children: buttonStoryData.defaultProps.children
+      children: buttonStoryData.defaultProps.children,
     },
     metadata: {
       name: 'Button - Primary',
       category: 'molecules',
       description: 'Default primary button',
-      tags: ['button', 'primary', 'action']
+      tags: ['button', 'primary', 'action'],
     },
     events: {
-      onclick: (e) => console.log('Button clicked', e)
-    }
+      onclick: (e) => console.log('Button clicked', e),
+    },
   },
   // ... more stories
 ];
@@ -461,7 +463,7 @@ export const ComponentSandbox = ({
   onEventCapture
 }: IComponentSandboxProps): HTMLElement => {
   const { component: Component, props, context, events } = story;
-  
+
   // Wrap events with capture logic
   const wrappedEvents = events ? Object.entries(events).reduce((acc, [key, handler]) => {
     acc[key] = (data: unknown) => {
@@ -470,11 +472,11 @@ export const ComponentSandbox = ({
     };
     return acc;
   }, {} as Record<string, (data: unknown) => void>) : {};
-  
+
   const componentElement = (
     <Component {...props} {...wrappedEvents} />
   );
-  
+
   // If context is needed, wrap component
   if (context) {
     const { provider: ContextProvider, value } = context;
@@ -484,7 +486,7 @@ export const ComponentSandbox = ({
       </ContextProvider>
     );
   }
-  
+
   return componentElement;
 };
 ```
@@ -497,7 +499,7 @@ export const ComponentSandbox = ({
 
 ```typescript
 // prop-editor.type.ts
-export type PropEditorType = 
+export type PropEditorType =
   | 'string'
   | 'number'
   | 'boolean'
@@ -510,16 +512,17 @@ export interface PropEditorConfig {
   type: PropEditorType;
   label: string;
   defaultValue: unknown;
-  options?: readonly unknown[];  // For select type
-  min?: number;                  // For number type
-  max?: number;                  // For number type
-  step?: number;                 // For number type
+  options?: readonly unknown[]; // For select type
+  min?: number; // For number type
+  max?: number; // For number type
+  step?: number; // For number type
 }
 ```
 
 ### 5.2 Individual Editors
 
 Each editor is a component:
+
 - `StringEditor` - Text input
 - `BooleanEditor` - Toggle/Checkbox
 - `NumberEditor` - Slider component
@@ -553,6 +556,7 @@ export interface IEventLoggerProps {
 ### 6.2 Retractable Panel Component
 
 Bottom-mounted panel that can be collapsed/expanded:
+
 - Drag handle to resize
 - Collapse/expand button
 - Clear logs button
@@ -565,6 +569,7 @@ Bottom-mounted panel that can be collapsed/expanded:
 ### 7.1 Route Configuration System
 
 **Research Required:** Investigate Pulsar routing:
+
 - Client-side routing (CSR)
 - Server-side routing (SSR)
 - Hybrid approach
@@ -577,7 +582,7 @@ export interface Route {
   readonly path: string;
   readonly label: string;
   readonly component: () => HTMLElement;
-  readonly ssr: boolean;           // Server-side rendered?
+  readonly ssr: boolean; // Server-side rendered?
   readonly children?: RouteMap;
 }
 
@@ -593,49 +598,52 @@ export const SHOWCASE_ROUTES = {
     path: '/',
     label: 'Dashboard',
     component: DashboardPage,
-    ssr: true  // SEO-friendly landing page
+    ssr: true, // SEO-friendly landing page
   },
   rawGallery: {
     path: '/raw',
     label: 'Raw Components',
     component: RawGalleryPage,
-    ssr: false  // Client-side only
+    ssr: false, // Client-side only
   },
   playground: {
     path: '/playground',
     label: 'Playground',
     component: PlaygroundPage,
-    ssr: false  // Interactive, client-side only
+    ssr: false, // Interactive, client-side only
   },
   components: {
     path: '/components',
     label: 'Components',
-    ssr: true,  // SEO-friendly component docs
+    ssr: true, // SEO-friendly component docs
     children: {
       button: {
         path: '/components/button',
         label: 'Button',
         component: () => import('../pages/components/button'),
-        ssr: true
+        ssr: true,
       },
       // ... all components
-    }
-  }
+    },
+  },
 } as const satisfies RouteMap;
 ```
 
 ### 7.2 SSR Strategy
 
 **SEO Requirements:**
+
 - Component documentation pages must be SSR
 - Code examples must be pre-rendered
 - Metadata for social sharing
 
 **CSR Requirements:**
+
 - Playground must be client-side (interactive)
 - Raw gallery can be client-side (dev tool)
 
 **Implementation:**
+
 ```typescript
 // Per-route SSR configuration
 export const getRouteSSRConfig = (route: Route) => ({
@@ -643,8 +651,8 @@ export const getRouteSSRConfig = (route: Route) => ({
   metadata: {
     title: `Pulsar UI - ${route.label}`,
     description: `${route.label} component documentation`,
-    ogImage: `/og-images/${route.path}.png`
-  }
+    ogImage: `/og-images/${route.path}.png`,
+  },
 });
 ```
 
@@ -662,20 +670,20 @@ import { SHOWCASE_ROUTES } from './navigation/routes/routes.config';
 
 export const ShowcaseLayout = ({ children }: { children: JSX.Children }): HTMLElement => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  
+
   return (
     <div class="flex h-screen">
-      <SidebarNav 
-        routes={SHOWCASE_ROUTES} 
+      <SidebarNav
+        routes={SHOWCASE_ROUTES}
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen(!sidebarOpen)}
       />
-      
+
       <main class="flex-1 overflow-auto">
-        <DashboardHeader 
+        <DashboardHeader
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
         />
-        
+
         <div class="p-8">
           {children}
         </div>
@@ -688,6 +696,7 @@ export const ShowcaseLayout = ({ children }: { children: JSX.Children }): HTMLEl
 ### 8.2 Retractable Sidebar Nav
 
 Features:
+
 - Collapse/expand animation
 - Route highlighting
 - Nested route support
@@ -698,17 +707,20 @@ Features:
 ## 📈 Implementation Timeline
 
 ### Week 1: Foundation & Audit
+
 - **Day 1-2:** Component audit (automated + manual)
 - **Day 3:** Generate audit report + prioritization
 - **Day 4-5:** Research Pulsar routing (SSR/CSR)
 
 ### Week 2: Raw Gallery (Quick Win)
+
 - **Day 1-2:** Create all raw component files
 - **Day 3:** Build raw gallery page
 - **Day 4:** Test rendering, document issues
 - **Day 5:** Fix critical rendering bugs
 
 ### Week 3: Missing Components
+
 - **Day 1:** RetractablePanel + basic layout
 - **Day 2:** CodeHighlighter (Prism.js integration)
 - **Day 3:** ColorPicker + Slider
@@ -716,18 +728,21 @@ Features:
 - **Day 5:** Context providers (GeneralFormContext)
 
 ### Week 4: Playground Infrastructure
+
 - **Day 1-2:** ComponentSandbox + Story types
 - **Day 3:** PropEditor system
 - **Day 4:** EventLogger system
 - **Day 5:** Integration testing
 
 ### Week 5: Navigation & Routing
+
 - **Day 1-2:** Route configuration + SidebarNav
 - **Day 3:** Dashboard page + header
 - **Day 4:** Component documentation pages
 - **Day 5:** SSR configuration
 
 ### Week 6: Stories & Polish
+
 - **Day 1-3:** Create stories for all components
 - **Day 4:** Documentation writing
 - **Day 5:** Final testing + deployment
@@ -737,6 +752,7 @@ Features:
 ## ✅ Success Criteria
 
 ### Must Have
+
 - [ ] All 42 components render without errors in raw gallery
 - [ ] Component sandbox can render any component with props
 - [ ] Prop editor works for basic types (string, number, boolean)
@@ -745,12 +761,14 @@ Features:
 - [ ] Navigation is intuitive and responsive
 
 ### Should Have
+
 - [ ] Advanced prop editors (color, object)
 - [ ] Code generation for all components
 - [ ] Search/filter in component list
 - [ ] Dark mode support
 
 ### Nice to Have
+
 - [ ] Export/import story configurations
 - [ ] Component usage analytics
 - [ ] Accessibility testing panel
@@ -782,18 +800,22 @@ Features:
 ## 📝 Notes & Decisions Log
 
 ### Decision 1: No Storybook
+
 **Reason:** Too much overhead, complex configuration, not Pulsar-native  
 **Alternative:** Build lightweight custom solution
 
 ### Decision 2: Prism.js for Syntax Highlighting
+
 **Reason:** Lightweight, no React dependency, good language support  
 **Trade-off:** External library (only exception to "pure Pulsar" rule)
 
 ### Decision 3: Feature Slice Pattern
+
 **Reason:** Better scalability, easier maintenance, clearer ownership  
 **Example:** `/pages/button/button.tsx` + `button.config.ts` + `button.data.ts`
 
 ### Decision 4: Server-Side Rendering for Docs
+
 **Reason:** SEO is critical for framework adoption  
 **Scope:** Only documentation/showcase pages, not interactive playground
 

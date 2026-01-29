@@ -4,9 +4,9 @@
  */
 
 import type {
-  IModalHeaderProps,
   IModalBodyProps,
   IModalFooterProps,
+  IModalHeaderProps,
 } from './modal-props.interface';
 import './modal.css';
 

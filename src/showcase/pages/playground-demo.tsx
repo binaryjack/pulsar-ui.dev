@@ -3,14 +3,14 @@
  * Demonstrates the ComponentSandbox with example stories
  */
 
+import { Container } from '../../components/atoms/container';
 import { Stack } from '../../components/atoms/stack';
 import { Typography } from '../../components/atoms/typography';
-import { Container } from '../../components/atoms/container';
 import { Card } from '../../components/organisms/card';
-import { ComponentSandbox } from '../playground/component-sandbox';
 import { RetractablePanel } from '../../components/organisms/retractable-panel';
-import { buttonStories } from '../stories/button/button.story';
+import { ComponentSandbox } from '../playground/component-sandbox';
 import type { LoggedEvent } from '../playground/story.types';
+import { buttonStories } from '../stories/button/button.story';
 
 /**
  * PlaygroundDemo - Showcases the new playground system
@@ -74,11 +74,7 @@ export const PlaygroundDemo = (): HTMLElement => {
           </Typography>
 
           {buttonStories.map((story) => (
-            <ComponentSandbox
-              story={story}
-              onEventLog={handleEventLog}
-              showHeader={true}
-            />
+            <ComponentSandbox story={story} onEventLog={handleEventLog} showHeader={true} />
           ))}
         </Stack>
 

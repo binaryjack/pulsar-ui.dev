@@ -4,11 +4,11 @@
  */
 
 import { Container } from '../../components/atoms/container';
-import { Typography } from '../../components/atoms/typography';
 import { Stack } from '../../components/atoms/stack';
+import { Typography } from '../../components/atoms/typography';
 import { Card } from '../../components/organisms/card';
-import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
+import { DemoSection } from '../../showcase-components/demo-section';
 
 export const ContainerDemo = (): HTMLElement => {
   return (
@@ -236,8 +236,8 @@ export const ContainerDemo = (): HTMLElement => {
                   Dashboard Layout
                 </Typography>
                 <Typography tag="p" variant="body1">
-                  Use max-w-full for dashboards that need all available space. Combine with Grid
-                  for multi-column layouts.
+                  Use max-w-full for dashboards that need all available space. Combine with Grid for
+                  multi-column layouts.
                 </Typography>
               </Stack>
             </Card>

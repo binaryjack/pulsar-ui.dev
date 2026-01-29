@@ -4,11 +4,11 @@
  */
 
 import { Grid } from '../../components/atoms/grid';
-import { Typography } from '../../components/atoms/typography';
 import { Stack } from '../../components/atoms/stack';
+import { Typography } from '../../components/atoms/typography';
 import { Card } from '../../components/organisms/card';
-import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
+import { DemoSection } from '../../showcase-components/demo-section';
 
 export const GridDemo = (): HTMLElement => {
   // Helper component for grid items

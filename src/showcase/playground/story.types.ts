@@ -3,9 +3,6 @@
  * Defines the structure for component story configurations in the playground
  */
 
-import type { ComponentConfig } from '../../components/utils/component-config-builder/component-config-builder.type';
-import type { ComponentStyling } from '../../components/utils/component-styling-builder/component-styling.type';
-
 /**
  * Base Story interface - defines a single component demonstration
  */
