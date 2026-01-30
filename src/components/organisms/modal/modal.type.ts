@@ -3,6 +3,7 @@
  */
 
 import type { ModalSize } from '../../enums/modal-size.type';
+import type { Pulsar } from '@pulsar-framework/pulsar.dev';
 
 export interface IModalProps extends Pulsar.HtmlExtends<'div'> {
   readonly isOpen?: boolean;
@@ -10,5 +11,5 @@ export interface IModalProps extends Pulsar.HtmlExtends<'div'> {
   readonly size?: ModalSize;
   readonly backdrop?: boolean;
   readonly escapeToClose?: boolean;
-  readonly children: JSX.Children;
+  readonly children: any;
 }

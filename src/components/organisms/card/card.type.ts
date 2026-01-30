@@ -17,7 +17,7 @@ export interface ICardProps extends Pulsar.HtmlExtends<'div'> {
   // Card sections
   readonly header?: HTMLElement
   readonly footer?: HTMLElement
-  readonly children?: JSX.Children
+  readonly children?: any
   
   // Visual
   readonly elevation?: boolean

@@ -3,7 +3,7 @@
  */
 
 import type { Pulsar } from '@pulsar-framework/pulsar.dev';
-import type { ContainerMaxWidth, ContainerPadding } from '../enums';
+import type { ContainerMaxWidth, ContainerPadding } from '../../enums';
 
 export interface IContainerProps extends Pulsar.HtmlExtends<'div'> {
   /**

@@ -28,7 +28,7 @@ export const Avatar = ({
   name,
   status,
   bg,
-  class: className,
+  className,
   ...rest
 }: IAvatarProps): HTMLElement => {
   const sizeClasses = {

@@ -3,7 +3,7 @@
  */
 
 import type { Pulsar } from '@pulsar-framework/pulsar.dev';
-import type { TooltipPlacement } from '../enums';
+import type { TooltipPlacement } from '../../enums';
 
 export interface ITooltipProps extends Pulsar.HtmlExtends<'div'> {
   /**
@@ -18,19 +18,19 @@ export interface ITooltipProps extends Pulsar.HtmlExtends<'div'> {
   readonly placement?: TooltipPlacement;
 
   /**
-   * Show delay in ms
+   * Delay before showing tooltip (ms)
    * @default 200
    */
   readonly showDelay?: number;
 
   /**
-   * Hide delay in ms
+   * Delay before hiding tooltip (ms)
    * @default 0
    */
   readonly hideDelay?: number;
 
   /**
-   * Tooltip trigger element
+   * Children element
    */
-  readonly children: HTMLElement;
+  readonly children: any;
 }

@@ -47,13 +47,13 @@ export const Tabs = ({
   };
 
   // Clone children to pass context
-  const enhancedChildren = children.map((child) => {
+  const enhancedChildren = children.map((child: any) => {
     if (child && typeof child === 'object' && 'props' in child) {
       // Pass activeId and onChange to TabList and TabPanels
       return {
         ...child,
         props: {
-          ...child.props,
+          ...(child.props as any),
           activeId: currentActiveId,
           onTabChange: handleTabChange,
         },

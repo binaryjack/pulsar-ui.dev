@@ -3,7 +3,7 @@
  */
 
 import type { Pulsar } from '@pulsar-framework/pulsar.dev';
-import type { Spacing, StackAlign, StackJustify } from '../enums';
+import type { Spacing, StackAlign, StackJustify } from '../../enums';
 
 export interface IStackProps extends Pulsar.HtmlExtends<'div'> {
   /**

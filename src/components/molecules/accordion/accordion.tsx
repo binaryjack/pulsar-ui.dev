@@ -11,7 +11,7 @@ export const Accordion = ({
   allowToggle = false,
   defaultIndex,
   children,
-  class: className,
+  className,
   ...rest
 }: IAccordionProps): HTMLElement => {
   // Convert defaultIndex to array of open indices
@@ -49,31 +49,25 @@ export const Accordion = ({
 
   // Keyboard navigation
   useKeyBindings({
-    ArrowDown: (e: KeyboardEvent) => {
+    onArrowDown: (e: KeyboardEvent) => {
       e.preventDefault();
-      const currentIndex = openIndices[openIndices.length - 1] ?? -1;
+      const indices = openIndices();
+      const currentIndex = indices[indices.length - 1] ?? -1;
       const nextIndex = (currentIndex + 1) % items.length;
       togglePanel(nextIndex);
     },
-    ArrowUp: (e: KeyboardEvent) => {
+    onArrowUp: (e: KeyboardEvent) => {
       e.preventDefault();
-      const currentIndex = openIndices[openIndices.length - 1] ?? 0;
+      const indices = openIndices();
+      const currentIndex = indices[indices.length - 1] ?? 0;
       const prevIndex = currentIndex === 0 ? items.length - 1 : currentIndex - 1;
       togglePanel(prevIndex);
-    },
-    Home: (e: KeyboardEvent) => {
-      e.preventDefault();
-      togglePanel(0);
-    },
-    End: (e: KeyboardEvent) => {
-      e.preventDefault();
-      togglePanel(items.length - 1);
     },
   });
 
   // Inject toggle handler into each item
   const enhancedItems = items.map((item, index) => {
-    const isOpen = openIndices.includes(index);
+    const isOpen = openIndices().includes(index);
     // Clone item and add data attributes
     const enhanced = item.cloneNode(true) as HTMLElement;
     enhanced.setAttribute('data-index', String(index));

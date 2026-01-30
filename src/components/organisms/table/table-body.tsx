@@ -19,7 +19,8 @@ export const TableBody = ({
   const hoverable = rest.hoverable;
 
   // Clone children to pass row index for striping
-  const enhancedChildren = children.map((child, index) => {
+  const childArray = Array.isArray(children) ? children : [children];
+  const enhancedChildren = childArray.map((child: any, index: number) => {
     if (child && typeof child === 'object' && 'props' in child) {
       return {
         ...child,

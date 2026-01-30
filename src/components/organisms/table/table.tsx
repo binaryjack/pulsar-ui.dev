@@ -38,7 +38,8 @@ export const Table = ({
   }
 
   // Clone children to pass table context
-  const enhancedChildren = children.map((child) => {
+  const childArray = Array.isArray(children) ? children : [children];
+  const enhancedChildren = childArray.map((child: any) => {
     if (child && typeof child === 'object' && 'props' in child) {
       return {
         ...child,

@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useState } from '@pulsar-framework/pulsar.dev';
+import { useEffect, useState } from '@pulsar-framework/pulsar.dev';
 
 interface UseDrawerPositionOptions {
   containerRef: { current: HTMLElement | null };
@@ -28,14 +28,14 @@ export function useDrawerPosition({
   desiredWidth,
   desiredHeight,
 }: UseDrawerPositionOptions): () => DrawerStyle {
-  const [style, setStyle] = useState<DrawerStyle>(() => ({
+  const [style, setStyle] = useState<DrawerStyle>({
     position: 'absolute',
     width: desiredWidth,
     height: desiredHeight,
     top: '100%',
     left: '0',
     zIndex: 1000,
-  }));
+  });
 
   useEffect(() => {
     if (!isOpen || !containerRef.current) {

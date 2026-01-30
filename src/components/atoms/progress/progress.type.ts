@@ -3,7 +3,7 @@
  */
 
 import type { Pulsar } from '@pulsar-framework/pulsar.dev';
-import type { ProgressSize, ProgressVariant } from '../enums';
+import type { ProgressSize, ProgressVariant } from '../../enums';
 
 export interface IProgressProps extends Pulsar.HtmlExtends<'div'> {
   /**

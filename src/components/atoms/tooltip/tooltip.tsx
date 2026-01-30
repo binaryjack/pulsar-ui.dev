@@ -5,14 +5,7 @@
 
 import { cn } from '@pulsar-framework/design-tokens';
 import type { TooltipPlacement } from '../../enums/tooltip-placement.type';
-
-export interface ITooltipProps extends Pulsar.HtmlExtends<'div'> {
-  readonly content: string;
-  readonly placement?: TooltipPlacement;
-  readonly showDelay?: number;
-  readonly hideDelay?: number;
-  readonly children: JSX.Children;
-}
+import type { ITooltipProps } from './tooltip.type';
 
 /**
  * Tooltip component

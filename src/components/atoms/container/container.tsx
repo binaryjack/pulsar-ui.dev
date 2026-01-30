@@ -15,7 +15,7 @@ export const Container = ({
   padding = 'md',
   centered = true,
   children,
-  class: className,
+  className,
   ...rest
 }: IContainerProps): HTMLElement => {
   const maxWidthClasses = {

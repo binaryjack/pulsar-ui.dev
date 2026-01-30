@@ -9,6 +9,17 @@
     "types": ["vite/client"],
     "skipLibCheck": true
   },
-  "include": ["src/index.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/index.ts", "src/components/**/*.ts", "src/components/**/*.tsx"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.stories.tsx",
+    "src/showcase/**",
+    "src/showcase-demos/**",
+    "src/test-*.tsx",
+    "src/components/organisms/stepper/**",
+    "src/components/organisms/date-picker/**"
+  ]
 }

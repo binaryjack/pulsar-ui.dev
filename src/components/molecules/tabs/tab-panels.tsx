@@ -18,13 +18,13 @@ export const TabPanels = ({
   const activeId = rest.activeId;
 
   // Clone children to pass activeId
-  const enhancedChildren = children.map((child) => {
+  const enhancedChildren = children.map((child: any) => {
     if (child && typeof child === 'object' && 'props' in child) {
       const panelId = child.props.id;
       return {
         ...child,
         props: {
-          ...child.props,
+          ...(child.props as any),
           isActive: panelId === activeId,
         },
       };

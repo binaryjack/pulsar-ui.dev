@@ -6,11 +6,6 @@ import type { Pulsar } from '@pulsar-framework/pulsar.dev';
 
 export interface IAccordionItemProps extends Pulsar.HtmlExtends<'div'> {
   /**
-   * Panel title
-   */
-  readonly title: string | HTMLElement;
-
-  /**
    * Panel content
    */
   readonly children: HTMLElement | HTMLElement[];

@@ -17,7 +17,7 @@ export interface IOptionProps extends Pulsar.HtmlExtends<'option'> {
     // Option data
   readonly value?: string
   readonly label?: string
-  readonly children?: JSX.Children
+  readonly children?: any
     // States
   readonly selected?: boolean
 }

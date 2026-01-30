@@ -19,13 +19,13 @@ export const TabList = ({
   const onTabChange = rest.onTabChange;
 
   // Clone children to pass activeId and onClick handler
-  const enhancedChildren = children.map((child) => {
+  const enhancedChildren = children.map((child: any) => {
     if (child && typeof child === 'object' && 'props' in child) {
       const tabId = child.props.id;
       return {
         ...child,
         props: {
-          ...child.props,
+          ...(child.props as any),
           isActive: tabId === activeId,
           onClick: onTabChange,
         },

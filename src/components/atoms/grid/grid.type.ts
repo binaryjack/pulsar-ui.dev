@@ -3,7 +3,7 @@
  */
 
 import type { Pulsar } from '@pulsar-framework/pulsar.dev';
-import type { Spacing } from '../enums';
+import type { Spacing } from '../../enums';
 
 export interface IGridProps extends Pulsar.HtmlExtends<'div'> {
   /**

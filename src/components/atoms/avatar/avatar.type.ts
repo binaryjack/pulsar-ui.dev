@@ -3,7 +3,7 @@
  */
 
 import type { Pulsar } from '@pulsar-framework/pulsar.dev';
-import type { AvatarSize } from '../enums';
+import type { AvatarSize } from '../../enums';
 
 export interface IAvatarProps extends Pulsar.HtmlExtends<'div'> {
   /**

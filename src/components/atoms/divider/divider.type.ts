@@ -3,7 +3,7 @@
  */
 
 import type { Pulsar } from '@pulsar-framework/pulsar.dev';
-import type { DividerOrientation } from '../enums';
+import type { DividerOrientation } from '../../enums';
 
 export interface IDividerProps extends Pulsar.HtmlExtends<'hr'> {
   /**

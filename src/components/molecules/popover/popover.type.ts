@@ -15,6 +15,6 @@ export interface IPopoverProps extends Pulsar.HtmlExtends<'div'> {
   readonly placement?: PopoverPlacement;
   readonly isOpen?: boolean;
   readonly onToggle?: (isOpen: boolean) => void;
-  readonly triggerElement: JSX.Element;
-  readonly children: JSX.Children;
+  readonly triggerElement: any;
+  readonly children: any;
 }

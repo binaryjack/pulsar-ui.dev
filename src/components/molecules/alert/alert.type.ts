@@ -13,5 +13,5 @@ export interface IAlertProps extends Pulsar.HtmlExtends<'div'> {
   readonly variant?: AlertVariant;
   readonly closable?: boolean;
   readonly onClose?: () => void;
-  readonly children: JSX.Children;
+  readonly children: any;
 }

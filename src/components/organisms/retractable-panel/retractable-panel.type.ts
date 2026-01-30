@@ -3,15 +3,16 @@
  * Panel that can collapse/expand horizontally or vertically
  */
 
-import type { ComponentConfig } from '../../utils/component-config-builder/component-config-builder.type';
-import type { ComponentStyling } from '../../utils/component-styling-builder/component-styling.type';
+import type { Pulsar } from '@pulsar-framework/pulsar.dev';
+import type { IComponentConfig } from '../../utils/component-config-builder/component-config.type';
+import type { IComponentStyling } from '../../utils/component-styling-builder/component-styling.type';
 
 export interface IRetractablePanelProps extends Pulsar.HtmlExtends<'div'> {
   /** Component configuration (color, size, state, etc.) */
-  config?: ComponentConfig;
+  config?: IComponentConfig;
 
   /** Component styling (colors, spacing, borders, etc.) */
-  styling?: ComponentStyling;
+  styling?: IComponentStyling;
 
   /** Panel header content */
   header?: Pulsar.Children;

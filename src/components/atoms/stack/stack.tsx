@@ -17,7 +17,7 @@ export const Stack = ({
   justify,
   wrap = false,
   children,
-  class: className,
+  className,
   ...rest
 }: IStackProps): HTMLElement => {
   const spacingClasses = {

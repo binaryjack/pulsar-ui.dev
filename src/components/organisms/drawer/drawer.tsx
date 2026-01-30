@@ -15,7 +15,7 @@ export const Drawer = ({
   closeOnBackdropClick = true,
   closeOnEscape = true,
   children,
-  class: className,
+  className,
   ...rest
 }: IDrawerProps): HTMLElement => {
   // Handle escape key
@@ -95,16 +95,18 @@ export const Drawer = ({
 
   return (
     <Portal>
-      {backdrop}
-      <div
-        className={drawerClasses}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="drawer-title"
-        {...rest}
-      >
-        {children}
-      </div>
+      <>
+        {backdrop}
+        <div
+          className={drawerClasses}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="drawer-title"
+          {...rest}
+        >
+          {children}
+        </div>
+      </>
     </Portal>
   );
 };
