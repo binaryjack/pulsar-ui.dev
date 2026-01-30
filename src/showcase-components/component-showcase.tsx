@@ -26,11 +26,11 @@ export const ComponentShowcase = ({
   if (!DemoComponent) {
     return (
       <div
-        class="text-center animate-fade-in"
+        className="text-center animate-fade-in"
         style={{ padding: 'var(--spacing-3xl) var(--spacing-md)' }}
       >
         <div
-          class="inline-flex items-center justify-center mb-md"
+          className="inline-flex items-center justify-center mb-md"
           style={{
             width: '64px',
             height: '64px',
@@ -56,14 +56,14 @@ export const ComponentShowcase = ({
         </div>
 
         <h2
-          class="text-2xl font-bold text-text mb-sm"
+          className="text-2xl font-bold text-text mb-sm"
           style={{ marginBottom: 'var(--spacing-sm)' }}
         >
           Component Demo Coming Soon
         </h2>
 
-        <p class="text-text-muted">
-          The demo for <strong class="text-primary-600">{component}</strong> is currently being
+        <p className="text-text-muted">
+          The demo for <strong className="text-primary-600">{component}</strong> is currently being
           developed.
         </p>
       </div>
@@ -72,7 +72,7 @@ export const ComponentShowcase = ({
 
   return (
     <div
-      class="space-y-8 animate-fade-in"
+      className="space-y-8 animate-fade-in"
       style={{
         animationDelay: '50ms',
         animationFillMode: 'both',

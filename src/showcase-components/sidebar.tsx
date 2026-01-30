@@ -59,16 +59,16 @@ export const Sidebar = ({
 
   return (
     <aside
-      class={sidebarClasses}
+      className={sidebarClasses}
       style={{
         width: 'var(--sidebar-width)',
         paddingTop: 'var(--header-height)',
       }}
     >
-      <div class="p-md">
+      <div className="p-md">
         {/* Category Tabs */}
         <div
-          class="flex gap-xs mb-md border-b border-border"
+          className="flex gap-xs mb-md border-b border-border"
           role="tablist"
           aria-label="Component categories"
         >
@@ -89,7 +89,7 @@ export const Sidebar = ({
                 aria-controls={`${cat.id}-panel`}
                 className="flex-1 rounded-t-lg"
               >
-                <div class="text-center w-full">
+                <div className="text-center w-full">
                   <div>{cat.name}</div>
                   <Badge
                     config={new ComponentConfigBuilder(isActive ? 'primary' : 'secondary')
@@ -106,7 +106,7 @@ export const Sidebar = ({
 
         {/* Component List */}
         <nav
-          class="space-y-1"
+          className="space-y-1"
           role="tabpanel"
           id={`${activeCategory}-panel`}
           aria-label={`${activeCategory} components`}
@@ -128,9 +128,9 @@ export const Sidebar = ({
                 aria-current={isActive ? 'page' : undefined}
                 className="justify-start text-left"
               >
-                <div class="w-full text-left">
-                  <div class="font-medium text-sm">{component.name}</div>
-                  <div class="text-xs opacity-80">{component.description}</div>
+                <div className="w-full text-left">
+                  <div className="font-medium text-sm">{component.name}</div>
+                  <div className="text-xs opacity-80">{component.description}</div>
                 </div>
               </Button>
             );

@@ -1,0 +1,29 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "JSXAttribute[name.name='class']:not([value.type='JSXExpressionContainer'])",
+        "message": "Use 'className' instead of 'class' for JSX attributes. While Pulsar supports both, 'className' is preferred for consistency with React conventions and to avoid confusion with JavaScript's reserved 'class' keyword."
+      }
+    ]
+  },
+  "env": {
+    "browser": true,
+    "es2022": true,
+    "node": true
+  }
+}

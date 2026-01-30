@@ -11,7 +11,7 @@ export const CodeBlock = ({ code, language = 'tsx' }: ICodeBlockProps): HTMLElem
         <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{language}</span>
         <button
           className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
-          onClick={() => navigator.clipboard.writeText(code)}
+          onclick={() => navigator.clipboard.writeText(code)}
           type="button"
         >
           Copy

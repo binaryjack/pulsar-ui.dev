@@ -12,11 +12,12 @@ import {
 } from '../../showcase/stories/button/button-interactive.story';
 
 export const ButtonPlaygroundDemo = (): HTMLElement => {
-  return ComponentPlaygroundPage({
-    title: 'Button',
-    description:
-      'Interactive button component with multiple variants, sizes, and states. Edit props in real-time and see changes instantly.',
-    category: 'molecules',
-    stories: [basicButtonStory, loadingButtonStory, buttonSizesStory, fullWidthButtonStory],
-  });
+  return (
+    <ComponentPlaygroundPage
+      title="Button"
+      description="Interactive button component with multiple variants, sizes, and states. Edit props in real-time and see changes instantly."
+      category="molecules"
+      stories={[basicButtonStory, loadingButtonStory, buttonSizesStory, fullWidthButtonStory]}
+    />
+  );
 };
