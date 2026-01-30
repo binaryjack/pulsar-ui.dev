@@ -1,6 +1,6 @@
 /**
  * Pulsar UI Showcase - Sidebar Component
- * Refactored to use Pulsar UI components
+ * Updated to show only Playground-enabled components
  */
 
 import { cn } from '@pulsar-framework/design-tokens';
@@ -10,57 +10,17 @@ import { ComponentConfigBuilder } from '../components/utils/component-config-bui
 import type { IComponent, ISidebarProps } from '../types';
 
 const COMPONENTS: IComponent[] = [
-  // Atoms
-  { id: 'avatar', name: 'Avatar', category: 'atoms', description: 'User avatar with fallback' },
-  { id: 'checkbox', name: 'Checkbox', category: 'atoms', description: 'Checkbox input' },
-  { id: 'container', name: 'Container', category: 'atoms', description: 'Responsive container' },
-  { id: 'divider', name: 'Divider', category: 'atoms', description: 'Visual separator' },
-  { id: 'grid', name: 'Grid', category: 'atoms', description: 'CSS Grid layout' },
-  { id: 'input', name: 'Input', category: 'atoms', description: 'Text input field' },
-  { id: 'progress', name: 'Progress', category: 'atoms', description: 'Progress indicator' },
-  { id: 'radio', name: 'Radio', category: 'atoms', description: 'Radio input' },
-  { id: 'rating', name: 'Rating', category: 'atoms', description: 'Star rating' },
-  { id: 'skeleton', name: 'Skeleton', category: 'atoms', description: 'Loading placeholder' },
-  { id: 'slider', name: 'Slider', category: 'atoms', description: 'Range input' },
-  { id: 'spinner', name: 'Spinner', category: 'atoms', description: 'Loading spinner' },
-  { id: 'stack', name: 'Stack', category: 'atoms', description: 'Flexbox layout' },
-  { id: 'textarea', name: 'Textarea', category: 'atoms', description: 'Multi-line input' },
-  { id: 'toggle', name: 'Toggle', category: 'atoms', description: 'Toggle switch' },
-  { id: 'tooltip', name: 'Tooltip', category: 'atoms', description: 'Hover tooltip' },
-  { id: 'typography', name: 'Typography', category: 'atoms', description: 'Text styles' },
+  // Atoms - Playground enabled
+  { id: 'input', name: 'Input', category: 'atoms', description: 'Text input field ⚡ Playground' },
+  { id: 'toggle', name: 'Toggle', category: 'atoms', description: 'Toggle switch ⚡ Playground' },
 
-  // Molecules
-  { id: 'accordion', name: 'Accordion', category: 'molecules', description: 'Collapsible panels' },
-  { id: 'alert', name: 'Alert', category: 'molecules', description: 'Alert message' },
-  { id: 'badge', name: 'Badge', category: 'molecules', description: 'Status badge' },
+  // Molecules - Playground enabled
   {
-    id: 'breadcrumbs',
-    name: 'Breadcrumbs',
+    id: 'button',
+    name: 'Button',
     category: 'molecules',
-    description: 'Navigation trail',
+    description: 'Button component ⚡ Playground',
   },
-  { id: 'button', name: 'Button', category: 'molecules', description: 'Button component' },
-  { id: 'dropdown', name: 'Dropdown', category: 'molecules', description: 'Dropdown menu' },
-  { id: 'label', name: 'Label', category: 'molecules', description: 'Form label' },
-  { id: 'list', name: 'List', category: 'molecules', description: 'Ordered/unordered list' },
-  { id: 'menu', name: 'Menu', category: 'molecules', description: 'Navigation menu' },
-  { id: 'pagination', name: 'Pagination', category: 'molecules', description: 'Page navigation' },
-  { id: 'popover', name: 'Popover', category: 'molecules', description: 'Popover overlay' },
-  {
-    id: 'radio-group',
-    name: 'RadioGroup',
-    category: 'molecules',
-    description: 'Radio button group',
-  },
-  { id: 'tabs', name: 'Tabs', category: 'molecules', description: 'Tabbed interface' },
-
-  // Organisms
-  { id: 'card', name: 'Card', category: 'organisms', description: 'Content card' },
-  { id: 'drawer', name: 'Drawer', category: 'organisms', description: 'Side panel' },
-  { id: 'modal', name: 'Modal', category: 'organisms', description: 'Modal dialog' },
-  { id: 'select', name: 'Select', category: 'organisms', description: 'Select dropdown' },
-  { id: 'table', name: 'Table', category: 'organisms', description: 'Data table' },
-  { id: 'toast', name: 'Toast', category: 'organisms', description: 'Toast notification' },
 ];
 
 export const Sidebar = ({

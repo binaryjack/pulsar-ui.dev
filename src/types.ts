@@ -29,12 +29,6 @@ export interface IComponentShowcaseProps {
   readonly component: string;
 }
 
-export interface IDemoSectionProps {
-  readonly title: string;
-  readonly description?: string;
-  readonly children: HTMLElement | HTMLElement[];
-}
-
 export interface ICodeBlockProps {
   readonly code: string;
   readonly language?: string;
