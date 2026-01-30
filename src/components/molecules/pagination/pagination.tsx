@@ -62,7 +62,7 @@ export const Pagination = ({
         <button
           className={buttonClasses(false, currentPage === 1)}
           disabled={currentPage === 1}
-          onclick={() => currentPage > 1 && onPageChange(1)}
+          onClick={() => currentPage > 1 && onPageChange(1)}
           aria-label="First page"
         >
           «
@@ -73,7 +73,7 @@ export const Pagination = ({
       <button
         className={buttonClasses(false, currentPage === 1)}
         disabled={currentPage === 1}
-        onclick={() => currentPage > 1 && onPageChange(currentPage - 1)}
+        onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
         aria-label="Previous page"
       >
         ‹
@@ -86,7 +86,7 @@ export const Pagination = ({
       {pages.map((page) => (
         <button
           className={buttonClasses(page === currentPage)}
-          onclick={() => page !== currentPage && onPageChange(page)}
+          onClick={() => page !== currentPage && onPageChange(page)}
           aria-label={`Page ${page}`}
           aria-current={page === currentPage ? 'page' : undefined}
         >
@@ -101,7 +101,7 @@ export const Pagination = ({
       <button
         className={buttonClasses(false, currentPage === totalPages)}
         disabled={currentPage === totalPages}
-        onclick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
+        onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
         aria-label="Next page"
       >
         ›
@@ -112,7 +112,7 @@ export const Pagination = ({
         <button
           className={buttonClasses(false, currentPage === totalPages)}
           disabled={currentPage === totalPages}
-          onclick={() => currentPage < totalPages && onPageChange(totalPages)}
+          onClick={() => currentPage < totalPages && onPageChange(totalPages)}
           aria-label="Last page"
         >
           »

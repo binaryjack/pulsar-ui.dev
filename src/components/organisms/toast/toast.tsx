@@ -65,7 +65,7 @@ export const Toast = ({
       <button
         type="button"
         className="flex-shrink-0 text-white hover:opacity-70 transition-opacity"
-        onclick={handleClose}
+        onClick={handleClose}
         aria-label="Close"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -6,9 +6,9 @@
     "declaration": true,
     "declarationMap": false,
     "outDir": "./dist",
-    "types": ["vite/client"],
     "skipLibCheck": true
   },
+  "files": ["../pulsar.dev/src/types/jsx.d.ts"],
   "include": ["src/index.ts", "src/components/**/*.ts", "src/components/**/*.tsx"],
   "exclude": [
     "node_modules",

@@ -79,7 +79,7 @@ export const Modal = ({
             'transition-opacity duration-200 animate-fade-in',
             !isOpen && 'hidden opacity-0'
           )}
-          onclick={handleBackdropClick}
+          onClick={handleBackdropClick}
         />
       )}
       <div
