@@ -4,7 +4,7 @@
  */
 
 import { cn } from '@pulsar-framework/design-tokens';
-import { createEffect, useNavigate, useSearchParams, useState } from '@pulsar-framework/pulsar.dev';
+import { createEffect, routerContext, useNavigate, useState } from '@pulsar-framework/pulsar.dev';
 import { ComponentShowcase } from './showcase-components/component-showcase';
 import { Header } from './showcase-components/header';
 import { Sidebar } from './showcase-components/sidebar';
@@ -12,7 +12,6 @@ import type { ComponentCategory } from './types';
 
 export const App = (): HTMLElement => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
 
   const [activeCategory, setActiveCategory] = useState<ComponentCategory>('atoms');
   const [activeComponent, setActiveComponent] = useState<string>('input');
@@ -20,8 +19,10 @@ export const App = (): HTMLElement => {
 
   // Sync state with URL params on mount and when URL changes
   createEffect(() => {
-    const categoryFromUrl = (searchParams.get('category') as ComponentCategory) || 'atoms';
-    const componentFromUrl = searchParams.get('component') || 'input';
+    // Access the reactive query signal from router context
+    const query = routerContext.currentQuery;
+    const categoryFromUrl = (query?.get('category') as ComponentCategory) || 'atoms';
+    const componentFromUrl = query?.get('component') || 'input';
 
     setActiveCategory(categoryFromUrl);
     setActiveComponent(componentFromUrl);
