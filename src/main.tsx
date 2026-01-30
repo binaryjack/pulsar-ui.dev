@@ -26,7 +26,7 @@ const AppContext = createContext<IAppContext>({
 });
 
 // Wrapper component with context
-const AppWithContext = () => {
+const AppWithContext = (): HTMLElement => {
   return (
     <AppContext.Provider
       value={{
