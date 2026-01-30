@@ -14,13 +14,13 @@ export interface IRetractablePanelProps extends Pulsar.HtmlExtends<'div'> {
   styling?: ComponentStyling;
 
   /** Panel header content */
-  header?: HTMLElement | string;
+  header?: Pulsar.Children;
 
   /** Panel footer content */
-  footer?: HTMLElement | string;
+  footer?: Pulsar.Children;
 
   /** Panel body content (main content area) */
-  children?: HTMLElement | string;
+  children?: Pulsar.Children;
 
   /** Direction of collapse animation */
   direction?: 'horizontal' | 'vertical';

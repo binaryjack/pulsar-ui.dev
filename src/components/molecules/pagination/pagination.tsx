@@ -37,7 +37,7 @@ export const Pagination = ({
   pageRange = 5,
   showFirstLast = true,
   onPageChange,
-  class: className,
+  className,
   ...rest
 }: IPaginationProps): HTMLElement => {
   const pages = getPageNumbers(currentPage, totalPages, pageRange);

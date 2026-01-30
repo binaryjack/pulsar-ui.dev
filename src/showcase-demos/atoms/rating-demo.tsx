@@ -13,20 +13,20 @@ export const RatingDemo = (): HTMLElement => {
   const [rating2, setRating2] = useState(4.5);
 
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Rating</h1>
-        <p class="text-gray-600 dark:text-gray-400">
-          Star rating component with interactive and readonly modes, half-star support.
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Rating</h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          Star rating component with interactive and readOnly modes, half-star support.
         </p>
       </div>
 
       <DemoSection title="Sizes" description="Rating available in 4 sizes">
-        <Stack direction="column" spacing="lg">
-          <Rating size="sm" value={4} readonly />
-          <Rating size="md" value={4} readonly />
-          <Rating size="lg" value={4} readonly />
-          <Rating size="xl" value={4} readonly />
+        <Stack direction="vertical" spacing="lg">
+          <Rating size="sm" value={4} readOnly />
+          <Rating size="md" value={4} readOnly />
+          <Rating size="lg" value={4} readOnly />
+          <Rating size="xl" value={4} readOnly />
         </Stack>
         <CodeBlock
           code={`<Rating size="sm" value={4} />
@@ -35,10 +35,10 @@ export const RatingDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Interactive" description="Click to rate">
-        <div class="space-y-4">
+        <div className="space-y-4">
           <div>
             <Rating value={rating1} onChange={setRating1} size="lg" />
-            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
               Current rating: {rating1} / 5
             </p>
           </div>
@@ -55,10 +55,10 @@ export const RatingDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Half Stars" description="Allow half-star ratings">
-        <div class="space-y-4">
+        <div className="space-y-4">
           <div>
             <Rating value={rating2} onChange={setRating2} allowHalf size="lg" />
-            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
               Current rating: {rating2} / 5
             </p>
           </div>
@@ -73,22 +73,22 @@ export const RatingDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Readonly" description="Display rating without interaction">
-        <Stack direction="column" spacing="md">
-          <div class="flex items-center gap-2">
-            <Rating value={5} readonly size="md" />
-            <span class="text-sm text-gray-600 dark:text-gray-400">5.0 (127 reviews)</span>
+        <Stack direction="vertical" spacing="md">
+          <div className="flex items-center gap-2">
+            <Rating value={5} readOnly size="md" />
+            <span className="text-sm text-gray-600 dark:text-gray-400">5.0 (127 reviews)</span>
           </div>
-          <div class="flex items-center gap-2">
-            <Rating value={4} readonly size="md" />
-            <span class="text-sm text-gray-600 dark:text-gray-400">4.0 (89 reviews)</span>
+          <div className="flex items-center gap-2">
+            <Rating value={4} readOnly size="md" />
+            <span className="text-sm text-gray-600 dark:text-gray-400">4.0 (89 reviews)</span>
           </div>
-          <div class="flex items-center gap-2">
-            <Rating value={3.5} allowHalf readonly size="md" />
-            <span class="text-sm text-gray-600 dark:text-gray-400">3.5 (45 reviews)</span>
+          <div className="flex items-center gap-2">
+            <Rating value={3.5} allowHalf readOnly size="md" />
+            <span className="text-sm text-gray-600 dark:text-gray-400">3.5 (45 reviews)</span>
           </div>
         </Stack>
         <CodeBlock
-          code={`<Rating value={4.5} readonly allowHalf />
+          code={`<Rating value={4.5} readOnly allowHalf />
 <span>4.5 (89 reviews)</span>`}
         />
       </DemoSection>

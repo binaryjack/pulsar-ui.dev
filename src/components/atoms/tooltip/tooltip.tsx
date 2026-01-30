@@ -75,7 +75,7 @@ export const Tooltip = ({
     >
       {children}
       <div
-        ref={(el) => (tooltipElement = el)}
+        ref={(el: HTMLElement | null) => (tooltipElement = el)}
         className={cn(
           'absolute z-50 px-2 py-1 text-sm text-white bg-neutral-900 rounded-md whitespace-nowrap',
           'transition-opacity duration-200 opacity-0 pointer-events-none',

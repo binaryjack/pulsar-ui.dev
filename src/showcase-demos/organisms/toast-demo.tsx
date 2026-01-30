@@ -19,10 +19,10 @@ export const ToastDemo = (): HTMLElement => {
     .build();
 
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Toast</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Toast</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Toast notifications with Portal, 6 positions, auto-dismiss, and queue management.
         </p>
       </div>

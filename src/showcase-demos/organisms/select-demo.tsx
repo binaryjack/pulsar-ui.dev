@@ -292,7 +292,6 @@ const options = [
               text="Priority"
               required
               helperText="Choose task priority level"
-              error="Priority is required"
             />
             <Select options={priorityOptions} placeholder="Select priority" />
           </Stack>

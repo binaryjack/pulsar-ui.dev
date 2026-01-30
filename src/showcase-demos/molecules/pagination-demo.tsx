@@ -4,8 +4,8 @@
 
 import { useState } from '@pulsar-framework/pulsar.dev';
 import { Pagination } from '../../components/molecules/pagination';
-import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
+import { DemoSection } from '../../showcase-components/demo-section';
 
 export const PaginationDemo = (): HTMLElement => {
   const [page1, setPage1] = useState(1);
@@ -13,18 +13,18 @@ export const PaginationDemo = (): HTMLElement => {
   const [page3, setPage3] = useState(1);
 
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Pagination</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Pagination</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Page navigation with ellipsis, first/last buttons, and configurable page range.
         </p>
       </div>
 
       <DemoSection title="Basic Pagination" description="Navigate through pages">
-        <div class="space-y-4">
-          <Pagination currentPage={page1} totalPages={10} onPageChange={setPage1} />
-          <p class="text-sm text-gray-600 dark:text-gray-400">Current page: {page1} of 10</p>
+        <div className="space-y-4">
+          <Pagination currentPage={page1()} totalPages={10} onPageChange={setPage1} />
+          <p className="text-sm text-gray-600 dark:text-gray-400">Current page: {page1()} of 10</p>
         </div>
         <CodeBlock
           code={`const [page, setPage] = useState(1)
@@ -41,9 +41,9 @@ export const PaginationDemo = (): HTMLElement => {
         title="With First/Last Buttons"
         description="Quick navigation to first and last pages"
       >
-        <div class="space-y-4">
-          <Pagination currentPage={page2} totalPages={20} onPageChange={setPage2} showFirstLast />
-          <p class="text-sm text-gray-600 dark:text-gray-400">Current page: {page2} of 20</p>
+        <div className="space-y-4">
+          <Pagination currentPage={page2()} totalPages={20} onPageChange={setPage2} showFirstLast />
+          <p className="text-sm text-gray-600 dark:text-gray-400">Current page: {page2()} of 20</p>
         </div>
         <CodeBlock
           code={`<Pagination
@@ -56,16 +56,16 @@ export const PaginationDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Custom Page Range" description="Show more or fewer page numbers">
-        <div class="space-y-4">
+        <div className="space-y-4">
           <Pagination
-            currentPage={page3}
+            currentPage={page3()}
             totalPages={50}
             onPageChange={setPage3}
             showFirstLast
             pageRange={3}
           />
-          <p class="text-sm text-gray-600 dark:text-gray-400">
-            Current page: {page3} of 50 (showing 3 pages on each side)
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Current page: {page3()} of 50 (showing 3 pages on each side)
           </p>
         </div>
         <CodeBlock

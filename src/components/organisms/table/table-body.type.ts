@@ -3,7 +3,7 @@
  */
 
 export interface ITableBodyProps {
-  children: HTMLElement[];
+  children: HTMLElement | HTMLElement[];
   class?: string;
   [key: string]: unknown;
 }

@@ -7,15 +7,17 @@ import { CodeBlock } from '../../showcase-components/code-block';
 import { DemoSection } from '../../showcase-components/demo-section';
 
 export const StackDemo = (): HTMLElement => {
-  const DemoBox = ({ children }: { children: any }): HTMLElement => (
-    <div class="bg-primary-100 text-primary-700 px-4 py-2 rounded-md text-center">{children}</div>
+  const DemoBox = ({ children }: { children: HTMLElement | HTMLElement[] | string }): HTMLElement => (
+    <div className="bg-primary-100 text-primary-700 px-4 py-2 rounded-md text-center">
+      {children}
+    </div>
   );
 
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Stack</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Stack</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Flexbox-based layout component for arranging elements with consistent spacing.
         </p>
       </div>
@@ -51,9 +53,9 @@ export const StackDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Spacing Variants" description="Different spacing sizes">
-        <div class="space-y-6">
+        <div className="space-y-6">
           <div>
-            <p class="text-sm text-gray-500 mb-2">None (no spacing)</p>
+            <p className="text-sm text-gray-500 mb-2">None (no spacing)</p>
             <Stack direction="horizontal" spacing="none">
               <DemoBox>A</DemoBox>
               <DemoBox>B</DemoBox>
@@ -61,7 +63,7 @@ export const StackDemo = (): HTMLElement => {
             </Stack>
           </div>
           <div>
-            <p class="text-sm text-gray-500 mb-2">Small spacing</p>
+            <p className="text-sm text-gray-500 mb-2">Small spacing</p>
             <Stack direction="horizontal" spacing="sm">
               <DemoBox>A</DemoBox>
               <DemoBox>B</DemoBox>
@@ -69,7 +71,7 @@ export const StackDemo = (): HTMLElement => {
             </Stack>
           </div>
           <div>
-            <p class="text-sm text-gray-500 mb-2">Medium spacing (default)</p>
+            <p className="text-sm text-gray-500 mb-2">Medium spacing (default)</p>
             <Stack direction="horizontal" spacing="md">
               <DemoBox>A</DemoBox>
               <DemoBox>B</DemoBox>
@@ -77,7 +79,7 @@ export const StackDemo = (): HTMLElement => {
             </Stack>
           </div>
           <div>
-            <p class="text-sm text-gray-500 mb-2">Large spacing</p>
+            <p className="text-sm text-gray-500 mb-2">Large spacing</p>
             <Stack direction="horizontal" spacing="lg">
               <DemoBox>A</DemoBox>
               <DemoBox>B</DemoBox>
@@ -92,41 +94,41 @@ export const StackDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Alignment" description="Align items along the cross axis">
-        <div class="space-y-6">
+        <div className="space-y-6">
           <div>
-            <p class="text-sm text-gray-500 mb-2">Start alignment</p>
-            <div class="border border-gray-200 rounded p-4 h-32">
+            <p className="text-sm text-gray-500 mb-2">Start alignment</p>
+            <div className="border border-gray-200 rounded p-4 h-32">
               <Stack direction="horizontal" spacing="md" align="start">
                 <DemoBox>A</DemoBox>
                 <DemoBox>
                   <div>B</div>
-                  <div class="text-xs">Taller</div>
+                  <div className="text-xs">Taller</div>
                 </DemoBox>
                 <DemoBox>C</DemoBox>
               </Stack>
             </div>
           </div>
           <div>
-            <p class="text-sm text-gray-500 mb-2">Center alignment</p>
-            <div class="border border-gray-200 rounded p-4 h-32">
+            <p className="text-sm text-gray-500 mb-2">Center alignment</p>
+            <div className="border border-gray-200 rounded p-4 h-32">
               <Stack direction="horizontal" spacing="md" align="center">
                 <DemoBox>A</DemoBox>
                 <DemoBox>
                   <div>B</div>
-                  <div class="text-xs">Taller</div>
+                  <div className="text-xs">Taller</div>
                 </DemoBox>
                 <DemoBox>C</DemoBox>
               </Stack>
             </div>
           </div>
           <div>
-            <p class="text-sm text-gray-500 mb-2">End alignment</p>
-            <div class="border border-gray-200 rounded p-4 h-32">
+            <p className="text-sm text-gray-500 mb-2">End alignment</p>
+            <div className="border border-gray-200 rounded p-4 h-32">
               <Stack direction="horizontal" spacing="md" align="end">
                 <DemoBox>A</DemoBox>
                 <DemoBox>
                   <div>B</div>
-                  <div class="text-xs">Taller</div>
+                  <div className="text-xs">Taller</div>
                 </DemoBox>
                 <DemoBox>C</DemoBox>
               </Stack>
@@ -141,9 +143,9 @@ export const StackDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Justification" description="Justify items along the main axis">
-        <div class="space-y-6">
+        <div className="space-y-6">
           <div>
-            <p class="text-sm text-gray-500 mb-2">Start justification</p>
+            <p className="text-sm text-gray-500 mb-2">Start justification</p>
             <Stack direction="horizontal" spacing="md" justify="start">
               <DemoBox>A</DemoBox>
               <DemoBox>B</DemoBox>
@@ -151,7 +153,7 @@ export const StackDemo = (): HTMLElement => {
             </Stack>
           </div>
           <div>
-            <p class="text-sm text-gray-500 mb-2">Center justification</p>
+            <p className="text-sm text-gray-500 mb-2">Center justification</p>
             <Stack direction="horizontal" spacing="md" justify="center">
               <DemoBox>A</DemoBox>
               <DemoBox>B</DemoBox>
@@ -159,7 +161,7 @@ export const StackDemo = (): HTMLElement => {
             </Stack>
           </div>
           <div>
-            <p class="text-sm text-gray-500 mb-2">End justification</p>
+            <p className="text-sm text-gray-500 mb-2">End justification</p>
             <Stack direction="horizontal" spacing="md" justify="end">
               <DemoBox>A</DemoBox>
               <DemoBox>B</DemoBox>
@@ -167,7 +169,7 @@ export const StackDemo = (): HTMLElement => {
             </Stack>
           </div>
           <div>
-            <p class="text-sm text-gray-500 mb-2">Space between</p>
+            <p className="text-sm text-gray-500 mb-2">Space between</p>
             <Stack direction="horizontal" spacing="none" justify="between">
               <DemoBox>A</DemoBox>
               <DemoBox>B</DemoBox>

@@ -71,7 +71,7 @@ export const Popover = ({
     <div className={cn('relative inline-block', className)} {...rest}>
       <div {...triggerProps}>{triggerElement}</div>
       <div
-        ref={(el) => (popoverElement = el)}
+        ref={(el: HTMLElement | null) => (popoverElement = el)}
         className={cn(
           'absolute z-50 bg-white border border-neutral-200 rounded-lg shadow-lg p-4',
           'transition-all duration-200',

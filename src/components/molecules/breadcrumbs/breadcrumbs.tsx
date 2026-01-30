@@ -14,7 +14,7 @@ import type { IBreadcrumbsProps } from './breadcrumbs.type';
 export const Breadcrumbs = ({
   separator = '/',
   children,
-  class: className,
+  className,
   ...rest
 }: IBreadcrumbsProps): HTMLElement => {
   const breadcrumbsClasses = cn('flex items-center space-x-2 text-sm', className);
@@ -34,7 +34,7 @@ export const BreadcrumbItem = ({
   href,
   current = false,
   children,
-  class: className,
+  className,
   ...rest
 }: IBreadcrumbItemProps): HTMLElement => {
   const itemClasses = cn(

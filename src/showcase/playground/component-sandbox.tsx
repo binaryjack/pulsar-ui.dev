@@ -5,10 +5,16 @@
  * This is the heart of the Pulsar Playground system.
  */
 
+import { useState } from '@pulsar-framework/pulsar.dev';
 import { Divider } from '../../components/atoms/divider';
 import { Stack } from '../../components/atoms/stack';
 import { Typography } from '../../components/atoms/typography';
+import { Button } from '../../components/molecules/button';
 import { Card } from '../../components/organisms/card';
+import { generateCode } from './code-generator';
+import { CodeHighlighter } from './code-highlighter';
+import { PropEditor } from './prop-editors';
+import type { PropValue } from './prop-editors/prop-editor.types';
 import type { LoggedEvent, Story } from './story.types';
 
 export interface IComponentSandboxProps {
@@ -36,6 +42,19 @@ export const ComponentSandbox = ({
   showHeader = true,
   class: className,
 }: IComponentSandboxProps): HTMLElement => {
+  // Use Pulsar's reactive state for props
+  const [currentProps, setCurrentProps] = useState<Record<string, PropValue>>({ ...story.props });
+  const [showCode, setShowCode] = useState<boolean>(false);
+
+  /**
+   * Handle prop value changes from PropEditor
+   */
+  const handlePropChange = (propName: string, newValue: PropValue): void => {
+    const newProps = { ...currentProps(), [propName]: newValue };
+    setCurrentProps(newProps);
+    // Component will re-render automatically due to reactive state
+  };
+
   /**
    * Wrap component with context providers if specified
    */
@@ -101,45 +120,150 @@ export const ComponentSandbox = ({
   };
 
   /**
-   * Render the component with enhanced props
+   * Render the component with current props
    */
   const renderComponent = (): HTMLElement => {
-    const enhancedProps = enhancePropsWithEventHandlers(story.props);
+    const propsSnapshot = currentProps();
+    const enhancedProps = enhancePropsWithEventHandlers(propsSnapshot);
     const component = story.component(enhancedProps);
-    return wrapWithContexts(component);
+    const wrappedComponent = wrapWithContexts(component);
+    return wrappedComponent;
   };
 
-  return (
-    <Stack direction="vertical" spacing="md" className={className}>
-      {/* Story Header */}
-      {showHeader && (
-        <Stack direction="vertical" spacing="xs">
-          <Typography tag="h3" variant="h3">
-            {story.title}
-          </Typography>
-          {story.description && (
-            <Typography tag="p" variant="body2" className="text-neutral-600">
-              {story.description}
-            </Typography>
-          )}
-          {story.metadata?.tags && story.metadata.tags.length > 0 && (
-            <Stack direction="horizontal" spacing="xs">
-              {story.metadata.tags.map((tag) => (
-                <span className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md bg-primary-100 text-primary-800">
-                  {tag}
-                </span>
-              ))}
-            </Stack>
-          )}
-        </Stack>
-      )}
+  // Build the main container
+  const mainStack = Stack({
+    direction: 'vertical',
+    spacing: 'md',
+    className,
+    children: [] as HTMLElement[],
+  });
 
-      {showHeader && <Divider />}
+  // Add header if requested
+  if (showHeader) {
+    const headerStack = Stack({
+      direction: 'vertical',
+      spacing: 'xs',
+      children: [
+        Typography({
+          tag: 'h3',
+          variant: 'h3',
+          children: story.title,
+        }),
+      ],
+    });
 
-      {/* Component Rendering Area */}
-      <Card>
-        <div className="p-6">{renderComponent()}</div>
-      </Card>
-    </Stack>
-  );
+    if (story.description) {
+      headerStack.appendChild(
+        Typography({
+          tag: 'p',
+          variant: 'body2',
+          className: 'text-neutral-600',
+          children: story.description,
+        })
+      );
+    }
+
+    if (story.metadata?.tags && story.metadata.tags.length > 0) {
+      const tagsStack = Stack({
+        direction: 'horizontal',
+        spacing: 'xs',
+        children: story.metadata.tags.map((tag) => {
+          const span = document.createElement('span');
+          span.className =
+            'inline-flex items-center px-2 py-1 text-xs font-medium rounded-md bg-primary-100 text-primary-800';
+          span.textContent = tag;
+          return span;
+        }),
+      });
+      headerStack.appendChild(tagsStack);
+    }
+
+    mainStack.appendChild(headerStack);
+    mainStack.appendChild(Divider({}));
+  }
+
+  // Add main content (component + prop editor + code)
+  if (story.propEditors && story.propEditors.length > 0) {
+    // Two-column layout with prop editor
+    const gridContainer = document.createElement('div');
+    gridContainer.className = 'grid grid-cols-1 lg:grid-cols-2 gap-6';
+
+    // Create component container div
+    const componentContainer = document.createElement('div');
+    componentContainer.className = 'p-6 min-h-48 flex items-center justify-center';
+
+    // Initial render
+    componentContainer.appendChild(renderComponent());
+
+    // Component card with toggle button
+    const componentCard = Card({
+      children: Stack({
+        direction: 'vertical',
+        spacing: 'md',
+        children: [
+          componentContainer,
+          Button({
+            onclick: () => setShowCode(!showCode()),
+            children: showCode() ? '👁️ Hide Code' : '💻 Show Code',
+          }),
+        ],
+      }),
+    });
+
+    gridContainer.appendChild(componentCard);
+
+    // Prop editor panel
+    const propEditorPanel = PropEditor({
+      props: story.propEditors.map((config) => ({
+        ...config,
+        value: currentProps()[config.name] ?? config.defaultValue,
+      })),
+      onChange: handlePropChange,
+    });
+    gridContainer.appendChild(propEditorPanel);
+
+    mainStack.appendChild(gridContainer);
+
+    // Code panel (collapsible)
+    if (showCode()) {
+      const generatedCode = generateCode(story, currentProps());
+      mainStack.appendChild(
+        CodeHighlighter({
+          code: generatedCode,
+          language: 'tsx',
+          showCopy: true,
+        })
+      );
+    }
+  } else {
+    // Single column - component only
+    const componentCard = Card({
+      children: Stack({
+        direction: 'vertical',
+        spacing: 'md',
+        children: [
+          renderComponent(),
+          Button({
+            onclick: () => setShowCode(!showCode()),
+            children: showCode() ? '👁️ Hide Code' : '💻 Show Code',
+          }),
+        ],
+      }),
+    });
+    mainStack.appendChild(componentCard);
+
+    // Code panel
+    if (showCode()) {
+      const generatedCode = generateCode(story, currentProps());
+      mainStack.appendChild(
+        CodeHighlighter({
+          code: generatedCode,
+          language: 'tsx',
+          showCopy: true,
+        })
+      );
+    }
+  }
+
+  return mainStack;
 };

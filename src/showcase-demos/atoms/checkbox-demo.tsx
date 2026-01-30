@@ -10,38 +10,38 @@ import { CodeBlock } from '../../showcase-components/code-block';
 
 export const CheckboxDemo = (): HTMLElement => {
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Checkbox</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Checkbox</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Checkbox input for multiple selections and boolean values.
         </p>
       </div>
 
       <DemoSection title="Basic Checkbox" description="Simple checkbox with label">
-        <Stack direction="column" spacing="md">
-          <label class="flex items-center gap-2 cursor-pointer">
+        <Stack direction="vertical" spacing="md">
+          <label className="flex items-center gap-2 cursor-pointer">
             <Checkbox id="check1" />
             <span>Accept terms and conditions</span>
           </label>
 
-          <label class="flex items-center gap-2 cursor-pointer">
+          <label className="flex items-center gap-2 cursor-pointer">
             <Checkbox id="check2" checked />
             <span>Subscribe to newsletter</span>
           </label>
 
-          <label class="flex items-center gap-2 cursor-pointer">
+          <label className="flex items-center gap-2 cursor-pointer">
             <Checkbox id="check3" />
             <span>Remember me</span>
           </label>
         </Stack>
         <CodeBlock
-          code={`<label class="flex items-center gap-2">
+          code={`<label className="flex items-center gap-2">
   <Checkbox />
   <span>Label text</span>
 </label>
 
-<label class="flex items-center gap-2">
+<label className="flex items-center gap-2">
   <Checkbox checked />
   <span>Checked by default</span>
 </label>`}
@@ -49,20 +49,20 @@ export const CheckboxDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Sizes" description="Different checkbox sizes">
-        <Stack direction="column" spacing="lg">
-          <label class="flex items-center gap-2">
+        <Stack direction="vertical" spacing="lg">
+          <label className="flex items-center gap-2">
             <Checkbox size="sm" />
-            <span class="text-sm">Small checkbox</span>
+            <span className="text-sm">Small checkbox</span>
           </label>
 
-          <label class="flex items-center gap-2">
+          <label className="flex items-center gap-2">
             <Checkbox size="md" checked />
             <span>Medium checkbox (default)</span>
           </label>
 
-          <label class="flex items-center gap-2">
+          <label className="flex items-center gap-2">
             <Checkbox size="lg" />
-            <span class="text-lg">Large checkbox</span>
+            <span className="text-lg">Large checkbox</span>
           </label>
         </Stack>
         <CodeBlock
@@ -73,28 +73,28 @@ export const CheckboxDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="States" description="Checkbox states">
-        <Stack direction="column" spacing="md">
-          <label class="flex items-center gap-2">
+        <Stack direction="vertical" spacing="md">
+          <label className="flex items-center gap-2">
             <Checkbox />
             <span>Unchecked</span>
           </label>
 
-          <label class="flex items-center gap-2">
+          <label className="flex items-center gap-2">
             <Checkbox checked />
             <span>Checked</span>
           </label>
 
-          <label class="flex items-center gap-2 opacity-50 cursor-not-allowed">
+          <label className="flex items-center gap-2 opacity-50 cursor-not-allowed">
             <Checkbox disabled />
             <span>Disabled unchecked</span>
           </label>
 
-          <label class="flex items-center gap-2 opacity-50 cursor-not-allowed">
+          <label className="flex items-center gap-2 opacity-50 cursor-not-allowed">
             <Checkbox checked disabled />
             <span>Disabled checked</span>
           </label>
 
-          <label class="flex items-center gap-2">
+          <label className="flex items-center gap-2">
             <Checkbox indeterminate />
             <span>Indeterminate state</span>
           </label>
@@ -108,39 +108,39 @@ export const CheckboxDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Checkbox Group" description="Multiple related checkboxes">
-        <div class="space-y-4">
-          <Label>Select your interests:</Label>
-          <Stack direction="column" spacing="md" class="pl-2">
-            <label class="flex items-center gap-2">
+        <div className="space-y-4">
+          <Label text="Select your interests:" />
+          <Stack direction="vertical" spacing="md" className="pl-2">
+            <label className="flex items-center gap-2">
               <Checkbox id="tech" checked />
               <span>Technology</span>
             </label>
-            <label class="flex items-center gap-2">
+            <label className="flex items-center gap-2">
               <Checkbox id="design" checked />
               <span>Design</span>
             </label>
-            <label class="flex items-center gap-2">
+            <label className="flex items-center gap-2">
               <Checkbox id="business" />
               <span>Business</span>
             </label>
-            <label class="flex items-center gap-2">
+            <label className="flex items-center gap-2">
               <Checkbox id="marketing" />
               <span>Marketing</span>
             </label>
-            <label class="flex items-center gap-2">
+            <label className="flex items-center gap-2">
               <Checkbox id="other" />
               <span>Other</span>
             </label>
           </Stack>
         </div>
         <CodeBlock
-          code={`<Label>Select your interests:</Label>
-<Stack direction="column" spacing="md">
-  <label class="flex items-center gap-2">
+          code={`<Label text="Select your interests:" />
+<Stack direction="vertical" spacing="md">
+  <label className="flex items-center gap-2">
     <Checkbox id="tech" />
     <span>Technology</span>
   </label>
-  <label class="flex items-center gap-2">
+  <label className="flex items-center gap-2">
     <Checkbox id="design" />
     <span>Design</span>
   </label>
@@ -149,39 +149,39 @@ export const CheckboxDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="With Descriptions" description="Add helper text to checkboxes">
-        <Stack direction="column" spacing="lg">
-          <label class="flex items-start gap-3">
-            <Checkbox id="email-notif" checked class="mt-1" />
+        <Stack direction="vertical" spacing="lg">
+          <label className="flex items-start gap-3">
+            <Checkbox id="email-notif" checked className="mt-1" />
             <div>
-              <div class="font-medium">Email notifications</div>
-              <div class="text-sm text-gray-500">
+              <div className="font-medium">Email notifications</div>
+              <div className="text-sm text-gray-500">
                 Receive email updates about your account activity
               </div>
             </div>
           </label>
 
-          <label class="flex items-start gap-3">
-            <Checkbox id="push-notif" class="mt-1" />
+          <label className="flex items-start gap-3">
+            <Checkbox id="push-notif" className="mt-1" />
             <div>
-              <div class="font-medium">Push notifications</div>
-              <div class="text-sm text-gray-500">Get push notifications on your devices</div>
+              <div className="font-medium">Push notifications</div>
+              <div className="text-sm text-gray-500">Get push notifications on your devices</div>
             </div>
           </label>
 
-          <label class="flex items-start gap-3">
-            <Checkbox id="sms-notif" class="mt-1" />
+          <label className="flex items-start gap-3">
+            <Checkbox id="sms-notif" className="mt-1" />
             <div>
-              <div class="font-medium">SMS notifications</div>
-              <div class="text-sm text-gray-500">Receive text messages for important updates</div>
+              <div className="font-medium">SMS notifications</div>
+              <div className="text-sm text-gray-500">Receive text messages for important updates</div>
             </div>
           </label>
         </Stack>
         <CodeBlock
-          code={`<label class="flex items-start gap-3">
-  <Checkbox class="mt-1" />
+          code={`<label className="flex items-start gap-3">
+  <Checkbox className="mt-1" />
   <div>
-    <div class="font-medium">Title</div>
-    <div class="text-sm text-gray-500">
+    <div className="font-medium">Title</div>
+    <div className="text-sm text-gray-500">
       Description text
     </div>
   </div>
@@ -190,29 +190,29 @@ export const CheckboxDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Agreement Checkbox" description="Common use case for terms acceptance">
-        <div class="space-y-4">
-          <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-            <label class="flex items-start gap-3">
-              <Checkbox id="agree" required class="mt-1" />
-              <div class="text-sm">
+        <div className="space-y-4">
+          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+            <label className="flex items-start gap-3">
+              <Checkbox id="agree" required className="mt-1" />
+              <div className="text-sm">
                 <span>I agree to the </span>
-                <a href="#" class="text-blue-600 hover:underline">
+                <a href="#" className="text-blue-600 hover:underline">
                   Terms of Service
                 </a>
                 <span> and </span>
-                <a href="#" class="text-blue-600 hover:underline">
+                <a href="#" className="text-blue-600 hover:underline">
                   Privacy Policy
                 </a>
               </div>
             </label>
           </div>
 
-          <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-            <label class="flex items-start gap-3">
-              <Checkbox id="marketing" class="mt-1" />
-              <div class="text-sm">
-                <div class="font-medium mb-1">Marketing communications</div>
-                <div class="text-gray-600 dark:text-gray-400">
+          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+            <label className="flex items-start gap-3">
+              <Checkbox id="marketing" className="mt-1" />
+              <div className="text-sm">
+                <div className="font-medium mb-1">Marketing communications</div>
+                <div className="text-gray-600 dark:text-gray-400">
                   I would like to receive marketing emails about products, features, and special
                   offers. You can unsubscribe at any time.
                 </div>
@@ -221,9 +221,9 @@ export const CheckboxDemo = (): HTMLElement => {
           </div>
         </div>
         <CodeBlock
-          code={`<label class="flex items-start gap-3">
+          code={`<label className="flex items-start gap-3">
   <Checkbox required />
-  <div class="text-sm">
+  <div className="text-sm">
     I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>
   </div>
 </label>`}

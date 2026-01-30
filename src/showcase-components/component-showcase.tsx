@@ -9,10 +9,8 @@ import type { IComponentShowcaseProps } from '../types';
 // Atoms
 import { AvatarDemo } from '../showcase-demos/atoms/avatar-demo';
 import { CheckboxDemo } from '../showcase-demos/atoms/checkbox-demo';
-import { ContainerDemo } from '../showcase-demos/atoms/container-demo';
 import { DividerDemo } from '../showcase-demos/atoms/divider-demo';
-import { GridDemo } from '../showcase-demos/atoms/grid-demo';
-import { InputDemo } from '../showcase-demos/atoms/input-demo';
+import { InputPlaygroundDemo } from '../showcase-demos/atoms/input-playground-demo'; // ✅ Playground
 import { ProgressDemo } from '../showcase-demos/atoms/progress-demo';
 import { RadioDemo } from '../showcase-demos/atoms/radio-demo';
 import { RatingDemo } from '../showcase-demos/atoms/rating-demo';
@@ -21,7 +19,7 @@ import { SliderDemo } from '../showcase-demos/atoms/slider-demo';
 import { SpinnerDemo } from '../showcase-demos/atoms/spinner-demo';
 import { StackDemo } from '../showcase-demos/atoms/stack-demo';
 import { TextareaDemo } from '../showcase-demos/atoms/textarea-demo';
-import { ToggleDemo } from '../showcase-demos/atoms/toggle-demo';
+import { TogglePlaygroundDemo } from '../showcase-demos/atoms/toggle-playground-demo'; // ✅ Playground
 import { TooltipDemo } from '../showcase-demos/atoms/tooltip-demo';
 import { TypographyDemo } from '../showcase-demos/atoms/typography-demo';
 
@@ -30,7 +28,7 @@ import { AccordionDemo } from '../showcase-demos/molecules/accordion-demo';
 import { AlertDemo } from '../showcase-demos/molecules/alert-demo';
 import { BadgeDemo } from '../showcase-demos/molecules/badge-demo';
 import { BreadcrumbsDemo } from '../showcase-demos/molecules/breadcrumbs-demo';
-import { ButtonDemo } from '../showcase-demos/molecules/button-demo';
+import { ButtonPlaygroundDemo } from '../showcase-demos/molecules/button-playground-demo'; // ✅ Playground
 import { DropdownDemo } from '../showcase-demos/molecules/dropdown-demo';
 import { LabelDemo } from '../showcase-demos/molecules/label-demo';
 import { ListDemo } from '../showcase-demos/molecules/list-demo';
@@ -44,18 +42,15 @@ import { TabsDemo } from '../showcase-demos/molecules/tabs-demo';
 import { CardDemo } from '../showcase-demos/organisms/card-demo';
 import { DrawerDemo } from '../showcase-demos/organisms/drawer-demo';
 import { ModalDemo } from '../showcase-demos/organisms/modal-demo';
-import { SelectDemo } from '../showcase-demos/organisms/select-demo';
 import { TableDemo } from '../showcase-demos/organisms/table-demo';
 import { ToastDemo } from '../showcase-demos/organisms/toast-demo';
 
 const DEMO_COMPONENTS = {
-  // Atoms
+  // Atoms (✅ = Playground-enabled)
   avatar: AvatarDemo,
   checkbox: CheckboxDemo,
-  container: ContainerDemo,
   divider: DividerDemo,
-  grid: GridDemo,
-  input: InputDemo,
+  input: InputPlaygroundDemo, // ✅ NEW: Interactive playground
   progress: ProgressDemo,
   radio: RadioDemo,
   rating: RatingDemo,
@@ -64,16 +59,16 @@ const DEMO_COMPONENTS = {
   spinner: SpinnerDemo,
   stack: StackDemo,
   textarea: TextareaDemo,
-  toggle: ToggleDemo,
+  toggle: TogglePlaygroundDemo, // ✅ NEW: Interactive playground
   tooltip: TooltipDemo,
   typography: TypographyDemo,
 
-  // Molecules
+  // Molecules (✅ = Playground-enabled)
   accordion: AccordionDemo,
   alert: AlertDemo,
   badge: BadgeDemo,
   breadcrumbs: BreadcrumbsDemo,
-  button: ButtonDemo,
+  button: ButtonPlaygroundDemo, // ✅ NEW: Interactive playground
   dropdown: DropdownDemo,
   label: LabelDemo,
   list: ListDemo,
@@ -87,7 +82,6 @@ const DEMO_COMPONENTS = {
   card: CardDemo,
   drawer: DrawerDemo,
   modal: ModalDemo,
-  select: SelectDemo,
   table: TableDemo,
   toast: ToastDemo,
 };

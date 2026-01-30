@@ -15,10 +15,10 @@ export const Slider = ({
   disabled = false,
   onChange,
   variant = 'primary',
-  class: className,
+  className,
   ...rest
 }: ISliderProps): HTMLElement => {
-  const [currentValue, setCurrentValue] = useState(value);
+  const [currentValue, setCurrentValue] = useState<number>(value);
 
   const handleChange = (e: Event) => {
     const target = e.target as HTMLInputElement;
@@ -28,7 +28,7 @@ export const Slider = ({
   };
 
   // Calculate percentage for styling
-  const percentage = ((currentValue - min) / (max - min)) * 100;
+  const percentage = ((currentValue() - min) / (max - min)) * 100;
 
   // Variant colors
   const variantColors = {
@@ -64,7 +64,9 @@ export const Slider = ({
   );
 
   const valueDisplay = showValue ? (
-    <div className="mt-2 text-center text-sm text-gray-700 dark:text-gray-300">{currentValue}</div>
+    <div className="mt-2 text-center text-sm text-gray-700 dark:text-gray-300">
+      {currentValue()}
+    </div>
   ) : null;
 
   return (
@@ -83,12 +85,12 @@ export const Slider = ({
           min={min}
           max={max}
           step={step}
-          value={currentValue}
+          value={currentValue()}
           disabled={disabled}
           onInput={handleChange}
           aria-valuemin={min}
           aria-valuemax={max}
-          aria-valuenow={currentValue}
+          aria-valuenow={currentValue()}
           aria-disabled={disabled}
         />
       </div>

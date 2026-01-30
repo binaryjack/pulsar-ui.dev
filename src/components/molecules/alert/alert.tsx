@@ -43,7 +43,7 @@ export const Alert = ({
 
   return (
     <div
-      ref={(el) => (alertElement = el)}
+      ref={(el: HTMLDivElement | null) => (alertElement = el)}
       className={cn(
         'relative flex items-start gap-3 px-4 py-3.5 border-l-4 rounded-r-lg shadow-sm',
         'transition-all duration-200 animate-slide-in-up',

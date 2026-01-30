@@ -9,10 +9,10 @@ import { DemoSection } from '../../showcase-components/demo-section';
 
 export const AvatarDemo = (): HTMLElement => {
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Avatar</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Avatar</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           User avatar component with image fallback, initials, and status indicators.
         </p>
       </div>

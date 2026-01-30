@@ -18,7 +18,7 @@ export const Grid = ({
   templateColumns,
   templateRows,
   children,
-  class: className,
+  className,
   ...rest
 }: IGridProps): HTMLElement => {
   const gapClasses = {

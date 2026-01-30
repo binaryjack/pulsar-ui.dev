@@ -3,7 +3,7 @@
  */
 
 import type { Pulsar } from '@pulsar-framework/pulsar.dev';
-import type { StackAlign, StackJustify, Spacing } from '../enums';
+import type { Spacing, StackAlign, StackJustify } from '../enums';
 
 export interface IStackProps extends Pulsar.HtmlExtends<'div'> {
   /**
@@ -35,7 +35,8 @@ export interface IStackProps extends Pulsar.HtmlExtends<'div'> {
   readonly wrap?: boolean;
 
   /**
-   * Stack children
+   * Stack children - supports all JSX patterns
+   * Including conditionals, arrays, and primitives
    */
-  readonly children?: HTMLElement | HTMLElement[];
+  readonly children?: Pulsar.Children;
 }

@@ -14,7 +14,7 @@ export const GridDemo = (): HTMLElement => {
   // Helper component for grid items
   const GridItem = ({ number }: { number: number }): HTMLElement => (
     <Card>
-      <Typography tag="p" variant="body1" class="text-center">
+      <Typography tag="p" variant="body1" className="text-center">
         {number}
       </Typography>
     </Card>
@@ -254,7 +254,7 @@ export const GridDemo = (): HTMLElement => {
           <Grid columns={4} gap="md">
             <Card>
               <Stack direction="vertical" spacing="xs">
-                <Typography tag="p" variant="caption" class="text-neutral-600">
+                <Typography tag="p" variant="caption" className="text-neutral-600">
                   Total Users
                 </Typography>
                 <Typography tag="p" variant="h3">
@@ -264,7 +264,7 @@ export const GridDemo = (): HTMLElement => {
             </Card>
             <Card>
               <Stack direction="vertical" spacing="xs">
-                <Typography tag="p" variant="caption" class="text-neutral-600">
+                <Typography tag="p" variant="caption" className="text-neutral-600">
                   Revenue
                 </Typography>
                 <Typography tag="p" variant="h3">
@@ -274,7 +274,7 @@ export const GridDemo = (): HTMLElement => {
             </Card>
             <Card>
               <Stack direction="vertical" spacing="xs">
-                <Typography tag="p" variant="caption" class="text-neutral-600">
+                <Typography tag="p" variant="caption" className="text-neutral-600">
                   Conversions
                 </Typography>
                 <Typography tag="p" variant="h3">
@@ -284,7 +284,7 @@ export const GridDemo = (): HTMLElement => {
             </Card>
             <Card>
               <Stack direction="vertical" spacing="xs">
-                <Typography tag="p" variant="caption" class="text-neutral-600">
+                <Typography tag="p" variant="caption" className="text-neutral-600">
                   Sessions
                 </Typography>
                 <Typography tag="p" variant="h3">
@@ -300,32 +300,32 @@ export const GridDemo = (): HTMLElement => {
           </Typography>
           <Grid templateColumns="repeat(auto-fit, minmax(150px, 1fr))" gap="sm">
             <Card>
-              <Typography tag="p" variant="body2" class="text-center py-8">
+              <Typography tag="p" variant="body2" className="text-center py-8">
                 Image 1
               </Typography>
             </Card>
             <Card>
-              <Typography tag="p" variant="body2" class="text-center py-8">
+              <Typography tag="p" variant="body2" className="text-center py-8">
                 Image 2
               </Typography>
             </Card>
             <Card>
-              <Typography tag="p" variant="body2" class="text-center py-8">
+              <Typography tag="p" variant="body2" className="text-center py-8">
                 Image 3
               </Typography>
             </Card>
             <Card>
-              <Typography tag="p" variant="body2" class="text-center py-8">
+              <Typography tag="p" variant="body2" className="text-center py-8">
                 Image 4
               </Typography>
             </Card>
             <Card>
-              <Typography tag="p" variant="body2" class="text-center py-8">
+              <Typography tag="p" variant="body2" className="text-center py-8">
                 Image 5
               </Typography>
             </Card>
             <Card>
-              <Typography tag="p" variant="body2" class="text-center py-8">
+              <Typography tag="p" variant="body2" className="text-center py-8">
                 Image 6
               </Typography>
             </Card>
@@ -339,9 +339,8 @@ export const GridDemo = (): HTMLElement => {
             templateColumns="200px 1fr"
             templateRows="auto 1fr auto"
             gap="md"
-            style="min-height: 400px"
           >
-            <Card style="grid-column: 1 / -1">
+            <Card>
               <Typography tag="p" variant="body2">
                 Header (spans all columns)
               </Typography>
@@ -356,7 +355,7 @@ export const GridDemo = (): HTMLElement => {
                 Main Content Area
               </Typography>
             </Card>
-            <Card style="grid-column: 1 / -1">
+            <Card>
               <Typography tag="p" variant="body2">
                 Footer (spans all columns)
               </Typography>
@@ -386,10 +385,10 @@ export const GridDemo = (): HTMLElement => {
   templateColumns="200px 1fr" 
   templateRows="auto 1fr auto"
 >
-  <header style="grid-column: 1 / -1">...</header>
+  <header>...</header>
   <aside>Sidebar</aside>
   <main>Content</main>
-  <footer style="grid-column: 1 / -1">...</footer>
+  <footer>...</footer>
 </Grid>`}
         />
       </DemoSection>

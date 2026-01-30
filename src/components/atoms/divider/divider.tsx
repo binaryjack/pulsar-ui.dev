@@ -14,7 +14,7 @@ export const Divider = ({
   orientation = 'horizontal',
   thickness,
   spacing,
-  class: className,
+  className,
   ...rest
 }: IDividerProps): HTMLElement => {
   const isHorizontal = orientation === 'horizontal';

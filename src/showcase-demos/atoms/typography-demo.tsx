@@ -9,10 +9,10 @@ import { DemoSection } from '../../showcase-components/demo-section';
 
 export const TypographyDemo = (): HTMLElement => {
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Typography</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Typography</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Consistent text styling with semantic HTML elements.
         </p>
       </div>
@@ -55,13 +55,13 @@ export const TypographyDemo = (): HTMLElement => {
 
       <DemoSection title="Text Behavior" description="Truncate and no-wrap options">
         <Stack direction="vertical" spacing="md">
-          <div class="max-w-xs border p-2">
+          <div className="max-w-xs border p-2">
             <Typography truncate>
               This is a very long text that will be truncated with an ellipsis when it exceeds the
               container width
             </Typography>
           </div>
-          <div class="max-w-xs border p-2">
+          <div className="max-w-xs border p-2">
             <Typography noWrap>
               This text will not wrap to multiple lines no matter how long it is
             </Typography>

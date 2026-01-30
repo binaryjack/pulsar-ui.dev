@@ -11,32 +11,32 @@ import { DemoSection } from '../../showcase-components/demo-section';
 
 export const TooltipDemo = (): HTMLElement => {
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Tooltip</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Tooltip</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Simple tooltip component with four placement options.
         </p>
       </div>
 
       <DemoSection title="Placements" description="Tooltip can appear on all four sides">
         <Grid columns={2} gap="lg" className="max-w-md mx-auto">
-          <div class="flex justify-center">
+          <div className="flex justify-center">
             <Tooltip content="Top tooltip" placement="top">
               <Button>Top</Button>
             </Tooltip>
           </div>
-          <div class="flex justify-center">
+          <div className="flex justify-center">
             <Tooltip content="Right tooltip" placement="right">
               <Button>Right</Button>
             </Tooltip>
           </div>
-          <div class="flex justify-center">
+          <div className="flex justify-center">
             <Tooltip content="Bottom tooltip" placement="bottom">
               <Button>Bottom</Button>
             </Tooltip>
           </div>
-          <div class="flex justify-center">
+          <div className="flex justify-center">
             <Tooltip content="Left tooltip" placement="left">
               <Button>Left</Button>
             </Tooltip>
@@ -77,9 +77,9 @@ export const TooltipDemo = (): HTMLElement => {
           <Tooltip content="Edit item">
             <button
               aria-label="Edit item"
-              class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
             >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -92,9 +92,9 @@ export const TooltipDemo = (): HTMLElement => {
           <Tooltip content="Delete item">
             <button
               aria-label="Delete item"
-              class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
             >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -107,9 +107,9 @@ export const TooltipDemo = (): HTMLElement => {
           <Tooltip content="Share item">
             <button
               aria-label="Share item"
-              class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
             >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"

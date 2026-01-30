@@ -2,16 +2,16 @@
  * Table Component Demo
  */
 
+import { Badge } from '../../components/molecules/badge';
 import {
   Table,
-  TableHeader,
   TableBody,
-  TableRow,
   TableCell,
+  TableHeader,
+  TableRow,
 } from '../../components/organisms/table';
-import { Badge } from '../../components/molecules/badge';
-import { DemoSection } from '../../showcase-components/demo-section';
 import { CodeBlock } from '../../showcase-components/code-block';
+import { DemoSection } from '../../showcase-components/demo-section';
 
 export const TableDemo = (): HTMLElement => {
   const users = [
@@ -23,10 +23,10 @@ export const TableDemo = (): HTMLElement => {
   ];
 
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Table</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Table</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Data table with compound pattern, striped rows, and hover state.
         </p>
       </div>
@@ -44,7 +44,7 @@ export const TableDemo = (): HTMLElement => {
           <TableBody>
             {users.map((user) => (
               <TableRow>
-                <TableCell>{user.id}</TableCell>
+                <TableCell>{String(user.id)}</TableCell>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.role}</TableCell>
@@ -85,12 +85,10 @@ export const TableDemo = (): HTMLElement => {
           <TableBody>
             {users.map((user) => (
               <TableRow>
-                <TableCell>{user.id}</TableCell>
+                <TableCell>{String(user.id)}</TableCell>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>
-                  <Badge variant={user.status === 'active' ? 'success' : 'default'}>
-                    {user.status}
-                  </Badge>
+                  <Badge>{user.status}</Badge>
                 </TableCell>
               </TableRow>
             ))}
@@ -119,27 +117,27 @@ export const TableDemo = (): HTMLElement => {
               <TableRow>
                 <TableCell>
                   <div>
-                    <div class="font-medium">{user.name}</div>
-                    <div class="text-sm text-gray-500">{user.email}</div>
+                    <div className="font-medium">{user.name}</div>
+                    <div className="text-sm text-gray-500">{user.email}</div>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <Badge variant={user.role === 'Admin' ? 'primary' : 'default'}>{user.role}</Badge>
+                  <Badge>{user.role}</Badge>
                 </TableCell>
                 <TableCell>
                   <span
-                    class={`inline-flex items-center gap-1 ${user.status === 'active' ? 'text-green-600' : 'text-gray-500'}`}
+                    className={`inline-flex items-center gap-1 ${user.status === 'active' ? 'text-green-600' : 'text-gray-500'}`}
                   >
                     <span
-                      class={`w-2 h-2 rounded-full ${user.status === 'active' ? 'bg-green-500' : 'bg-gray-400'}`}
+                      className={`w-2 h-2 rounded-full ${user.status === 'active' ? 'bg-green-500' : 'bg-gray-400'}`}
                     />
                     {user.status}
                   </span>
                 </TableCell>
                 <TableCell>
-                  <div class="flex gap-2">
-                    <button class="text-blue-600 hover:underline text-sm">Edit</button>
-                    <button class="text-red-600 hover:underline text-sm">Delete</button>
+                  <div className="flex gap-2">
+                    <button className="text-blue-600 hover:underline text-sm">Edit</button>
+                    <button className="text-red-600 hover:underline text-sm">Delete</button>
                   </div>
                 </TableCell>
               </TableRow>
@@ -170,7 +168,7 @@ export const TableDemo = (): HTMLElement => {
           <TableBody>
             <TableRow>
               <TableCell colspan="3">
-                <div class="text-center py-8 text-gray-500">No data available</div>
+                <div className="text-center py-8 text-gray-500">No data available</div>
               </TableCell>
             </TableRow>
           </TableBody>

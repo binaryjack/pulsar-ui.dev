@@ -50,7 +50,7 @@ export const Toast = ({
 
   return (
     <div
-      ref={(el) => (toastElement = el)}
+      ref={(el: HTMLElement | null) => (toastElement = el)}
       className={cn(
         'flex items-center justify-between gap-3 px-4 py-3 rounded-lg shadow-lg',
         'min-w-[300px] max-w-md',

@@ -118,7 +118,7 @@ export const Dropdown = ({
     <div className={cn('relative inline-block', className)} {...rest}>
       <div onclick={toggleDropdown}>{triggerElement}</div>
       <div
-        ref={(el) => (dropdownElement = el)}
+        ref={(el: HTMLElement | null) => (dropdownElement = el)}
         className={cn(
           'absolute z-50 mt-2 bg-white border border-neutral-200 rounded-lg shadow-lg',
           'min-w-[160px] py-1',

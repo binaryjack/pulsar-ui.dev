@@ -29,7 +29,9 @@
   ],
   "dependencies": {
     "@pulsar-framework/design-tokens": "workspace:^",
-    "@pulsar-framework/pulsar.dev": "workspace:*"
+    "@pulsar-framework/pulsar.dev": "workspace:*",
+    "@types/prismjs": "^1.26.5",
+    "prismjs": "^1.30.0"
   },
   "devDependencies": {
     "@pulsar-framework/vite-plugin": "workspace:^",

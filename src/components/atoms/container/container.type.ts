@@ -25,7 +25,8 @@ export interface IContainerProps extends Pulsar.HtmlExtends<'div'> {
   readonly centered?: boolean;
 
   /**
-   * Container children
+   * Container children - supports all JSX patterns
+   * Including conditionals, arrays, and primitives
    */
-  readonly children?: HTMLElement | HTMLElement[];
+  readonly children?: Pulsar.Children;
 }

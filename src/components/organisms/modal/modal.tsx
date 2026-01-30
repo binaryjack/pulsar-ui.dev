@@ -73,7 +73,7 @@ export const Modal = ({
     <>
       {backdrop && (
         <div
-          ref={(el) => (backdropElement = el)}
+          ref={(el: HTMLElement | null) => (backdropElement = el)}
           className={cn(
             'fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm z-40',
             'transition-opacity duration-200 animate-fade-in',
@@ -83,7 +83,7 @@ export const Modal = ({
         />
       )}
       <div
-        ref={(el) => (modalElement = el)}
+        ref={(el: HTMLElement | null) => (modalElement = el)}
         className={cn(
           'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50',
           'w-full bg-white rounded-xl shadow-2xl',

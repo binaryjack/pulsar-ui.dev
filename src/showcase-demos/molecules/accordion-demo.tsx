@@ -8,10 +8,10 @@ import { DemoSection } from '../../showcase-components/demo-section';
 
 export const AccordionDemo = (): HTMLElement => {
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Accordion</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Accordion</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Collapsible content panels with keyboard navigation and multiple modes.
         </p>
       </div>
@@ -55,7 +55,7 @@ export const AccordionDemo = (): HTMLElement => {
       >
         <Accordion allowMultiple defaultIndex={[0, 1]}>
           <AccordionItem title="Features">
-            <ul class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+            <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
               <li>Declarative JSX syntax</li>
               <li>Design tokens integration</li>
               <li>Dark mode support</li>
@@ -64,13 +64,13 @@ export const AccordionDemo = (): HTMLElement => {
             </ul>
           </AccordionItem>
           <AccordionItem title="Components">
-            <p class="text-gray-700 dark:text-gray-300">
+            <p className="text-gray-700 dark:text-gray-300">
               We provide 23+ production-ready components including buttons, modals, tooltips,
               tables, and more.
             </p>
           </AccordionItem>
           <AccordionItem title="Documentation">
-            <p class="text-gray-700 dark:text-gray-300">
+            <p className="text-gray-700 dark:text-gray-300">
               Comprehensive docs with live examples and code snippets for every component.
             </p>
           </AccordionItem>

@@ -19,10 +19,10 @@ export const DrawerDemo = (): HTMLElement => {
   const [lgOpen, setLgOpen] = useState(false);
 
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Drawer</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Drawer</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Side panel overlay with Portal, 4 placements, 5 sizes, backdrop, and scroll lock.
         </p>
       </div>
@@ -36,9 +36,9 @@ export const DrawerDemo = (): HTMLElement => {
         </Grid>
 
         <Drawer open={leftOpen()} onClose={() => setLeftOpen(false)} placement="left">
-          <div class="p-6">
-            <h2 class="text-2xl font-bold mb-4">Left Drawer</h2>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">
+          <div className="p-6">
+            <h2 className="text-2xl font-bold mb-4">Left Drawer</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
               This drawer slides in from the left side.
             </p>
             <Button onclick={() => setLeftOpen(false)}>Close</Button>
@@ -46,9 +46,9 @@ export const DrawerDemo = (): HTMLElement => {
         </Drawer>
 
         <Drawer open={rightOpen()} onClose={() => setRightOpen(false)} placement="right">
-          <div class="p-6">
-            <h2 class="text-2xl font-bold mb-4">Right Drawer</h2>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">
+          <div className="p-6">
+            <h2 className="text-2xl font-bold mb-4">Right Drawer</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
               This drawer slides in from the right side.
             </p>
             <Button onclick={() => setRightOpen(false)}>Close</Button>
@@ -56,17 +56,19 @@ export const DrawerDemo = (): HTMLElement => {
         </Drawer>
 
         <Drawer open={topOpen()} onClose={() => setTopOpen(false)} placement="top">
-          <div class="p-6">
-            <h2 class="text-2xl font-bold mb-4">Top Drawer</h2>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">This drawer slides in from the top.</p>
+          <div className="p-6">
+            <h2 className="text-2xl font-bold mb-4">Top Drawer</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              This drawer slides in from the top.
+            </p>
             <Button onclick={() => setTopOpen(false)}>Close</Button>
           </div>
         </Drawer>
 
         <Drawer open={bottomOpen()} onClose={() => setBottomOpen(false)} placement="bottom">
-          <div class="p-6">
-            <h2 class="text-2xl font-bold mb-4">Bottom Drawer</h2>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">
+          <div className="p-6">
+            <h2 className="text-2xl font-bold mb-4">Bottom Drawer</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
               This drawer slides in from the bottom.
             </p>
             <Button onclick={() => setBottomOpen(false)}>Close</Button>
@@ -83,7 +85,7 @@ export const DrawerDemo = (): HTMLElement => {
   onClose={() => setOpen(false)}
   placement="right"
 >
-  <div class="p-6">
+  <div className="p-6">
     <h2>Drawer Content</h2>
   </div>
 </Drawer>`}
@@ -97,25 +99,25 @@ export const DrawerDemo = (): HTMLElement => {
         </Stack>
 
         <Drawer open={smOpen()} onClose={() => setSmOpen(false)} size="sm" placement="right">
-          <div class="p-6">
-            <h2 class="text-xl font-bold mb-4">Small Drawer</h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
+          <div className="p-6">
+            <h2 className="text-xl font-bold mb-4">Small Drawer</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               This is a small drawer (width: 16rem)
             </p>
           </div>
         </Drawer>
 
         <Drawer open={lgOpen()} onClose={() => setLgOpen(false)} size="lg" placement="right">
-          <div class="p-6">
-            <h2 class="text-2xl font-bold mb-4">Large Drawer</h2>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">
+          <div className="p-6">
+            <h2 className="text-2xl font-bold mb-4">Large Drawer</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
               This is a large drawer (width: 32rem). Perfect for forms, detailed content, or
               navigation menus.
             </p>
-            <div class="space-y-4 mt-6">
-              <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded">Section 1</div>
-              <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded">Section 2</div>
-              <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded">Section 3</div>
+            <div className="space-y-4 mt-6">
+              <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded">Section 1</div>
+              <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded">Section 2</div>
+              <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded">Section 3</div>
             </div>
           </div>
         </Drawer>
@@ -128,11 +130,11 @@ export const DrawerDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Features" description="Backdrop, escape key, and scroll lock">
-        <div class="space-y-4">
-          <p class="text-sm text-gray-600 dark:text-gray-400">• Click backdrop to close</p>
-          <p class="text-sm text-gray-600 dark:text-gray-400">• Press Escape key to close</p>
-          <p class="text-sm text-gray-600 dark:text-gray-400">• Body scroll locked when open</p>
-          <p class="text-sm text-gray-600 dark:text-gray-400">• Smooth slide-in animations</p>
+        <div className="space-y-4">
+          <p className="text-sm text-gray-600 dark:text-gray-400">• Click backdrop to close</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">• Press Escape key to close</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">• Body scroll locked when open</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">• Smooth slide-in animations</p>
         </div>
         <CodeBlock
           code={`<Drawer

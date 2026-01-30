@@ -2,16 +2,16 @@
  * Breadcrumbs Component Demo
  */
 
-import { Breadcrumbs, BreadcrumbItem } from '../../components/molecules/breadcrumbs';
-import { DemoSection } from '../../showcase-components/demo-section';
+import { BreadcrumbItem, Breadcrumbs } from '../../components/molecules/breadcrumbs';
 import { CodeBlock } from '../../showcase-components/code-block';
+import { DemoSection } from '../../showcase-components/demo-section';
 
 export const BreadcrumbsDemo = (): HTMLElement => {
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Breadcrumbs</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Breadcrumbs</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Navigation trail showing the current page location within a hierarchy.
         </p>
       </div>
@@ -39,7 +39,7 @@ export const BreadcrumbsDemo = (): HTMLElement => {
           <BreadcrumbItem>Item Details</BreadcrumbItem>
         </Breadcrumbs>
 
-        <div class="mt-4">
+        <div className="mt-4">
           <Breadcrumbs separator="•">
             <BreadcrumbItem href="/">Home</BreadcrumbItem>
             <BreadcrumbItem href="/blog">Blog</BreadcrumbItem>

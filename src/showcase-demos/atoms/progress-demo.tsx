@@ -9,16 +9,16 @@ import { CodeBlock } from '../../showcase-components/code-block';
 
 export const ProgressDemo = (): HTMLElement => {
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Progress</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Progress</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Progress indicator with variants, sizes, and indeterminate mode.
         </p>
       </div>
 
       <DemoSection title="Variants" description="Different color variants for status indication">
-        <Stack direction="column" spacing="lg">
+        <Stack direction="vertical" spacing="lg">
           <Progress value={75} variant="primary" showLabel />
           <Progress value={100} variant="success" showLabel />
           <Progress value={50} variant="warning" showLabel />
@@ -33,7 +33,7 @@ export const ProgressDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Sizes" description="Three different sizes">
-        <Stack direction="column" spacing="lg">
+        <Stack direction="vertical" spacing="lg">
           <Progress value={60} size="sm" />
           <Progress value={60} size="md" />
           <Progress value={60} size="lg" />

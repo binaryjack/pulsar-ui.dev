@@ -33,7 +33,7 @@ export const App = (): HTMLElement => {
   );
 
   return (
-    <div class="min-h-screen bg-background" style={{ minHeight: '100vh' }}>
+    <div className="min-h-screen bg-background" style={{ minHeight: '100vh' }}>
       <Header onToggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen()} />
 
       <Sidebar
@@ -45,14 +45,14 @@ export const App = (): HTMLElement => {
       />
 
       <main
-        class={mainClasses}
+        className={mainClasses}
         style={{
           paddingTop: 'var(--header-height)',
           minHeight: '100vh',
         }}
       >
         <div
-          class="max-w-7xl mx-auto px-md py-lg"
+          className="max-w-7xl mx-auto px-md py-lg"
           style={{
             maxWidth: '1280px',
           }}

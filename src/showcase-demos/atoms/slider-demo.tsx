@@ -14,18 +14,18 @@ export const SliderDemo = (): HTMLElement => {
   const [value3, setValue3] = useState(75);
 
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Slider</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Slider</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Range input control with visual track, thumb, and value display.
         </p>
       </div>
 
       <DemoSection title="Basic Slider" description="Simple slider with value display">
-        <div class="space-y-6">
+        <div className="space-y-6">
           <Slider value={value1()} onChange={setValue1} showValue />
-          <p class="text-sm text-gray-600 dark:text-gray-400">Value: {value1}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Value: {value1}</p>
         </div>
         <CodeBlock
           code={`const [value, setValue] = useState(50)
@@ -54,7 +54,7 @@ export const SliderDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Custom Range" description="Set min, max, and step values">
-        <div class="space-y-6">
+        <div className="space-y-6">
           <Slider
             value={value3()}
             onChange={setValue3}
@@ -64,7 +64,7 @@ export const SliderDemo = (): HTMLElement => {
             showValue
             variant="success"
           />
-          <p class="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             Range: 0-100, Step: 5, Value: {value3}
           </p>
         </div>

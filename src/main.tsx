@@ -1,9 +1,10 @@
 /**
  * Pulsar UI Showcase - Main Entry Point
+ * Using new Playground system
  */
 
 import { bootstrapApp, createContext } from '@pulsar-framework/pulsar.dev';
-import { App } from './app';
+import { PlaygroundDemo } from './showcase/pages/playground-demo';
 
 // Import design system and base styles FIRST
 import './showcase-styles.css';
@@ -34,7 +35,7 @@ const AppWithContext = () => {
         theme: 'light',
       }}
     >
-      <App />
+      <PlaygroundDemo />
     </AppContext.Provider>
   );
 };

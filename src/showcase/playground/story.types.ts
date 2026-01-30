@@ -3,6 +3,8 @@
  * Defines the structure for component story configurations in the playground
  */
 
+import type { PropEditorConfig } from './prop-editors';
+
 /**
  * Base Story interface - defines a single component demonstration
  */
@@ -27,6 +29,9 @@ export interface Story {
 
   /** Event handlers to capture and log */
   events?: StoryEvent[];
+
+  /** Prop editors for interactive prop manipulation */
+  propEditors?: PropEditorConfig[];
 
   /** Additional metadata */
   metadata?: StoryMetadata;
@@ -90,37 +95,6 @@ export interface StoryMetadata {
 
   /** Last updated date */
   updated?: string;
-}
-
-/**
- * Prop editor configuration for interactive prop manipulation
- */
-export interface PropEditorConfig {
-  /** Prop name */
-  name: string;
-
-  /** Prop type for editor selection */
-  type: 'string' | 'number' | 'boolean' | 'color' | 'select' | 'object' | 'array';
-
-  /** Display label */
-  label: string;
-
-  /** Default value */
-  defaultValue: any;
-
-  /** Options for select type */
-  options?: Array<{ label: string; value: any }>;
-
-  /** Min/max for number/slider type */
-  min?: number;
-  max?: number;
-  step?: number;
-
-  /** Help text */
-  help?: string;
-
-  /** Whether prop is required */
-  required?: boolean;
 }
 
 /**

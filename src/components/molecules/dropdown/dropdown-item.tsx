@@ -3,34 +3,28 @@
  * Individual dropdown menu item
  */
 
-import type { IDropdownItemProps } from './dropdown-props.interface';
+import type { IDropdownItemProps } from './dropdown-item.type';
 import './dropdown.css';
 
 export const DropdownItem = ({
   children,
-  onClick,
+  onclick,
   disabled = false,
-  divider = false,
-  icon,
-  class: className,
+  className,
 }: IDropdownItemProps) => {
   const handleClick = (e: MouseEvent) => {
     if (disabled) return;
-    onClick?.(e);
+    onclick?.(e);
   };
 
   return (
-    <>
-      <button
-        className={`dropdown-item state-layer touch-target${disabled ? ' dropdown-item-disabled' : ''}${className ? ` ${className}` : ''}`}
-        onClick={handleClick}
-        disabled={disabled}
-        type="button"
-      >
-        {icon && <span className="dropdown-item-icon">{icon}</span>}
-        <span className="dropdown-item-label">{children}</span>
-      </button>
-      {divider && <div className="dropdown-divider" />}
-    </>
+    <button
+      className={`dropdown-item state-layer touch-target${disabled ? ' dropdown-item-disabled' : ''}${className ? ` ${className}` : ''}`}
+      onclick={handleClick}
+      disabled={disabled}
+      type="button"
+    >
+      <span className="dropdown-item-label">{children}</span>
+    </button>
   );
 };

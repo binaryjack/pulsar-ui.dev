@@ -18,19 +18,19 @@ export const Progress = ({
   size = 'md',
   showLabel = false,
   label,
-  class: className,
+  className,
   ...rest
 }: IProgressProps): HTMLElement => {
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
 
-  const variantClasses = {
+  const variantClasses: Record<string, string> = {
     primary: 'bg-blue-500 transition-all duration-500',
     success: 'bg-green-500 transition-all duration-500',
     warning: 'bg-yellow-500 transition-all duration-500',
     error: 'bg-red-500 transition-all duration-500',
   };
 
-  const sizeClasses = {
+  const sizeClasses: Record<string, string> = {
     sm: 'h-1',
     md: 'h-2',
     lg: 'h-3',
@@ -38,12 +38,12 @@ export const Progress = ({
 
   const progressClasses = cn(
     'relative w-full rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700',
-    sizeClasses[size]
+    sizeClasses[size as string]
   );
 
   const barClasses = cn(
     'h-full rounded-full transition-all duration-300',
-    variantClasses[variant],
+    variantClasses[variant as string],
     indeterminate && 'animate-pulse'
   );
 

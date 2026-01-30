@@ -15,13 +15,14 @@ export const Rating = ({
   size = 'md',
   color,
   onChange,
-  class: className,
+  className,
   ...rest
 }: IRatingProps): HTMLElement => {
   const [hoverValue, setHoverValue] = useState<number | null>(null);
   const [currentValue, setCurrentValue] = useState(value);
 
-  const displayValue = hoverValue !== null ? hoverValue : currentValue;
+  const displayValue: number =
+    hoverValue() !== null ? (hoverValue() as number) : (currentValue() as number);
 
   const handleClick = (starValue: number) => {
     if (readonly || disabled) return;
@@ -108,7 +109,7 @@ export const Rating = ({
       className={containerClasses}
       onMouseLeave={handleMouseLeave}
       role="radiogroup"
-      aria-label={`Rating: ${currentValue} out of ${max}`}
+      aria-label={`Rating: ${currentValue()} out of ${max}`}
       aria-disabled={disabled}
       {...rest}
     >

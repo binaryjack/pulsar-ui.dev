@@ -10,10 +10,10 @@ import { DemoSection } from '../../showcase-components/demo-section';
 
 export const LabelDemo = (): HTMLElement => {
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Label</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Label</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Form label component with optional helper text and required indicator.
         </p>
       </div>
@@ -109,7 +109,7 @@ export const LabelDemo = (): HTMLElement => {
   required
   errorText="Please enter a valid email address"
 />
-<Input id="error-email" class="border-red-500" />`}
+<Input id="error-email" className="border-red-500" />`}
         />
       </DemoSection>
 

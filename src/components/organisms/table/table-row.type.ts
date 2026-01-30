@@ -3,7 +3,7 @@
  */
 
 export interface ITableRowProps {
-  children: HTMLElement[];
+  children: HTMLElement | HTMLElement[];
   class?: string;
   [key: string]: unknown;
 }

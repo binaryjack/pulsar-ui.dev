@@ -3,31 +3,44 @@
  * Demonstrates the ComponentSandbox with example stories
  */
 
+import { useState } from '@pulsar-framework/pulsar.dev';
 import { Container } from '../../components/atoms/container';
 import { Stack } from '../../components/atoms/stack';
 import { Typography } from '../../components/atoms/typography';
 import { Card } from '../../components/organisms/card';
-import { RetractablePanel } from '../../components/organisms/retractable-panel';
+import { RetractablePanel } from '../../components/organisms/retractable-panel/retractable-panel';
 import { ComponentSandbox } from '../playground/component-sandbox';
+import { EventLoggerPanel } from '../playground/event-logger-panel';
 import type { LoggedEvent } from '../playground/story.types';
-import { buttonStories } from '../stories/button/button.story';
+import {
+  basicButtonStory,
+  buttonSizesStory,
+  fullWidthButtonStory,
+  loadingButtonStory,
+} from '../stories/button/button-interactive.story';
+import { basicInputStory, emailInputStory } from '../stories/input/input-interactive.story';
+import { basicToggleStory, toggleWithLabelStory } from '../stories/toggle/toggle-interactive.story';
 
 /**
  * PlaygroundDemo - Showcases the new playground system
  */
 export const PlaygroundDemo = (): HTMLElement => {
-  // State for logged events
-  const loggedEvents: LoggedEvent[] = [];
-  const isPanelExpanded = true; // TODO: Connect to actual state management
+  // Reactive state for logged events
+  const [loggedEvents, setLoggedEvents] = useState<LoggedEvent[]>([]);
+  const [isPanelExpanded, setIsPanelExpanded] = useState<boolean>(true);
 
   const handleEventLog = (event: LoggedEvent) => {
-    loggedEvents.push(event);
+    const currentEvents = loggedEvents();
+    setLoggedEvents([...currentEvents, event]);
     console.log('Event logged:', event);
   };
 
+  const handleClearEvents = () => {
+    setLoggedEvents([]);
+  };
+
   const handlePanelToggle = (isExpanded: boolean) => {
-    console.log('Panel toggled:', isExpanded);
-    // TODO: Update state
+    setIsPanelExpanded(isExpanded);
   };
 
   return (
@@ -73,60 +86,76 @@ export const PlaygroundDemo = (): HTMLElement => {
             Example Stories
           </Typography>
 
-          {buttonStories.map((story) => (
-            <ComponentSandbox story={story} onEventLog={handleEventLog} showHeader={true} />
-          ))}
+          <ComponentSandbox
+            story={basicButtonStory}
+            onEventLog={handleEventLog}
+            showHeader={true}
+          />
+          <ComponentSandbox
+            story={loadingButtonStory}
+            onEventLog={handleEventLog}
+            showHeader={true}
+          />
+          <ComponentSandbox
+            story={buttonSizesStory}
+            onEventLog={handleEventLog}
+            showHeader={true}
+          />
+          <ComponentSandbox
+            story={fullWidthButtonStory}
+            onEventLog={handleEventLog}
+            showHeader={true}
+          />
+
+          {/* Input Stories */}
+          <Typography tag="h3" variant="h3" className="mt-8">
+            Input Examples
+          </Typography>
+
+          <ComponentSandbox story={basicInputStory} onEventLog={handleEventLog} showHeader={true} />
+          <ComponentSandbox story={emailInputStory} onEventLog={handleEventLog} showHeader={true} />
+
+          {/* Toggle Stories */}
+          <Typography tag="h3" variant="h3" className="mt-8">
+            Toggle Examples
+          </Typography>
+
+          <ComponentSandbox
+            story={basicToggleStory}
+            onEventLog={handleEventLog}
+            showHeader={true}
+          />
+          <ComponentSandbox
+            story={toggleWithLabelStory}
+            onEventLog={handleEventLog}
+            showHeader={true}
+          />
         </Stack>
 
         {/* Event Logger Demo */}
         <Stack direction="vertical" spacing="md">
           <Typography tag="h2" variant="h2">
-            Event Logger (RetractablePanel Demo)
+            Event Logger
           </Typography>
 
           <RetractablePanel
             header={
               <Stack direction="horizontal" spacing="sm" className="items-center">
-                <Typography tag="h3" variant="h6" classNameName="font-semibold">
-                  Event Log
+                <Typography tag="h3" variant="h6" className="font-semibold">
+                  📊 Event Log
                 </Typography>
                 <span className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-primary-100 text-primary-800">
-                  {loggedEvents.length} events
+                  {loggedEvents().length} events
                 </span>
               </Stack>
             }
-            isExpanded={isPanelExpanded}
+            isExpanded={isPanelExpanded()}
             onToggle={handlePanelToggle}
             direction="vertical"
-            maxHeight="300px"
+            maxHeight="400px"
             position="none"
           >
-            <Stack direction="vertical" spacing="sm">
-              {loggedEvents.length === 0 ? (
-                <Typography tag="p" variant="body2" className="text-neutral-500 italic">
-                  No events logged yet. Interact with the components above to see events appear
-                  here.
-                </Typography>
-              ) : (
-                loggedEvents.map((event) => (
-                  <Card>
-                    <Stack direction="vertical" spacing="xs">
-                      <Stack direction="horizontal" spacing="sm" className="items-center">
-                        <Typography tag="span" variant="body2" classNameName="font-semibold">
-                          {event.name}
-                        </Typography>
-                        <Typography tag="span" variant="caption" className="text-neutral-500">
-                          {new Date(event.timestamp).toLocaleTimeString()}
-                        </Typography>
-                      </Stack>
-                      <Typography tag="pre" variant="caption" className="bg-neutral-50 p-2 rounded">
-                        {JSON.stringify(event.target, null, 2)}
-                      </Typography>
-                    </Stack>
-                  </Card>
-                ))
-              )}
-            </Stack>
+            <EventLoggerPanel events={loggedEvents()} onClear={handleClearEvents} />
           </RetractablePanel>
         </Stack>
 
@@ -134,7 +163,7 @@ export const PlaygroundDemo = (): HTMLElement => {
         <Card>
           <Stack direction="vertical" spacing="md">
             <Typography tag="h2" variant="h2">
-              Implementation Status
+              ✅ Playground Complete
             </Typography>
             <Stack direction="vertical" spacing="xs">
               <div className="flex items-center gap-2">
@@ -142,7 +171,7 @@ export const PlaygroundDemo = (): HTMLElement => {
                   ✓
                 </span>
                 <Typography tag="span" variant="body2">
-                  Component Audit Complete (40/42 components ready)
+                  ComponentSandbox with reactive state
                 </Typography>
               </div>
               <div className="flex items-center gap-2">
@@ -150,7 +179,31 @@ export const PlaygroundDemo = (): HTMLElement => {
                   ✓
                 </span>
                 <Typography tag="span" variant="body2">
-                  Missing Demos Created (Container, Grid, Select)
+                  Code generation with syntax highlighting
+                </Typography>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 text-green-800 text-sm font-bold">
+                  ✓
+                </span>
+                <Typography tag="span" variant="body2">
+                  PropEditors (String, Number, Boolean, Select)
+                </Typography>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 text-green-800 text-sm font-bold">
+                  ✓
+                </span>
+                <Typography tag="span" variant="body2">
+                  Event logging with RetractablePanel
+                </Typography>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 text-green-800 text-sm font-bold">
+                  ✓
+                </span>
+                <Typography tag="span" variant="body2">
+                  Multiple story examples (Button, Input, Toggle)
                 </Typography>
               </div>
               <div className="flex items-center gap-2">

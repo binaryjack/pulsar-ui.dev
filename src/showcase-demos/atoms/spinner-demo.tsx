@@ -9,27 +9,27 @@ import { DemoSection } from '../../showcase-components/demo-section';
 
 export const SpinnerDemo = (): HTMLElement => {
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Spinner</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Spinner</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Animated loading indicator for async operations.
         </p>
       </div>
 
       <DemoSection title="Sizes" description="Three spinner sizes">
         <Stack direction="horizontal" spacing="lg" align="center">
-          <div class="text-center">
+          <div className="text-center">
             <Spinner size="sm" />
-            <p class="text-sm mt-2">Small</p>
+            <p className="text-sm mt-2">Small</p>
           </div>
-          <div class="text-center">
+          <div className="text-center">
             <Spinner size="md" />
-            <p class="text-sm mt-2">Medium</p>
+            <p className="text-sm mt-2">Medium</p>
           </div>
-          <div class="text-center">
+          <div className="text-center">
             <Spinner size="lg" />
-            <p class="text-sm mt-2">Large</p>
+            <p className="text-sm mt-2">Large</p>
           </div>
         </Stack>
         <CodeBlock
@@ -41,21 +41,21 @@ export const SpinnerDemo = (): HTMLElement => {
 
       <DemoSection title="Colors" description="Semantic color variants">
         <Stack direction="horizontal" spacing="lg" align="center">
-          <div class="text-center">
+          <div className="text-center">
             <Spinner />
-            <p class="text-sm mt-2">Primary</p>
+            <p className="text-sm mt-2">Primary</p>
           </div>
-          <div class="text-center">
+          <div className="text-center">
             <Spinner />
-            <p class="text-sm mt-2">Secondary</p>
+            <p className="text-sm mt-2">Secondary</p>
           </div>
-          <div class="text-center">
+          <div className="text-center">
             <Spinner />
-            <p class="text-sm mt-2">Success</p>
+            <p className="text-sm mt-2">Success</p>
           </div>
-          <div class="text-center">
+          <div className="text-center">
             <Spinner />
-            <p class="text-sm mt-2">Error</p>
+            <p className="text-sm mt-2">Error</p>
           </div>
         </Stack>
         <CodeBlock
@@ -65,14 +65,14 @@ export const SpinnerDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="With Label" description="Spinner with loading text">
-        <div class="flex flex-col items-center justify-center p-8 border border-gray-200 rounded-lg">
+        <div className="flex flex-col items-center justify-center p-8 border border-gray-200 rounded-lg">
           <Spinner size="lg" />
-          <p class="mt-4 text-gray-600">Loading content...</p>
+          <p className="mt-4 text-gray-600">Loading content...</p>
         </div>
         <CodeBlock
-          code={`<div class="flex flex-col items-center">
+          code={`<div className="flex flex-col items-center">
   <Spinner size="lg" color="primary" />
-  <p class="mt-4">Loading content...</p>
+  <p className="mt-4">Loading content...</p>
 </div>`}
         />
       </DemoSection>

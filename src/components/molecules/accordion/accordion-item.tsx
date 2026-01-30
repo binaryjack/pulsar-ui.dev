@@ -11,11 +11,11 @@ export const AccordionItem = ({
   disabled = false,
   icon,
   expandedIcon,
-  class: className,
+  className,
   ...rest
 }: IAccordionItemProps): HTMLElement => {
   // Get open state from parent (injected via data attribute)
-  const isOpen = rest['data-open'] === 'true';
+  const isOpen = (rest as Record<string, unknown>)['data-open'] === 'true';
 
   const containerClasses = cn(
     'border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden',

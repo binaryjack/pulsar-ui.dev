@@ -8,10 +8,10 @@ import { DemoSection } from '../../showcase-components/demo-section';
 
 export const MenuDemo = (): HTMLElement => {
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Menu</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Menu</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Navigation menu with keyboard navigation, icons, and dividers.
         </p>
       </div>
@@ -39,7 +39,7 @@ export const MenuDemo = (): HTMLElement => {
         <Menu>
           <MenuItem
             icon={
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -54,7 +54,7 @@ export const MenuDemo = (): HTMLElement => {
           </MenuItem>
           <MenuItem
             icon={
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -69,7 +69,7 @@ export const MenuDemo = (): HTMLElement => {
           </MenuItem>
           <MenuItem
             icon={
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"

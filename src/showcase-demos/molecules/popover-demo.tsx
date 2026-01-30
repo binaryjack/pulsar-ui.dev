@@ -14,9 +14,9 @@ export const PopoverDemo = (): HTMLElement => {
   const [open2, setOpen2] = useState(false);
 
   const popoverContent = (
-    <div class="p-4 space-y-2">
-      <h3 class="font-semibold">Popover Title</h3>
-      <p class="text-sm text-gray-600 dark:text-gray-400">
+    <div className="p-4 space-y-2">
+      <h3 className="font-semibold">Popover Title</h3>
+      <p className="text-sm text-gray-600 dark:text-gray-400">
         This is the popover content. It can contain any elements.
       </p>
       <Button>Action</Button>
@@ -24,16 +24,16 @@ export const PopoverDemo = (): HTMLElement => {
   );
 
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Popover</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Popover</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Popover overlay with Portal, click/hover triggers, and four placements.
         </p>
       </div>
 
       <DemoSection title="Click Trigger" description="Click to open/close popover">
-        <div class="flex justify-center py-8">
+        <div className="flex justify-center py-8">
           <Popover
             isOpen={open1()}
             onToggle={setOpen1}
@@ -51,7 +51,7 @@ export const PopoverDemo = (): HTMLElement => {
   onOpenChange={setOpen}
   trigger="click"
   content={
-    <div class="p-4">
+    <div className="p-4">
       <h3>Title</h3>
       <p>Content here</p>
     </div>
@@ -63,10 +63,10 @@ export const PopoverDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Hover Trigger" description="Hover to show popover">
-        <div class="flex justify-center py-8">
+        <div className="flex justify-center py-8">
           <Popover triggerElement={<Button>Hover Me</Button>} trigger="hover">
-            <div class="p-3">
-              <p class="text-sm">This appears on hover</p>
+            <div className="p-3">
+              <p className="text-sm">This appears on hover</p>
             </div>
           </Popover>
         </div>
@@ -82,31 +82,31 @@ export const PopoverDemo = (): HTMLElement => {
 
       <DemoSection title="Placements" description="Popover can appear on all four sides">
         <Grid columns={2} gap="lg" className="max-w-2xl mx-auto py-8">
-          <div class="flex justify-center">
+          <div className="flex justify-center">
             <Popover placement="top" triggerElement={<Button>Top</Button>}>
-              <div class="p-3">
-                <p class="text-sm">Top placement</p>
+              <div className="p-3">
+                <p className="text-sm">Top placement</p>
               </div>
             </Popover>
           </div>
-          <div class="flex justify-center">
+          <div className="flex justify-center">
             <Popover placement="right" triggerElement={<Button>Right</Button>}>
-              <div class="p-3">
-                <p class="text-sm">Right placement</p>
+              <div className="p-3">
+                <p className="text-sm">Right placement</p>
               </div>
             </Popover>
           </div>
-          <div class="flex justify-center">
+          <div className="flex justify-center">
             <Popover placement="bottom" triggerElement={<Button>Bottom</Button>}>
-              <div class="p-3">
-                <p class="text-sm">Bottom placement</p>
+              <div className="p-3">
+                <p className="text-sm">Bottom placement</p>
               </div>
             </Popover>
           </div>
-          <div class="flex justify-center">
+          <div className="flex justify-center">
             <Popover placement="left" triggerElement={<Button>Left</Button>}>
-              <div class="p-3">
-                <p class="text-sm">Left placement</p>
+              <div className="p-3">
+                <p className="text-sm">Left placement</p>
               </div>
             </Popover>
           </div>
@@ -119,24 +119,24 @@ export const PopoverDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Rich Content" description="Popover can contain complex content">
-        <div class="flex justify-center py-8">
+        <div className="flex justify-center py-8">
           <Popover
             isOpen={open2()}
             onToggle={setOpen2}
             triggerElement={<Button>User Profile</Button>}
           >
-            <div class="p-4 space-y-3 w-64">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-blue-500 rounded-full" />
+            <div className="p-4 space-y-3 w-64">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-500 rounded-full" />
                 <div>
-                  <h4 class="font-semibold">John Doe</h4>
-                  <p class="text-xs text-gray-500">john@example.com</p>
+                  <h4 className="font-semibold">John Doe</h4>
+                  <p className="text-xs text-gray-500">john@example.com</p>
                 </div>
               </div>
-              <p class="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 Software engineer with 5+ years of experience.
               </p>
-              <div class="flex gap-2">
+              <div className="flex gap-2">
                 <Button>Follow</Button>
                 <Button>Message</Button>
               </div>
@@ -146,7 +146,7 @@ export const PopoverDemo = (): HTMLElement => {
         <CodeBlock
           code={`<Popover
   content={
-    <div class="p-4">
+    <div className="p-4">
       {/* Rich content with images, text, buttons */}
     </div>
   }

@@ -14,19 +14,19 @@ export const DropdownDemo = (): HTMLElement => {
   const [selected, setSelected] = useState('Option 1');
 
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Dropdown</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Dropdown</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Dropdown menu with Portal, keyboard navigation, and custom trigger.
         </p>
       </div>
 
       <DemoSection title="Basic Dropdown" description="Click to open dropdown menu">
-        <Dropdown open={open1} onOpenChange={setOpen1} trigger={<Button>Open Menu</Button>}>
-          <DropdownItem onClick={() => console.log('Action 1')}>Action 1</DropdownItem>
-          <DropdownItem onClick={() => console.log('Action 2')}>Action 2</DropdownItem>
-          <DropdownItem onClick={() => console.log('Action 3')}>Action 3</DropdownItem>
+        <Dropdown triggerElement={<Button>Open Menu</Button>}>
+          <DropdownItem onclick={() => console.log('Action 1')}>Action 1</DropdownItem>
+          <DropdownItem onclick={() => console.log('Action 2')}>Action 2</DropdownItem>
+          <DropdownItem onclick={() => console.log('Action 3')}>Action 3</DropdownItem>
         </Dropdown>
         <CodeBlock
           code={`const [open, setOpen] = useState(false)
@@ -44,10 +44,10 @@ export const DropdownDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="With Selection" description="Track selected item">
-        <div class="space-y-4">
-          <Dropdown open={open2} onOpenChange={setOpen2} trigger={<Button>{selected}</Button>}>
+        <div className="space-y-4">
+          <Dropdown triggerElement={<Button>{selected()}</Button>}>
             <DropdownItem
-              onClick={() => {
+              onclick={() => {
                 setSelected('Option 1');
                 setOpen2(false);
               }}
@@ -55,7 +55,7 @@ export const DropdownDemo = (): HTMLElement => {
               Option 1
             </DropdownItem>
             <DropdownItem
-              onClick={() => {
+              onclick={() => {
                 setSelected('Option 2');
                 setOpen2(false);
               }}
@@ -63,7 +63,7 @@ export const DropdownDemo = (): HTMLElement => {
               Option 2
             </DropdownItem>
             <DropdownItem
-              onClick={() => {
+              onclick={() => {
                 setSelected('Option 3');
                 setOpen2(false);
               }}
@@ -71,7 +71,7 @@ export const DropdownDemo = (): HTMLElement => {
               Option 3
             </DropdownItem>
           </Dropdown>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Selected: {selected}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Selected: {selected}</p>
         </div>
         <CodeBlock
           code={`const [selected, setSelected] = useState('Option 1')
@@ -85,10 +85,10 @@ export const DropdownDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Disabled Items" description="Dropdown items can be disabled">
-        <Dropdown trigger={<Button>Actions</Button>}>
-          <DropdownItem onClick={() => console.log('Edit')}>Edit</DropdownItem>
-          <DropdownItem onClick={() => console.log('Duplicate')}>Duplicate</DropdownItem>
-          <DropdownItem disabled onClick={() => console.log('Delete')}>
+        <Dropdown triggerElement={<Button>Actions</Button>}>
+          <DropdownItem onclick={() => console.log('Edit')}>Edit</DropdownItem>
+          <DropdownItem onclick={() => console.log('Duplicate')}>Duplicate</DropdownItem>
+          <DropdownItem disabled onclick={() => console.log('Delete')}>
             Delete (Disabled)
           </DropdownItem>
         </Dropdown>

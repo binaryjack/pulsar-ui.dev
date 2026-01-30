@@ -11,38 +11,38 @@ import { CodeBlock } from '../../showcase-components/code-block';
 
 export const RadioDemo = (): HTMLElement => {
   return (
-    <div class="space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Radio</h1>
-        <p class="text-gray-600 dark:text-gray-400">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Radio</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Radio button for single selection from a group of options.
         </p>
       </div>
 
       <DemoSection title="Basic Radio" description="Simple radio buttons with labels">
-        <Stack direction="column" spacing="md">
-          <label class="flex items-center gap-2 cursor-pointer">
+        <Stack direction="vertical" spacing="md">
+          <label className="flex items-center gap-2 cursor-pointer">
             <Radio name="basic" value="option1" checked />
             <span>Option 1</span>
           </label>
 
-          <label class="flex items-center gap-2 cursor-pointer">
+          <label className="flex items-center gap-2 cursor-pointer">
             <Radio name="basic" value="option2" />
             <span>Option 2</span>
           </label>
 
-          <label class="flex items-center gap-2 cursor-pointer">
+          <label className="flex items-center gap-2 cursor-pointer">
             <Radio name="basic" value="option3" />
             <span>Option 3</span>
           </label>
         </Stack>
         <CodeBlock
-          code={`<label class="flex items-center gap-2">
+          code={`<label className="flex items-center gap-2">
   <Radio name="group" value="1" checked />
   <span>Option 1</span>
 </label>
 
-<label class="flex items-center gap-2">
+<label className="flex items-center gap-2">
   <Radio name="group" value="2" />
   <span>Option 2</span>
 </label>`}
@@ -50,20 +50,20 @@ export const RadioDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="Sizes" description="Different radio button sizes">
-        <Stack direction="column" spacing="lg">
-          <label class="flex items-center gap-2">
+        <Stack direction="vertical" spacing="lg">
+          <label className="flex items-center gap-2">
             <Radio name="size" size="sm" value="small" />
-            <span class="text-sm">Small radio button</span>
+            <span className="text-sm">Small radio button</span>
           </label>
 
-          <label class="flex items-center gap-2">
+          <label className="flex items-center gap-2">
             <Radio name="size" size="md" value="medium" checked />
             <span>Medium radio button (default)</span>
           </label>
 
-          <label class="flex items-center gap-2">
+          <label className="flex items-center gap-2">
             <Radio name="size" size="lg" value="large" />
-            <span class="text-lg">Large radio button</span>
+            <span className="text-lg">Large radio button</span>
           </label>
         </Stack>
         <CodeBlock
@@ -74,23 +74,23 @@ export const RadioDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="States" description="Radio button states">
-        <Stack direction="column" spacing="md">
-          <label class="flex items-center gap-2">
+        <Stack direction="vertical" spacing="md">
+          <label className="flex items-center gap-2">
             <Radio name="state1" value="unchecked" />
             <span>Unchecked</span>
           </label>
 
-          <label class="flex items-center gap-2">
+          <label className="flex items-center gap-2">
             <Radio name="state2" value="checked" checked />
             <span>Checked</span>
           </label>
 
-          <label class="flex items-center gap-2 opacity-50 cursor-not-allowed">
+          <label className="flex items-center gap-2 opacity-50 cursor-not-allowed">
             <Radio name="state3" value="disabled" disabled />
             <span>Disabled unchecked</span>
           </label>
 
-          <label class="flex items-center gap-2 opacity-50 cursor-not-allowed">
+          <label className="flex items-center gap-2 opacity-50 cursor-not-allowed">
             <Radio name="state4" value="disabled-checked" checked disabled />
             <span>Disabled checked</span>
           </label>
@@ -128,59 +128,59 @@ export const RadioDemo = (): HTMLElement => {
       </DemoSection>
 
       <DemoSection title="With Descriptions" description="Add helper text to radio options">
-        <div class="space-y-4">
-          <Label>Payment method:</Label>
-          <Stack direction="column" spacing="lg" class="pl-2">
-            <label class="flex items-start gap-3">
-              <Radio name="payment" value="card" checked class="mt-1" />
+        <div className="space-y-4">
+          <Label text="Payment method:" />
+          <Stack direction="vertical" spacing="lg" className="pl-2">
+            <label className="flex items-start gap-3">
+              <Radio name="payment" value="card" checked className="mt-1" />
               <div>
-                <div class="font-medium">Credit or debit card</div>
-                <div class="text-sm text-gray-500">
+                <div className="font-medium">Credit or debit card</div>
+                <div className="text-sm text-gray-500">
                   Pay with Visa, Mastercard, or American Express
                 </div>
               </div>
             </label>
 
-            <label class="flex items-start gap-3">
-              <Radio name="payment" value="paypal" class="mt-1" />
+            <label className="flex items-start gap-3">
+              <Radio name="payment" value="paypal" className="mt-1" />
               <div>
-                <div class="font-medium">PayPal</div>
-                <div class="text-sm text-gray-500">Secure payment through your PayPal account</div>
+                <div className="font-medium">PayPal</div>
+                <div className="text-sm text-gray-500">Secure payment through your PayPal account</div>
               </div>
             </label>
 
-            <label class="flex items-start gap-3">
-              <Radio name="payment" value="bank" class="mt-1" />
+            <label className="flex items-start gap-3">
+              <Radio name="payment" value="bank" className="mt-1" />
               <div>
-                <div class="font-medium">Bank transfer</div>
-                <div class="text-sm text-gray-500">Direct transfer from your bank account</div>
+                <div className="font-medium">Bank transfer</div>
+                <div className="text-sm text-gray-500">Direct transfer from your bank account</div>
               </div>
             </label>
           </Stack>
         </div>
         <CodeBlock
-          code={`<label class="flex items-start gap-3">
-  <Radio name="payment" value="card" class="mt-1" />
+          code={`<label className="flex items-start gap-3">
+  <Radio name="payment" value="card" className="mt-1" />
   <div>
-    <div class="font-medium">Title</div>
-    <div class="text-sm text-gray-500">Description</div>
+    <div className="font-medium">Title</div>
+    <div className="text-sm text-gray-500">Description</div>
   </div>
 </label>`}
         />
       </DemoSection>
 
       <DemoSection title="Card-Style Options" description="Radio buttons styled as cards">
-        <div class="space-y-4">
-          <Label>Select your subscription:</Label>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <label class="relative cursor-pointer">
-              <input type="radio" name="subscription" value="basic" class="peer sr-only" />
-              <div class="p-6 border-2 border-gray-200 dark:border-gray-700 rounded-lg peer-checked:border-blue-600 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
-                <div class="font-semibold text-lg mb-2">Basic</div>
-                <div class="text-3xl font-bold mb-2">
-                  $9<span class="text-sm font-normal text-gray-500">/mo</span>
+        <div className="space-y-4">
+          <Label text="Select your subscription:" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <label className="relative cursor-pointer">
+              <input type="radio" name="subscription" value="basic" className="peer sr-only" />
+              <div className="p-6 border-2 border-gray-200 dark:border-gray-700 rounded-lg peer-checked:border-blue-600 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
+                <div className="font-semibold text-lg mb-2">Basic</div>
+                <div className="text-3xl font-bold mb-2">
+                  $9<span className="text-sm font-normal text-gray-500">/mo</span>
                 </div>
-                <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                   <li>✓ 10 projects</li>
                   <li>✓ 5 GB storage</li>
                   <li>✓ Email support</li>
@@ -188,17 +188,17 @@ export const RadioDemo = (): HTMLElement => {
               </div>
             </label>
 
-            <label class="relative cursor-pointer">
-              <input type="radio" name="subscription" value="pro" checked class="peer sr-only" />
-              <div class="p-6 border-2 border-gray-200 dark:border-gray-700 rounded-lg peer-checked:border-blue-600 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
-                <div class="flex items-center justify-between mb-2">
-                  <div class="font-semibold text-lg">Pro</div>
-                  <span class="text-xs bg-blue-600 text-white px-2 py-1 rounded">Popular</span>
+            <label className="relative cursor-pointer">
+              <input type="radio" name="subscription" value="pro" checked className="peer sr-only" />
+              <div className="p-6 border-2 border-gray-200 dark:border-gray-700 rounded-lg peer-checked:border-blue-600 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="font-semibold text-lg">Pro</div>
+                  <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded">Popular</span>
                 </div>
-                <div class="text-3xl font-bold mb-2">
-                  $29<span class="text-sm font-normal text-gray-500">/mo</span>
+                <div className="text-3xl font-bold mb-2">
+                  $29<span className="text-sm font-normal text-gray-500">/mo</span>
                 </div>
-                <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                   <li>✓ Unlimited projects</li>
                   <li>✓ 100 GB storage</li>
                   <li>✓ Priority support</li>
@@ -206,14 +206,14 @@ export const RadioDemo = (): HTMLElement => {
               </div>
             </label>
 
-            <label class="relative cursor-pointer">
-              <input type="radio" name="subscription" value="enterprise" class="peer sr-only" />
-              <div class="p-6 border-2 border-gray-200 dark:border-gray-700 rounded-lg peer-checked:border-blue-600 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
-                <div class="font-semibold text-lg mb-2">Enterprise</div>
-                <div class="text-3xl font-bold mb-2">
-                  $99<span class="text-sm font-normal text-gray-500">/mo</span>
+            <label className="relative cursor-pointer">
+              <input type="radio" name="subscription" value="enterprise" className="peer sr-only" />
+              <div className="p-6 border-2 border-gray-200 dark:border-gray-700 rounded-lg peer-checked:border-blue-600 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
+                <div className="font-semibold text-lg mb-2">Enterprise</div>
+                <div className="text-3xl font-bold mb-2">
+                  $99<span className="text-sm font-normal text-gray-500">/mo</span>
                 </div>
-                <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                   <li>✓ Everything in Pro</li>
                   <li>✓ Unlimited storage</li>
                   <li>✓ 24/7 phone support</li>
@@ -223,45 +223,45 @@ export const RadioDemo = (): HTMLElement => {
           </div>
         </div>
         <CodeBlock
-          code={`<label class="cursor-pointer">
-  <input type="radio" name="plan" class="peer sr-only" />
-  <div class="p-6 border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50">
-    <div class="font-semibold">Plan Name</div>
-    <div class="text-3xl font-bold">$29/mo</div>
+          code={`<label className="cursor-pointer">
+  <input type="radio" name="plan" className="peer sr-only" />
+  <div className="p-6 border-2 peer-checked:border-blue-600 peer-checked:bg-blue-50">
+    <div className="font-semibold">Plan Name</div>
+    <div className="text-3xl font-bold">$29/mo</div>
   </div>
 </label>`}
         />
       </DemoSection>
 
       <DemoSection title="Horizontal Layout" description="Radio buttons in a row">
-        <div class="space-y-4">
-          <Label>How did you hear about us?</Label>
-          <div class="flex flex-wrap gap-4">
-            <label class="flex items-center gap-2">
+        <div className="space-y-4">
+          <Label text="How did you hear about us?" />
+          <div className="flex flex-wrap gap-4">
+            <label className="flex items-center gap-2">
               <Radio name="source" value="google" />
               <span>Google</span>
             </label>
-            <label class="flex items-center gap-2">
+            <label className="flex items-center gap-2">
               <Radio name="source" value="social" checked />
               <span>Social Media</span>
             </label>
-            <label class="flex items-center gap-2">
+            <label className="flex items-center gap-2">
               <Radio name="source" value="friend" />
               <span>Friend</span>
             </label>
-            <label class="flex items-center gap-2">
+            <label className="flex items-center gap-2">
               <Radio name="source" value="other" />
               <span>Other</span>
             </label>
           </div>
         </div>
         <CodeBlock
-          code={`<div class="flex flex-wrap gap-4">
-  <label class="flex items-center gap-2">
+          code={`<div className="flex flex-wrap gap-4">
+  <label className="flex items-center gap-2">
     <Radio name="source" value="1" />
     <span>Option 1</span>
   </label>
-  <label class="flex items-center gap-2">
+  <label className="flex items-center gap-2">
     <Radio name="source" value="2" />
     <span>Option 2</span>
   </label>
