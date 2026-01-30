@@ -50,7 +50,7 @@ export const ComponentPlaygroundPage = ({
               {category}
             </span>
           </div>
-          <Typography tag="p" variant="body1" className="text-neutral-600">
+          <Typography tag="p" variant="body1" className="text-neutral-700">
             {description}
           </Typography>
         </Stack>

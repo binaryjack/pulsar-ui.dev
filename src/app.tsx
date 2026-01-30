@@ -1,26 +1,42 @@
 /**
  * Pulsar UI Showcase - Main App Component
- * Updated with design system tokens
+ * Updated with design system tokens and URL-based routing
  */
 
 import { cn } from '@pulsar-framework/design-tokens';
-import { useState } from '@pulsar-framework/pulsar.dev';
+import { createEffect, useNavigate, useSearchParams, useState } from '@pulsar-framework/pulsar.dev';
 import { ComponentShowcase } from './showcase-components/component-showcase';
 import { Header } from './showcase-components/header';
 import { Sidebar } from './showcase-components/sidebar';
 import type { ComponentCategory } from './types';
 
 export const App = (): HTMLElement => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
   const [activeCategory, setActiveCategory] = useState<ComponentCategory>('atoms');
-  const [activeComponent, setActiveComponent] = useState<string>('avatar');
+  const [activeComponent, setActiveComponent] = useState<string>('input');
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
+
+  // Sync state with URL params on mount and when URL changes
+  createEffect(() => {
+    const categoryFromUrl = (searchParams.get('category') as ComponentCategory) || 'atoms';
+    const componentFromUrl = searchParams.get('component') || 'input';
+
+    setActiveCategory(categoryFromUrl);
+    setActiveComponent(componentFromUrl);
+  });
 
   const handleCategoryChange = (category: ComponentCategory) => {
     setActiveCategory(category);
+    // Update URL when category changes
+    navigate(`/?category=${category}&component=${activeComponent()}`);
   };
 
   const handleComponentChange = (component: string) => {
     setActiveComponent(component);
+    // Update URL when component changes
+    navigate(`/?category=${activeCategory()}&component=${component}`);
   };
 
   const toggleSidebar = () => {
@@ -35,7 +51,6 @@ export const App = (): HTMLElement => {
   return (
     <div className="min-h-screen bg-background" style={{ minHeight: '100vh' }}>
       <Header onToggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen()} />
-
       <Sidebar
         open={sidebarOpen()}
         activeCategory={activeCategory()}
@@ -43,7 +58,6 @@ export const App = (): HTMLElement => {
         onCategoryChange={handleCategoryChange}
         onComponentChange={handleComponentChange}
       />
-
       <main
         className={mainClasses}
         style={{

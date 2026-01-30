@@ -67,11 +67,13 @@ export const Stack = ({
 /**
  * VStack - Vertical Stack helper
  */
-export const VStack = (props: IStackProps): HTMLElement =>
-  Stack({ ...props, direction: 'vertical' });
+export const VStack = (props: IStackProps): HTMLElement => (
+  <Stack {...props} direction="vertical" />
+);
 
 /**
  * HStack - Horizontal Stack helper
  */
-export const HStack = (props: IStackProps): HTMLElement =>
-  Stack({ ...props, direction: 'horizontal' });
+export const HStack = (props: IStackProps): HTMLElement => (
+  <Stack {...props} direction="horizontal" />
+);

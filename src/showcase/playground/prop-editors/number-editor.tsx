@@ -34,31 +34,25 @@ export const NumberEditor = ({ config, onChange, className }: PropEditorProps): 
 
   const labelText = `${displayLabel} ${constraintText}`.trim();
 
-  const children: HTMLElement[] = [
-    Label({ text: labelText, htmlFor: inputId, required: config.required }),
-    Input({
-      id: inputId,
-      type: 'number',
-      value: currentValue,
-      placeholder: config.defaultValue !== undefined ? String(config.defaultValue) : '0',
-      disabled: config.disabled,
-      min: config.min !== undefined ? String(config.min) : undefined,
-      max: config.max !== undefined ? String(config.max) : undefined,
-      step: config.step !== undefined ? String(config.step) : undefined,
-      oninput: handleChange,
-    }),
-  ];
-
-  if (config.description) {
-    children.push(
-      Typography({
-        tag: 'p',
-        variant: 'caption',
-        className: 'text-neutral-500',
-        children: config.description,
-      })
-    );
-  }
-
-  return Stack({ direction: 'vertical', spacing: 'xs', className, children });
+  return (
+    <Stack direction="vertical" spacing="xs" className={className}>
+      <Label text={labelText} htmlFor={inputId} required={config.required} />
+      <Input
+        id={inputId}
+        type="number"
+        value={currentValue}
+        placeholder={config.defaultValue !== undefined ? String(config.defaultValue) : '0'}
+        disabled={config.disabled}
+        min={config.min !== undefined ? String(config.min) : undefined}
+        max={config.max !== undefined ? String(config.max) : undefined}
+        step={config.step !== undefined ? String(config.step) : undefined}
+        oninput={handleChange}
+      />
+      {config.description && (
+        <Typography tag="p" variant="caption" className="text-neutral-500">
+          {config.description}
+        </Typography>
+      )}
+    </Stack>
+  );
 };

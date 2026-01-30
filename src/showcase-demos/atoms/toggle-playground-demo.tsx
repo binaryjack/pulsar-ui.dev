@@ -10,10 +10,12 @@ import {
 } from '../../showcase/stories/toggle/toggle-interactive.story';
 
 export const TogglePlaygroundDemo = (): HTMLElement => {
-  return ComponentPlaygroundPage({
-    title: 'Toggle',
-    description: 'Switch component for binary on/off states. Perfect for settings and preferences.',
-    category: 'atoms',
-    stories: [basicToggleStory, toggleWithLabelStory],
-  });
+  return (
+    <ComponentPlaygroundPage
+      title="Toggle"
+      description="Switch component for binary on/off states. Perfect for settings and preferences."
+      category="atoms"
+      stories={[basicToggleStory, toggleWithLabelStory]}
+    />
+  );
 };

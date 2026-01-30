@@ -12,7 +12,7 @@ import { useRef } from '@pulsar-framework/pulsar.dev';
  * // castedRefObject will be the div element after mount, or null before mount
  */
 export const useObjectRef = <T extends HTMLElement>() => {
-  const mainRef = useRef<T>(null);
+  const mainRef = useRef<T | null>(null);
   const castedRefObject = mainRef.current as T | null;
   return { mainRef, castedRefObject };
 };

@@ -23,33 +23,22 @@ export const StringEditor = ({ config, onChange, className }: PropEditorProps): 
   const displayLabel = config.label || config.name;
   const currentValue = (config.value as string) || '';
 
-  const children: HTMLElement[] = [
-    Label({ text: displayLabel, htmlFor: inputId, required: config.required }),
-    Input({
-      id: inputId,
-      type: 'text',
-      value: currentValue,
-      placeholder: (config.defaultValue as string) || `Enter ${displayLabel.toLowerCase()}...`,
-      disabled: config.disabled,
-      oninput: handleChange,
-    }),
-  ];
-
-  if (config.description) {
-    children.push(
-      Typography({
-        tag: 'p',
-        variant: 'caption',
-        className: 'text-neutral-500',
-        children: config.description,
-      })
-    );
-  }
-
-  return Stack({
-    direction: 'vertical',
-    spacing: 'xs',
-    className,
-    children,
-  });
+  return (
+    <Stack direction="vertical" spacing="xs" className={className}>
+      <Label text={displayLabel} htmlFor={inputId} required={config.required} />
+      <Input
+        id={inputId}
+        type="text"
+        value={currentValue}
+        placeholder={(config.defaultValue as string) || `Enter ${displayLabel.toLowerCase()}...`}
+        disabled={config.disabled}
+        oninput={handleChange}
+      />
+      {config.description && (
+        <Typography tag="p" variant="caption" className="text-neutral-500">
+          {config.description}
+        </Typography>
+      )}
+    </Stack>
+  );
 };

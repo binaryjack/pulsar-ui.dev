@@ -13,7 +13,7 @@ export const basicToggleStory: Story = {
   id: 'basic-toggle',
   title: 'Basic Toggle',
   description: 'Simple on/off toggle switch',
-  component: (props) => Toggle(props),
+  component: (props) => <Toggle {...props} />,
   props: {
     checked: false,
   },
@@ -54,7 +54,7 @@ export const toggleWithLabelStory: Story = {
   id: 'toggle-with-label',
   title: 'Toggle with Label',
   description: 'Toggle with descriptive label',
-  component: (props) => Toggle(props),
+  component: (props) => <Toggle {...props} />,
   props: {
     checked: false,
     label: 'Enable notifications',

@@ -3,10 +3,10 @@
  * Using new Playground system
  */
 
-import { bootstrapApp, createContext } from '@pulsar-framework/pulsar.dev';
-import { PlaygroundDemo } from './showcase/pages/playground-demo';
+import { bootstrapApp, createContext, Route, Router } from '@pulsar-framework/pulsar.dev';
 
 // Import design system and base styles FIRST
+import { App } from './app';
 import './showcase-styles.css';
 import './styles/design-system.css';
 import './styles/showcase-base.css';
@@ -35,7 +35,9 @@ const AppWithContext = (): HTMLElement => {
         theme: 'light',
       }}
     >
-      <PlaygroundDemo />
+      <Router>
+        <Route path="/" element={<App />} />
+      </Router>
     </AppContext.Provider>
   );
 };

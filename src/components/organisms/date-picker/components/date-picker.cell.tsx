@@ -37,7 +37,7 @@ const DatePickerCell = ({
 
     if (!cellItem()?.item) return;
 
-    if (cellItem().item.isCurrentScope) {
+    if (cellItem()?.item?.isCurrentScope) {
       const newCellItem = { ...cellItem() };
       if (!newCellItem?.item) return;
       newCellItem.item.selected = !newCellItem.item.selected;
@@ -70,11 +70,13 @@ const DatePickerCell = ({
     return cellItem()?.item?.date?.year;
   });
 
-  const classes = ifClass([
-    newIFClass('is-now', cellItem().item?.isNow),
-    newIFClass('is-weekend', cellItem().item?.isWeekEnd),
-    newIFClass('selected', cellItem().item?.selected),
-  ]);
+  const classes = useMemo(() => {
+    return ifClass([
+      newIFClass('is-now', cellItem()?.item?.isNow),
+      newIFClass('is-weekend', cellItem()?.item?.isWeekEnd),
+      newIFClass('selected', cellItem()?.item?.selected),
+    ]);
+  });
 
   return (
     <div

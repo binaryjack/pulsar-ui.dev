@@ -49,35 +49,25 @@ export const CodeHighlighter = ({
     });
   };
 
-  const container = Stack({
-    direction: 'vertical',
-    spacing: 'xs',
-    className: `relative ${className || ''}`,
-    children: [],
-  });
+  const container = (
+    <Stack direction="vertical" spacing="xs" className={`relative ${className || ''}`} />
+  );
 
   // Header with language label and copy button
-  const header = Stack({
-    direction: 'horizontal',
-    spacing: 'sm',
-    className: 'justify-between items-center px-4 py-2 bg-neutral-800 border-b border-neutral-700',
-    children: [
-      Typography({
-        tag: 'span',
-        variant: 'caption',
-        className: 'text-neutral-400 uppercase font-mono',
-        children: language,
-      }),
-    ],
-  });
+  const header = (
+    <Stack
+      direction="horizontal"
+      spacing="sm"
+      className="justify-between items-center px-4 py-2 bg-neutral-800 border-b border-neutral-700"
+    >
+      <Typography tag="span" variant="caption" className="text-neutral-400 uppercase font-mono">
+        {language}
+      </Typography>
+    </Stack>
+  );
 
   if (showCopy) {
-    header.appendChild(
-      Button({
-        onclick: handleCopy,
-        children: '📋 Copy',
-      })
-    );
+    header.appendChild(<Button onclick={handleCopy}>📋 Copy</Button>);
   }
 
   container.appendChild(header);

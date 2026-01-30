@@ -63,7 +63,7 @@ export const ComponentShowcase = ({
         </h2>
 
         <p className="text-text-muted">
-          The demo for <strong className="text-primary-600">{component}</strong> is currently being
+          The demo for <strong className="text-primary-100">{component}</strong> is currently being
           developed.
         </p>
       </div>

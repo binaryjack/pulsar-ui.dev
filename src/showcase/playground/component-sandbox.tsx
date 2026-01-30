@@ -131,55 +131,43 @@ export const ComponentSandbox = ({
   };
 
   // Build the main container
-  const mainStack = Stack({
-    direction: 'vertical',
-    spacing: 'md',
-    className,
-    children: [] as HTMLElement[],
-  });
+  const mainStack = <Stack direction="vertical" spacing="md" className={className} />;
 
   // Add header if requested
   if (showHeader) {
-    const headerStack = Stack({
-      direction: 'vertical',
-      spacing: 'xs',
-      children: [
-        Typography({
-          tag: 'h3',
-          variant: 'h3',
-          children: story.title,
-        }),
-      ],
-    });
+    const headerStack = (
+      <Stack direction="vertical" spacing="sm">
+        <Typography tag="h3" variant="h3">
+          {story.title}
+        </Typography>
+      </Stack>
+    );
 
     if (story.description) {
       headerStack.appendChild(
-        Typography({
-          tag: 'p',
-          variant: 'body2',
-          className: 'text-neutral-600',
-          children: story.description,
-        })
+        <Typography tag="p" variant="body2" className="text-neutral-600">
+          {story.description}
+        </Typography>
       );
     }
 
     if (story.metadata?.tags && story.metadata.tags.length > 0) {
-      const tagsStack = Stack({
-        direction: 'horizontal',
-        spacing: 'xs',
-        children: story.metadata.tags.map((tag) => {
-          const span = document.createElement('span');
-          span.className =
-            'inline-flex items-center px-2 py-1 text-xs font-medium rounded-md bg-primary-100 text-primary-800';
-          span.textContent = tag;
-          return span;
-        }),
-      });
+      const tagsStack = (
+        <Stack direction="horizontal" spacing="xs">
+          {story.metadata.tags.map((tag) => {
+            const span = document.createElement('span');
+            span.className =
+              'inline-flex items-center px-2 py-1 text-xs font-medium rounded-md bg-primary-100 text-primary-800';
+            span.textContent = tag;
+            return span;
+          })}
+        </Stack>
+      );
       headerStack.appendChild(tagsStack);
     }
 
     mainStack.appendChild(headerStack);
-    mainStack.appendChild(Divider({}));
+    mainStack.appendChild(<Divider />);
   }
 
   // Add main content (component + prop editor + code)
@@ -196,30 +184,29 @@ export const ComponentSandbox = ({
     componentContainer.appendChild(renderComponent());
 
     // Component card with toggle button
-    const componentCard = Card({
-      children: Stack({
-        direction: 'vertical',
-        spacing: 'md',
-        children: [
-          componentContainer,
-          Button({
-            onclick: () => setShowCode(!showCode()),
-            children: showCode() ? '👁️ Hide Code' : '💻 Show Code',
-          }),
-        ],
-      }),
-    });
+    const componentCard = (
+      <Card>
+        <Stack direction="vertical" spacing="md">
+          {componentContainer}
+          <Button onclick={() => setShowCode(!showCode())}>
+            {showCode() ? '👁️ Hide Code' : '💻 Show Code'}
+          </Button>
+        </Stack>
+      </Card>
+    );
 
     gridContainer.appendChild(componentCard);
 
     // Prop editor panel
-    const propEditorPanel = PropEditor({
-      props: story.propEditors.map((config) => ({
-        ...config,
-        value: currentProps()[config.name] ?? config.defaultValue,
-      })),
-      onChange: handlePropChange,
-    });
+    const propEditorPanel = (
+      <PropEditor
+        props={story.propEditors.map((config) => ({
+          ...config,
+          value: currentProps()[config.name] ?? config.defaultValue,
+        }))}
+        onChange={handlePropChange}
+      />
+    );
     gridContainer.appendChild(propEditorPanel);
 
     mainStack.appendChild(gridContainer);
@@ -228,39 +215,28 @@ export const ComponentSandbox = ({
     if (showCode()) {
       const generatedCode = generateCode(story, currentProps());
       mainStack.appendChild(
-        CodeHighlighter({
-          code: generatedCode,
-          language: 'tsx',
-          showCopy: true,
-        })
+        <CodeHighlighter code={generatedCode} language="tsx" showCopy={true} />
       );
     }
   } else {
     // Single column - component only
-    const componentCard = Card({
-      children: Stack({
-        direction: 'vertical',
-        spacing: 'md',
-        children: [
-          renderComponent(),
-          Button({
-            onclick: () => setShowCode(!showCode()),
-            children: showCode() ? '👁️ Hide Code' : '💻 Show Code',
-          }),
-        ],
-      }),
-    });
+    const componentCard = (
+      <Card>
+        <Stack direction="vertical" spacing="md">
+          {renderComponent()}
+          <Button onclick={() => setShowCode(!showCode())}>
+            {showCode() ? '👁️ Hide Code' : '💻 Show Code'}
+          </Button>
+        </Stack>
+      </Card>
+    );
     mainStack.appendChild(componentCard);
 
     // Code panel
     if (showCode()) {
       const generatedCode = generateCode(story, currentProps());
       mainStack.appendChild(
-        CodeHighlighter({
-          code: generatedCode,
-          language: 'tsx',
-          showCopy: true,
-        })
+        <CodeHighlighter code={generatedCode} language="tsx" showCopy={true} />
       );
     }
   }

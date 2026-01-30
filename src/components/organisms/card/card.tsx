@@ -15,8 +15,8 @@ const cardDefaultConfig = new ComponentConfigBuilder('primary').rounded('xl').sh
 
 // External to the component so it's compiled ONCE!
 const cardDefaultStyling = new ComponentStylingBuilder()
-  .base('bg-white overflow-hidden transition-all duration-300 hover:shadow-lg')
-  .border('border border-neutral-200')
+  .base('bg-white dark:bg-neutral-800 overflow-hidden transition-all duration-300 hover:shadow-lg')
+  .border('border border-neutral-200 dark:border-neutral-700')
   .build();
 
 /**
@@ -48,10 +48,16 @@ export const Card = ({
 
   return (
     <div className={className} ariaBusy={config.loading ? 'true' : 'false'} {...rest}>
-      {header && <div className="px-6 py-4 border-b border-neutral-200">{header}</div>}
+      {header && (
+        <div className="px-6 py-4 border-b border-neutral-200 dark:border-neutral-700">
+          {header}
+        </div>
+      )}
       <div className="px-6 py-4">{children}</div>
       {footer && (
-        <div className="px-6 py-4 border-t border-neutral-200 bg-neutral-50">{footer}</div>
+        <div className="px-6 py-4 border-t border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-750">
+          {footer}
+        </div>
       )}
     </div>
   );

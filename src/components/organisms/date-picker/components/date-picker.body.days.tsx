@@ -71,7 +71,6 @@ const DatePickerBodyDays = ({ id }: IDatePickerBodyDaysProps) => {
           <div key={dateRow.id} className="date-picker-body-row">
             {dateRow.cells.map((dateCell) => (
               <DatePickerCell
-                key={dateCell.code}
                 gridDisplayMode="DAY"
                 selectedCells={selectedCells()}
                 onMouseEnter={handleDisplayInfos}

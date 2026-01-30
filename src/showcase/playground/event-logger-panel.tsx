@@ -29,37 +29,23 @@ export const EventLoggerPanel = ({
   onClear,
   className,
 }: IEventLoggerPanelProps): HTMLElement => {
-  const container = Card({
-    className: `${className || ''} h-full flex flex-col`,
-    children: Stack({
-      direction: 'vertical',
-      spacing: 'md',
-      className: 'h-full',
-      children: [],
-    }),
-  });
+  const container = (
+    <Card className={`${className || ''} h-full flex flex-col`}>
+      <Stack direction="vertical" spacing="md" className="h-full" />
+    </Card>
+  );
 
   // Header
-  const header = Stack({
-    direction: 'horizontal',
-    spacing: 'sm',
-    className: 'justify-between items-center',
-    children: [
-      Typography({
-        tag: 'h3',
-        variant: 'h4',
-        children: `Event Log (${events.length})`,
-      }),
-    ],
-  });
+  const header = (
+    <Stack direction="horizontal" spacing="sm" className="justify-between items-center">
+      <Typography tag="h3" variant="h4">
+        {`Event Log (${events.length})`}
+      </Typography>
+    </Stack>
+  );
 
   if (onClear && events.length > 0) {
-    header.appendChild(
-      Button({
-        onclick: onClear,
-        children: '🗑️ Clear',
-      })
-    );
+    header.appendChild(<Button onclick={onClear}>🗑️ Clear</Button>);
   }
 
   const mainStack = container.firstElementChild as HTMLElement;
@@ -68,12 +54,9 @@ export const EventLoggerPanel = ({
   // Event list
   if (events.length === 0) {
     mainStack.appendChild(
-      Typography({
-        tag: 'p',
-        variant: 'body2',
-        className: 'text-neutral-400 italic text-center py-8',
-        children: 'No events logged yet. Interact with components to see events.',
-      })
+      <Typography tag="p" variant="body2" className="text-neutral-400 italic text-center py-8">
+        No events logged yet. Interact with components to see events.
+      </Typography>
     );
   } else {
     const eventList = document.createElement('div');
@@ -87,36 +70,26 @@ export const EventLoggerPanel = ({
 
       const timestamp = new Date(event.timestamp).toLocaleTimeString();
 
-      const eventHeader = Stack({
-        direction: 'horizontal',
-        spacing: 'sm',
-        className: 'justify-between items-start',
-        children: [
-          Typography({
-            tag: 'span',
-            variant: 'body2',
-            className: 'font-semibold text-primary-600',
-            children: event.name,
-          }),
-          Typography({
-            tag: 'span',
-            variant: 'caption',
-            className: 'text-neutral-500',
-            children: timestamp,
-          }),
-        ],
-      });
+      const eventHeader = (
+        <Stack direction="horizontal" spacing="sm" className="justify-between items-start">
+          <Typography tag="span" variant="body2" className="font-semibold text-primary-600">
+            {event.name}
+          </Typography>
+          <Typography tag="span" variant="caption" className="text-neutral-500">
+            {timestamp}
+          </Typography>
+        </Stack>
+      );
 
       eventCard.appendChild(eventHeader);
 
       // Target info
       if (event.target) {
-        const targetInfo = Typography({
-          tag: 'p',
-          variant: 'caption',
-          className: 'text-neutral-600 mt-1 font-mono',
-          children: `${event.target.tagName}${event.target.id ? `#${event.target.id}` : ''}${event.target.className ? `.${event.target.className.split(' ')[0]}` : ''}`,
-        });
+        const targetInfo = (
+          <Typography tag="p" variant="caption" className="text-neutral-600 mt-1 font-mono">
+            {`${event.target.tagName}${event.target.id ? `#${event.target.id}` : ''}${event.target.className ? `.${event.target.className.split(' ')[0]}` : ''}`}
+          </Typography>
+        );
         eventCard.appendChild(targetInfo);
       }
 

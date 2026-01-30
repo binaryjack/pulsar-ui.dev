@@ -13,11 +13,35 @@
   "rules": {
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "react",
+            "importNames": ["useImperativeHandle", "forwardRef"],
+            "message": "🚫 IMPERATIVE PATTERNS FORBIDDEN: Use declarative props (isOpen, onClose) instead of imperative APIs (ref.open(), ref.close()). Components must be controlled via props only."
+          }
+        ]
+      }
+    ],
     "no-restricted-syntax": [
       "error",
       {
         "selector": "JSXAttribute[name.name='class']:not([value.type='JSXExpressionContainer'])",
         "message": "Use 'className' instead of 'class' for JSX attributes. While Pulsar supports both, 'className' is preferred for consistency with React conventions and to avoid confusion with JavaScript's reserved 'class' keyword."
+      },
+      {
+        "selector": "Identifier[name='useImperativeHandle']",
+        "message": "🚫 IMPERATIVE PATTERNS FORBIDDEN: useImperativeHandle creates imperative APIs. Use declarative props instead (e.g., isOpen={true} instead of ref.open())."
+      },
+      {
+        "selector": "Identifier[name='forwardRef']",
+        "message": "🚫 IMPERATIVE PATTERNS FORBIDDEN: forwardRef is typically used for imperative APIs. Use declarative props to control component state."
+      },
+      {
+        "selector": "TSTypeAnnotation > TSTypeReference > Identifier[name=/Ref$/]",
+        "message": "🚫 IMPERATIVE PATTERNS SUSPECTED: Component ref types suggest imperative API design. Use declarative props instead."
       }
     ]
   },

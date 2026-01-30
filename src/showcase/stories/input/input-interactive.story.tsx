@@ -13,7 +13,7 @@ export const basicInputStory: Story = {
   id: 'basic-input',
   title: 'Basic Input',
   description: 'Standard text input with customizable placeholder',
-  component: (props) => Input(props),
+  component: (props) => <Input {...props} />,
   props: {
     type: 'text',
     placeholder: 'Enter text...',
@@ -63,7 +63,7 @@ export const emailInputStory: Story = {
   id: 'email-input',
   title: 'Email Input',
   description: 'Email-specific input validation',
-  component: (props) => Input(props),
+  component: (props) => <Input {...props} />,
   props: {
     type: 'email',
     placeholder: 'your@email.com',
@@ -105,7 +105,7 @@ export const passwordInputStory: Story = {
   id: 'password-input',
   title: 'Password Input',
   description: 'Secure password input field',
-  component: (props) => Input(props),
+  component: (props) => <Input {...props} />,
   props: {
     type: 'password',
     placeholder: 'Enter password',

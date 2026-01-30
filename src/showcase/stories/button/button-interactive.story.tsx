@@ -14,7 +14,7 @@ export const basicButtonStory: Story = {
   id: 'button-basic',
   title: 'Basic Button',
   description: 'A simple button with editable text and variant',
-  component: (props) => Button(props),
+  component: (props) => <Button {...props} />,
   props: {
     children: 'Click Me',
     variant: 'primary',
@@ -65,7 +65,7 @@ export const loadingButtonStory: Story = {
   id: 'button-loading',
   title: 'Loading Button',
   description: 'Button with loading state and configurable text',
-  component: (props) => Button(props),
+  component: (props) => <Button {...props} />,
   props: {
     children: 'Submit',
     variant: 'primary',
@@ -107,7 +107,7 @@ export const buttonSizesStory: Story = {
   id: 'button-sizes',
   title: 'Button Sizes',
   description: 'Buttons in different sizes',
-  component: (props) => Button(props),
+  component: (props) => <Button {...props} />,
   props: {
     children: 'Medium Button',
     size: 'md',
@@ -142,7 +142,7 @@ export const fullWidthButtonStory: Story = {
   id: 'button-full-width',
   title: 'Full Width Button',
   description: 'Button that spans the full container width',
-  component: (props) => Button(props),
+  component: (props) => <Button {...props} />,
   props: {
     children: 'Full Width Button',
     variant: 'primary',

@@ -21,38 +21,22 @@ export const BooleanEditor = ({ config, onChange, className }: PropEditorProps):
   const displayLabel = config.label || config.name;
   const currentValue = Boolean(config.value);
 
-  const children: HTMLElement[] = [
-    Stack({
-      direction: 'horizontal',
-      spacing: 'sm',
-      className: 'items-center',
-      children: [
-        Toggle({
-          id: `prop-${config.name}`,
-          checked: currentValue,
-          disabled: config.disabled,
-          onChange: handleChange,
-        }),
-        Label({ text: displayLabel, htmlFor: `prop-${config.name}`, required: config.required }),
-      ],
-    }),
-  ];
-
-  if (config.description) {
-    children.push(
-      Typography({
-        tag: 'p',
-        variant: 'caption',
-        className: 'text-neutral-500',
-        children: config.description,
-      })
-    );
-  }
-
-  return Stack({
-    direction: 'vertical',
-    spacing: 'xs',
-    className,
-    children,
-  });
+  return (
+    <Stack direction="vertical" spacing="xs" className={className}>
+      <Stack direction="horizontal" spacing="sm" className="items-center">
+        <Toggle
+          id={`prop-${config.name}`}
+          checked={currentValue}
+          disabled={config.disabled}
+          onChange={handleChange}
+        />
+        <Label text={displayLabel} htmlFor={`prop-${config.name}`} required={config.required} />
+      </Stack>
+      {config.description && (
+        <Typography tag="p" variant="caption" className="text-neutral-500">
+          {config.description}
+        </Typography>
+      )}
+    </Stack>
+  );
 };

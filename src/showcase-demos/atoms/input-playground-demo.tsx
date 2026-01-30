@@ -11,11 +11,12 @@ import {
 } from '../../showcase/stories/input/input-interactive.story';
 
 export const InputPlaygroundDemo = (): HTMLElement => {
-  return ComponentPlaygroundPage({
-    title: 'Input',
-    description:
-      'Text input field with validation, different types, and customizable appearance. Test different configurations interactively.',
-    category: 'atoms',
-    stories: [basicInputStory, emailInputStory, passwordInputStory],
-  });
+  return (
+    <ComponentPlaygroundPage
+      title="Input"
+      description="Text input field with validation, different types, and customizable appearance. Test different configurations interactively."
+      category="atoms"
+      stories={[basicInputStory, emailInputStory, passwordInputStory]}
+    />
+  );
 };
