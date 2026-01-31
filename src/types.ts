@@ -13,10 +13,12 @@ export interface IComponent {
 
 export interface ISidebarProps {
   readonly open: boolean;
+  readonly width: number;
   readonly activeCategory: ComponentCategory;
   readonly activeComponent: string;
   readonly onCategoryChange: (category: ComponentCategory) => void;
   readonly onComponentChange: (component: string) => void;
+  readonly onResizeStart: () => void;
 }
 
 export interface IHeaderProps {

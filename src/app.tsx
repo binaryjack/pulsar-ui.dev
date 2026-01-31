@@ -3,7 +3,6 @@
  * Updated with design system tokens and URL-based routing
  */
 
-import { cn } from '@pulsar-framework/design-tokens';
 import { createEffect, routerContext, useNavigate, useState } from '@pulsar-framework/pulsar.dev';
 import { ComponentShowcase } from './showcase-components/component-showcase';
 import { Header } from './showcase-components/header';
@@ -16,6 +15,8 @@ export const App = (): HTMLElement => {
   const [activeCategory, setActiveCategory] = useState<ComponentCategory>('atoms');
   const [activeComponent, setActiveComponent] = useState<string>('input');
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
+  const [sidebarWidth, setSidebarWidth] = useState<number>(256);
+  const [isResizing, setIsResizing] = useState<boolean>(false);
 
   // Sync state with URL params on mount and when URL changes
   createEffect(() => {
@@ -26,6 +27,32 @@ export const App = (): HTMLElement => {
 
     setActiveCategory(categoryFromUrl);
     setActiveComponent(componentFromUrl);
+  });
+
+  // Resize handlers
+  const handleResizeStart = () => {
+    setIsResizing(true);
+  };
+
+  createEffect(() => {
+    if (!isResizing()) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const newWidth = Math.max(200, Math.min(600, e.clientX));
+      setSidebarWidth(newWidth);
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
   });
 
   const handleCategoryChange = (category: ComponentCategory) => {
@@ -44,37 +71,39 @@ export const App = (): HTMLElement => {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const mainClasses = cn(
-    'flex-1 transition-smooth bg-background',
-    sidebarOpen() ? 'ml-64' : 'ml-0'
-  );
-
   return (
-    <div className="min-h-screen bg-background" style={{ minHeight: '100vh' }}>
-      <Header onToggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen()} />
-      <Sidebar
-        open={sidebarOpen()}
-        activeCategory={activeCategory()}
-        activeComponent={activeComponent()}
-        onCategoryChange={handleCategoryChange}
-        onComponentChange={handleComponentChange}
-      />
-      <main
-        className={mainClasses}
-        style={{
-          paddingTop: 'var(--header-height)',
-          minHeight: '100vh',
-        }}
-      >
-        <div
-          className="max-w-7xl mx-auto px-md py-lg"
+    <div className="flex flex-col min-h-screen bg-background">
+      <div className="w-full h-[50px]">
+        <Header onToggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen()} />
+      </div>
+      <div className="flex flex-1 flex-row">
+        <Sidebar
+          open={sidebarOpen()}
+          width={sidebarWidth()}
+          activeCategory={activeCategory()}
+          activeComponent={activeComponent()}
+          onCategoryChange={handleCategoryChange}
+          onComponentChange={handleComponentChange}
+          onResizeStart={handleResizeStart}
+        />
+        <main
+          className="flex-1"
           style={{
-            maxWidth: '1280px',
+            marginLeft: sidebarOpen() ? '0' : '0',
+            transition: 'margin-left 0.3s ease',
+            display: 'relative',
           }}
         >
-          <ComponentShowcase category={activeCategory()} component={activeComponent()} />
-        </div>
-      </main>
+          <div
+            className="max-w-7xl mx-auto px-md py-lg"
+            style={{
+              maxWidth: '1280px',
+            }}
+          >
+            <ComponentShowcase category={activeCategory()} component={activeComponent()} />
+          </div>
+        </main>
+      </div>
     </div>
   );
 };

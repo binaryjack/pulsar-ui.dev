@@ -23,46 +23,50 @@ const COMPONENTS: IComponent[] = [
   },
 ];
 
+const sidebarClasses = cn(
+  'h-full overflow-y-auto',
+  'bg-surface border-r border-border',
+  'transition-all duration-300',
+  'flex-shrink-0'
+);
+
+const categories = [
+  {
+    id: 'atoms' as const,
+    name: 'Atoms',
+    count: COMPONENTS.filter((c) => c.category === 'atoms').length,
+  },
+  {
+    id: 'molecules' as const,
+    name: 'Molecules',
+    count: COMPONENTS.filter((c) => c.category === 'molecules').length,
+  },
+  {
+    id: 'organisms' as const,
+    name: 'Organisms',
+    count: COMPONENTS.filter((c) => c.category === 'organisms').length,
+  },
+];
+
 export const Sidebar = ({
   open,
+  width,
   activeCategory,
   activeComponent,
   onCategoryChange,
   onComponentChange,
+  onResizeStart,
 }: ISidebarProps): HTMLElement => {
-  const sidebarClasses = cn(
-    'fixed top-0 left-0 bottom-0 overflow-y-auto',
-    'bg-surface border-r border-border',
-    'transition-transform z-fixed',
-    open ? 'translate-x-0' : '-translate-x-full'
-  );
-
-  const categories = [
-    {
-      id: 'atoms' as const,
-      name: 'Atoms',
-      count: COMPONENTS.filter((c) => c.category === 'atoms').length,
-    },
-    {
-      id: 'molecules' as const,
-      name: 'Molecules',
-      count: COMPONENTS.filter((c) => c.category === 'molecules').length,
-    },
-    {
-      id: 'organisms' as const,
-      name: 'Organisms',
-      count: COMPONENTS.filter((c) => c.category === 'organisms').length,
-    },
-  ];
-
   const filteredComponents = COMPONENTS.filter((c) => c.category === activeCategory);
 
   return (
     <aside
       className={sidebarClasses}
       style={{
-        width: 'var(--sidebar-width)',
-        paddingTop: 'var(--header-height)',
+        width: open ? `${width}px` : '0px',
+        overflow: open ? 'auto' : 'hidden',
+
+        position: 'relative',
       }}
     >
       <div className="p-md">
@@ -79,22 +83,25 @@ export const Sidebar = ({
               .size('sm')
               .build();
 
+            const badgeConfig = new ComponentConfigBuilder(isActive ? 'primary' : 'secondary')
+              .size('sm')
+              .build();
+
             return (
               <Button
+                key={cat.id}
                 config={buttonConfig}
                 onclick={() => onCategoryChange(cat.id)}
                 type="button"
                 role="tab"
-                aria-selected={isActive}
+                aria-selected={isActive.toString()}
                 aria-controls={`${cat.id}-panel`}
                 className="flex-1 rounded-t-lg"
               >
                 <div className="text-center w-full">
                   <div>{cat.name}</div>
                   <Badge
-                    config={new ComponentConfigBuilder(isActive ? 'primary' : 'secondary')
-                      .size('sm')
-                      .build()}
+                    config={badgeConfig}
                     label={cat.count.toString()}
                     className="mt-1 inline-flex"
                   />
@@ -121,6 +128,7 @@ export const Sidebar = ({
 
             return (
               <Button
+                key={component.id}
                 config={buttonConfig}
                 onclick={() => onComponentChange(component.id)}
                 type="button"
@@ -137,6 +145,19 @@ export const Sidebar = ({
           })}
         </nav>
       </div>
+      {/* Resize Handle */}
+      {open && (
+        <div
+          onMouseDown={onResizeStart}
+          className="absolute top-0 right-0 bottom-0 bg-border hover:bg-primary-500 transition-colors"
+          style={{
+            width: '4px',
+            cursor: 'col-resize',
+            zIndex: '1000',
+          }}
+          title="Drag to resize"
+        />
+      )}
     </aside>
   );
 };
