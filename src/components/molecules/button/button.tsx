@@ -50,14 +50,23 @@ export const Button = ({
   onclick,
   ...rest
 }: IButtonProps): HTMLElement => {
+  console.log('[Button] Called with config:', config);
+
   if (config.loading) {
-    return (
+    const skeleton = (
       <Skeleton
         width={config.fullWidth ? 'w-full' : 'w-32'}
         height={config.size ? componentSizes[config.size].height : 'h-10'}
         rounded={config.rounded}
       />
     );
+    console.log(
+      '[Button] Returning Skeleton:',
+      skeleton,
+      'instanceof HTMLElement:',
+      skeleton instanceof HTMLElement
+    );
+    return skeleton;
   }
 
   // Variant styling - using inline classes since builder styles are already set
@@ -92,7 +101,7 @@ export const Button = ({
     styling.custom
   );
 
-  return (
+  const button = (
     <button
       type={type}
       className={className}
@@ -104,4 +113,12 @@ export const Button = ({
       {children}
     </button>
   );
+
+  console.log(
+    '[Button] Returning button:',
+    button,
+    'instanceof HTMLElement:',
+    button instanceof HTMLElement
+  );
+  return button;
 };
