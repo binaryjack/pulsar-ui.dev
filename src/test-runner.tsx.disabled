@@ -1,0 +1,322 @@
+/**
+ * Test Runner: Comprehensive Test Suite with Navigation
+ * Allows cycling through all test cases with a navigation interface
+ */
+import { useState } from '@pulsar-framework/pulsar.dev';
+import { TestAdvanced } from './test-advanced';
+import { TestArrayMap } from './test-array-map';
+import { TestComplex } from './test-complex';
+import { TestConditional } from './test-conditional';
+import { TestEdgeCases } from './test-edge-cases';
+import { TestInteractive } from './test-interactive';
+import { TestNested } from './test-nested';
+import { TestOnlySignal1 } from './test-only-signal';
+import { TestRealWorld } from './test-real-world';
+import { TestSimpleInteractive } from './test-simple-interactive';
+
+// All available tests
+const testSuite = [
+  {
+    id: 'basic',
+    component: TestOnlySignal1,
+    name: 'Basic Signal',
+    description: 'Simple signal usage and reactivity',
+  },
+  {
+    id: 'simple',
+    component: TestSimpleInteractive,
+    name: 'Simple Interactive',
+    description: 'Button clicks and state updates',
+  },
+  {
+    id: 'interactive',
+    component: TestInteractive,
+    name: 'Interactive Buttons',
+    description: 'Multiple interactive elements',
+  },
+  {
+    id: 'array-map',
+    component: TestArrayMap,
+    name: 'Array.map() & wire()',
+    description: 'Dynamic lists and array rendering',
+  },
+  {
+    id: 'conditional',
+    component: TestConditional,
+    name: 'Conditional Rendering',
+    description: 'Show/hide elements based on state',
+  },
+  {
+    id: 'nested',
+    component: TestNested,
+    name: 'Nested Components',
+    description: 'Component composition and prop passing',
+  },
+  {
+    id: 'complex',
+    component: TestComplex,
+    name: 'Complex Combination',
+    description: 'All features combined together',
+  },
+  {
+    id: 'advanced',
+    component: TestAdvanced,
+    name: 'Advanced Edge Cases',
+    description: 'Deep nesting, complex props, dynamic components',
+  },
+  {
+    id: 'edge-cases',
+    component: TestEdgeCases,
+    name: 'Error Handling & Performance',
+    description: 'Error boundaries, high-frequency updates, large datasets',
+  },
+  {
+    id: 'real-world',
+    component: TestRealWorld,
+    name: 'Real-World Patterns',
+    description: 'Async operations, forms, real-time updates',
+  },
+];
+
+export const TestRunner = (): HTMLElement => {
+  const [currentTestIndex, setCurrentTestIndex] = useState(0);
+  const [showNavigation, setShowNavigation] = useState(true);
+
+  const currentTest = testSuite[currentTestIndex()];
+  const TestComponent = currentTest.component;
+
+  const nextTest = () => {
+    setCurrentTestIndex((currentTestIndex() + 1) % testSuite.length);
+  };
+
+  const prevTest = () => {
+    setCurrentTestIndex(currentTestIndex() === 0 ? testSuite.length - 1 : currentTestIndex() - 1);
+  };
+
+  const selectTest = (index: number) => {
+    setCurrentTestIndex(index);
+  };
+
+  // Create test content by calling the component function directly
+  const testContent = TestComponent();
+
+  return (
+    <div style="min-height: 100vh; background: #f8f9fa; font-family: sans-serif;">
+      {/* Navigation Header */}
+      <div
+        style={`position: sticky; top: 0; background: #ffffff; border-bottom: 2px solid #007bff; z-index: 1000; transition: all 0.3s ease; ${showNavigation() ? 'height: auto;' : 'height: 60px; overflow: hidden;'}`}
+      >
+        <div style="padding: 15px 20px;">
+          {/* Header */}
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div>
+              <h1 style="margin: 0; color: #007bff; font-size: 24px;">🧪 Pulsar Test Suite</h1>
+              <div style="font-size: 12px; color: #666; margin-top: 4px;">
+                Comprehensive Registry Pattern & Transformer Testing
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowNavigation(!showNavigation())}
+              style="padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;"
+            >
+              {showNavigation() ? '▼ Hide Nav' : '▲ Show Nav'}
+            </button>
+          </div>
+
+          {/* Current Test Info */}
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #e7f3ff; border-radius: 8px; margin-bottom: 15px;">
+            <div>
+              <h3 style="margin: 0; color: #0056b3;">
+                Test {currentTestIndex() + 1}/{testSuite.length}: {currentTest.name}
+              </h3>
+              <div style="font-size: 14px; color: #666; margin-top: 4px;">
+                {currentTest.description}
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button
+                onClick={prevTest}
+                style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;"
+                title="Previous Test"
+              >
+                ◀ Prev
+              </button>
+              <button
+                onClick={nextTest}
+                style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;"
+                title="Next Test"
+              >
+                Next ▶
+              </button>
+            </div>
+          </div>
+
+          {/* Test Grid Navigation */}
+          {showNavigation() ? (
+            <div>
+              <div style="margin-bottom: 10px; font-size: 12px; color: #666; font-weight: bold;">
+                Click any test to jump directly:
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px;">
+                {testSuite.map((test, index) => (
+                  <button
+                    onclick={() => selectTest(index)}
+                    style={`padding: 10px; text-align: left; border: 2px solid ${index === currentTestIndex() ? '#007bff' : '#dee2e6'}; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; background: ${index === currentTestIndex() ? '#e7f3ff' : '#ffffff'};`}
+                  >
+                    <div style={`font-weight: bold; color: ${index === currentTestIndex() ? '#007bff' : '#495057'}; margin-bottom: 4px;`}>
+                      #{index + 1} {test.name}
+                    </div>
+                    <div style="font-size: 12px; color: #6c757d;">
+                      {test.description}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </div>
+      </div>
+
+      {/* Test Content - Create a container and append the HTMLElement */}
+      <div style="padding: 0;" ref={(container) => {
+        if (container && testContent) {
+          container.innerHTML = '';
+          container.appendChild(testContent);
+        }
+      }}>
+      </div>
+
+      {/* Footer */}
+      <div style="background: #ffffff; border-top: 1px solid #dee2e6; padding: 20px; margin-top: 40px; text-align: center;">
+        <div style="color: #6c757d; font-size: 12px;">
+          <strong>Registry Pattern Test Suite</strong> - Testing component wrapping, JSX transformation, and state management
+        </div>
+        <div style="color: #6c757d; font-size: 11px; margin-top: 8px;">
+          Progress: {currentTestIndex() + 1} of {testSuite.length} tests completed
+        </div>
+
+        {/* Progress Bar */}
+        <div style="width: 100%; max-width: 400px; height: 6px; background: #e9ecef; border-radius: 3px; margin: 12px auto; overflow: hidden;">
+          <div
+            style={`height: 100%; background: #007bff; border-radius: 3px; width: ${((currentTestIndex() + 1) / testSuite.length) * 100}%; transition: width 0.3s ease;`}
+          ></div>
+        </div>
+      </div>
+    </div>
+  );
+    <div style="min-height: 100vh; background: #f8f9fa; font-family: sans-serif;">
+      {/* Navigation Header */}
+      <div
+        style={`position: sticky; top: 0; background: #ffffff; border-bottom: 2px solid #007bff; z-index: 1000; transition: all 0.3s ease; ${showNavigation() ? 'height: auto;' : 'height: 60px; overflow: hidden;'}`}
+      >
+        <div style="padding: 15px 20px;">
+          {/* Header */}
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div>
+              <h1 style="margin: 0; color: #007bff; font-size: 24px;">🧪 Pulsar Test Suite</h1>
+              <div style="font-size: 12px; color: #666; margin-top: 4px;">
+                Comprehensive Registry Pattern & Transformer Testing
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowNavigation(!showNavigation())}
+              style="padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;"
+            >
+              {showNavigation() ? '▼ Hide Nav' : '▲ Show Nav'}
+            </button>
+          </div>
+
+          {/* Current Test Info */}
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #e7f3ff; border-radius: 8px; margin-bottom: 15px;">
+            <div>
+              <h3 style="margin: 0; color: #0056b3;">
+                Test {currentTestIndex() + 1}/{testSuite.length}: {currentTest.name}
+              </h3>
+              <div style="font-size: 14px; color: #666; margin-top: 4px;">
+                {currentTest.description}
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button
+                onClick={prevTest}
+                style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;"
+                title="Previous Test"
+              >
+                ◀ Prev
+              </button>
+              <button
+                onClick={nextTest}
+                style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;"
+                title="Next Test"
+              >
+                Next ▶
+              </button>
+            </div>
+          </div>
+
+          {/* Test Grid Navigation */}
+          {showNavigation() ? (
+            <div>
+              <div style="margin-bottom: 10px; font-size: 12px; color: #666; font-weight: bold;">
+                Click any test to jump directly:
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px;">
+                {testSuite.map((test, index) => (
+                  <button
+                    key={test.id}
+                    onClick={() => selectTest(index)}
+                    style={`padding: 10px; text-align: left; border: 2px solid ${index === currentTestIndex() ? '#007bff' : '#dee2e6'}; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; background: ${index === currentTestIndex() ? '#e7f3ff' : '#ffffff'};`}
+                    onMouseEnter={(e) => {
+                      if (index !== currentTestIndex()) {
+                        (e.target as HTMLElement).style.borderColor = '#007bff';
+                        (e.target as HTMLElement).style.backgroundColor = '#f8f9fa';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (index !== currentTestIndex()) {
+                        (e.target as HTMLElement).style.borderColor = '#dee2e6';
+                        (e.target as HTMLElement).style.backgroundColor = '#ffffff';
+                      }
+                    }}
+                  >
+                    <div
+                      style={`font-weight: bold; color: ${index === currentTestIndex() ? '#007bff' : '#495057'}; margin-bottom: 4px;`}
+                    >
+                      #{index + 1} {test.name}
+                    </div>
+                    <div style="font-size: 12px; color: #6c757d;">{test.description}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </div>
+      </div>
+
+      {/* Test Content */}
+      <div style="padding: 0;">{testContent}</div>
+
+      {/* Footer */}
+      <div style="background: #ffffff; border-top: 1px solid #dee2e6; padding: 20px; margin-top: 40px; text-align: center;">
+        <div style="color: #6c757d; font-size: 12px;">
+          <strong>Registry Pattern Test Suite</strong> - Testing component wrapping, JSX
+          transformation, and state management
+        </div>
+        <div style="color: #6c757d; font-size: 11px; margin-top: 8px;">
+          Progress: {currentTestIndex() + 1} of {testSuite.length} tests completed
+        </div>
+
+        {/* Progress Bar */}
+        <div style="width: 100%; max-width: 400px; height: 6px; background: #e9ecef; border-radius: 3px; margin: 12px auto; overflow: hidden;">
+          <div
+            style={`height: 100%; background: #007bff; border-radius: 3px; width: ${((currentTestIndex() + 1) / testSuite.length) * 100}%; transition: width 0.3s ease;`}
+          ></div>
+        </div>
+      </div>
+    </div>
+  );
+};

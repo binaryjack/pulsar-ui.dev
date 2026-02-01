@@ -1,6 +1,7 @@
 /**
  * MINIMAL TEST PAGE - No Router, No Complex Structure
  * Just basic atoms to test transformation and reactivity
+ * UPDATED: Now using direct JSX return for proper transformer detection
  */
 
 import { createEffect, useState } from '@pulsar-framework/pulsar.dev';
@@ -8,7 +9,7 @@ import { Input } from './components/atoms/input/input';
 import { Button } from './components/molecules/button/button';
 
 export const TestMinimal = (): HTMLElement => {
-  console.log('[TestMinimal] Component executing...');
+  console.log('[TestMinimal] Component executing... v2');
 
   const [count, setCount] = useState(0);
   const [text, setText] = useState('Hello');
@@ -23,28 +24,29 @@ export const TestMinimal = (): HTMLElement => {
     console.log('[TestMinimal] Text changed:', text());
   });
 
-  createEffect(() => {
-    console.log('[TestMinimal] Items changed:', items());
-  });
+  // Create stable event handlers using Registry Pattern approach
+  const componentId = 'test-minimal-' + Math.random().toString(36).substr(2, 9);
 
+  // Stable click handler - won't be recreated on re-renders
   const handleClick = () => {
     console.log('[TestMinimal] Button clicked, incrementing count');
-    setCount(count() + 1);
+    setCount((prev) => prev + 1); // Use callback form to avoid reading signal
   };
 
   const handleInputChange = (e: Event) => {
     const target = e.target as HTMLInputElement;
     console.log('[TestMinimal] Input changed:', target.value);
-    setText(target.value);
+    setText(target.value); // Direct value, no signal read
   };
 
   const addItem = () => {
     console.log('[TestMinimal] Adding item to array');
-    const newItems = [...items(), `Item ${items().length + 1}`];
-    setItems(newItems);
+    setItems((prev) => [...prev, `Item ${prev.length + 1}`]); // Use callback to avoid reading signal
   };
 
-  const container = (
+  console.log('[TestMinimal] Component rendered, returning JSX directly');
+
+  return (
     <div style={{ padding: '2rem', fontFamily: 'system-ui' }}>
       {/* Header */}
       <div style={{ marginBottom: '2rem', borderBottom: '2px solid #333', paddingBottom: '1rem' }}>
@@ -151,7 +153,7 @@ export const TestMinimal = (): HTMLElement => {
               <Button
                 onClick={() => {
                   console.log('[TestMinimal] Removing item:', item);
-                  setItems(items().filter((i) => i !== item));
+                  setItems((prev) => prev.filter((i) => i !== item)); // Use callback to avoid reading signal
                 }}
                 variant="danger"
                 size="sm"
@@ -199,7 +201,4 @@ Check Console for:
       </div>
     </div>
   );
-
-  console.log('[TestMinimal] Component rendered, returning container');
-  return container;
 };

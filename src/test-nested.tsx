@@ -52,6 +52,8 @@ const ButtonGroup = (props: ButtonGroupProps): HTMLElement => {
 };
 
 export const TestNested = (): HTMLElement => {
+  const [count1, setCount1] = useState(0);
+  const [count2, setCount2] = useState(0);
   const [count3, setCount3] = useState(0);
 
   const total = () => count1() + count2() + count3();
@@ -64,8 +66,8 @@ export const TestNested = (): HTMLElement => {
         <h3>Counter 1</h3>
         <CounterDisplay label="Value" value={count1()} color="#d1ecf1" />
         <ButtonGroup
-          onIncrement={() => setCount1(count1() + 1)}
-          onDecrement={() => setCount1(count1() - 1)}
+          onIncrement={() => setCount1((prev) => prev + 1)}
+          onDecrement={() => setCount1((prev) => prev - 1)}
           onReset={() => setCount1(0)}
         />
       </div>
@@ -74,8 +76,8 @@ export const TestNested = (): HTMLElement => {
         <h3>Counter 2</h3>
         <CounterDisplay label="Value" value={count2()} color="#fff3cd" />
         <ButtonGroup
-          onIncrement={() => setCount2(count2() + 1)}
-          onDecrement={() => setCount2(count2() - 1)}
+          onIncrement={() => setCount2((prev) => prev + 1)}
+          onDecrement={() => setCount2((prev) => prev - 1)}
           onReset={() => setCount2(0)}
         />
       </div>
@@ -84,8 +86,8 @@ export const TestNested = (): HTMLElement => {
         <h3>Counter 3</h3>
         <CounterDisplay label="Value" value={count3()} color="#d4edda" />
         <ButtonGroup
-          onIncrement={() => setCount3(count3() + 1)}
-          onDecrement={() => setCount3(count3() - 1)}
+          onIncrement={() => setCount3((prev) => prev + 1)}
+          onDecrement={() => setCount3((prev) => prev - 1)}
           onReset={() => setCount3(0)}
         />
       </div>

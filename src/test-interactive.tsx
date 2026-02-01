@@ -29,8 +29,11 @@ export const TestInteractive = (): HTMLElement => {
         <button
           onClick={() => {
             console.log('[TestInteractive] Increment clicked');
-            setCount(count() + 1);
-            setMessage(`Incremented to ${count() + 1}`);
+            setCount((prev) => {
+              const newValue = prev + 1;
+              setMessage(`Incremented to ${newValue}`);
+              return newValue;
+            });
           }}
           style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;"
         >
@@ -40,8 +43,11 @@ export const TestInteractive = (): HTMLElement => {
         <button
           onClick={() => {
             console.log('[TestInteractive] Decrement clicked');
-            setCount(count() - 1);
-            setMessage(`Decremented to ${count() - 1}`);
+            setCount((prev) => {
+              const newValue = prev - 1;
+              setMessage(`Decremented to ${newValue}`);
+              return newValue;
+            });
           }}
           style="padding: 10px 20px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;"
         >

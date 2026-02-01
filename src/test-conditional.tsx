@@ -23,7 +23,7 @@ export const TestConditional = (): HTMLElement => {
 
       <div style="margin: 20px 0;">
         <button
-          onClick={() => setIsVisible(!isVisible())}
+          onClick={() => setIsVisible((prev) => !prev)}
           style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;"
         >
           Toggle Visibility
@@ -54,7 +54,7 @@ export const TestConditional = (): HTMLElement => {
           <div style="margin: 15px 0;">
             <p>Counter: {count()}</p>
             <button
-              onClick={() => setCount(count() + 1)}
+              onClick={() => setCount((prev) => prev + 1)}
               style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;"
             >
               Increment

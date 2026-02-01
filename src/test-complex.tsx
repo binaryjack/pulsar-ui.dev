@@ -108,22 +108,25 @@ export const TestComplex = (): HTMLElement => {
   };
 
   const addUser = () => {
-    const newUser: User = {
-      id: nextId(),
-      name: `User ${nextId()}`,
-      role: 'guest',
-      active: true,
-    };
-    setUsers([...users(), newUser]);
-    setNextId(nextId() + 1);
+    setNextId((prev) => {
+      const newId = prev;
+      const newUser: User = {
+        id: newId,
+        name: `User ${newId}`,
+        role: 'guest',
+        active: true,
+      };
+      setUsers((prevUsers) => [...prevUsers, newUser]);
+      return prev + 1;
+    });
   };
 
   const toggleUser = (id: number) => {
-    setUsers(users().map((u) => (u.id === id ? { ...u, active: !u.active } : u)));
+    setUsers((prevUsers) => prevUsers.map((u) => (u.id === id ? { ...u, active: !u.active } : u)));
   };
 
   const removeUser = (id: number) => {
-    setUsers(users().filter((u) => u.id !== id));
+    setUsers((prevUsers) => prevUsers.filter((u) => u.id !== id));
   };
 
   const promoteUser = (id: number) => {

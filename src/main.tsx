@@ -1,53 +1,88 @@
 /**
- * Pulsar UI Showcase - Test Suite Runner
- * Switch between different test scenarios to validate transformer fixes
+ * Pulsar UI Showcase - Main Application Entry Point
+ * Testing AppContextProvider with imported components (enhanced transformer)
  */
 
-import { bootstrapApp } from '@pulsar-framework/pulsar.dev';
-import { TestArrayMap } from './test-array-map';
-import { TestComplex } from './test-complex';
-import { TestConditional } from './test-conditional';
-import { TestInteractive } from './test-interactive';
-import { TestNested } from './test-nested';
-import { TestOnlySignal1 } from './test-only-signal';
-import { TestSimpleInteractive } from './test-simple-interactive';
+import { AppContextProvider, bootstrapApp, useState } from '@pulsar-framework/pulsar.dev';
+import { Input } from './components/atoms/input/input';
 
-// Test suite - configure which test to run
-const tests = {
-  'test1-basic': { component: TestOnlySignal1, name: 'Test 1: Basic Signal' },
-  'test2-simple': { component: TestSimpleInteractive, name: 'Test 2: Simple Interactive' },
-  'test2-interactive': { component: TestInteractive, name: 'Test 2: Interactive Buttons' },
-  'test3-array-map': { component: TestArrayMap, name: 'Test 3: Array.map() & wire()' },
-  'test4-conditional': { component: TestConditional, name: 'Test 4: Conditional Rendering' },
-  'test5-nested': { component: TestNested, name: 'Test 5: Nested Components' },
-  'test6-complex': { component: TestComplex, name: 'Test 6: Complex Combination' },
+// Main App component that uses imported Input
+const App = (): HTMLElement => {
+  const [count, setCount] = useState(0);
+  const [inputValue, setInputValue] = useState('Hello from AppContextProvider');
+
+  return (
+    <div style={{ padding: '20px', fontFamily: 'system-ui' }}>
+      <h1>Pulsar UI Showcase - Count: {count()}</h1>
+      <p>Testing AppContextProvider with imported components</p>
+
+      <button
+        onClick={() => setCount((prev) => prev + 1)}
+        style={{
+          padding: '10px 20px',
+          margin: '10px 0',
+          background: '#007bff',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+        }}
+      >
+        Increment: {count()}
+      </button>
+
+      <div style={{ marginTop: '20px' }}>
+        <h3>Testing Imported Input Component:</h3>
+        <Input
+          value={inputValue()}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Type something to test component imports..."
+          style={{ width: '100%', marginBottom: '10px' }}
+        />
+        <p style={{ color: '#666' }}>
+          Current input value: <strong>{inputValue()}</strong>
+        </p>
+      </div>
+
+      <div
+        style={{ marginTop: '20px', padding: '15px', background: '#f8f9fa', borderRadius: '4px' }}
+      >
+        <h4>🧪 Enhanced Transformer Test</h4>
+        <p>This setup tests:</p>
+        <ul>
+          <li>✅ AppContextProvider pattern</li>
+          <li>✅ Imported Input component from ./components/atoms/input/input</li>
+          <li>✅ Enhanced transformer with dependency resolution</li>
+          <li>✅ Component transformation order (dependencies first)</li>
+        </ul>
+      </div>
+    </div>
+  );
 };
 
-// 🎯 Change this to switch tests:
-const currentTest = 'test2-simple';
-
-const testConfig = tests[currentTest];
-console.log(`[main.tsx] 🧪 Running: ${testConfig.name}`);
-console.log(
-  '[main.tsx] Available tests:',
-  Object.keys(tests).map((k) => tests[k].name)
-);
-
-// Build and mount application
-const root = bootstrapApp()
+// Build application root using proper Pulsar pattern
+const appRoot = bootstrapApp()
   .root('#app')
+  .onMount((element) => {
+    console.log('[Pulsar UI] App mounted successfully', element);
+  })
   .onError((error) => {
-    console.error('[main.tsx] ❌ Application error:', error);
-    console.error('[main.tsx] Stack trace:', error.stack);
+    console.error('[Pulsar UI] App error:', error);
   })
   .build();
 
-// Mount the selected test
-try {
-  const TestComponent = testConfig.component;
-  root.mount(<TestComponent />);
-  console.log(`[main.tsx] ✅ ${testConfig.name} mounted successfully`);
-} catch (error) {
-  console.error(`[main.tsx] ❌ Failed to mount ${testConfig.name}:`, error);
-  console.error('[main.tsx] Error details:', error);
-}
+// Use AppContextProvider pattern with imported components
+const app = (
+  <AppContextProvider
+    root={appRoot}
+    context={{
+      appName: 'Pulsar UI Showcase',
+      version: '2.0.0',
+      theme: 'light',
+    }}
+  >
+    <App />
+  </AppContextProvider>
+);
+
+appRoot.mount(app);

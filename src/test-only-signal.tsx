@@ -26,7 +26,8 @@ export const TestOnlySignal1 = (): HTMLElement => {
   console.log('[TestOnlySignal] Creating div...');
   const container = (
     <div>
-      Test: {count()} <TestOnlySignal2 />
+      Test: {count()}
+      <div>Nested component: {TestOnlySignal2()}</div>
     </div>
   );
 

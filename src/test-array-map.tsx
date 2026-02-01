@@ -24,26 +24,29 @@ export const TestArrayMap = (): HTMLElement => {
   console.log('[TestArrayMap] Initial todos:', todos());
 
   const addTodo = () => {
-    const newTodo: TodoItem = {
-      id: nextId(),
-      text: `New todo #${nextId()}`,
-      completed: false,
-    };
-    console.log('[TestArrayMap] Adding todo:', newTodo);
-    setTodos([...todos(), newTodo]);
-    setNextId(nextId() + 1);
+    console.log('[TestArrayMap] Adding todo');
+    setNextId((prev) => {
+      const newId = prev;
+      const newTodo: TodoItem = {
+        id: newId,
+        text: `New todo #${newId}`,
+        completed: false,
+      };
+      setTodos((prevTodos) => [...prevTodos, newTodo]);
+      return prev + 1;
+    });
   };
 
   const toggleTodo = (id: number) => {
     console.log('[TestArrayMap] Toggling todo:', id);
-    setTodos(
-      todos().map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo))
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo))
     );
   };
 
   const removeTodo = (id: number) => {
     console.log('[TestArrayMap] Removing todo:', id);
-    setTodos(todos().filter((todo) => todo.id !== id));
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
 
   return (
