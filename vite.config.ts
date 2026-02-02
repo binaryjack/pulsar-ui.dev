@@ -6,6 +6,14 @@ export default defineConfig({
   plugins: [
     pulsar({
       debug: true,
+      debugChannels: {
+        detector: true,
+        transform: true,
+        generator: false,
+        visitor: false,
+        wire: false,
+        performance: false,
+      },
       enableDependencyResolution: true,
     }),
   ],
