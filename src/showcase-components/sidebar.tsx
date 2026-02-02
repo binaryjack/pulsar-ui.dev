@@ -65,11 +65,12 @@ export const Sidebar = ({
   onComponentChange,
   onResizeStart,
 }: ISidebarProps): HTMLElement => {
-  // Simple safe implementation
+  // Simple safe implementation with proper null checks
   const safeComponents = COMPONENTS || [];
   const filteredComponents = () => {
     const category = activeCategory();
-    return safeComponents.filter((c) => c.category === category);
+    if (!category || !safeComponents) return [];
+    return safeComponents.filter((c) => c && c.category === category);
   };
 
   const safeCounts = {
@@ -77,6 +78,13 @@ export const Sidebar = ({
     molecules: safeComponents.filter((c) => c.category === 'molecules').length,
     organisms: safeComponents.filter((c) => c.category === 'organisms').length,
   };
+
+  // Extract array to variable to avoid transformer wire issues
+  const categoryTabs = [
+    { id: 'atoms', name: 'Atoms', count: safeCounts.atoms },
+    { id: 'molecules', name: 'Molecules', count: safeCounts.molecules },
+    { id: 'organisms', name: 'Organisms', count: safeCounts.organisms },
+  ];
 
   return (
     <aside
@@ -94,11 +102,7 @@ export const Sidebar = ({
           role="tablist"
           aria-label="Component categories"
         >
-          {[
-            { id: 'atoms', name: 'Atoms', count: safeCounts.atoms },
-            { id: 'molecules', name: 'Molecules', count: safeCounts.molecules },
-            { id: 'organisms', name: 'Organisms', count: safeCounts.organisms },
-          ].map((cat) => {
+          {categoryTabs.map((cat) => {
             const isActive = activeCategory() === cat.id;
             const buttonConfig = new ComponentConfigBuilder(isActive ? 'primary' : 'secondary')
               .variant(isActive ? 'solid' : 'ghost')
@@ -140,31 +144,34 @@ export const Sidebar = ({
           id={`${activeCategory()}-panel`}
           aria-label={`${activeCategory()} components`}
         >
-          {filteredComponents().map((component) => {
-            const isActive = activeComponent() === component.id;
-            const buttonConfig = new ComponentConfigBuilder(isActive ? 'primary' : 'secondary')
-              .variant(isActive ? 'solid' : 'ghost')
-              .size('sm')
-              .fullWidth(true)
-              .build();
+          {(() => {
+            const components = filteredComponents() || [];
+            return components.map((component) => {
+              const isActive = activeComponent() === component.id;
+              const buttonConfig = new ComponentConfigBuilder(isActive ? 'primary' : 'secondary')
+                .variant(isActive ? 'solid' : 'ghost')
+                .size('sm')
+                .fullWidth(true)
+                .build();
 
-            return (
-              <Button
-                key={component.id}
-                config={buttonConfig}
-                onclick={() => onComponentChange(component.id)}
-                type="button"
-                aria-label={`View ${component.name} component`}
-                aria-current={isActive ? 'page' : undefined}
-                className="justify-start text-left"
-              >
-                <div className="w-full text-left">
-                  <div className="font-medium text-sm">{component.name}</div>
-                  <div className="text-xs opacity-80">{component.description}</div>
-                </div>
-              </Button>
-            );
-          })}
+              return (
+                <Button
+                  key={component.id}
+                  config={buttonConfig}
+                  onclick={() => onComponentChange(component.id)}
+                  type="button"
+                  aria-label={`View ${component.name} component`}
+                  aria-current={isActive ? 'page' : undefined}
+                  className="justify-start text-left"
+                >
+                  <div className="w-full text-left">
+                    <div className="font-medium text-sm">{component.name}</div>
+                    <div className="text-xs opacity-80">{component.description}</div>
+                  </div>
+                </Button>
+              );
+            });
+          })()}
         </nav>
       </div>
       {/* Resize Handle */}
