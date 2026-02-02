@@ -3,10 +3,12 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [pulsar({ 
-    debug: true,
-    enableDependencyResolution: true 
-  })],
+  plugins: [
+    pulsar({
+      debug: true,
+      enableDependencyResolution: true,
+    }),
+  ],
   root: resolve(__dirname, '.'),
   publicDir: resolve(__dirname, 'public'),
   build: {
