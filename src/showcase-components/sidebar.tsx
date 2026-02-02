@@ -21,7 +21,7 @@ const COMPONENTS: IComponent[] = [
     category: 'molecules',
     description: 'Button component ⚡ Playground',
   },
-  
+
   // API Demos
   {
     id: 'createeffect',
@@ -65,14 +65,13 @@ export const Sidebar = ({
   onComponentChange,
   onResizeStart,
 }: ISidebarProps): HTMLElement => {
-  
   // Simple safe implementation
   const safeComponents = COMPONENTS || [];
   const filteredComponents = () => {
     const category = activeCategory();
     return safeComponents.filter((c) => c.category === category);
   };
-  
+
   const safeCounts = {
     atoms: safeComponents.filter((c) => c.category === 'atoms').length,
     molecules: safeComponents.filter((c) => c.category === 'molecules').length,
@@ -130,30 +129,8 @@ export const Sidebar = ({
                   />
                 </div>
               </Button>
-          ].map((cat) => {
-            const isActive = activeCategory() === cat.id;
-            const buttonConfig = new ComponentConfigBuilder(isActive ? 'primary' : 'secondary')
-              .variant(isActive ? 'solid' : 'ghost')
-              .size('sm')
-              .build();
-
-            return (
-              <Button
-                config={buttonConfig}
-                onClick={() => onCategoryChange(cat.id)}
-                role="tab"
-                aria-selected={isActive}
-                aria-controls={`${cat.id}-panel`}
-                id={`${cat.id}-tab`}
-                key={cat.id}
-              >
-                {cat.name}
-                <Badge variant={isActive ? 'solid' : 'subtle'} size="sm">
-                  {cat.count}
-                </Badge>
-              </Button>
             );
-            })}
+          })}
         </div>
 
         {/* Component List */}

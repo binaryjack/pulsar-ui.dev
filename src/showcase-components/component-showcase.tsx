@@ -6,10 +6,10 @@
 import type { IComponentShowcaseProps } from '../types';
 
 // Import playground demos only
+import { CreateEffectDemo } from '../createeffect-demo';
 import { InputPlaygroundDemo } from '../showcase-demos/atoms/input-playground-demo';
 import { TogglePlaygroundDemo } from '../showcase-demos/atoms/toggle-playground-demo';
 import { ButtonPlaygroundDemo } from '../showcase-demos/molecules/button-playground-demo';
-import { CreateEffectDemo } from '../createeffect-demo';
 
 const DEMO_COMPONENTS = {
   // Playground-enabled components
