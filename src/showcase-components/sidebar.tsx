@@ -21,6 +21,14 @@ const COMPONENTS: IComponent[] = [
     category: 'molecules',
     description: 'Button component ⚡ Playground',
   },
+  
+  // API Demos
+  {
+    id: 'createeffect',
+    name: 'createEffect()',
+    category: 'organisms',
+    description: 'Auto-reactive effects API ⚡ Demo',
+  },
 ];
 
 const sidebarClasses = cn(
@@ -34,17 +42,17 @@ const categories = [
   {
     id: 'atoms' as const,
     name: 'Atoms',
-    count: COMPONENTS.filter((c) => c.category === 'atoms').length,
+    count: (COMPONENTS || []).filter((c) => c.category === 'atoms').length,
   },
   {
     id: 'molecules' as const,
     name: 'Molecules',
-    count: COMPONENTS.filter((c) => c.category === 'molecules').length,
+    count: (COMPONENTS || []).filter((c) => c.category === 'molecules').length,
   },
   {
     id: 'organisms' as const,
     name: 'Organisms',
-    count: COMPONENTS.filter((c) => c.category === 'organisms').length,
+    count: (COMPONENTS || []).filter((c) => c.category === 'organisms').length,
   },
 ];
 
@@ -57,7 +65,19 @@ export const Sidebar = ({
   onComponentChange,
   onResizeStart,
 }: ISidebarProps): HTMLElement => {
-  const filteredComponents = COMPONENTS.filter((c) => c.category === activeCategory);
+  
+  // Simple safe implementation
+  const safeComponents = COMPONENTS || [];
+  const filteredComponents = () => {
+    const category = activeCategory();
+    return safeComponents.filter((c) => c.category === category);
+  };
+  
+  const safeCounts = {
+    atoms: safeComponents.filter((c) => c.category === 'atoms').length,
+    molecules: safeComponents.filter((c) => c.category === 'molecules').length,
+    organisms: safeComponents.filter((c) => c.category === 'organisms').length,
+  };
 
   return (
     <aside
@@ -65,7 +85,6 @@ export const Sidebar = ({
       style={{
         width: open ? `${width}px` : '0px',
         overflow: open ? 'auto' : 'hidden',
-
         position: 'relative',
       }}
     >
@@ -76,8 +95,12 @@ export const Sidebar = ({
           role="tablist"
           aria-label="Component categories"
         >
-          {categories.map((cat) => {
-            const isActive = activeCategory === cat.id;
+          {[
+            { id: 'atoms', name: 'Atoms', count: safeCounts.atoms },
+            { id: 'molecules', name: 'Molecules', count: safeCounts.molecules },
+            { id: 'organisms', name: 'Organisms', count: safeCounts.organisms },
+          ].map((cat) => {
+            const isActive = activeCategory() === cat.id;
             const buttonConfig = new ComponentConfigBuilder(isActive ? 'primary' : 'secondary')
               .variant(isActive ? 'solid' : 'ghost')
               .size('sm')
@@ -107,19 +130,41 @@ export const Sidebar = ({
                   />
                 </div>
               </Button>
+          ].map((cat) => {
+            const isActive = activeCategory() === cat.id;
+            const buttonConfig = new ComponentConfigBuilder(isActive ? 'primary' : 'secondary')
+              .variant(isActive ? 'solid' : 'ghost')
+              .size('sm')
+              .build();
+
+            return (
+              <Button
+                config={buttonConfig}
+                onClick={() => onCategoryChange(cat.id)}
+                role="tab"
+                aria-selected={isActive}
+                aria-controls={`${cat.id}-panel`}
+                id={`${cat.id}-tab`}
+                key={cat.id}
+              >
+                {cat.name}
+                <Badge variant={isActive ? 'solid' : 'subtle'} size="sm">
+                  {cat.count}
+                </Badge>
+              </Button>
             );
-          })}
+            })}
         </div>
 
         {/* Component List */}
         <nav
           className="space-y-1"
           role="tabpanel"
-          id={`${activeCategory}-panel`}
-          aria-label={`${activeCategory} components`}
+          id={`${activeCategory()}-panel`}
+          aria-label={`${activeCategory()} components`}
         >
-          {filteredComponents.map((component) => {
-            const isActive = activeComponent === component.id;
+          {filteredComponents().map((component) => {
+            const isActive = activeComponent() === component.id;
             const buttonConfig = new ComponentConfigBuilder(isActive ? 'primary' : 'secondary')
               .variant(isActive ? 'solid' : 'ghost')
               .size('sm')
@@ -161,4 +206,3 @@ export const Sidebar = ({
     </aside>
   );
 };
- 

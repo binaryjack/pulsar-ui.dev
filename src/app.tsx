@@ -80,8 +80,8 @@ export const App = (): HTMLElement => {
         <Sidebar
           open={sidebarOpen()}
           width={sidebarWidth()}
-          activeCategory={activeCategory()}
-          activeComponent={activeComponent()}
+          activeCategory={activeCategory}
+          activeComponent={activeComponent}
           onCategoryChange={handleCategoryChange}
           onComponentChange={handleComponentChange}
           onResizeStart={handleResizeStart}
