@@ -54,7 +54,7 @@ component DebugTestSuitePSR() {
             </p>
             <div style="margin-top: 1rem; padding: 0.5rem; background: rgba(255,255,255,0.2); border-radius: 6px;">
               <code style="color: white; font-size: 0.85rem;">
-                items().map(item =&gt; &lt;div&gt;item&lt;/div&gt;)
+                items().map(item, index)
               </code>
             </div>
           </div>
@@ -77,7 +77,7 @@ component DebugTestSuitePSR() {
             </p>
             <div style="margin-top: 1rem; padding: 0.5rem; background: rgba(255,255,255,0.2); border-radius: 6px;">
               <code style="color: white; font-size: 0.85rem;">
-                &lt;Parent&gt;&lt;Child&gt;&lt;GrandChild /&gt;&lt;/Child&gt;&lt;/Parent&gt;
+                Parent Child GrandChild
               </code>
             </div>
           </div>
@@ -100,7 +100,7 @@ component DebugTestSuitePSR() {
             </p>
             <div style="margin-top: 1rem; padding: 0.5rem; background: rgba(255,255,255,0.2); border-radius: 6px;">
               <code style="color: white; font-size: 0.85rem;">
-                condition() ? &lt;A /&gt; : &lt;B /&gt;
+                condition() ? ComponentA : ComponentB
               </code>
             </div>
           </div>

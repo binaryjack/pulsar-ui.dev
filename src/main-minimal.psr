@@ -1,0 +1,18 @@
+/**
+ * Simple Main - Minimal Test
+ */
+
+import { bootstrapApp } from '@pulsar-framework/pulsar.dev';
+import { MinimalTest } from './debug-tests/minimal.psr';
+
+// Build and mount application
+bootstrapApp()
+  .root('#app')
+  .onMount((element) => {
+    console.log('[Pulsar UI PSR] Minimal test mounted', element);
+  })
+  .onError((error) => {
+    console.error('[Pulsar UI PSR] Error:', error);
+  })
+  .build()
+  .mount(MinimalTest());
