@@ -1,0 +1,14 @@
+/**
+ * Minimal test - Array literal in function call
+ */
+
+import { useState } from '@pulsar-framework/pulsar.dev';
+
+component TestArrayLiteral() {
+  // Simple array literal in function call
+  const [items, setItems] = useState(['a', 'b', 'c']);
+  
+  return (
+    <div>Test</div>
+  );
+}

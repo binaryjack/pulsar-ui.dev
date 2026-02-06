@@ -1,0 +1,108 @@
+/**
+ * PSR Avatar Test
+ * Testing the PSR pipeline with a real component
+ */
+
+import { Avatar } from './components/atoms/avatar/avatar.psr';
+
+component AvatarTest() {
+  return (
+    <div className="p-8 space-y-8 bg-gray-50 dark:bg-gray-900 min-h-screen">
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        PSR Avatar Component Test
+      </h1>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+          Sizes
+        </h2>
+        <div className="flex items-center gap-4">
+          <Avatar size="xs" name="John Doe" />
+          <Avatar size="sm" name="Jane Smith" />
+          <Avatar size="md" name="Bob Johnson" />
+          <Avatar size="lg" name="Alice Williams" />
+          <Avatar size="xl" name="Charlie Brown" />
+          <Avatar size="2xl" name="Diana Prince" />
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+          With Images
+        </h2>
+        <div className="flex items-center gap-4">
+          <Avatar
+            size="md"
+            src="https://i.pravatar.cc/150?img=1"
+            alt="User 1"
+            name="John Doe"
+          />
+          <Avatar
+            size="md"
+            src="https://i.pravatar.cc/150?img=2"
+            alt="User 2"
+            name="Jane Smith"
+          />
+          <Avatar
+            size="md"
+            src="https://i.pravatar.cc/150?img=3"
+            alt="User 3"
+            name="Bob Johnson"
+          />
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+          Status Indicators
+        </h2>
+        <div className="flex items-center gap-4">
+          <Avatar size="lg" name="Online User" status="online" />
+          <Avatar size="lg" name="Offline User" status="offline" />
+          <Avatar size="lg" name="Busy User" status="busy" />
+          <Avatar size="lg" name="Away User" status="away" />
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+          Custom Backgrounds
+        </h2>
+        <div className="flex items-center gap-4">
+          <Avatar size="md" name="Red BG" bg="bg-red-500" />
+          <Avatar size="md" name="Blue BG" bg="bg-blue-500" />
+          <Avatar size="md" name="Green BG" bg="bg-green-500" />
+          <Avatar size="md" name="Purple BG" bg="bg-purple-500" />
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+          Combined Features
+        </h2>
+        <div className="flex items-center gap-4">
+          <Avatar
+            size="xl"
+            src="https://i.pravatar.cc/150?img=5"
+            name="Online VIP"
+            status="online"
+          />
+          <Avatar
+            size="xl"
+            src="https://i.pravatar.cc/150?img=6"
+            name="Busy Manager"
+            status="busy"
+          />
+          <Avatar
+            size="xl"
+            name="Custom Admin"
+            bg="bg-indigo-600"
+            status="away"
+          />
+        </div>
+      </section>
+    </div>
+  );
+}
+
+export default AvatarTest;

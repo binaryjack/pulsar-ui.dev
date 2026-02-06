@@ -1,0 +1,19 @@
+// Minimal reproduction test for remaining parsing issue
+import { useState } from '@pulsar-framework/pulsar.dev';
+
+component TestMinimal() {
+  const [filterActive, setFilterActive] = useState<boolean>(false);
+  
+  return (
+    <div>
+      <button
+        style={`background: ${filterActive() ? '#f56565' : '#4299e1'};`}
+        onMouseOver={(e: MouseEvent) => (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)'}
+      >
+        Test Button
+      </button>
+    </div>
+  );
+}
+
+export { TestMinimal };

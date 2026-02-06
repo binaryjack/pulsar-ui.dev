@@ -1,0 +1,15 @@
+/**
+ * Debug test - object literals standalone vs in arguments
+ */
+
+import { test } from '@pulsar-framework/pulsar.dev';
+
+component DebugObjectLiterals() {
+  // Test 1: Object literal standalone (should work)
+  const config = { name: 'test', value: 42 };
+  
+  // Test 2: Object literal as function argument (fails)
+  const result = test({ name: 'test', value: 42 });
+
+  return <div>Debug objects</div>;
+}

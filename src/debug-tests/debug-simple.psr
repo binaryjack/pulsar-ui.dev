@@ -1,0 +1,14 @@
+/**
+ * Minimal test - Simple function call
+ */
+
+import { useState } from '@pulsar-framework/pulsar.dev';
+
+component TestSimple() {
+  // Test simple string argument
+  const [name, setName] = useState("test");
+  
+  return (
+    <div>Simple test</div>
+  );
+}

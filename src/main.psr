@@ -1,0 +1,19 @@
+/**
+ * Pulsar UI Showcase - Main Application Entry Point (PSR)
+ * Pattern Test Suite with Render Validation using PSR syntax
+ */
+
+import { bootstrapApp } from '@pulsar-framework/pulsar.dev';
+import { DebugTestSuitePSR } from './debug-tests/index.psr';
+
+// Build and mount application using PSR-transformed components
+bootstrapApp()
+  .root('#app')
+  .onMount((element) => {
+    console.log('[Pulsar UI PSR] Test suite mounted successfully', element);
+  })
+  .onError((error) => {
+    console.error('[Pulsar UI PSR] Error:', error);
+  })
+  .build()
+  .mount(DebugTestSuitePSR());

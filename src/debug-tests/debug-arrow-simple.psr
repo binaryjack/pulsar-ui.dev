@@ -1,0 +1,2 @@
+// Simple arrow function test
+console.log(['a', 'b'].map((item) => item + '!'));

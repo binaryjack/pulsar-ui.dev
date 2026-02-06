@@ -1,0 +1,18 @@
+/**
+ * Debug test - type arguments with function calls
+ */
+
+import { useState } from '@pulsar-framework/pulsar.dev';
+
+component DebugTypeArgs() {
+  // Test 1: Type argument with simple value
+  const [count, setCount] = useState<number>(0);
+  
+  // Test 2: Type argument with array
+  const [items, setItems] = useState<string[]>(['item1', 'item2']);
+  
+  // Test 3: Type argument with boolean
+  const [flag, setFlag] = useState<boolean>(false);
+
+  return <div>Debug type args</div>;
+}

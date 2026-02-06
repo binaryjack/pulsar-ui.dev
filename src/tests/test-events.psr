@@ -1,0 +1,19 @@
+component MouseTracker() {
+  <div style="padding: 2rem; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 12px; margin: 1rem;">
+    <h2 style="color: white; margin-bottom: 1rem;">Test: Mouse Events</h2>
+    
+    <div 
+      style="background: rgba(255,255,255,0.2); padding: 2rem; border-radius: 8px; min-height: 200px; position: relative; cursor: crosshair;"
+    >
+      <p style="color: white; font-size: 1.2rem; margin-bottom: 0.5rem;">Mouse Position: X: 0, Y: 0</p>
+      <p style="color: white; font-size: 1rem; opacity: 0.9;">Click Count: 0</p>
+      <p style="color: white; font-size: 1rem; opacity: 0.9;">Last Event: None</p>
+      
+      <div style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 6px;">
+        <p style="color: white; font-size: 0.9rem;">Hover, Click, Double-click to test events</p>
+      </div>
+    </div>
+  </div>
+}
+
+export { MouseTracker }

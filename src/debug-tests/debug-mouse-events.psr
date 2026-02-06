@@ -1,0 +1,15 @@
+// Test mouse event handlers with TypeScript as in the original file
+import { useState } from '@pulsar-framework/pulsar.dev';
+
+component TestMouseEvents() {
+  return (
+    <div>
+      <button
+        onMouseOver={(e: MouseEvent) => (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)'}
+        onMouseOut={(e: MouseEvent) => (e.currentTarget as HTMLElement).style.transform = 'scale(1)'}
+      >
+        Hover me
+      </button>
+    </div>
+  );
+}

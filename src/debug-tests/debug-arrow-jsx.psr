@@ -1,0 +1,11 @@
+component TestArrowInJSX() {
+  const items = ['a', 'b', 'c'];
+  
+  return (
+    <div>
+      {items.map((item, index) => (
+        <div key={index}>{item}</div>
+      ))}
+    </div>
+  );
+}

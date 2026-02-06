@@ -1,0 +1,34 @@
+component Card() {
+  <div style="background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem;">
+    <h3 style="margin: 0 0 0.5rem 0; color: #333;">Card Title</h3>
+    <p style="margin: 0; color: #666; line-height: 1.6;">This is a reusable card component demonstrating component composition.</p>
+  </div>
+}
+
+component CardList() {
+  <div style="padding: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; margin: 1rem;">
+    <h2 style="color: white; margin-bottom: 1.5rem;">Test: Component Composition</h2>
+    
+    <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 8px;">
+      <div style="background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem;">
+        <h3 style="margin: 0 0 0.5rem 0; color: #333;">Card 1</h3>
+        <p style="margin: 0; color: #666; line-height: 1.6;">Component composition will be tested once PSR supports component references.</p>
+      </div>
+      
+      <div style="background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem;">
+        <h3 style="margin: 0 0 0.5rem 0; color: #333;">Card 2</h3>
+        <p style="margin: 0; color: #666; line-height: 1.6;">For now, cards are inlined as HTML elements.</p>
+      </div>
+      
+      <div style="text-align: center; margin-top: 1rem;">
+        <button 
+          style="background: #4CAF50; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem;"
+        >
+          Add Another Card
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+export { Card, CardList }

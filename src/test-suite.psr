@@ -1,0 +1,43 @@
+component TestSuite() {
+  <div style="min-height: 100vh; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 2rem;">
+    <header style="text-align: center; margin-bottom: 3rem;">
+      <h1 style="color: white; font-size: 3rem; margin: 0 0 0.5rem 0; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">PSR Test Suite</h1>
+      <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem; margin: 0;">Comprehensive testing of PSR transformation features</p>
+    </header>
+    
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+        <h2 style="color: white; margin: 0 0 1rem 0;">Test Status</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+          <div style="background: rgba(76, 175, 80, 0.3); padding: 1rem; border-radius: 8px; border-left: 4px solid #4CAF50;">
+            <p style="color: white; margin: 0; font-size: 0.9rem; opacity: 0.9;">Basic Rendering</p>
+            <p style="color: white; margin: 0.5rem 0 0 0; font-size: 1.5rem; font-weight: bold;">PASS</p>
+          </div>
+          
+          <div style="background: rgba(255, 152, 0, 0.3); padding: 1rem; border-radius: 8px; border-left: 4px solid #FF9800;">
+            <p style="color: white; margin: 0; font-size: 0.9rem; opacity: 0.9;">Reactivity</p>
+            <p style="color: white; margin: 0.5rem 0 0 0; font-size: 1.5rem; font-weight: bold;">TODO</p>
+          </div>
+          
+          <div style="background: rgba(255, 152, 0, 0.3); padding: 1rem; border-radius: 8px; border-left: 4px solid #FF9800;">
+            <p style="color: white; margin: 0; font-size: 0.9rem; opacity: 0.9;">Events</p>
+            <p style="color: white; margin: 0.5rem 0 0 0; font-size: 1.5rem; font-weight: bold;">TODO</p>
+          </div>
+          
+          <div style="background: rgba(255, 152, 0, 0.3); padding: 1rem; border-radius: 8px; border-left: 4px solid #FF9800;">
+            <p style="color: white; margin: 0; font-size: 0.9rem; opacity: 0.9;">Forms</p>
+            <p style="color: white; margin: 0.5rem 0 0 0; font-size: 1.5rem; font-weight: bold;">TODO</p>
+          </div>
+        </div>
+      </div>
+      
+      <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 12px;">
+        <p style="color: white; text-align: center; font-size: 1.1rem; margin: 0;">
+          Individual test components available at /tests/
+        </p>
+      </div>
+    </div>
+  </div>
+}
+
+export { TestSuite }

@@ -1,0 +1,11 @@
+component TestMethodChaining() {
+  const filteredItems = () => ['Item 1', 'Item 2'];
+  
+  return (
+    <div>
+      {filteredItems().map((item, index) => (
+        <div key={index}>{item}</div>
+      ))}
+    </div>
+  );
+}

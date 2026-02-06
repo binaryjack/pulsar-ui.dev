@@ -1,0 +1,5 @@
+component TestStepByStep() {
+  const items = ['a', 'b'];
+  const result = items.map((item, index) => item + index);
+  return <div>{result.join(',')}</div>;
+}
