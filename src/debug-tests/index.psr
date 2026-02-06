@@ -19,7 +19,7 @@ component DebugTestSuitePSR() {
     if (test === 'array-map') return EdgeCase1ArrayMapPSR();
     if (test === 'nested-components') return EdgeCase2NestedComponentsPSR();
     if (test === 'conditionals') return EdgeCase3ConditionalsPSR();
-
+  
     // Home screen
     return (
       <div style="padding: 2rem; max-width: 1000px; margin: 0 auto; font-family: system-ui;">
