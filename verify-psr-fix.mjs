@@ -22,9 +22,9 @@ const viteSrc = fs.readFileSync(viteSrcPath, 'utf8');
 const checks = {
   'transformPSRFile function defined': viteSrc.includes('function transformPSRFile'),
   'createPipeline imported': viteSrc.includes('createPipeline'),
-  'endsWith .psr check': viteSrc.includes('endsWith(\'.psr\')'),
+  'endsWith .psr check': viteSrc.includes("endsWith('.psr')"),
   'await transformPSRFile': viteSrc.includes('await transformPSRFile'),
-  'HMR handles .psr': viteSrc.includes('ctx.file.endsWith(\'.psr\')'),
+  'HMR handles .psr': viteSrc.includes("ctx.file.endsWith('.psr')"),
 };
 
 let srcOK = true;

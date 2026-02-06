@@ -4,7 +4,7 @@
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, relative, extname } from 'path';
+import { join, relative } from 'path';
 import { createPipeline } from '../pulsar-transformer/dist/index.js';
 
 // Find all .psr files recursively
@@ -125,13 +125,9 @@ console.log(`\n📈 Total Transformed: ${results.totalTransformed}/${psrFiles.le
 
 if (results.failed.length === 0) {
   console.log('\n🎉 All PSR files transformed successfully via pipeline!');
-  console.log(
-    '   The vite plugin should now handle .psr files correctly in dev mode.'
-  );
+  console.log('   The vite plugin should now handle .psr files correctly in dev mode.');
 } else {
-  console.log(
-    `\n⚠️  ${results.failed.length} files failed transformation. Review errors above.`
-  );
+  console.log(`\n⚠️  ${results.failed.length} files failed transformation. Review errors above.`);
 }
 
 console.log('═'.repeat(70) + '\n');
