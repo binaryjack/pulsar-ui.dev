@@ -1,8 +1,8 @@
 [?25l[2J[m[2;1H> @pulsar-framework/ui@0.7.0-alpha build E:\Sources\visual-schema-builder\packages\pulsar-ui.dev
 > tsc -p tsconfig.build.json[6;1H]0;C:\WINDOWS\system32\cmd.exe[?25h[?25l[96msrc/components/atoms/avatar/index.ts[m:[93m6[m:[93m24 [m- [91merror [90mTS2307: [mCannot find module './avatar' or its corresponding type declarations.[7m[10;1H6[27m export { Avatar } from './avatar';[7m
- [27m[24X[91m[24C~~~~~~~~~~[96m[13;1Hsrc/components/atoms/checkbox/index.ts[m:[93m5[m:[93m26 [m- [91merror [90mTS2307: [mCannot find module './checkbox' or its corresponding type declarations.[7m[17;1H5[27m export { Checkbox } from './checkbox'[7m
- [27m[26X[91m[26C~~~~~~~~~~~~[96m[20;1Hsrc/components/atoms/container/index.ts[m:[93m6[m:[93m27 [m- [91merror [90mTS2307: [mCannot find module './container' or its corresponding type declarations.[7m[24;1H6[27m export { Container } from './container';[7m
- [27m[27X[91m[27C~~~~~~~~~~~~~[96m[27;1Hsrc/components/atoms/divider/index.ts[m:[93m6[m:[93m25 [m- [91merror [90mTS2307: [mCannot find module './divider' or its corresponding type de[?25h
+ [27m[24X[91m[24C~~~~~~~~~~[13;1H[?25h[m[?25l[96msrc/components/atoms/checkbox/index.ts[m:[93m5[m:[93m26 [m- [91merror [90mTS2307: [mCannot find module './checkbox' or its corresponding type declarations.[7m[17;1H5[27m export { Checkbox } from './checkbox'[7m
+ [27m[26X[91m[26C~~~~~~~~~~~~[20;1H[?25h[?25l[m[96msrc/components/atoms/container/index.ts[m:[93m6[m:[93m27 [m- [91merror [90mTS2307: [mCannot find module './container' or its corresponding type declarations.[7m[24;1H6[27m export { Container } from './container';[7m
+ [27m[27X[91m[27C~~~~~~~~~~~~~[27;1H[?25h[m[96msrc/components/atoms/divider/index.ts[m:[93m6[m:[93m25 [m- [91merror [90mTS2307: [mCannot find module './divider' or its corresponding type de
 [27;59Heclarations.
 
 [7m6[27m export { Divider } from './divider';[K
