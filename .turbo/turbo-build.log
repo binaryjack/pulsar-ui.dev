@@ -1,2 +1,444 @@
 [?25l[2J[m[2;1H> @pulsar-framework/ui@0.7.0-alpha build E:\Sources\visual-schema-builder\packages\pulsar-ui.dev
-> tsc -p tsconfig.build.json[5;1H]0;C:\WINDOWS\system32\cmd.exe[?25h
+> tsc -p tsconfig.build.json[6;1H]0;C:\WINDOWS\system32\cmd.exe[?25h[?25l[96msrc/components/atoms/avatar/index.ts[m:[93m6[m:[93m24 [m- [91merror [90mTS2307: [mCannot find module './avatar' or its corresponding type declarations.[7m[10;1H6[27m export { Avatar } from './avatar';[7m
+ [27m[24X[91m[24C~~~~~~~~~~[96m[13;1Hsrc/components/atoms/checkbox/index.ts[m:[93m5[m:[93m26 [m- [91merror [90mTS2307: [mCannot find module './checkbox' or its corresponding type declarations.[7m[17;1H5[27m export { Checkbox } from './checkbox'[7m
+ [27m[26X[91m[26C~~~~~~~~~~~~[96m[20;1Hsrc/components/atoms/container/index.ts[m:[93m6[m:[93m27 [m- [91merror [90mTS2307: [mCannot find module './container' or its corresponding type declarations.[7m[24;1H6[27m export { Container } from './container';[7m
+ [27m[27X[91m[27C~~~~~~~~~~~~~[96m[27;1Hsrc/components/atoms/divider/index.ts[m:[93m6[m:[93m25 [m- [91merror [90mTS2307: [mCannot find module './divider' or its corresponding type de[?25h
+[27;59Heclarations.
+
+[7m6[27m export { Divider } from './divider';[K
+[7m [27m[25X[91m[25C~~~~~~~~~~~[K[m
+
+[96msrc/components/atoms/grid/index.ts[m:[93m6[m:[93m22 [m- [91merror [90mTS2307: [mCan
+[27;59Hnnot find module './grid' or its corresponding type declarat
+[27;59Htions.
+
+[7m6[27m export { Grid } from './grid';[K
+[7m [27m[22X[91m[22C~~~~~~~~[K[m
+
+[96msrc/components/atoms/input/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307: [mCa
+[27;59Hannot find module './input' or its corresponding type declar
+[27;59Hrations.
+
+[7m5[27m export { Input } from './input'[K
+[7m [27m[23X[91m[23C~~~~~~~~~[K[m
+
+[96msrc/components/atoms/progress/index.ts[m:[93m6[m:[93m26 [m- [91merror [90mTS2307:[m
+[90m[27;59H: [mCannot find module './progress' or its corresponding type 
+[27;59H declarations.
+
+[7m6[27m export { Progress } from './progress';[K
+[7m [27m[26X[91m[26C~~~~~~~~~~~~[K[m
+
+[96msrc/components/atoms/radio/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307: [mCa
+[27;59Hannot find module './radio' or its corresponding type declar
+[27;59Hrations.
+
+[7m5[27m export { Radio } from './radio'[K
+[7m [27m[23X[91m[23C~~~~~~~~~[K[m
+
+[96msrc/components/atoms/rating/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS2307: [mC
+[27;59HCannot find module './rating' or its corresponding type decl
+[27;59Hlarations.
+
+[7m5[27m export { Rating } from './rating';[K
+[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
+
+[96msrc/components/atoms/skeleton/index.ts[m:[93m5[m:[93m26 [m- [91merror [90mTS2307:[m
+[90m[27;59H: [mCannot find module './skeleton' or its corresponding type 
+[27;59H declarations.
+
+[7m5[27m export { Skeleton } from './skeleton'[K
+[7m [27m[26X[91m[26C~~~~~~~~~~~~[K[m
+
+[96msrc/components/atoms/slider/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS2307: [mC
+[27;59HCannot find module './slider' or its corresponding type decl
+[27;59Hlarations.
+
+[7m5[27m export { Slider } from './slider';[K
+[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
+
+[96msrc/components/atoms/spinner/index.ts[m:[93m5[m:[93m25 [m- [91merror [90mTS2307: [m
+[90m[27;59H [mCannot find module './spinner' or its corresponding type de
+[27;59Heclarations.
+
+[7m5[27m export { Spinner } from './spinner'[K
+[7m [27m[25X[91m[25C~~~~~~~~~~~[K[m
+
+[96msrc/components/atoms/stack/index.ts[m:[93m6[m:[93m39 [m- [91merror [90mTS2307: [mCa
+[27;59Hannot find module './stack' or its corresponding type declar
+[27;59Hrations.
+
+[7m6[27m export { Stack, VStack, HStack } from './stack';[K
+[7m [27m[39X[91m[39C~~~~~~~~~[K[m
+
+[96msrc/components/atoms/textarea/index.ts[m:[93m5[m:[93m26 [m- [91merror [90mTS2307:[m
+[90m[27;59H: [mCannot find module './textarea' or its corresponding type 
+[27;59H declarations.
+
+[7m5[27m export { Textarea } from './textarea'[K
+[7m [27m[26X[91m[26C~~~~~~~~~~~~[K[m
+
+[96msrc/components/atoms/toggle/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS2307: [mC
+[27;59HCannot find module './toggle' or its corresponding type decl
+[27;59Hlarations.
+
+[7m5[27m export { Toggle } from './toggle'[K
+[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
+
+[96msrc/components/atoms/tooltip/index.ts[m:[93m5[m:[93m25 [m- [91merror [90mTS2307: [m
+[90m[27;59H [mCannot find module './tooltip' or its corresponding type de
+[27;59Heclarations.
+
+[7m5[27m export { Tooltip } from './tooltip';[K
+[7m [27m[25X[91m[25C~~~~~~~~~~~[K[m
+
+[96msrc/components/atoms/typography/index.ts[m:[93m5[m:[93m28 [m- [91merror [90mTS230[m
+[90m[27;59H07: [mCannot find module './typography' or its corresponding t
+[27;59Htype declarations.
+
+[7m5[27m export { Typography } from './typography'[K
+[7m [27m[28X[91m[28C~~~~~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/accordion/index.ts[m:[93m5[m:[93m27 [m- [91merror [90mTS[m
+[90m[27;59HS2307: [mCannot find module './accordion' or its corresponding
+[27;59Hg type declarations.
+
+[7m5[27m export { Accordion } from './accordion';[K
+[7m [27m[27X[91m[27C~~~~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/accordion/index.ts[m:[93m6[m:[93m31 [m- [91merror [90mTS[m
+[90m[27;59HS2307: [mCannot find module './accordion-item' or its correspo
+[27;59Honding type declarations.
+
+[7m6[27m export { AccordionItem } from './accordion-item';        [28;1H
+[7m [27m[31X[91m[31C~~~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/alert/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './alert' or its corresponding type de
+[27;59Heclarations.
+
+[7m5[27m export { Alert } from './alert';[K
+[7m [27m[23X[91m[23C~~~~~~~~~[K[m
+
+[96msrc/components/molecules/alert/index.ts[m:[93m6[m:[93m27 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './alert-icon' or its corresponding ty
+[27;59Hype declarations.
+
+[7m6[27m export { AlertIcon } from './alert-icon';[K
+[7m [27m[27X[91m[27C~~~~~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/alert/index.ts[m:[93m7[m:[93m28 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './alert-title' or its corresponding t
+[27;59Htype declarations.
+
+[7m7[27m export { AlertTitle } from './alert-title';[K
+[7m [27m[28X[91m[28C~~~~~~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/alert/index.ts[m:[93m8[m:[93m34 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './alert-description' or its correspon
+[27;59Hnding type declarations.
+
+[7m8[27m export { AlertDescription } from './alert-description';  [28;1H
+[7m [27m[34X[91m[34C~~~~~~~~~~~~~~~~~~~~~   [28;1H[m
+
+[96msrc/components/molecules/badge/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './badge' or its corresponding type de
+[27;59Heclarations.
+
+[7m5[27m export { Badge } from './badge'[K
+[7m [27m[23X[91m[23C~~~~~~~~~[K[m
+
+[96msrc/components/molecules/breadcrumbs/index.ts[m:[93m6[m:[93m45 [m- [91merror [m
+[90m[27;59H TS2307: [mCannot find module './breadcrumbs' or its correspon
+[27;59Hnding type declarations.
+
+[7m6[27m export { Breadcrumbs, BreadcrumbItem } from './breadcrumb
+[27;59Hbs';
+[7m [27m                                             [K[91m~~~~~~~~~~~~~[m
+[91m[27;59H~~~[m
+
+[96msrc/components/molecules/button/index.ts[m:[93m6[m:[93m24 [m- [91merror [90mTS230[m
+[90m[27;59H07: [mCannot find module './button' or its corresponding type 
+[27;59H declarations.
+
+[7m6[27m export { Button } from './button'[K
+[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/dropdown/index.ts[m:[93m5[m:[93m40 [m- [91merror [90mTS2[m
+[90m[27;59H2307: [mCannot find module './dropdown' or its corresponding t
+[27;59Htype declarations.
+
+[7m5[27m export { Dropdown, DropdownItem } from './dropdown';     [28;1H
+[7m [27m[40X[91m[40C~~~~~~~~~~~~      [28;1H[m
+
+[96msrc/components/molecules/label/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './label' or its corresponding type de
+[27;59Heclarations.
+
+[7m5[27m export { Label } from './label'[K
+[7m [27m[23X[91m[23C~~~~~~~~~[K[m
+
+[96msrc/components/molecules/list/index.ts[m:[93m5[m:[93m22 [m- [91merror [90mTS2307:[m
+[90m[27;59H: [mCannot find module './list' or its corresponding type decl
+[27;59Hlarations.
+
+[7m5[27m export { List } from './list';[K
+[7m [27m[22X[91m[22C~~~~~~~~[K[m
+
+[96msrc/components/molecules/list/index.ts[m:[93m6[m:[93m26 [m- [91merror [90mTS2307:[m
+[90m[27;59H: [mCannot find module './list-item' or its corresponding type
+[27;59He declarations.
+
+[7m6[27m export { ListItem } from './list-item';[K
+[7m [27m[26X[91m[26C~~~~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/menu/index.ts[m:[93m5[m:[93m22 [m- [91merror [90mTS2307:[m
+[90m[27;59H: [mCannot find module './menu' or its corresponding type decl
+[27;59Hlarations.
+
+[7m5[27m export { Menu } from './menu';[K
+[7m [27m[22X[91m[22C~~~~~~~~[K[m
+
+[96msrc/components/molecules/menu/index.ts[m:[93m6[m:[93m26 [m- [91merror [90mTS2307:[m
+[90m[27;59H: [mCannot find module './menu-item' or its corresponding type
+[27;59He declarations.
+
+[7m6[27m export { MenuItem } from './menu-item';[K
+[7m [27m[26X[91m[26C~~~~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/menu/index.ts[m:[93m7[m:[93m29 [m- [91merror [90mTS2307:[m
+[90m[27;59H: [mCannot find module './menu-divider' or its corresponding t
+[27;59Htype declarations.
+
+[7m7[27m export { MenuDivider } from './menu-divider';[K
+[7m [27m[29X[91m[29C~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/option/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS230[m
+[90m[27;59H07: [mCannot find module './option' or its corresponding type 
+[27;59H declarations.
+
+[7m5[27m export { Option } from './option'[K
+[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/pagination/index.ts[m:[93m6[m:[93m28 [m- [91merror [90mT[m
+[90m[27;59HTS2307: [mCannot find module './pagination' or its correspondi
+[27;59Hing type declarations.
+
+[7m6[27m export { Pagination } from './pagination';[K
+[7m [27m[28X[91m[28C~~~~~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/popover/index.ts[m:[93m5[m:[93m25 [m- [91merror [90mTS23[m
+[90m[27;59H307: [mCannot find module './popover' or its corresponding typ
+[27;59Hpe declarations.
+
+[7m5[27m export { Popover } from './popover';[K
+[7m [27m[25X[91m[25C~~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/radio-group/index.ts[m:[93m5[m:[93m28 [m- [91merror [m
+[90m[27;59H TS2307: [mCannot find module './radio-group' or its correspon
+[27;59Hnding type declarations.
+
+[7m5[27m export { RadioGroup } from './radio-group'[K
+[7m [27m[28X[91m[28C~~~~~~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/tabs/index.ts[m:[93m5[m:[93m22 [m- [91merror [90mTS2307:[m
+[90m[27;59H: [mCannot find module './tabs' or its corresponding type decl
+[27;59Hlarations.
+
+[7m5[27m export { Tabs } from './tabs';[K
+[7m [27m[22X[91m[22C~~~~~~~~[K[m
+
+[96msrc/components/molecules/tabs/index.ts[m:[93m6[m:[93m25 [m- [91merror [90mTS2307:[m
+[90m[27;59H: [mCannot find module './tab-list' or its corresponding type 
+[27;59H declarations.
+
+[7m6[27m export { TabList } from './tab-list';[K
+[7m [27m[25X[91m[25C~~~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/tabs/index.ts[m:[93m7[m:[93m21 [m- [91merror [90mTS2307:[m
+[90m[27;59H: [mCannot find module './tab' or its corresponding type decla
+[27;59Harations.
+
+[7m7[27m export { Tab } from './tab';[K
+[7m [27m[21X[91m[21C~~~~~~~[K[m
+
+[96msrc/components/molecules/tabs/index.ts[m:[93m8[m:[93m27 [m- [91merror [90mTS2307:[m
+[90m[27;59H: [mCannot find module './tab-panels' or its corresponding typ
+[27;59Hpe declarations.
+
+[7m8[27m export { TabPanels } from './tab-panels';[K
+[7m [27m[27X[91m[27C~~~~~~~~~~~~~~[K[m
+
+[96msrc/components/molecules/tabs/index.ts[m:[93m9[m:[93m26 [m- [91merror [90mTS2307:[m
+[90m[27;59H: [mCannot find module './tab-panel' or its corresponding type
+[27;59He declarations.
+
+[7m9[27m export { TabPanel } from './tab-panel';[K
+[7m [27m[26X[91m[26C~~~~~~~~~~~~~[K[m
+
+[96msrc/components/organisms/card/index.ts[m:[93m5[m:[93m22 [m- [91merror [90mTS2307:[m
+[90m[27;59H: [mCannot find module './card' or its corresponding type decl
+[27;59Hlarations.
+
+[7m5[27m export { Card } from './card'[K
+[7m [27m[22X[91m[22C~~~~~~~~[K[m
+
+[96msrc/components/organisms/drawer/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS230[m
+[90m[27;59H07: [mCannot find module './drawer' or its corresponding type 
+[27;59H declarations.
+
+[7m5[27m export { Drawer } from './drawer';[K
+[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
+
+[96msrc/components/organisms/footer/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS230[m
+[90m[27;59H07: [mCannot find module './footer' or its corresponding type 
+[27;59H declarations.
+
+[7m5[27m export { Footer } from './footer'[K
+[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
+
+[96msrc/components/organisms/header/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS230[m
+[90m[27;59H07: [mCannot find module './header' or its corresponding type 
+[27;59H declarations.
+
+[7m5[27m export { Header } from './header'[K
+[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
+
+[96msrc/components/organisms/modal/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './modal' or its corresponding type de
+[27;59Heclarations.
+
+[7m5[27m export { Modal } from './modal';[K
+[7m [27m[23X[91m[23C~~~~~~~~~[K[m
+
+[96msrc/components/organisms/modal/index.ts[m:[93m6[m:[93m29 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './modal-header' or its corresponding 
+[27;59H type declarations.
+
+[7m6[27m export { ModalHeader } from './modal-header';[K
+[7m [27m[29X[91m[29C~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/components/organisms/modal/index.ts[m:[93m7[m:[93m27 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './modal-body' or its corresponding ty
+[27;59Hype declarations.
+
+[7m7[27m export { ModalBody } from './modal-body';[K
+[7m [27m[27X[91m[27C~~~~~~~~~~~~~~[K[m
+
+[96msrc/components/organisms/modal/index.ts[m:[93m8[m:[93m29 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './modal-footer' or its corresponding 
+[27;59H type declarations.
+
+[7m8[27m export { ModalFooter } from './modal-footer';[K
+[7m [27m[29X[91m[29C~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/components/organisms/select/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS230[m
+[90m[27;59H07: [mCannot find module './select' or its corresponding type 
+[27;59H declarations.
+
+[7m5[27m export { Select } from './select'[K
+[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
+
+[96msrc/components/organisms/table/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './table' or its corresponding type de
+[27;59Heclarations.
+
+[7m5[27m export { Table } from './table';[K
+[7m [27m[23X[91m[23C~~~~~~~~~[K[m
+
+[96msrc/components/organisms/table/index.ts[m:[93m6[m:[93m29 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './table-header' or its corresponding 
+[27;59H type declarations.
+
+[7m6[27m export { TableHeader } from './table-header';[K
+[7m [27m[29X[91m[29C~~~~~~~~~~~~~~~~[K[m
+
+[96msrc/components/organisms/table/index.ts[m:[93m7[m:[93m27 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './table-body' or its corresponding ty
+[27;59Hype declarations.
+
+[7m7[27m export { TableBody } from './table-body';[K
+[7m [27m[27X[91m[27C~~~~~~~~~~~~~~[K[m
+
+[96msrc/components/organisms/table/index.ts[m:[93m8[m:[93m26 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './table-row' or its corresponding typ
+[27;59Hpe declarations.
+
+[7m8[27m export { TableRow } from './table-row';[K
+[7m [27m[26X[91m[26C~~~~~~~~~~~~~[K[m
+
+[96msrc/components/organisms/table/index.ts[m:[93m9[m:[93m27 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './table-cell' or its corresponding ty
+[27;59Hype declarations.
+
+[7m9[27m export { TableCell } from './table-cell';[K
+[7m [27m[27X[91m[27C~~~~~~~~~~~~~~[K[m
+
+[96msrc/components/organisms/toast/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './toast' or its corresponding type de
+[27;59Heclarations.
+
+[7m5[27m export { Toast } from './toast';[K
+[7m [27m[23X[91m[23C~~~~~~~~~[K[m
+
+[96msrc/components/organisms/toast/index.ts[m:[93m6[m:[93m44 [m- [91merror [90mTS2307[m
+[90m[27;59H7: [mCannot find module './toast-container' or its correspondi
+[27;59Hing type declarations.
+
+[7m6[27m export { ToastContainer, toastQueue } from './toast-conta
+[27;59Hainer';
+[7m [27m                                            [K[91m~~~~~~~~~~~~~~[m
+[91m[27;59H~~~~~~[m
+
+[96msrc/components/organisms/toast/use-toast.ts[m:[93m6[m:[93m28 [m- [91merror [90mTS[m
+[90m[27;59HS2307: [mCannot find module './toast-container' or its corresp
+[27;59Hponding type declarations.
+
+[7m6[27m import { toastQueue } from './toast-container';[K
+[7m [27m[28X[91m[28C~~~~~~~~~~~~~~~~~~~[K[m
+
+
+Found 59 errors in 40 files.
+
+Errors  Files
+     1  src/components/atoms/avatar/index.ts[90m:6[K[m
+     1  src/components/atoms/checkbox/index.ts[90m:5[K[m
+     1  src/components/atoms/container/index.ts[90m:6[K[m
+     1  src/components/atoms/divider/index.ts[90m:6[K[m
+     1  src/components/atoms/grid/index.ts[90m:6[K[m
+     1  src/components/atoms/input/index.ts[90m:5[K[m
+     1  src/components/atoms/progress/index.ts[90m:6[K[m
+     1  src/components/atoms/radio/index.ts[90m:5[K[m
+     1  src/components/atoms/rating/index.ts[90m:5[K[m
+     1  src/components/atoms/skeleton/index.ts[90m:5[K[m
+     1  src/components/atoms/slider/index.ts[90m:5[K[m
+     1  src/components/atoms/spinner/index.ts[90m:5[K[m
+     1  src/components/atoms/stack/index.ts[90m:6[K[m
+     1  src/components/atoms/textarea/index.ts[90m:5[K[m
+     1  src/components/atoms/toggle/index.ts[90m:5[K[m
+     1  src/components/atoms/tooltip/index.ts[90m:5[K[m
+     1  src/components/atoms/typography/index.ts[90m:5[K[m
+     2  src/components/molecules/accordion/index.ts[90m:5      [28;1H[m
+     4  src/components/molecules/alert/index.ts[90m:5[K[m
+     1  src/components/molecules/badge/index.ts[90m:5[K[m
+     1  src/components/molecules/breadcrumbs/index.ts[90m:6    [28;1H[m
+     1  src/components/molecules/button/index.ts[90m:6[K[m
+     1  src/components/molecules/dropdown/index.ts[90m:5       [28;1H[m
+     1  src/components/molecules/label/index.ts[90m:5[K[m
+     2  src/components/molecules/list/index.ts[90m:5[K[m
+     3  src/components/molecules/menu/index.ts[90m:5[K[m
+     1  src/components/molecules/option/index.ts[90m:5[K[m
+     1  src/components/molecules/pagination/index.ts[90m:6     [28;1H[m
+     1  src/components/molecules/popover/index.ts[90m:5        [28;1H[m
+     1  src/components/molecules/radio-group/index.ts[90m:5    [28;1H[m
+     5  src/components/molecules/tabs/index.ts[90m:5[K[m
+     1  src/components/organisms/card/index.ts[90m:5[K[m
+     1  src/components/organisms/drawer/index.ts[90m:5[K[m
+     1  src/components/organisms/footer/index.ts[90m:5[K[m
+     1  src/components/organisms/header/index.ts[90m:5[K[m
+     4  src/components/organisms/modal/index.ts[90m:5[K[m
+     1  src/components/organisms/select/index.ts[90m:5[K[m
+     5  src/components/organisms/table/index.ts[90m:5[K[m
+     2  src/components/organisms/toast/index.ts[90m:5[K[m
+     1  src/components/organisms/toast/use-toast.ts[90m:6      [28;1H[m
+[30m[41m ELIFECYCLE [m [31mCommand failed with exit code 2.[m

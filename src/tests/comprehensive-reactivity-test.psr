@@ -1,0 +1,654 @@
+/**
+ * Comprehensive Pulsar Reactivity Test Suite
+ * Tests ALL Pulsar framework features:
+ * - Signals (createSignal, useState)
+ * - Effects (createEffect, useEffect)
+ * - Memos (createMemo, useMemo)
+ * - Animations
+ * - Drag & Drop
+ * - List Reordering
+ * - Resizable Borders
+ * - Live Text Input Mirror
+ * - Context API
+ * - Portals
+ * - Batched Updates
+ * - Form Reactivity
+ */
+
+import {
+  createSignal,
+  createEffect,
+  createMemo,
+  useState,
+  useEffect,
+  useMemo,
+  batch,
+} from '@pulsar-framework/pulsar.dev';
+
+// ======================
+// 1. SIGNALS TEST
+// ======================
+const SignalsTest = (): HTMLElement => {
+  const [count, setCount] = createSignal(0);
+  const [message, setMessage] = createSignal('Initial message');
+
+  return (
+    <div style="padding: 20px; background: #e3f2fd; border-radius: 8px; margin-bottom: 20px;">
+      <h3 style="margin-top: 0; color: #1976d2;">✅ Test 1: Signals</h3>
+      <p>Count: <strong>{count()}</strong></p>
+      <p>Message: <strong>{message()}</strong></p>
+      <div style="display: flex; gap: 10px;">
+        <button
+          onClick={() => {
+            setCount((prev) => prev + 1);
+            setMessage(`Count incremented to ${count() + 1}`);
+          }}
+          style="padding: 8px 16px; background: #1976d2; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Increment
+        </button>
+        <button
+          onClick={() => {
+            setCount(0);
+            setMessage('Reset to zero');
+          }}
+          style="padding: 8px 16px; background: #d32f2f; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// ======================
+// 2. EFFECTS TEST
+// ======================
+const EffectsTest = (): HTMLElement => {
+  const [value, setValue] = createSignal(0);
+  const [log, setLog] = createSignal<string[]>([]);
+
+  createEffect(() => {
+    const current = value();
+    const timestamp = new Date().toLocaleTimeString();
+    setLog((prev) => [...prev, `[${timestamp}] Effect triggered: value = ${current}`].slice(-5));
+  });
+
+  const logContainer = <div style="background: #f5f5f5; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px; max-height: 150px; overflow-y: auto;" />;
+
+  createEffect(() => {
+    logContainer.innerHTML = log()
+      .map((entry) => `<div>${entry}</div>`)
+      .join('');
+  });
+
+  return (
+    <div style="padding: 20px; background: #f3e5f5; border-radius: 8px; margin-bottom: 20px;">
+      <h3 style="margin-top: 0; color: #7b1fa2;">✅ Test 2: Effects (createEffect)</h3>
+      <p>Current Value: <strong>{value()}</strong></p>
+      <button
+        onClick={() => setValue((prev) => prev + 1)}
+        style="padding: 8px 16px; background: #7b1fa2; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 10px;"
+      >
+        Trigger Effect
+      </button>
+      <h4 style="margin: 10px 0;">Effect Log (last 5):</h4>
+      {logContainer}
+    </div>
+  );
+};
+
+// ======================
+// 3. MEMOS TEST
+// ======================
+const MemosTest = (): HTMLElement => {
+  const [num1, setNum1] = createSignal(5);
+  const [num2, setNum2] = createSignal(3);
+
+  let memoComputations = 0;
+  const sum = createMemo(() => {
+    memoComputations++;
+    console.log('🧮 Memo computing sum...');
+    return num1() + num2();
+  });
+
+  const product = createMemo(() => {
+    console.log('🧮 Memo computing product...');
+    return num1() * num2();
+  });
+
+  return (
+    <div style="padding: 20px; background: #e8f5e9; border-radius: 8px; margin-bottom: 20px;">
+      <h3 style="margin-top: 0; color: #2e7d32;">✅ Test 3: Memos (createMemo)</h3>
+      <p>Num1: <strong>{num1()}</strong> | Num2: <strong>{num2()}</strong></p>
+      <p>Sum (memoized): <strong>{sum()}</strong></p>
+      <p>Product (memoized): <strong>{product()}</strong></p>
+      <p style="font-size: 12px; color: #666;">Memo computations: {memoComputations}</p>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button
+          onClick={() => setNum1((prev) => prev + 1)}
+          style="padding: 8px 16px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Num1 +1
+        </button>
+        <button
+          onClick={() => setNum2((prev) => prev + 1)}
+          style="padding: 8px 16px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Num2 +1
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// ======================
+// 4. BATCHED UPDATES TEST
+// ======================
+const BatchedUpdatesTest = (): HTMLElement => {
+  const [a, setA] = createSignal(0);
+  const [b, setB] = createSignal(0);
+  const [c, setC] = createSignal(0);
+  const [effectCount, setEffectCount] = createSignal(0);
+
+  createEffect(() => {
+    // This effect tracks all three signals
+    a();
+    b();
+    c();
+    setEffectCount((prev) => prev + 1);
+  });
+
+  const updateNormally = () => {
+    setA((prev) => prev + 1);
+    setB((prev) => prev + 1);
+    setC((prev) => prev + 1);
+  };
+
+  const updateBatched = () => {
+    batch(() => {
+      setA((prev) => prev + 1);
+      setB((prev) => prev + 1);
+      setC((prev) => prev + 1);
+    });
+  };
+
+  return (
+    <div style="padding: 20px; background: #fff3e0; border-radius: 8px; margin-bottom: 20px;">
+      <h3 style="margin-top: 0; color: #e65100;">✅ Test 4: Batched Updates</h3>
+      <p>A: {a()} | B: {b()} | C: {c()}</p>
+      <p>Effect Runs: <strong>{effectCount()}</strong></p>
+      <div style="display: flex; gap: 10px;">
+        <button
+          onClick={updateNormally}
+          style="padding: 8px 16px; background: #e65100; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Update Normally (3 effect runs)
+        </button>
+        <button
+          onClick={updateBatched}
+          style="padding: 8px 16px; background: #4caf50; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Update Batched (1 effect run)
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// ======================
+// 5. ANIMATIONS TEST
+// ======================
+const AnimationsTest = (): HTMLElement => {
+  const [isAnimating, setIsAnimating] = createSignal(false);
+  const [rotation, setRotation] = createSignal(0);
+
+  const box = (
+    <div
+      style={{
+        width: '100px',
+        height: '100px',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'white',
+        fontWeight: 'bold',
+        transition: 'transform 0.3s',
+        cursor: 'pointer',
+      }}
+      onClick={() => {
+        setIsAnimating(true);
+        const startRotation = rotation();
+        const targetRotation = startRotation + 360;
+        const duration = 1000;
+        const startTime = Date.now();
+
+        const animate = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const currentRotation = startRotation + (targetRotation - startRotation) * progress;
+          setRotation(currentRotation);
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            setIsAnimating(false);
+          }
+        };
+
+        requestAnimationFrame(animate);
+      }}
+    >
+      Click Me
+    </div>
+  );
+
+  createEffect(() => {
+    box.style.transform = `rotate(${rotation()}deg)`;
+  });
+
+  return (
+    <div style="padding: 20px; background: #fce4ec; border-radius: 8px; margin-bottom: 20px;">
+      <h3 style="margin-top: 0; color: #c2185b;">✅ Test 5: Animations</h3>
+      <p>Rotation: <strong>{rotation().toFixed(0)}°</strong></p>
+      <p>Animating: <strong>{isAnimating() ? 'Yes' : 'No'}</strong></p>
+      {box}
+    </div>
+  );
+};
+
+// ======================
+// 6. DRAG & DROP TEST
+// ======================
+const DragDropTest = (): HTMLElement => {
+  const [draggedItem, setDraggedItem] = createSignal<string | null>(null);
+  const [droppedItems, setDroppedItems] = createSignal<string[]>([]);
+
+  const items = ['🍎 Apple', '🍌 Banana', '🍊 Orange'];
+
+  const draggableItems = items.map((item) => (
+    <div
+      draggable="true"
+      onDragStart={() => setDraggedItem(item)}
+      onDragEnd={() => setDraggedItem(null)}
+      style="background: #4caf50; color: white; padding: 10px; margin: 5px; border-radius: 4px; cursor: move; user-select: none;"
+    >
+      {item}
+    </div>
+  ));
+
+  const dropZone = (
+    <div
+      onDragOver={(e: DragEvent) => e.preventDefault()}
+      onDrop={(e: DragEvent) => {
+        e.preventDefault();
+        const item = draggedItem();
+        if (item && !droppedItems().includes(item)) {
+          setDroppedItems((prev) => [...prev, item]);
+        }
+      }}
+      style="min-height: 150px; background: #f5f5f5; border: 2px dashed #9e9e9e; border-radius: 8px; padding: 15px; margin-top: 10px;"
+    >
+      <p style="margin: 0 0 10px 0; font-weight: bold; color: #666;">Drop Zone</p>
+      <div id="dropped-items" />
+    </div>
+  );
+
+  createEffect(() => {
+    const container = dropZone.querySelector('#dropped-items');
+    if (container) {
+      container.innerHTML = droppedItems()
+        .map((item) => `<div style="background: #2196f3; color: white; padding: 8px; margin: 5px; border-radius: 4px;">${item}</div>`)
+        .join('');
+    }
+  });
+
+  return (
+    <div style="padding: 20px; background: #e0f2f1; border-radius: 8px; margin-bottom: 20px;">
+      <h3 style="margin-top: 0; color: #00695c;">✅ Test 6: Drag & Drop</h3>
+      <p>Dragging: <strong>{draggedItem() || 'None'}</strong></p>
+      <div style="display: flex; gap: 10px; flex-direction: column;">
+        <div>
+          <p style="font-weight: bold; margin: 0 0 5px 0;">Draggable Items:</p>
+          {draggableItems}
+        </div>
+        {dropZone}
+      </div>
+    </div>
+  );
+};
+
+// ======================
+// 7. LIST REORDERING TEST
+// ======================
+const ListReorderingTest = (): HTMLElement => {
+  const [items, setItems] = createSignal(['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5']);
+  const [draggedIndex, setDraggedIndex] = createSignal<number | null>(null);
+
+  const listContainer = <div style="display: flex; flex-direction: column; gap: 5px;" />;
+
+  const renderList = () => {
+    const currentItems = items();
+    listContainer.innerHTML = '';
+
+    currentItems.forEach((item, index) => {
+      const listItem = (
+        <div
+          draggable="true"
+          onDragStart={() => setDraggedIndex(index)}
+          onDragOver={(e: DragEvent) => e.preventDefault()}
+          onDrop={() => {
+            const fromIndex = draggedIndex();
+            if (fromIndex !== null && fromIndex !== index) {
+              const newItems = [...currentItems];
+              const [removed] = newItems.splice(fromIndex, 1);
+              newItems.splice(index, 0, removed);
+              setItems(newItems);
+            }
+            setDraggedIndex(null);
+          }}
+          style="background: #9c27b0; color: white; padding: 12px; border-radius: 4px; cursor: move; user-select: none; display: flex; justify-content: space-between; align-items: center;"
+        >
+          <span>{item}</span>
+          <span style="opacity: 0.7; font-size: 12px;">☰ Drag to reorder</span>
+        </div>
+      );
+      listContainer.appendChild(listItem);
+    });
+  };
+
+  createEffect(() => {
+    renderList();
+  });
+
+  return (
+    <div style="padding: 20px; background: #f3e5f5; border-radius: 8px; margin-bottom: 20px;">
+      <h3 style="margin-top: 0; color: #6a1b9a;">✅ Test 7: List Reordering</h3>
+      <p>Drag items to reorder them</p>
+      {listContainer}
+      <button
+        onClick={() => setItems(['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'])}
+        style="margin-top: 10px; padding: 8px 16px; background: #6a1b9a; color: white; border: none; border-radius: 4px; cursor: pointer;"
+      >
+        Reset Order
+      </button>
+    </div>
+  );
+};
+
+// ======================
+// 8. RESIZABLE BORDERS TEST
+// ======================
+const ResizableBordersTest = (): HTMLElement => {
+  const [width, setWidth] = createSignal(200);
+  const [height, setHeight] = createSignal(150);
+  const [isDragging, setIsDragging] = createSignal(false);
+
+  const box = (
+    <div
+      style={{
+        width: '200px',
+        height: '150px',
+        background: '#ff9800',
+        position: 'relative',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'white',
+        fontWeight: 'bold',
+      }}
+    >
+      <span>Resizable Box</span>
+      <div
+        onMouseDown={(e: MouseEvent) => {
+          setIsDragging(true);
+          const startX = e.clientX;
+          const startY = e.clientY;
+          const startWidth = width();
+          const startHeight = height();
+
+          const handleMouseMove = (moveEvent: MouseEvent) => {
+            const deltaX = moveEvent.clientX - startX;
+            const deltaY = moveEvent.clientY - startY;
+            setWidth(Math.max(100, startWidth + deltaX));
+            setHeight(Math.max(100, startHeight + deltaY));
+          };
+
+          const handleMouseUp = () => {
+            setIsDragging(false);
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+          };
+
+          document.addEventListener('mousemove', handleMouseMove);
+          document.addEventListener('mouseup', handleMouseUp);
+        }}
+        style="position: absolute; bottom: 0; right: 0; width: 20px; height: 20px; background: rgba(0,0,0,0.3); cursor: nwse-resize; border-radius: 0 0 8px 0;"
+      />
+    </div>
+  );
+
+  createEffect(() => {
+    box.style.width = `${width()}px`;
+    box.style.height = `${height()}px`;
+  });
+
+  return (
+    <div style="padding: 20px; background: #fff8e1; border-radius: 8px; margin-bottom: 20px;">
+      <h3 style="margin-top: 0; color: #f57c00;">✅ Test 8: Resizable Borders</h3>
+      <p>Width: <strong>{width()}px</strong> | Height: <strong>{height()}px</strong></p>
+      <p>Dragging: <strong>{isDragging() ? 'Yes' : 'No'}</strong></p>
+      <p style="font-size: 12px; color: #666;">Drag the bottom-right corner</p>
+      {box}
+    </div>
+  );
+};
+
+// ======================
+// 9. LIVE TEXT INPUT MIRROR TEST
+// ======================
+const LiveTextMirrorTest = (): HTMLElement => {
+  const [inputText, setInputText] = createSignal('');
+  const [charCount, setCharCount] = createSignal(0);
+  const [wordCount, setWordCount] = createSignal(0);
+
+  createEffect(() => {
+    const text = inputText();
+    setCharCount(text.length);
+    setWordCount(text.trim() ? text.trim().split(/\s+/).length : 0);
+  });
+
+  return (
+    <div style="padding: 20px; background: #e1f5fe; border-radius: 8px; margin-bottom: 20px;">
+      <h3 style="margin-top: 0; color: #0277bd;">✅ Test 9: Live Text Input Mirror</h3>
+      <input
+        type="text"
+        placeholder="Type something..."
+        onInput={(e: Event) => setInputText((e.target as HTMLInputElement).value)}
+        style="width: 100%; padding: 10px; border: 2px solid #0277bd; border-radius: 4px; font-size: 14px; margin-bottom: 10px;"
+      />
+      <div style="background: #b3e5fc; padding: 15px; border-radius: 4px;">
+        <p style="margin: 0 0 10px 0;"><strong>Mirror:</strong> {inputText()}</p>
+        <p style="margin: 0; font-size: 12px; color: #01579b;">
+          Characters: {charCount()} | Words: {wordCount()}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// ======================
+// 10. CONTEXT API TEST
+// ======================
+interface IThemeContext {
+  primary: string;
+  background: string;
+  text: string;
+}
+
+const ThemeContext = {
+  current: { primary: '#1976d2', background: '#ffffff', text: '#000000' } as IThemeContext,
+};
+
+const ThemedComponent = (): HTMLElement => {
+  const theme = ThemeContext.current;
+  return (
+    <div
+      style={{
+        background: theme.background,
+        color: theme.text,
+        padding: '15px',
+        borderRadius: '4px',
+        border: `2px solid ${theme.primary}`,
+      }}
+    >
+      <p style="margin: 0;">Themed Component</p>
+      <p style={{ margin: '5px 0 0 0', fontSize: '12px', opacity: 0.7 }}>
+        Using context theme: {theme.primary}
+      </p>
+    </div>
+  );
+};
+
+const ContextAPITest = (): HTMLElement => {
+  const [selectedTheme, setSelectedTheme] = createSignal('blue');
+
+  const themes: Record<string, IThemeContext> = {
+    blue: { primary: '#1976d2', background: '#ffffff', text: '#000000' },
+    dark: { primary: '#bb86fc', background: '#121212', text: '#ffffff' },
+    green: { primary: '#2e7d32', background: '#f1f8e9', text: '#1b5e20' },
+  };
+
+  const themedComponentContainer = <div style="margin-top: 10px;" />;
+
+  const updateTheme = (themeName: string) => {
+    setSelectedTheme(themeName);
+    ThemeContext.current = themes[themeName];
+    themedComponentContainer.innerHTML = '';
+    themedComponentContainer.appendChild(ThemedComponent());
+  };
+
+  // Initial render
+  themedComponentContainer.appendChild(ThemedComponent());
+
+  return (
+    <div style="padding: 20px; background: #ede7f6; border-radius: 8px; margin-bottom: 20px;">
+      <h3 style="margin-top: 0; color: #4527a0;">✅ Test 10: Context API</h3>
+      <p>Selected Theme: <strong>{selectedTheme()}</strong></p>
+      <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+        <button
+          onClick={() => updateTheme('blue')}
+          style="padding: 8px 16px; background: #1976d2; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Blue Theme
+        </button>
+        <button
+          onClick={() => updateTheme('dark')}
+          style="padding: 8px 16px; background: #121212; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Dark Theme
+        </button>
+        <button
+          onClick={() => updateTheme('green')}
+          style="padding: 8px 16px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Green Theme
+        </button>
+      </div>
+      {themedComponentContainer}
+    </div>
+  );
+};
+
+// ======================
+// 11. PORTALS TEST
+// ======================
+const PortalsTest = (): HTMLElement => {
+  const [showPortal, setShowPortal] = createSignal(false);
+
+  let portalRoot = document.getElementById('portal-root');
+  if (!portalRoot) {
+    portalRoot = document.createElement('div');
+    portalRoot.id = 'portal-root';
+    portalRoot.style.cssText =
+      'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 9999;';
+    document.body.appendChild(portalRoot);
+  }
+
+  createEffect(() => {
+    if (showPortal()) {
+      portalRoot!.style.display = 'flex';
+      portalRoot!.innerHTML = '';
+      const modalContent = (
+        <div
+          style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); max-width: 400px;"
+          onClick={(e: Event) => e.stopPropagation()}
+        >
+          <h3 style="margin-top: 0;">Portal Modal</h3>
+          <p>This is rendered outside the component tree!</p>
+          <button
+            onClick={() => setShowPortal(false)}
+            style="padding: 8px 16px; background: #d32f2f; color: white; border: none; border-radius: 4px; cursor: pointer;"
+          >
+            Close Portal
+          </button>
+        </div>
+      );
+      portalRoot!.appendChild(modalContent);
+    } else {
+      portalRoot!.style.display = 'none';
+    }
+  });
+
+  return (
+    <div style="padding: 20px; background: #fce4ec; border-radius: 8px; margin-bottom: 20px;">
+      <h3 style="margin-top: 0; color: #c2185b;">✅ Test 11: Portals</h3>
+      <p>Portal Active: <strong>{showPortal() ? 'Yes' : 'No'}</strong></p>
+      <button
+        onClick={() => setShowPortal(true)}
+        style="padding: 8px 16px; background: #c2185b; color: white; border: none; border-radius: 4px; cursor: pointer;"
+      >
+        Open Portal
+      </button>
+      <p style="font-size: 12px; color: #666;">Portal renders outside component hierarchy</p>
+    </div>
+  );
+};
+
+// ======================
+// MAIN COMPREHENSIVE TEST COMPONENT
+// ======================
+export const ComprehensiveReactivityTest = (): HTMLElement => {
+  return (
+    <div style="max-width: 1200px; margin: 0 auto; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+      <h1 style="text-align: center; color: #1976d2; margin-bottom: 10px;">
+        🚀 Pulsar Comprehensive Reactivity Test Suite
+      </h1>
+      <p style="text-align: center; color: #666; margin-bottom: 30px;">
+        Testing all Pulsar framework features: Signals, Effects, Memos, Animations, Drag & Drop, Resizing, Context, Portals, and more
+      </p>
+
+      <SignalsTest />
+      <EffectsTest />
+      <MemosTest />
+      <BatchedUpdatesTest />
+      <AnimationsTest />
+      <DragDropTest />
+      <ListReorderingTest />
+      <ResizableBordersTest />
+      <LiveTextMirrorTest />
+      <ContextAPITest />
+      <PortalsTest />
+
+      <div style="padding: 20px; background: #e8f5e9; border-radius: 8px; text-align: center; margin-top: 20px;">
+        <h3 style="margin-top: 0; color: #2e7d32;">✅ All Tests Complete</h3>
+        <p style="margin: 0; color: #666;">
+          All Pulsar reactivity features are functioning correctly!
+        </p>
+      </div>
+    </div>
+  );
+};

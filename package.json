@@ -17,7 +17,9 @@
     "typecheck": "tsc --noEmit",
     "showcase:dev": "vite",
     "showcase:build": "vite build",
-    "showcase:preview": "vite preview"
+    "showcase:preview": "vite preview",
+    "test:reactivity": "vite --open test-comprehensive-reactivity.html",
+    "test:comprehensive": "vite --open test-comprehensive-reactivity.html"
   },
   "keywords": [
     "pulsar",

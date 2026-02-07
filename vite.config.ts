@@ -6,14 +6,10 @@ export default defineConfig({
   plugins: [
     pulsar({
       debug: true,
-      debugChannels: {
-        detector: true,
-        transform: true,
-        generator: false,
-        visitor: false,
-        wire: false,
-        performance: false,
-      },
+      // Debug Channels: Filter transformation logs by pipeline phase
+      // Available: 'lexer', 'parser', 'analyzer', 'transform', 'emitter', 'validator', 'pipeline'
+      // Omit to see all channels (default), specify array to filter
+      debugChannels: ['emitter', 'validator'], // Only show code generation & validation
       enableDependencyResolution: true,
     }),
   ],

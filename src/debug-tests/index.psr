@@ -95,7 +95,7 @@ component DebugTestSuitePSR() {
           >
             <div style="font-size: 3rem; margin-bottom: 1rem;">🔵</div>
             <h2 style="margin: 0 0 0.5rem; color: white; font-size: 1.5rem;">Test 3: Conditionals</h2>
-            <p style="margin: 0; color: rgba(255,255,255,0.9); font-size: 0.95rem;">
+            <p style="margin: 0; color: rgba(255,255,255,0.9); font-size: 0.95rem;" >
               PSR conditional rendering
             </p>
             <div style="margin-top: 1rem; padding: 0.5rem; background: rgba(255,255,255,0.2); border-radius: 6px;">

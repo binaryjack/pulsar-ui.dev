@@ -4,7 +4,7 @@
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, relative } from 'path';
+import { join, relative, extname } from 'path';
 import { createPipeline } from '../pulsar-transformer/dist/index.js';
 
 // Find all .psr files recursively

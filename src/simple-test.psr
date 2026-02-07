@@ -1,0 +1,23 @@
+import { createSignal, bootstrapApp } from '@pulsar-framework/pulsar.dev';
+
+const SimpleTest = () => {
+  const [count, setCount] = createSignal(0);
+  const title = 'Pulsar Test';
+  const countLabel = 'Count: ';
+  const buttonText = 'Click Me';
+
+  return (
+    <div style="padding: 40px; text-align: center; font-family: sans-serif;">
+      <h1>{title}</h1>
+      <p style="font-size: 32px; margin: 20px 0;">{countLabel}{count()}</p>
+      <button onClick={() => setCount(count() + 1)} style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+        {buttonText}
+      </button>
+    </div>
+  );
+};
+
+bootstrapApp()
+  .root('#app')
+  .build()
+  .mount(SimpleTest());
