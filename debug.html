@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PSR Debug - What's Loading?</title>
+    <style>
+      body {
+        font-family: monospace;
+        padding: 20px;
+        background: #1e1e1e;
+        color: #00ff00;
+      }
+      .log {
+        margin: 5px 0;
+      }
+      .error {
+        color: #ff4444;
+      }
+      .success {
+        color: #44ff44;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>PSR Loading Debug</h1>
+    <div id="logs"></div>
+    <div id="app"></div>
+
+    <script type="module">
+      const log = (msg, isError = false) => {
+        const div = document.createElement('div');
+        div.className = `log ${isError ? 'error' : 'success'}`;
+        div.textContent = `[${new Date().toISOString().split('T')[1].slice(0, -1)}] ${msg}`;
+        document.getElementById('logs').appendChild(div);
+        console.log(msg);
+      };
+
+      log('1. Script started');
+
+      try {
+        log('2. Importing @pulsar-framework/pulsar.dev...');
+        const pulsar = await import('@pulsar-framework/pulsar.dev');
+        log(`3. Pulsar loaded: ${Object.keys(pulsar).slice(0, 5).join(', ')}...`);
+
+        log('4. Checking for bootstrapApp...');
+        if (pulsar.bootstrapApp) {
+          log('5. ✅ bootstrapApp exists');
+        } else {
+          log('5. ❌ bootstrapApp NOT FOUND', true);
+        }
+
+        log('6. Checking for $REGISTRY...');
+        if (pulsar.$REGISTRY) {
+          log('7. ✅ $REGISTRY exists');
+        } else {
+          log('7. ❌ $REGISTRY NOT FOUND', true);
+        }
+
+        log('8. Checking for t_element...');
+        if (pulsar.t_element) {
+          log('9. ✅ t_element exists');
+        } else {
+          log('9. ❌ t_element NOT FOUND', true);
+        }
+
+        log('10. Importing PSR component...');
+        const { AvatarTest } = await import('./src/test-psr-avatar.psr');
+        log(`11. ✅ AvatarTest loaded: ${typeof AvatarTest}`);
+
+        log('12. Calling bootstrapApp...');
+        pulsar.bootstrapApp({
+          root: '#app',
+          component: AvatarTest,
+          props: {},
+        });
+        log('13. ✅ bootstrapApp called successfully');
+      } catch (error) {
+        log(`❌ ERROR: ${error.message}`, true);
+        log(`Stack: ${error.stack}`, true);
+      }
+    </script>
+  </body>
+</html>

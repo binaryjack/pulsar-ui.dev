@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+    <title>ULTRA SIMPLE TEST</title>
+    <style>
+      body {
+        background: #000;
+        color: #0f0;
+        padding: 20px;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>ULTRA SIMPLE - NO COMPONENTS</h1>
+    <div id="app" style="border: 2px solid red; padding: 20px; min-height: 200px"></div>
+    <div id="logs" style="margin-top: 20px; border: 2px solid blue; padding: 10px"></div>
+
+    <script type="module">
+      const log = (msg) => {
+        const p = document.createElement('p');
+        p.textContent = msg;
+        document.getElementById('logs').appendChild(p);
+        console.log(msg);
+      };
+
+      log('1. Loading...');
+
+      try {
+        log('2. Importing t_element...');
+        const { t_element } = await import('@pulsar-framework/pulsar.dev/jsx-runtime');
+        log(`3. t_element type: ${typeof t_element}`);
+
+        log('4. Creating div with t_element...');
+        const div = t_element('div', { className: 'test' });
+        log(`5. Created: ${div.tagName}, nodeName: ${div.nodeName}`);
+
+        log('6. Creating text node...');
+        const text = document.createTextNode('Hello from t_element!');
+        div.appendChild(text);
+
+        log('7. Appending to #app...');
+        document.getElementById('app').appendChild(div);
+
+        log('8. ✅ SUCCESS! Check the red box.');
+        log(`9. #app.children.length = ${document.getElementById('app').children.length}`);
+      } catch (err) {
+        log(`❌ ERROR: ${err.message}`);
+        log(`Stack: ${err.stack}`);
+      }
+    </script>
+  </body>
+</html>

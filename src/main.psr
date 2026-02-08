@@ -1,19 +1,49 @@
 /**
  * Pulsar UI Showcase - Main Application Entry Point (PSR)
- * Comprehensive Reactivity Test Suite
+ * Simple Reactivity Debug Test
  */
 
-import { bootstrapApp } from '@pulsar-framework/pulsar.dev';
-import ComprehensiveReactivityTestSuite from './test-comprehensive-new.psr';
+import { createSignal, createEffect } from '@pulsar-framework/pulsar.dev';
 
-// Build and mount application using PSR-transformed components
-bootstrapApp()
-  .root('#app')
-  .onMount((element) => {
-    console.log('[Pulsar UI PSR] Comprehensive test suite mounted successfully', element);
-  })
-  .onError((error) => {
-    console.error('[Pulsar UI PSR] Error:', error);
-  })
-  .build()
-  .mount(ComprehensiveReactivityTestSuite());
+component DebugReactivity() {
+  console.log('[Debug] Component initializing...');
+  
+  const [count, setCount] = createSignal(0);
+  
+  createEffect(() => {
+    console.log('[Effect] Count changed to:', count());
+  });
+  
+  return (
+    <div style="padding: 40px; background: #1a1a1a; min-height: 100vh; color: white; font-family: system-ui;">
+      <h1 style="font-size: 42px; margin-bottom: 30px;">🚀 Reactivity Debug Test</h1>
+      <div style="display: flex; gap: 20px; align-items: center;">
+        <button 
+          onClick={() => { 
+            console.log('[Click] Increment, before:', count()); 
+            setCount(count() + 1); 
+            console.log('[Click] After:', count());
+          }}
+          style="padding: 16px 32px; font-size: 20px; background: #3b82f6; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold;">
+          Increment
+        </button>
+        <button 
+          onClick={() => { 
+            console.log('[Click] Decrement, before:', count()); 
+            setCount(count() - 1); 
+          }}
+          style="padding: 16px 32px; font-size: 20px; background: #ef4444; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold;">
+          Decrement
+        </button>
+        <div style="font-size: 48px; font-weight: bold; color: #10b981; margin-left: 20px;">
+          Count: {count()}
+        </div>
+      </div>
+      <div style="margin-top: 40px; padding: 20px; background: #2a2a2a; border-radius: 8px;">
+        <p style="font-size: 18px; color: #9ca3af;">Open Console to see effect logs!</p>
+      </div>
+    </div>
+  );
+}
+
+// Component is exported, bootstrap happens in main.ts

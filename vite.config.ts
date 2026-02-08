@@ -5,11 +5,8 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [
     pulsar({
-      debug: true,
-      // Debug Channels: Filter transformation logs by pipeline phase
-      // Available: 'lexer', 'parser', 'analyzer', 'transform', 'emitter', 'validator', 'pipeline'
-      // Omit to see all channels (default), specify array to filter
-      debugChannels: ['emitter', 'validator'], // Only show code generation & validation
+      debug: true, // FIX #2: Enable debug to see transformation issues
+      debugChannels: ['emitter'], // Minimal logging
       enableDependencyResolution: true,
     }),
   ],
@@ -23,6 +20,17 @@ export default defineConfig({
     port: 3000,
     open: true,
     historyApiFallback: true,
+    // Exclude large test files from watch to reduce memory usage
+    watch: {
+      ignored: [
+        '**/test-comprehensive*.psr',
+        '**/test-real-world*.psr',
+        '**/test-edge-cases.psr',
+        '**/test-advanced.psr',
+        '**/test-complex.psr',
+        '**/showcase-app.psr',
+      ],
+    },
   },
   resolve: {
     alias: {

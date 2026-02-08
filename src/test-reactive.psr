@@ -1,0 +1,89 @@
+/**
+ * Reactive Test Component
+ * Tests signals, effects, and DOM updates
+ */
+
+import { createSignal, createEffect } from '@pulsar-framework/pulsar.dev';
+
+component ReactiveTest() {
+  // Create a signal
+  const [count, setCount] = createSignal(0);
+  const [name, setName] = createSignal('World');
+  
+  // Create an effect to log changes
+  createEffect(() => {
+    console.log('[Effect] Count changed to:', count());
+  });
+  
+  return (
+    <div className="p-8 space-y-8 bg-gray-50 dark:bg-gray-900 min-h-screen">
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        Reactive Test
+      </h1>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+          Counter Test
+        </h2>
+        <div className="flex items-center gap-4">
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            onClick={() => setCount(count() + 1)}
+          >
+            Increment
+          </button>
+          <button
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            onClick={() => setCount(count() - 1)}
+          >
+            Decrement
+          </button>
+          <button
+            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+            onClick={() => setCount(0)}
+          >
+            Reset
+          </button>
+          <div className="text-2xl font-bold text-gray-900 dark:text-white">
+            Count: {count()}
+          </div>
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+          Name Test
+        </h2>
+        <div className="flex items-center gap-4">
+          <input
+            type="text"
+            className="px-4 py-2 border border-gray-300 rounded"
+            placeholder="Enter name"
+            onInput={(e) => setName(e.target.value)}
+            value={name()}
+          />
+          <div className="text-xl text-gray-900 dark:text-white">
+            Hello, {name()}!
+          </div>
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+          Derived State
+        </h2>
+        <div className="space-y-2">
+          <div className="text-lg text-gray-900 dark:text-white">
+            Count is {count() >= 0 ? 'positive' : 'negative'}
+          </div>
+          <div className="text-lg text-gray-900 dark:text-white">
+            Count doubled: {count() * 2}
+          </div>
+          <div className="text-lg text-gray-900 dark:text-white">
+            Name length: {name().length} characters
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

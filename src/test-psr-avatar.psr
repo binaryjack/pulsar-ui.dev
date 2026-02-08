@@ -1,9 +1,9 @@
 /**
- * PSR Avatar Test
+ * PSR Avatar Test  
  * Testing the PSR pipeline with a real component
  */
 
-import { Avatar } from './components/atoms/avatar/avatar.psr';
+import { Avatar } from './components/atoms/avatar/avatar-simple.psr';
 
 component AvatarTest() {
   return (
@@ -104,5 +104,3 @@ component AvatarTest() {
     </div>
   );
 }
-
-export default AvatarTest;

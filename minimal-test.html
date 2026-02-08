@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>MINIMAL PSR TEST</title>
+    <style>
+      body {
+        font-family: monospace;
+        padding: 20px;
+        background: #000;
+        color: #0f0;
+      }
+      #output {
+        border: 1px solid #0f0;
+        padding: 10px;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>MINIMAL PSR TEST - NO BOOTSTRAP</h1>
+    <div id="output"></div>
+    <div id="app"></div>
+
+    <script type="module">
+      const output = document.getElementById('output');
+      const log = (msg) => {
+        const p = document.createElement('p');
+        p.textContent = msg;
+        output.appendChild(p);
+        console.log(msg);
+      };
+
+      log('1. Starting minimal test...');
+
+      try {
+        // Test 1: Can we import the PSR component?
+        log('2. Importing PSR component...');
+        const module = await import('./src/test-psr-avatar.psr');
+        log(`3. ✅ Module imported: ${Object.keys(module)}`);
+
+        // Test 2: Is it a function?
+        log(`4. AvatarTest type: ${typeof module.AvatarTest}`);
+
+        if (typeof module.AvatarTest === 'function') {
+          log('5. ✅ AvatarTest is a function');
+
+          // Test 3: Can we CALL it?
+          log('6. Calling AvatarTest()...');
+          const result = module.AvatarTest();
+          log(`7. ✅ Result type: ${typeof result}`);
+          log(`8. Result: ${result}`);
+
+          if (result && result.nodeType) {
+            log('9. ✅ Result is a DOM node!');
+            document.getElementById('app').appendChild(result);
+            log('10. ✅ APPENDED TO DOM!');
+          } else {
+            log(`9. ❌ Result is NOT a DOM node: ${JSON.stringify(result)}`);
+          }
+        } else {
+          log('5. ❌ AvatarTest is NOT a function');
+        }
+      } catch (error) {
+        log(`❌ ERROR: ${error.message}`);
+        log(`Stack: ${error.stack}`);
+      }
+    </script>
+  </body>
+</html>

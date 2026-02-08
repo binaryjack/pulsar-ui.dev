@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+  <head>
+    <title>CAPTURE ALL CONSOLE</title>
+    <style>
+      body {
+        background: #000;
+        color: #0f0;
+        padding: 20px;
+        font-family: monospace;
+        font-size: 12px;
+      }
+      .console-log {
+        color: #0f0;
+      }
+      .console-warn {
+        color: #ff0;
+      }
+      .console-error {
+        color: #f00;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CONSOLE OUTPUT MIRROR</h1>
+    <div id="console-output"></div>
+    <hr />
+    <h2>APP:</h2>
+    <div id="app" style="border: 2px solid red; padding: 20px; min-height: 100px"></div>
+
+    <script>
+      // Intercept all console methods
+      const output = document.getElementById('console-output');
+      const original = {
+        log: console.log,
+        warn: console.warn,
+        error: console.error,
+      };
+
+      function mirror(type, ...args) {
+        const div = document.createElement('div');
+        div.className = `console-${type}`;
+        div.textContent = `[${type.toUpperCase()}] ${args
+          .map((a) => (typeof a === 'object' ? JSON.stringify(a) : String(a)))
+          .join(' ')}`;
+        output.appendChild(div);
+        original[type](...args);
+      }
+
+      console.log = (...args) => mirror('log', ...args);
+      console.warn = (...args) => mirror('warn', ...args);
+      console.error = (...args) => mirror('error', ...args);
+
+      console.log('Console mirroring active');
+    </script>
+
+    <script type="module">
+      console.log('▶ Loading main-avatar-test...');
+
+      try {
+        const { bootstrapApp } = await import('@pulsar-framework/pulsar.dev');
+        const { AvatarTest } = await import('./src/test-psr-avatar.psr');
+
+        console.log('bootstrapApp:', typeof bootstrapApp);
+        console.log('AvatarTest:', typeof AvatarTest);
+
+        bootstrapApp({
+          root: '#app',
+          component: AvatarTest,
+          props: {},
+        });
+      } catch (err) {
+        console.error('FATAL:', err.message);
+        console.error('Stack:', err.stack);
+      }
+    </script>
+  </body>
+</html>

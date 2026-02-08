@@ -1,0 +1,25 @@
+/**
+ * Simplified Avatar Component - PSR Implementation  
+ * For testing - reduced complexity
+ */
+
+import type { IAvatarProps } from './avatar.type';
+
+component Avatar({
+  size = 'md',
+  src,
+  name,
+  className,
+}: IAvatarProps) {
+  const avatarClasses = `relative inline-flex items-center justify-center rounded-full ${className || ''}`;
+
+  return (
+    <div className={avatarClasses}>
+      {src ? (
+        <img src={src} alt={name || 'Avatar'} className="w-full h-full object-cover" />
+      ) : (
+        <span className="font-medium">{name}</span>
+      )}
+    </div>
+  );
+}
