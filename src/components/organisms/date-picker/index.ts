@@ -4,11 +4,11 @@
  * Standalone DatePicker component without FORMULAR dependencies.
  */
 
-export { default as DatePickerV3, default } from './date-picker'
+export { default as DatePickerV3, default } from './'
 
 // Export types and enums
 export type { DatePickerGridModeType, DatePickerSelectionModeType } from './core/date-picker.types'
-export type { DatePickerProps } from './date-picker'
+export type { DatePickerProps } from './'
 export { DateFormatsEnum } from './utils/date-utils'
 
 // Export utilities (if needed)

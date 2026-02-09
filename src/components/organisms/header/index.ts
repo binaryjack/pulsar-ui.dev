@@ -2,6 +2,6 @@
  * Header component exports
  */
 
-export { Header } from './header'
+export { Header } from './'
 export type { IHeaderProps } from './header.type'
 

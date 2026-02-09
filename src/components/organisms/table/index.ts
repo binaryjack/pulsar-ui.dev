@@ -2,11 +2,11 @@
  * Table component exports
  */
 
-export { Table } from './table';
-export { TableHeader } from './table-header';
-export { TableBody } from './table-body';
-export { TableRow } from './table-row';
-export { TableCell } from './table-cell';
+export { Table } from './';
+export { TableHeader } from './';
+export { TableBody } from './';
+export { TableRow } from './';
+export { TableCell } from './';
 export type { ITableProps } from './table.type';
 export type { ITableHeaderProps } from './table-header.type';
 export type { ITableBodyProps } from './table-body.type';

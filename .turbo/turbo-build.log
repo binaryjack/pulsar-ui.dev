@@ -1,531 +1,5 @@
-[?9001h[?1004h[?25l[2J[m[2;1H> @pulsar-framework/ui@0.7.0-alpha build C:\Users\Piana Tadeo\source\repos\visual-schema-builder\packages\pulsar-ui.dev
-> tsc -p tsconfig.build.json[6;1H]0;C:\WINDOWS\system32\cmd.exe[?25h[?25l[96msrc/components/atoms/avatar/index.ts[m:[93m6[m:[93m24 [m- [91merror [90mTS2307: [mCannot find module './avatar' or its corresponding type declarations.[7m[9;1H6[27m export { Avatar } from './avatar';[7m
- [27m[24X[91m[24C~~~~~~~~~~
-[?25h[m
-[96msrc/components/atoms/checkbox/index.ts[m:[93m5[m:[93m26 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './checkbox' or its corresponding type declarations.
 
-[7m5[27m export { Checkbox } from './checkbox'[K
-[7m [27m[26X[91m[26C~~~~~~~~~~~~[K[m
+> @pulsar-framework/ui@0.7.0-alpha build C:\Users\Piana Tadeo\source\repos\visual-schema-builder\packages\pulsar-ui.dev
+> echo 'Skipping TypeScript build - using source files directly with Vite runtime compilation'
 
-[96msrc/components/atoms/container/index.ts[m:[93m6[m:[93m27 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './container' or its corresponding type declarations.
-
-[7m6[27m export { Container } from './container';[K
-[7m [27m[27X[91m[27C~~~~~~~~~~~~~[K[m
-
-[96msrc/components/atoms/divider/index.ts[m:[93m6[m:[93m25 [m- [91merror [90mTS2307: [mCannot find module 
-[10;78H './divider' or its corresponding type declarations.
-
-[7m6[27m export { Divider } from './divider';[K
-[7m [27m[25X[91m[25C~~~~~~~~~~~[K[m
-
-[96msrc/components/atoms/grid/index.ts[m:[93m6[m:[93m22 [m- [91merror [90mTS2307: [mCannot find module './
-[10;78H/grid' or its corresponding type declarations.
-
-[7m6[27m export { Grid } from './grid';[K
-[7m [27m[22X[91m[22C~~~~~~~~[K[m
-
-[96msrc/components/atoms/input/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307: [mCannot find module '.
-[10;78H./input' or its corresponding type declarations.
-
-[7m5[27m export { Input } from './input'[K
-[7m [27m[23X[91m[23C~~~~~~~~~[K[m
-
-[96msrc/components/atoms/progress/index.ts[m:[93m6[m:[93m26 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './progress' or its corresponding type declarations.
-
-[7m6[27m export { Progress } from './progress';[K
-[7m [27m[26X[91m[26C~~~~~~~~~~~~[K[m
-
-[96msrc/components/atoms/radio/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307: [mCannot find module '.
-[10;78H./radio' or its corresponding type declarations.
-
-[7m5[27m export { Radio } from './radio'[K
-[7m [27m[23X[91m[23C~~~~~~~~~[K[m
-
-[96msrc/components/atoms/rating/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS2307: [mCannot find module '
-[10;78H'./rating' or its corresponding type declarations.
-
-[7m5[27m export { Rating } from './rating';[K
-[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
-
-[96msrc/components/atoms/skeleton/index.ts[m:[93m5[m:[93m26 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './skeleton' or its corresponding type declarations.
-
-[7m5[27m export { Skeleton } from './skeleton'[K
-[7m [27m[26X[91m[26C~~~~~~~~~~~~[K[m
-
-[96msrc/components/atoms/slider/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS2307: [mCannot find module '
-[10;78H'./slider' or its corresponding type declarations.
-
-[7m5[27m export { Slider } from './slider';[K
-[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
-
-[96msrc/components/atoms/spinner/index.ts[m:[93m5[m:[93m25 [m- [91merror [90mTS2307: [mCannot find module 
-[10;78H './spinner' or its corresponding type declarations.
-
-[7m5[27m export { Spinner } from './spinner'[K
-[7m [27m[25X[91m[25C~~~~~~~~~~~[K[m
-
-[96msrc/components/atoms/spinner/spinner.type.ts[m:[93m5[m:[93m36 [m- [91merror [90mTS2307: [mCannot find 
-[10;78H module '@pulsar-framework/design-tokens' or its corresponding type declaration
-[10;78Hns.
-
-[7m5[27m import type { ComponentSize } from '@pulsar-framework/design-tokens'        [11;1H
-[7m [27m[36X[91m[36C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~        [11;1H[m
-
-[96msrc/components/atoms/stack/index.ts[m:[93m6[m:[93m39 [m- [91merror [90mTS2307: [mCannot find module '.
-[10;78H./stack' or its corresponding type declarations.
-
-[7m6[27m export { Stack, VStack, HStack } from './stack';[K
-[7m [27m[39X[91m[39C~~~~~~~~~[K[m
-
-[96msrc/components/atoms/textarea/index.ts[m:[93m5[m:[93m26 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './textarea' or its corresponding type declarations.
-
-[7m5[27m export { Textarea } from './textarea'[K
-[7m [27m[26X[91m[26C~~~~~~~~~~~~[K[m
-
-[96msrc/components/atoms/toggle/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS2307: [mCannot find module '
-[10;78H'./toggle' or its corresponding type declarations.
-
-[7m5[27m export { Toggle } from './toggle'[K
-[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
-
-[96msrc/components/atoms/tooltip/index.ts[m:[93m5[m:[93m25 [m- [91merror [90mTS2307: [mCannot find module 
-[10;78H './tooltip' or its corresponding type declarations.
-
-[7m5[27m export { Tooltip } from './tooltip';[K
-[7m [27m[25X[91m[25C~~~~~~~~~~~[K[m
-
-[96msrc/components/atoms/typography/index.ts[m:[93m5[m:[93m28 [m- [91merror [90mTS2307: [mCannot find modu
-[10;78Hule './typography' or its corresponding type declarations.
-
-[7m5[27m export { Typography } from './typography'[K
-[7m [27m[28X[91m[28C~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/interfaces/component-config.interface.ts[m:[93m6[m:[93m80 [m- [91merror [90mTS2307: [mC
-[10;78HCannot find module '@pulsar-framework/design-tokens' or its corresponding type 
-[10;78H declarations.
-
-[7m6[27m import { type ComponentColor, type ComponentSize, type ComponentVariant } fr
-[10;78Hrom '@pulsar-framework/design-tokens'
-[7m [27m                                                                             [11;156H
-[91m   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m
-
-[96msrc/components/interfaces/component-config.ts[m:[93m9[m:[93m37 [m- [91merror [90mTS2307: [mCannot find
-[10;78Hd module '@pulsar-framework/design-tokens' or its corresponding type declaratio
-[10;78Hons.
-
-[7m9[27m import { type ComponentColor } from '@pulsar-framework/design-tokens'       [11;1H
-[7m [27m[37X[91m[37C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [11;1H[m
-
-[96msrc/components/interfaces/prototype/size.ts[m:[93m5[m:[93m36 [m- [91merror [90mTS2307: [mCannot find m
-[10;78Hmodule '@pulsar-framework/design-tokens' or its corresponding type declarations
-[10;78Hs.
-
-[7m5[27m import { type ComponentSize } from '@pulsar-framework/design-tokens'        [11;1H
-[7m [27m[36X[91m[36C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~        [11;1H[m
-
-[96msrc/components/interfaces/prototype/variant.ts[m:[93m5[m:[93m39 [m- [91merror [90mTS2307: [mCannot fin
-[10;78Hnd module '@pulsar-framework/design-tokens' or its corresponding type declarati
-[10;78Hions.
-
-[7m5[27m import { type ComponentVariant } from '@pulsar-framework/design-tokens'     [11;1H
-[7m [27m[39X[91m[39C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     [11;1H[m
-
-[96msrc/components/molecules/accordion/index.ts[m:[93m5[m:[93m27 [m- [91merror [90mTS2307: [mCannot find m
-[10;78Hmodule './accordion' or its corresponding type declarations.
-
-[7m5[27m export { Accordion } from './accordion';[K
-[7m [27m[27X[91m[27C~~~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/accordion/index.ts[m:[93m6[m:[93m31 [m- [91merror [90mTS2307: [mCannot find m
-[10;78Hmodule './accordion-item' or its corresponding type declarations.
-
-[7m6[27m export { AccordionItem } from './accordion-item';[K
-[7m [27m[31X[91m[31C~~~~~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/alert/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './alert' or its corresponding type declarations.
-
-[7m5[27m export { Alert } from './alert';[K
-[7m [27m[23X[91m[23C~~~~~~~~~[K[m
-
-[96msrc/components/molecules/alert/index.ts[m:[93m6[m:[93m27 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './alert-icon' or its corresponding type declarations.
-
-[7m6[27m export { AlertIcon } from './alert-icon';[K
-[7m [27m[27X[91m[27C~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/alert/index.ts[m:[93m7[m:[93m28 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './alert-title' or its corresponding type declarations.
-
-[7m7[27m export { AlertTitle } from './alert-title';[K
-[7m [27m[28X[91m[28C~~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/alert/index.ts[m:[93m8[m:[93m34 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './alert-description' or its corresponding type declarations.
-
-[7m8[27m export { AlertDescription } from './alert-description';[K
-[7m [27m[34X[91m[34C~~~~~~~~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/badge/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './badge' or its corresponding type declarations.
-
-[7m5[27m export { Badge } from './badge'[K
-[7m [27m[23X[91m[23C~~~~~~~~~[K[m
-
-[96msrc/components/molecules/breadcrumbs/index.ts[m:[93m6[m:[93m45 [m- [91merror [90mTS2307: [mCannot find
-[10;78Hd module './breadcrumbs' or its corresponding type declarations.
-
-[7m6[27m export { Breadcrumbs, BreadcrumbItem } from './breadcrumbs';[K
-[7m [27m[45X[91m[45C~~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/button/index.ts[m:[93m6[m:[93m24 [m- [91merror [90mTS2307: [mCannot find modu
-[10;78Hule './button' or its corresponding type declarations.
-
-[7m6[27m export { Button } from './button'[K
-[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/dropdown/index.ts[m:[93m5[m:[93m40 [m- [91merror [90mTS2307: [mCannot find mo
-[10;78Hodule './dropdown' or its corresponding type declarations.
-
-[7m5[27m export { Dropdown, DropdownItem } from './dropdown';[K
-[7m [27m[40X[91m[40C~~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/label/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './label' or its corresponding type declarations.
-
-[7m5[27m export { Label } from './label'[K
-[7m [27m[23X[91m[23C~~~~~~~~~[K[m
-
-[96msrc/components/molecules/list/index.ts[m:[93m5[m:[93m22 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './list' or its corresponding type declarations.
-
-[7m5[27m export { List } from './list';[K
-[7m [27m[22X[91m[22C~~~~~~~~[K[m
-
-[96msrc/components/molecules/list/index.ts[m:[93m6[m:[93m26 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './list-item' or its corresponding type declarations.
-
-[7m6[27m export { ListItem } from './list-item';[K
-[7m [27m[26X[91m[26C~~~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/menu/index.ts[m:[93m5[m:[93m22 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './menu' or its corresponding type declarations.
-
-[7m5[27m export { Menu } from './menu';[K
-[7m [27m[22X[91m[22C~~~~~~~~[K[m
-
-[96msrc/components/molecules/menu/index.ts[m:[93m6[m:[93m26 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './menu-item' or its corresponding type declarations.
-
-[7m6[27m export { MenuItem } from './menu-item';[K
-[7m [27m[26X[91m[26C~~~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/menu/index.ts[m:[93m7[m:[93m29 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './menu-divider' or its corresponding type declarations.
-
-[7m7[27m export { MenuDivider } from './menu-divider';[K
-[7m [27m[29X[91m[29C~~~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/option/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS2307: [mCannot find modu
-[10;78Hule './option' or its corresponding type declarations.
-
-[7m5[27m export { Option } from './option'[K
-[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/pagination/index.ts[m:[93m6[m:[93m28 [m- [91merror [90mTS2307: [mCannot find 
-[10;78H module './pagination' or its corresponding type declarations.
-
-[7m6[27m export { Pagination } from './pagination';[K
-[7m [27m[28X[91m[28C~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/popover/index.ts[m:[93m5[m:[93m25 [m- [91merror [90mTS2307: [mCannot find mod
-[10;78Hdule './popover' or its corresponding type declarations.
-
-[7m5[27m export { Popover } from './popover';[K
-[7m [27m[25X[91m[25C~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/radio-group/index.ts[m:[93m5[m:[93m28 [m- [91merror [90mTS2307: [mCannot find
-[10;78Hd module './radio-group' or its corresponding type declarations.
-
-[7m5[27m export { RadioGroup } from './radio-group'[K
-[7m [27m[28X[91m[28C~~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/tabs/index.ts[m:[93m5[m:[93m22 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './tabs' or its corresponding type declarations.
-
-[7m5[27m export { Tabs } from './tabs';[K
-[7m [27m[22X[91m[22C~~~~~~~~[K[m
-
-[96msrc/components/molecules/tabs/index.ts[m:[93m6[m:[93m25 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './tab-list' or its corresponding type declarations.
-
-[7m6[27m export { TabList } from './tab-list';[K
-[7m [27m[25X[91m[25C~~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/tabs/index.ts[m:[93m7[m:[93m21 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './tab' or its corresponding type declarations.
-
-[7m7[27m export { Tab } from './tab';[K
-[7m [27m[21X[91m[21C~~~~~~~[K[m
-
-[96msrc/components/molecules/tabs/index.ts[m:[93m8[m:[93m27 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './tab-panels' or its corresponding type declarations.
-
-[7m8[27m export { TabPanels } from './tab-panels';[K
-[7m [27m[27X[91m[27C~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/molecules/tabs/index.ts[m:[93m9[m:[93m26 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './tab-panel' or its corresponding type declarations.
-
-[7m9[27m export { TabPanel } from './tab-panel';[K
-[7m [27m[26X[91m[26C~~~~~~~~~~~~~[K[m
-
-[96msrc/components/organisms/card/index.ts[m:[93m5[m:[93m22 [m- [91merror [90mTS2307: [mCannot find module
-[10;78He './card' or its corresponding type declarations.
-
-[7m5[27m export { Card } from './card'[K
-[7m [27m[22X[91m[22C~~~~~~~~[K[m
-
-[96msrc/components/organisms/drawer/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS2307: [mCannot find modu
-[10;78Hule './drawer' or its corresponding type declarations.
-
-[7m5[27m export { Drawer } from './drawer';[K
-[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
-
-[96msrc/components/organisms/footer/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS2307: [mCannot find modu
-[10;78Hule './footer' or its corresponding type declarations.
-
-[7m5[27m export { Footer } from './footer'[K
-[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
-
-[96msrc/components/organisms/header/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS2307: [mCannot find modu
-[10;78Hule './header' or its corresponding type declarations.
-
-[7m5[27m export { Header } from './header'[K
-[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
-
-[96msrc/components/organisms/modal/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './modal' or its corresponding type declarations.
-
-[7m5[27m export { Modal } from './modal';[K
-[7m [27m[23X[91m[23C~~~~~~~~~[K[m
-
-[96msrc/components/organisms/modal/index.ts[m:[93m6[m:[93m29 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './modal-header' or its corresponding type declarations.
-
-[7m6[27m export { ModalHeader } from './modal-header';[K
-[7m [27m[29X[91m[29C~~~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/organisms/modal/index.ts[m:[93m7[m:[93m27 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './modal-body' or its corresponding type declarations.
-
-[7m7[27m export { ModalBody } from './modal-body';[K
-[7m [27m[27X[91m[27C~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/organisms/modal/index.ts[m:[93m8[m:[93m29 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './modal-footer' or its corresponding type declarations.
-
-[7m8[27m export { ModalFooter } from './modal-footer';[K
-[7m [27m[29X[91m[29C~~~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/organisms/select/index.ts[m:[93m5[m:[93m24 [m- [91merror [90mTS2307: [mCannot find modu
-[10;78Hule './select' or its corresponding type declarations.
-
-[7m5[27m export { Select } from './select'[K
-[7m [27m[24X[91m[24C~~~~~~~~~~[K[m
-
-[96msrc/components/organisms/table/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './table' or its corresponding type declarations.
-
-[7m5[27m export { Table } from './table';[K
-[7m [27m[23X[91m[23C~~~~~~~~~[K[m
-
-[96msrc/components/organisms/table/index.ts[m:[93m6[m:[93m29 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './table-header' or its corresponding type declarations.
-
-[7m6[27m export { TableHeader } from './table-header';[K
-[7m [27m[29X[91m[29C~~~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/organisms/table/index.ts[m:[93m7[m:[93m27 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './table-body' or its corresponding type declarations.
-
-[7m7[27m export { TableBody } from './table-body';[K
-[7m [27m[27X[91m[27C~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/organisms/table/index.ts[m:[93m8[m:[93m26 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './table-row' or its corresponding type declarations.
-
-[7m8[27m export { TableRow } from './table-row';[K
-[7m [27m[26X[91m[26C~~~~~~~~~~~~~[K[m
-
-[96msrc/components/organisms/table/index.ts[m:[93m9[m:[93m27 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './table-cell' or its corresponding type declarations.
-
-[7m9[27m export { TableCell } from './table-cell';[K
-[7m [27m[27X[91m[27C~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/organisms/toast/index.ts[m:[93m5[m:[93m23 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './toast' or its corresponding type declarations.
-
-[7m5[27m export { Toast } from './toast';[K
-[7m [27m[23X[91m[23C~~~~~~~~~[K[m
-
-[96msrc/components/organisms/toast/index.ts[m:[93m6[m:[93m44 [m- [91merror [90mTS2307: [mCannot find modul
-[10;78Hle './toast-container' or its corresponding type declarations.
-
-[7m6[27m export { ToastContainer, toastQueue } from './toast-container';[K
-[7m [27m[44X[91m[44C~~~~~~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/organisms/toast/use-toast.ts[m:[93m6[m:[93m28 [m- [91merror [90mTS2307: [mCannot find m
-[10;78Hmodule './toast-container' or its corresponding type declarations.
-
-[7m6[27m import { toastQueue } from './toast-container';[K
-[7m [27m[28X[91m[28C~~~~~~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/utils/component-config-builder/component-config-builder.ts[m:[93m6[m:[93m32[m
-[93m[10;78H2[m - [91merror [90mTS2307: [mCannot find module '@pulsar-framework/design-tokens' or its c
-[10;78Hcorresponding type declarations.
-
-[7m6[27m import { ComponentColor } from '@pulsar-framework/design-tokens'[K
-[7m [27m[32X[91m[32C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
-
-[96msrc/components/utils/component-config-builder/component-config-builder.type.ts[m
-[96m[10;78Hs[m:[93m5[m:[93m158 [m- [91merror [90mTS2307: [mCannot find module '@pulsar-framework/design-tokens' or
-[10;78Hr its corresponding type declarations.
-
-[7m5[27m import { type ComponentColor, type ComponentRoundedSize, type ComponentShado
-[10;78HowSize, type ComponentSize, type ComponentVariant, type TransitionDuration } fr
-[10;78Hrom '@pulsar-framework/design-tokens'
-[7m [27m                                                                             [11;156H
-[91m                                                                              [11;157H[m
-[91m   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m
-
-[96msrc/components/utils/component-config-builder/component-config.type.ts[m:[93m5[m:[93m158 [m-
-[10;78H- [91merror [90mTS2307: [mCannot find module '@pulsar-framework/design-tokens' or its cor
-[10;78Hrresponding type declarations.
-
-[7m5[27m import { type ComponentColor, type ComponentRoundedSize, type ComponentShado
-[10;78HowSize, type ComponentSize, type ComponentVariant, type TransitionDuration } fr
-[10;78Hrom '@pulsar-framework/design-tokens'
-[7m [27m                                                                             [11;156H
-[91m                                                                              [11;157H[m
-[91m   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m
-
-[96msrc/components/utils/component-config-builder/prototype/color.ts[m:[93m5[m:[93m37 [m- [91merror [m
-[90m[10;78H TS2307: [mCannot find module '@pulsar-framework/design-tokens' or its correspond
-[10;78Hding type declarations.
-
-[7m5[27m import { type ComponentColor } from '@pulsar-framework/design-tokens'       [11;1H
-[7m [27m[37X[91m[37C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       [11;1H[m
-
-[96msrc/components/utils/component-config-builder/prototype/rounded.ts[m:[93m5[m:[93m43 [m- [91merro[m
-[91m[10;78Hor [90mTS2307: [mCannot find module '@pulsar-framework/design-tokens' or its correspo
-[10;78Honding type declarations.
-
-[7m5[27m import { type ComponentRoundedSize } from '@pulsar-framework/design-tokens' [11;1H
-[7m [27m[43X[91m[43C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [11;1H[m
-
-[96msrc/components/utils/component-config-builder/prototype/shadow.ts[m:[93m5[m:[93m42 [m- [91merror[m
-[91m[10;78Hr[90m TS2307: [mCannot find module '@pulsar-framework/design-tokens' or its correspon
-[10;78Hnding type declarations.
-
-[7m5[27m import { type ComponentShadowSize } from '@pulsar-framework/design-tokens'  [11;1H
-[7m [27m[42X[91m[42C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  [11;1H[m
-
-[96msrc/components/utils/component-config-builder/prototype/size.ts[m:[93m5[m:[93m36 [m- [91merror [90mT[m
-[90m[10;78HTS2307: [mCannot find module '@pulsar-framework/design-tokens' or its correspondi
-[10;78Hing type declarations.
-
-[7m5[27m import { type ComponentSize } from '@pulsar-framework/design-tokens'        [11;1H
-[7m [27m[36X[91m[36C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~        [11;1H[m
-
-[96msrc/components/utils/component-config-builder/prototype/transition-duration.ts[m
-[96m[10;78Hs[m:[93m5[m:[93m41 [m- [91merror [90mTS2307: [mCannot find module '@pulsar-framework/design-tokens' or 
-[10;78H its corresponding type declarations.
-
-[7m5[27m import { type TransitionDuration } from '@pulsar-framework/design-tokens'   [11;1H
-[7m [27m[41X[91m[41C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   [11;1H[m
-
-[96msrc/components/utils/component-config-builder/prototype/variant.ts[m:[93m5[m:[93m39 [m- [91merro[m
-[91m[10;78Hor [90mTS2307: [mCannot find module '@pulsar-framework/design-tokens' or its correspo
-[10;78Honding type declarations.
-
-[7m5[27m import { type ComponentVariant } from '@pulsar-framework/design-tokens'     [11;1H
-[7m [27m[39X[91m[39C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     [11;1H[m
-
-[96msrc/index.ts[m:[93m8[m:[93m15 [m- [91merror [90mTS2307: [mCannot find module '@pulsar-framework/design
-[10;78Hn-tokens' or its corresponding type declarations.
-
-[7m8[27m export * from '@pulsar-framework/design-tokens';[K
-[7m [27m[15X[91m[15C~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[K[m
-
-
-Found 74 errors in 55 files.
-
-Errors  Files
-     1  src/components/atoms/avatar/index.ts[90m:6[K[m
-     1  src/components/atoms/checkbox/index.ts[90m:5[K[m
-     1  src/components/atoms/container/index.ts[90m:6[K[m
-     1  src/components/atoms/divider/index.ts[90m:6[K[m
-     1  src/components/atoms/grid/index.ts[90m:6[K[m
-     1  src/components/atoms/input/index.ts[90m:5[K[m
-     1  src/components/atoms/progress/index.ts[90m:6[K[m
-     1  src/components/atoms/radio/index.ts[90m:5[K[m
-     1  src/components/atoms/rating/index.ts[90m:5[K[m
-     1  src/components/atoms/skeleton/index.ts[90m:5[K[m
-     1  src/components/atoms/slider/index.ts[90m:5[K[m
-     1  src/components/atoms/spinner/index.ts[90m:5[K[m
-     1  src/components/atoms/spinner/spinner.type.ts[90m:5[K[m
-     1  src/components/atoms/stack/index.ts[90m:6[K[m
-     1  src/components/atoms/textarea/index.ts[90m:5[K[m
-     1  src/components/atoms/toggle/index.ts[90m:5[K[m
-     1  src/components/atoms/tooltip/index.ts[90m:5[K[m
-     1  src/components/atoms/typography/index.ts[90m:5[K[m
-     1  src/components/interfaces/component-config.interface.ts[90m:6[K[m
-     1  src/components/interfaces/component-config.ts[90m:9[K[m
-     1  src/components/interfaces/prototype/size.ts[90m:5[K[m
-     1  src/components/interfaces/prototype/variant.ts[90m:5[K[m
-     2  src/components/molecules/accordion/index.ts[90m:5[K[m
-     4  src/components/molecules/alert/index.ts[90m:5[K[m
-     1  src/components/molecules/badge/index.ts[90m:5[K[m
-     1  src/components/molecules/breadcrumbs/index.ts[90m:6[K[m
-     1  src/components/molecules/button/index.ts[90m:6[K[m
-     1  src/components/molecules/dropdown/index.ts[90m:5[K[m
-     1  src/components/molecules/label/index.ts[90m:5[K[m
-     2  src/components/molecules/list/index.ts[90m:5[K[m
-     3  src/components/molecules/menu/index.ts[90m:5[K[m
-     1  src/components/molecules/option/index.ts[90m:5[K[m
-     1  src/components/molecules/pagination/index.ts[90m:6[K[m
-     1  src/components/molecules/popover/index.ts[90m:5[K[m
-     1  src/components/molecules/radio-group/index.ts[90m:5[K[m
-     5  src/components/molecules/tabs/index.ts[90m:5[K[m
-     1  src/components/organisms/card/index.ts[90m:5[K[m
-     1  src/components/organisms/drawer/index.ts[90m:5[K[m
-     1  src/components/organisms/footer/index.ts[90m:5[K[m
-     1  src/components/organisms/header/index.ts[90m:5[K[m
-     4  src/components/organisms/modal/index.ts[90m:5[K[m
-     1  src/components/organisms/select/index.ts[90m:5[K[m
-     5  src/components/organisms/table/index.ts[90m:5[K[m
-     2  src/components/organisms/toast/index.ts[90m:5[K[m
-     1  src/components/organisms/toast/use-toast.ts[90m:6[K[m
-     1  src/components/utils/component-config-builder/component-config-builder
-[10;78Hr.ts[90m:6[K[m
-     1  src/components/utils/component-config-builder/component-config-builder
-[10;78Hr.type.ts[90m:5[K[m
-     1  src/components/utils/component-config-builder/component-config.type.ts
-[10;78Hs[90m:5[m
-     1  src/components/utils/component-config-builder/prototype/color.ts[90m:5    [11;1H[m
-     1  src/components/utils/component-config-builder/prototype/rounded.ts[90m:5  [11;1H[m
-     1  src/components/utils/component-config-builder/prototype/shadow.ts[90m:5   [11;1H[m
-     1  src/components/utils/component-config-builder/prototype/size.ts[90m:5     [11;1H[m
-     1  src/components/utils/component-config-builder/prototype/transition-dur
-[10;78Hration.ts[90m:5[K[m
-     1  src/components/utils/component-config-builder/prototype/variant.ts[90m:5  [11;1H[m
-     1  src/index.ts[90m:8[K[m
-[30m[41m ELIFECYCLE [m [31mCommand failed with exit code 2.[m
-[?9001l[?1004l
+'Skipping TypeScript build - using source files directly with Vite runtime compilation'

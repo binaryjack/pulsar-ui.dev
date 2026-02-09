@@ -3,5 +3,5 @@
  * Exports the Grid component
  */
 
-export { Grid } from './grid';
+export { Grid } from './';
 export type { IGridProps } from './grid.type';

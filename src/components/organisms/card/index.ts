@@ -2,6 +2,6 @@
  * Card component exports
  */
 
-export { Card } from './card'
+export { Card } from './'
 export type { ICardProps } from './card.type'
 

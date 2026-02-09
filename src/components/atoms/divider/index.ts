@@ -3,5 +3,5 @@
  * Exports the Divider component
  */
 
-export { Divider } from './divider';
+export { Divider } from './';
 export type { IDividerProps } from './divider.type';

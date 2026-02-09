@@ -2,5 +2,5 @@
  * Component utilities exports
  */
 
-export * from './component-config-builder'
-export * from './component-styling-builder'
+export * from './'
+export * from './'

@@ -2,10 +2,10 @@
  * Modal component - Index
  */
 
-export { Modal } from './modal';
-export { ModalHeader } from './modal-header';
-export { ModalBody } from './modal-body';
-export { ModalFooter } from './modal-footer';
+export { Modal } from './';
+export { ModalHeader } from './';
+export { ModalBody } from './';
+export { ModalFooter } from './';
 export type { IModalProps } from './modal.type';
 export type { IModalHeaderProps } from './modal-header.type';
 export type { IModalBodyProps } from './modal-body.type';

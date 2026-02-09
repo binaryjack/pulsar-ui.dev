@@ -2,6 +2,6 @@
  * Typography component exports
  */
 
-export { Typography } from './typography'
+export { Typography } from './'
 export type { ITypographyProps } from './typography.type'
 

@@ -2,5 +2,5 @@
  * Input component exports
  */
 
-export { Input } from './input'
+export { Input } from './'
 export type { IInputProps } from './input.type'

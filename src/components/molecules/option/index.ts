@@ -2,6 +2,6 @@
  * Option component exports
  */
 
-export { Option } from './option'
+export { Option } from './'
 export type { IOptionProps } from './option.type'
 

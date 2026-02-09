@@ -4,10 +4,10 @@
  */
 
 // Main Components
-export { default as Step } from './Step'
-export { default as Stepper, useStepperContext } from './Stepper'
-export type { StepperContext, StepperProps } from './Stepper'
-export { default as StepperSummary } from './StepperSummary'
+export { default as Step } from './'
+export { default as Stepper, useStepperContext } from './'
+export type { StepperContext, StepperProps } from './'
+export { default as StepperSummary } from './'
 
 // Core Types & Interfaces
 export type {

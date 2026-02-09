@@ -2,5 +2,5 @@
  * Skeleton component exports
  */
 
-export { Skeleton } from './skeleton'
+export { Skeleton } from './'
 export type { ISkeletonProps } from './skeleton.type'

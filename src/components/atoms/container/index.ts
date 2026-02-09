@@ -3,5 +3,5 @@
  * Exports the Container component
  */
 
-export { Container } from './container';
+export { Container } from './';
 export type { IContainerProps } from './container.type';

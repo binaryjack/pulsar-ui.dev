@@ -3,5 +3,5 @@
  * Exports the Progress component
  */
 
-export { Progress } from './progress';
+export { Progress } from './';
 export type { IProgressProps } from './progress.type';

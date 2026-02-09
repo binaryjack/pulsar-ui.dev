@@ -2,6 +2,6 @@
  * Toggle component exports
  */
 
-export { Toggle } from './toggle'
+export { Toggle } from './'
 export type { IToggleProps } from './toggle.type'
 

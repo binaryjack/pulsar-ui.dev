@@ -9,13 +9,19 @@
     "skipLibCheck": true
   },
   "files": ["../pulsar.dev/src/types/jsx.d.ts"],
-  "include": ["src/index.ts", "src/components/**/*.ts", "src/components/**/*.tsx"],
+  "include": [
+    "src/index.ts",
+    "src/components/**/index.ts",
+    "src/components/**/*.type.ts",
+    "src/types/**/*.d.ts"
+  ],
   "exclude": [
     "node_modules",
     "dist",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.stories.tsx",
+    "src/**/*.psr",
     "src/showcase/**",
     "src/showcase-demos/**",
     "src/test-*.tsx",

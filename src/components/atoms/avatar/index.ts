@@ -3,5 +3,5 @@
  * Exports the Avatar component
  */
 
-export { Avatar } from './avatar';
+export { Avatar } from './';
 export type { IAvatarProps } from './avatar.type';

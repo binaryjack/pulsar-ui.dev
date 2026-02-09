@@ -2,5 +2,5 @@
  * Popover component - Index
  */
 
-export { Popover } from './popover';
+export { Popover } from './';
 export type { IPopoverProps } from './popover.type';

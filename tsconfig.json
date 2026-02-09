@@ -17,16 +17,19 @@
     "strict": true,
     "skipLibCheck": true,
     "paths": {
+      "@pulsar-framework/design-tokens": ["../pulsar-design-system/dist/src/index.d.ts"],
+      "@pulsar-framework/design-tokens/*": ["../pulsar-design-system/dist/src/*"],
       "@pulsar-framework/pulsar.dev": ["../pulsar.dev/dist/index.d.ts"],
       "@pulsar-framework/pulsar.dev/*": ["../pulsar.dev/dist/*"],
       "@pulsar-framework/formular.dev": ["../formular.dev/dist/index.d.ts"],
       "@pulsar-framework/formular.dev/*": ["../formular.dev/dist/*"]
     }
   },
-  "files": ["../pulsar.dev/src/types/jsx.d.ts", "src/css.d.ts"],
+  "files": ["../pulsar.dev/src/types/jsx.d.ts", "src/css.d.ts", "src/types/psr-modules.d.ts"],
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
+    "src/**/*.psr",
     "src/**/*.type.ts",
     "src/**/*.interface.ts",
     "src/**/*.enum.ts",
