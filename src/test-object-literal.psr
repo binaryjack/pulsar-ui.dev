@@ -1,0 +1,19 @@
+/**
+ * Minimal test case for object literal parsing bug
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+export component MinimalObjectTest() {
+  const [active, setActive] = createSignal(true);
+  
+  return (
+    <div>
+      {/* Test 1: Simple object literal - should work */}
+      <button style={{ padding: '10px' }}>Test 1</button>
+      
+      {/* Test 2: Object with ternary - may hang */}
+      <button style={{ background: active() ? 'red' : 'blue' }}>Test 2</button>
+    </div>
+  );
+}

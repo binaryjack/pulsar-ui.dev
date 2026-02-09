@@ -1,0 +1,138 @@
+/**
+ * Template Literal Demo - PSR Syntax Test
+ * 
+ * Demonstrates the fix for template literals in JSX attributes.
+ * Tests various scenarios to ensure proper ${} handling in JSX contexts.
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+export interface ITemplateDemo {
+  id?: string;
+}
+
+export component TemplateLiteralDemo() {
+  const [theme, setTheme] = createSignal<'light' | 'dark'>('light');
+  const [size, setSize] = createSignal<number>(16);
+  const [isActive, setIsActive] = createSignal<boolean>(true);
+  
+  const toggleTheme = () => {
+    setTheme(theme() === 'light' ? 'dark' : 'light');
+  };
+  
+  const increaseSize = () => {
+    setSize(size() + 2);
+  };
+  
+  const toggleActive = () => {
+    setIsActive(!isActive());
+  };
+  
+  // Template literal styles - WORKS NOW! ✅
+  const containerStyle = `
+    min-height: 100vh;
+    background: ${theme() === 'light' ? '#ffffff' : '#0a0a0a'};
+    color: ${theme() === 'light' ? '#000000' : '#ffffff'};
+    padding: 20px;
+    font-family: system-ui;
+  `;
+  
+  return (
+    <div style={containerStyle}>
+      <h1 style={`font-size: ${size() + 8}px; margin-bottom: 20px;`}>
+        Template Literals in JSX ✨
+      </h1>
+      
+      {/* Simple template literal in attribute */}
+      <div class={`container theme-${theme()}`}>
+        
+        {/* Template literal with ternary in attribute */}
+        <button
+          onClick={toggleTheme}
+          style={`
+            padding: ${size() - 4}px ${size()}px;
+            font-size: ${size()}px;
+            background: ${theme() === 'light' ? '#3b82f6' : '#1e40af'};
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 10px;
+          `}>
+          {theme() === 'light' ? '🌙 Dark' : '☀️ Light'}
+        </button>
+        
+        {/* Template literal with function call in expression */}
+        <button
+          onClick={increaseSize}
+          style={`
+            padding: ${size() - 4}px ${size()}px;
+            font-size: ${size()}px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 10px;
+          `}>
+          📏 Size +
+        </button>
+        
+        {/* Template literal with signal binding */}
+        <button
+          onClick={toggleActive}
+          class={`btn ${isActive() ? 'active' : 'inactive'}`}
+          style={`
+            padding: ${size() - 4}px ${size()}px;
+            font-size: ${size()}px;
+            background: ${isActive() ? '#ef4444' : '#6b7280'};
+            color: white;
+            border: ${isActive() ? '2px solid #dc2626' : '2px solid #4b5563'};
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: ${isActive() ? 'bold' : 'normal'};
+          `}>
+          {isActive() ? '✓ Active' : '✗ Inactive'}
+        </button>
+      </div>
+      
+      {/* Display current state */}
+      <div style={`margin-top: ${size() + 4}px; padding: ${size()}px; background: ${theme() === 'light' ? '#f3f4f6' : '#1f2937'}; border-radius: 8px;`}>
+        <h2 style={`font-size: ${size() + 2}px; margin-bottom: ${size() - 4}px;`}>
+          Current State
+        </h2>
+        <ul style={`font-size: ${size()}px; line-height: ${size() + 8}px;`}>
+          <li>Theme: <strong style={`color: ${theme() === 'light' ? '#3b82f6' : '#60a5fa'}`}>{theme()}</strong></li>
+          <li>Size: <strong style={`color: ${theme() === 'light' ? '#10b981' : '#34d399'}`}>{size()}px</strong></li>
+          <li>Active: <strong style={`color: ${isActive() ? '#ef4444' : '#6b7280'}`}>{isActive() ? 'Yes' : 'No'}</strong></li>
+        </ul>
+      </div>
+      
+      {/* Nested template literals */}
+      <div 
+        data-theme={theme()}
+        data-text={`Outer: ${`Inner: ${size()}px`}`}
+        style={`
+          margin-top: ${size()}px;
+          padding: ${size()}px;
+          background: linear-gradient(135deg, ${theme() === 'light' ? '#e0e7ff' : '#312e81'}, ${theme() === 'light' ? '#dbeafe' : '#1e3a8a'});
+          border-radius: 8px;
+          border: 2px solid ${theme() === 'light' ? '#93c5fd' : '#3b82f6'};
+        `}>
+        <p style={`font-size: ${size()}px; color: ${theme() === 'light' ? '#1e40af' : '#93c5fd'};`}>
+          This demonstrates nested template literals and complex expressions! 🎉
+        </p>
+      </div>
+      
+      {/* Test ${ vs $( distinction */}
+      <div style={`margin-top: ${size()}px;`}>
+        <p style={`font-size: ${size() - 2}px;`}>
+          Template expressions use <code style={`background: ${theme() === 'light' ? '#e5e7eb' : '#374151'}; padding: 2px 6px; border-radius: 3px;`}>{'${ }'}</code> syntax.
+        </p>
+        <p style={`font-size: ${size() - 2}px;`}>
+          Signal bindings use <code style={`background: ${theme() === 'light' ? '#e5e7eb' : '#374151'}; padding: 2px 6px; border-radius: 3px;`}>$( )</code> syntax.
+        </p>
+      </div>
+    </div>
+  );
+}

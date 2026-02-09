@@ -1,85 +1,77 @@
 /**
  * Pulsar UI Showcase - Main Application Entry Point (PSR)
- * Incremental Feature Testing
+ * Navigation System Test
  */
 
-import { createSignal, createEffect } from '@pulsar-framework/pulsar.dev';
+import { createSignal, useNavigate, Router, Route } from '@pulsar-framework/pulsar.dev';
+import { HomePage } from './showcase/pages/home.psr';
+import { AboutPage } from './showcase/pages/about.psr';
 
 export interface IAppProps {
   id?: string;
 }
 
 export component App() {
-  console.log('[App] Initializing with id:');
+  const navigate = useNavigate();
+  const [currentPath, setCurrentPath] = createSignal(window.location.pathname);
   
-  // Test 1: Basic Signal
-  const [count, setCount] = createSignal(0);
-  
-  const increment = () => {
-    console.log('[Click] Increment, before:', count());
-    setCount(count() + 1);
-    console.log('[Click] After:', count());
+  const goHome = () => {
+    navigate('/');
+    setCurrentPath('/');
   };
   
-  const decrement = () => {
-    console.log('[Click] Decrement, before:', count());
-    setCount(count() - 1);
-  };
-  
-  const reset = () => {
-    console.log('[Click] Reset');
-    setCount(0);
+  const goAbout = () => {
+    navigate('/about');
+    setCurrentPath('/about');
   };
   
   return (
-    <div style="padding: 40px; background: #0a0a0a; min-height: 100vh; color: white; font-family: system-ui;">
-      <h1 style="font-size: 36px; margin-bottom: 20px;">🔥 Pulsar Framework - Feature Test</h1>
-      <p style="color: #9ca3af; margin-bottom: 40px;">App ID: </p>
-      
-      <div style="background: #1a1a1a; padding: 30px; border-radius: 12px; margin-bottom: 20px;">
-        <h2 style="font-size: 24px; margin-bottom: 20px;">Test 1: Basic Signal Reactivity</h2>
-        
-        <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 20px;">
+    <div style="min-height: 100vh; background: #0a0a0a; color: white; font-family: system-ui;">
+      {/* Navigation Bar */}
+      <nav style="background: #1a1a1a; padding: 20px; border-bottom: 2px solid #3b82f6; margin-bottom: 20px;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; gap: 20px; align-items: center;">
+          <h1 style="font-size: 24px; margin: 0; color: #3b82f6; flex: 1;">🔥 Pulsar Framework</h1>
+          
           <button 
-            onClick={increment}
-            style="padding: 16px 32px; font-size: 20px; background: #3b82f6; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold;">
-            Increment
+            onClick={goHome}
+            style={{
+              padding: '12px 24px',
+              fontSize: '16px',
+              background: currentPath() === '/' ? '#3b82f6' : '#2a2a2a',
+              border: '2px solid #3b82f6',
+              color: 'white',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontWeight: currentPath() === '/' ? 'bold' : 'normal',
+              transition: 'all 0.2s'
+            }}>
+            🏠 Home
           </button>
           
           <button 
-            onClick={decrement}
-            style="padding: 16px 32px; font-size: 20px; background: #ef4444; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold;">
-            Decrement
-          </button>
-          
-          <button 
-            onClick={reset}
-            style="padding: 16px 32px; font-size: 20px; background: #6b7280; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold;">
-            Reset
+            onClick={goAbout}
+            style={{
+              padding: '12px 24px',
+              fontSize: '16px',
+              background: currentPath() === '/about' ? '#3b82f6' : '#2a2a2a',
+              border: '2px solid #3b82f6',
+              color: 'white',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontWeight: currentPath() === '/about' ? 'bold' : 'normal',
+              transition: 'all 0.2s'
+            }}>
+            ℹ️ About
           </button>
         </div>
-        
-        <div style="font-size: 48px; font-weight: bold; color: #10b981; margin-top: 20px;">
-          Count: {count()}
-        </div>
-      </div>
+      </nav>
       
-      <div style="padding: 20px; background: #2a2a2a; border-radius: 8px;">
-        <h3 style="font-size: 18px; margin-bottom: 10px; color: #10b981;">✅ Features Working</h3>
-        <ul style="list-style: none; padding: 0;">
-          <li style="padding: 5px 0;">✓ Component rendering with props</li>
-          <li style="padding: 5px 0;">✓ createSignal() reactivity</li>
-          <li style="padding: 5px 0;">✓ Event handlers (onClick)</li>
-          <li style="padding: 5px 0;">✓ JSX interpolation syntax</li>
-          <li style="padding: 5px 0;">✓ Console logging</li>
-        </ul>
-      </div>
-      
-      <div style="margin-top: 40px; padding: 20px; background: #1e293b; border-left: 4px solid #3b82f6; border-radius: 4px;">
-        <p style="font-size: 14px; color: #9ca3af;">
-          💡 <strong>Next Tests:</strong> createEffect, createMemo, conditional rendering, list rendering, 
-          component composition, and form handling.
-        </p>
+      {/* Router with Routes */}
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+        <Router>
+          <Route path="/" component={HomePage} default={true} label="Home" />
+          <Route path="/about" component={AboutPage} label="About" />
+        </Router>
       </div>
     </div>
   );

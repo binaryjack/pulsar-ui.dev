@@ -1,0 +1,83 @@
+/**
+ * Pulsar UI Showcase - Counter Component
+ * Tests basic signal reactivity and event handling
+ */
+
+import { createSignal, createEffect } from '@pulsar-framework/pulsar.dev';
+
+export interface ICounterProps {
+  id?: string;
+}
+
+export component Counter({id}:ICounterProps) {
+  console.log('[Counter] Initializing with id:', id);
+  
+  // Test 1: Basic Signal
+  const [count, setCount] = createSignal(0);
+  
+  const increment = () => {
+    console.log('[Click] Increment, before:', count());
+    setCount(count() + 1);
+    console.log('[Click] After:', count());
+  };
+  
+  const decrement = () => {
+    console.log('[Click] Decrement, before:', count());
+    setCount(count() - 1);
+  };
+  
+  const reset = () => {
+    console.log('[Click] Reset');
+    setCount(0);
+  };
+  
+  return (
+    <div style="background: #1a1a1a; padding: 30px; border-radius: 12px; margin-bottom: 20px;">
+      <h2 style="font-size: 24px; margin-bottom: 20px; color: #f59e0b;">🧪 Test: Basic Signal Reactivity</h2>
+      
+      <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
+        <button 
+          onClick={increment}
+          style="padding: 16px 32px; font-size: 20px; background: #3b82f6; border: none; 
+                 color: white; border-radius: 8px; cursor: pointer; font-weight: bold;
+                 transition: background 0.2s;">
+          ➕ Increment
+        </button>
+        
+        <button 
+          onClick={decrement}
+          style="padding: 16px 32px; font-size: 20px; background: #ef4444; border: none; 
+                 color: white; border-radius: 8px; cursor: pointer; font-weight: bold;
+                 transition: background 0.2s;">
+          ➖ Decrement
+        </button>
+        
+        <button 
+          onClick={reset}
+          style="padding: 16px 32px; font-size: 20px; background: #6b7280; border: none; 
+                 color: white; border-radius: 8px; cursor: pointer; font-weight: bold;
+                 transition: background 0.2s;">
+          🔄 Reset
+        </button>
+      </div>
+      
+      <div style="font-size: 48px; font-weight: bold; color: #10b981; margin-top: 20px; 
+                  padding: 20px; background: #0a0a0a; border-radius: 8px; text-align: center;">
+        Count: {count()}
+      </div>
+      
+      <div style="margin-top: 30px; padding: 20px; background: #2a2a2a; border-radius: 8px;">
+        <h3 style="font-size: 18px; margin-bottom: 10px; color: #10b981;">
+          ✅ Features Being Tested
+        </h3>
+        <ul style="list-style: none; padding: 0; color: #d1d5db;">
+          <li style="padding: 5px 0;">✓ Component props (id: {id || 'none'})</li>
+          <li style="padding: 5px 0;">✓ createSignal() reactivity</li>
+          <li style="padding: 5px 0;">✓ Event handlers (onClick)</li>
+          <li style="padding: 5px 0;">✓ JSX expression interpolation {` {count()} `}</li>
+          <li style="padding: 5px 0;">✓ Console logging and debugging</li>
+        </ul>
+      </div>
+    </div>
+  );
+}
