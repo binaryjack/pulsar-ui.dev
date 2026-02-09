@@ -1,13 +1,13 @@
 /// <reference types="vite/client" />
 
 /**
- * Entry point - minimal Pulsar bootstrap
+ * Entry point - minimal Pulsarbootstrap
  */
 import { pulse } from '@pulsar-framework/pulsar.dev';
-import { DebugReactivity } from './main.psr';
+import { App } from './main.psr';
 
-// Mount app - HMR auto-injected by vite plugin
-pulse(DebugReactivity, {
+// Mount app - wrap component call in arrow function for reactivity
+pulse(App, {
   root: '#app',
   onMount: (element: HTMLElement) => {
     console.log('[App] Mounted!', element);

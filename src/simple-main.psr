@@ -1,7 +1,0 @@
-component Main {
-  <div id="app">
-    <SimplePSRTest />
-  </div>
-}
-
-export default Main

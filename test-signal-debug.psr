@@ -1,0 +1,9 @@
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+export component TestSignal() {
+  const [count, setCount] = createSignal(0);
+  
+  return (
+    <div>Count: {count()}</div>
+  );
+}
