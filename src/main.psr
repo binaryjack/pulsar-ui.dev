@@ -5,7 +5,7 @@
 
 import { createSignal, createEffect } from '@pulsar-framework/pulsar.dev';
 
-component DebugReactivity() {
+export component DebugReactivity() {
   console.log('[Debug] Component initializing...');
   
   const [count, setCount] = createSignal(0);

@@ -25,7 +25,12 @@
       "@pulsar-framework/formular.dev/*": ["../formular.dev/dist/*"]
     }
   },
-  "files": ["../pulsar.dev/src/types/jsx.d.ts", "src/css.d.ts", "src/types/psr-modules.d.ts"],
+  "files": [
+    "../pulsar.dev/src/types/jsx.d.ts",
+    "../pulsar.dev/src/types/psr-modules.d.ts",
+    "src/css.d.ts",
+    "src/types/psr-modules.d.ts"
+  ],
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",

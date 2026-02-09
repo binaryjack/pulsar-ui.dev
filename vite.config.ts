@@ -5,8 +5,9 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [
     pulsar({
-      debug: true, // FIX #2: Enable debug to see transformation issues
-      debugChannels: ['emitter', 'signal-binding', 'wire', 'reactivity'], // Full reactivity tracking
+      debug: true,
+      autoInjectHMR: true, // Auto-inject HMR for pulse() calls
+      debugChannels: ['emitter', 'signal-binding', 'wire', 'reactivity'],
       enableDependencyResolution: true,
     }),
   ],
