@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     pulsar({
       debug: true, // FIX #2: Enable debug to see transformation issues
-      debugChannels: ['emitter'], // Minimal logging
+      debugChannels: ['emitter', 'signal-binding', 'wire', 'reactivity'], // Full reactivity tracking
       enableDependencyResolution: true,
     }),
   ],

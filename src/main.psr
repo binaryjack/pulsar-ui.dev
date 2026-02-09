@@ -16,7 +16,7 @@ component DebugReactivity() {
   
   return (
     <div style="padding: 40px; background: #1a1a1a; min-height: 100vh; color: white; font-family: system-ui;">
-      <h1 style="font-size: 42px; margin-bottom: 30px;">🚀 Reactivity Debug Test</h1>
+      <h1 style="...">🔥 TEST HMR!</h1>
       <div style="display: flex; gap: 20px; align-items: center;">
         <button 
           onClick={() => { 
@@ -36,7 +36,7 @@ component DebugReactivity() {
           Decrement
         </button>
         <div style="font-size: 48px; font-weight: bold; color: #10b981; margin-left: 20px;">
-          Count: {count()}
+          Count: $(count)
         </div>
       </div>
       <div style="margin-top: 40px; padding: 20px; background: #2a2a2a; border-radius: 8px;">
