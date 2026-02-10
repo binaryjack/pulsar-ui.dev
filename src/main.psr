@@ -30,7 +30,7 @@ export component App() {
       {/* Navigation Bar */}
       <nav style="background: #1a1a1a; padding: 20px; border-bottom: 2px solid #3b82f6; margin-bottom: 20px;">
         <div style="max-width: 1200px; margin: 0 auto; display: flex; gap: 20px; align-items: center;">
-          <h1 style="font-size: 24px; margin: 0; color: #3b82f6; flex: 1;">🔥 Pulsar Framework</h1>
+          <h1 style="font-size: 24px; margin: 0; color: #3b82f6; flex: 1;">Pulsar Framework</h1>
           
           <button 
             onClick={goHome}
@@ -45,7 +45,7 @@ export component App() {
               fontWeight: currentPath() === '/' ? 'bold' : 'normal',
               transition: 'all 0.2s'
             }}>
-            🏠 Home
+            Home
           </button>
           
           <button 
@@ -61,7 +61,7 @@ export component App() {
               fontWeight: currentPath() === '/about' ? 'bold' : 'normal',
               transition: 'all 0.2s'
             }}>
-            ℹ️ About
+            About
           </button>
         </div>
       </nav>
