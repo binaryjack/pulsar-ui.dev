@@ -7,7 +7,20 @@ export default defineConfig({
     pulsar({
       debug: true,
       autoInjectHMR: true, // Auto-inject HMR for pulse() calls
-      debugChannels: ['emitter', 'signal-binding', 'wire', 'reactivity'],
+      debugChannels: [
+        'emitter',
+        'signal-binding',
+        'wire',
+        'reactivity',
+        'lexer',
+        'parser',
+        'analyzer',
+        'transform',
+        'validator',
+        'pipeline',
+        'effect',
+        'signal-creation',
+      ],
       enableDependencyResolution: true,
     }),
   ],

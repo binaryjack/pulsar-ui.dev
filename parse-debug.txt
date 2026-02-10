@@ -1,0 +1,10 @@
+
+[2026-02-09T21:07:05.795Z] [PARSER] parseImportDeclaration: After RBRACE consume (+7ms) { currentToken: 'FROM', tokenValue: 'from', position: 10 }
+[2026-02-09T21:07:05.795Z] [PARSER] parseImportDeclaration: EXITING named imports block (+7ms) { currentToken: 'FROM', tokenValue: 'from', position: 10 }
+[2026-02-09T21:07:05.795Z] [PARSER] parseImportDeclaration: About to check for 'from' keyword (+7ms) { currentToken: 'FROM', tokenValue: 'from', position: 10 }
+[2026-02-09T21:07:05.795Z] [PARSER] parseImportDeclaration: After RBRACE consume (+7ms) { currentToken: 'FROM', tokenValue: 'from', position: 17 }
+[2026-02-09T21:07:05.795Z] [PARSER] parseImportDeclaration: EXITING named imports block (+7ms) { currentToken: 'FROM', tokenValue: 'from', position: 17 }
+[2026-02-09T21:07:05.795Z] [PARSER] parseImportDeclaration: About to check for 'from' keyword (+7ms) { currentToken: 'FROM', tokenValue: 'from', position: 17 }
+[2026-02-09T21:07:05.796Z] [PARSER] parseImportDeclaration: After RBRACE consume (+8ms) { currentToken: 'FROM', tokenValue: 'from', position: 24 }
+[2026-02-09T21:07:05.796Z] [PARSER] parseImportDeclaration: EXITING named imports block (+8ms) { currentToken: 'FROM', tokenValue: 'from', position: 24 }
+[2026-02-09T21:07:05.796Z] [PARSER] parseImportDeclaration: About to check for 'from' keyword (+8ms) { currentToken: 'FROM', tokenValue: 'from', position: 24 }

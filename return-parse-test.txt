@@ -1,0 +1,139 @@
+
+> @pulsar-framework/ui@0.7.0-alpha dev
+> node --max-old-space-size=8192 ../../node_modules/vite/bin/vite.js
+
+
+  [32m[1mVITE[22m v6.4.1[39m  [2mready in [0m[1m176[22m[2m[0m ms[22m
+
+  [32mΓ₧£[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3000[22m/[39m
+[2m  [32mΓ₧£[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[2m[32m  Γ₧£[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+[pulsar] load() called for: main.psr (PSR - WILL TRANSFORM)
+[pulsar]   ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar]   Root: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev
+[pulsar]   Resolved: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr
+
+[pulsar] ========== TRANSFORMATION START: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr ==========
+[pulsar] File path: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr
+[pulsar] Input length: 2591 chars
+[pulsar] Preprocessing complete
+[pulsar] Preprocessed length: 2591 chars
+[pulsar] Creating transformation pipeline...
+[pulsar] Running transformation pipeline...
+[2026-02-10T00:09:04.817Z] [PIPELINE] Starting transformation (+0ms) {
+  sourceLength: 2591,
+  filePath: 'E:\\Sources\\visual-schema-builder\\packages\\pulsar-ui.dev\\src\\main.psr'
+}
+[2026-02-10T00:09:04.817Z] [LEXER] Tokenizing source (+0ms) 
+[2026-02-10T00:09:04.819Z] [LEXER] Generated 344 tokens (+2ms) { tokenCount: 344, duration: 1.9847000000002026 }
+[2026-02-10T00:09:04.819Z] [PARSER] Building AST (+2ms) 
+[2026-02-10T00:09:04.819Z] [PARSER] Starting parsing (+2ms) { sourceLength: 2591, maxIterations: 50000 }
+[2026-02-10T00:09:04.820Z] [PARSER] Tokenized 344 tokens (+3ms) { tokenCount: 344 }
+[2026-02-10T00:09:04.820Z] [PARSER] After tokenization, before parsing loop setup (+3ms) 
+[2026-02-10T00:09:04.820Z] [PARSER] After variable initialization (+3ms) 
+[2026-02-10T00:09:04.820Z] [PARSER] Before main parsing loop (+3ms) { isAtEnd: false, current: 0, tokenCount: 344, firstToken: 'IMPORT' }
+[2026-02-10T00:09:04.820Z] [PARSER] Main loop iteration 1 (+3ms) { position: '0/344', currentToken: 'IMPORT', statementsParsed: 0 }
+[2026-02-10T00:09:04.820Z] [PARSER] About to parse statement 0 (+3ms) { position: '0/344', nextToken: 'IMPORT', tokenValue: 'import' }
+[2026-02-10T00:09:04.820Z] [PARSER] Parsing IMPORT declaration (+3ms) { position: 0, token: 'import' }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: START (+4ms) { currentToken: 'IMPORT', position: 0 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: After advance (+4ms) { currentToken: 'LBRACE', position: 1 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: Loop 1, about to parse specifier (+4ms) { currentToken: 'IDENTIFIER', tokenValue: 'createSignal', position: 2 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: About to expect IDENTIFIER (+4ms) { currentToken: 'IDENTIFIER', position: 2 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: After adding specifier, checking for comma (+4ms) { currentToken: 'COMMA', tokenValue: ',', position: 3 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: Comma found, continuing loop (+4ms) { currentToken: 'IDENTIFIER', position: 4 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: Loop 2, about to parse specifier (+4ms) { currentToken: 'IDENTIFIER', tokenValue: 'useNavigate', position: 4 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: About to expect IDENTIFIER (+4ms) { currentToken: 'IDENTIFIER', position: 4 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: After adding specifier, checking for comma (+4ms) { currentToken: 'COMMA', tokenValue: ',', position: 5 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: Comma found, continuing loop (+4ms) { currentToken: 'IDENTIFIER', position: 6 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: Loop 3, about to parse specifier (+4ms) { currentToken: 'IDENTIFIER', tokenValue: 'Router', position: 6 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: About to expect IDENTIFIER (+4ms) { currentToken: 'IDENTIFIER', position: 6 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: After adding specifier, checking for comma (+4ms) { currentToken: 'COMMA', tokenValue: ',', position: 7 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: Comma found, continuing loop (+4ms) { currentToken: 'IDENTIFIER', position: 8 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: Loop 4, about to parse specifier (+4ms) { currentToken: 'IDENTIFIER', tokenValue: 'Route', position: 8 }
+[2026-02-10T00:09:04.821Z] [PARSER] parseImportDeclaration: About to expect IDENTIFIER (+4ms) { currentToken: 'IDENTIFIER', position: 8 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After adding specifier, checking for comma (+5ms) { currentToken: 'RBRACE', tokenValue: '}', position: 9 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: No comma found, breaking loop (+5ms) { currentToken: 'RBRACE', position: 9 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After loop, expecting RBRACE (+5ms) { currentToken: 'RBRACE', tokenValue: '}', position: 9 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After RBRACE consume (+5ms) { currentToken: 'FROM', tokenValue: 'from', position: 10 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: EXITING named imports block (+5ms) { currentToken: 'FROM', tokenValue: 'from', position: 10 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: About to check for 'from' keyword (+5ms) { currentToken: 'FROM', tokenValue: 'from', position: 10 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: RIGHT BEFORE try block (+5ms) 
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: Got fromToken, checking value (+5ms) { tokenType: 'FROM', tokenValue: 'from', condition: false }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: FROM check passed, about to consume (+5ms) { currentToken: 'FROM', position: 10 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After consuming FROM (+5ms) { currentToken: 'STRING', position: 11 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: About to call _expect('STRING') (+5ms) {
+  currentToken: 'STRING',
+  tokenValue: '@pulsar-framework/pulsar.dev',
+  position: 11
+}
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After _expect('STRING') (+5ms) { sourceTokenValue: '@pulsar-framework/pulsar.dev', position: 12 }
+[2026-02-10T00:09:04.822Z] [PARSER] Statement 1 added to AST (+5ms) { statementType: 'ImportDeclaration', position: '13/344' }
+[2026-02-10T00:09:04.822Z] [PARSER] Main loop iteration 2 (+5ms) { position: '13/344', currentToken: 'IMPORT', statementsParsed: 1 }
+[2026-02-10T00:09:04.822Z] [PARSER] Parsing IMPORT declaration (+5ms) { position: 13, token: 'import' }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: START (+5ms) { currentToken: 'IMPORT', position: 13 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After advance (+5ms) { currentToken: 'LBRACE', position: 14 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: Loop 1, about to parse specifier (+5ms) { currentToken: 'IDENTIFIER', tokenValue: 'HomePage', position: 15 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: About to expect IDENTIFIER (+5ms) { currentToken: 'IDENTIFIER', position: 15 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After adding specifier, checking for comma (+5ms) { currentToken: 'RBRACE', tokenValue: '}', position: 16 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: No comma found, breaking loop (+5ms) { currentToken: 'RBRACE', position: 16 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After loop, expecting RBRACE (+5ms) { currentToken: 'RBRACE', tokenValue: '}', position: 16 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After RBRACE consume (+5ms) { currentToken: 'FROM', tokenValue: 'from', position: 17 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: EXITING named imports block (+5ms) { currentToken: 'FROM', tokenValue: 'from', position: 17 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: About to check for 'from' keyword (+5ms) { currentToken: 'FROM', tokenValue: 'from', position: 17 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: RIGHT BEFORE try block (+5ms) 
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: Got fromToken, checking value (+5ms) { tokenType: 'FROM', tokenValue: 'from', condition: false }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: FROM check passed, about to consume (+5ms) { currentToken: 'FROM', position: 17 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After consuming FROM (+5ms) { currentToken: 'STRING', position: 18 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: About to call _expect('STRING') (+5ms) {
+  currentToken: 'STRING',
+  tokenValue: './showcase/pages/home.psr',
+  position: 18
+}
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After _expect('STRING') (+5ms) { sourceTokenValue: './showcase/pages/home.psr', position: 19 }
+[2026-02-10T00:09:04.822Z] [PARSER] Statement 2 added to AST (+5ms) { statementType: 'ImportDeclaration', position: '20/344' }
+[2026-02-10T00:09:04.822Z] [PARSER] Main loop iteration 3 (+5ms) { position: '20/344', currentToken: 'IMPORT', statementsParsed: 2 }
+[2026-02-10T00:09:04.822Z] [PARSER] Parsing IMPORT declaration (+5ms) { position: 20, token: 'import' }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: START (+5ms) { currentToken: 'IMPORT', position: 20 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After advance (+5ms) { currentToken: 'LBRACE', position: 21 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: Loop 1, about to parse specifier (+5ms) { currentToken: 'IDENTIFIER', tokenValue: 'AboutPage', position: 22 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: About to expect IDENTIFIER (+5ms) { currentToken: 'IDENTIFIER', position: 22 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After adding specifier, checking for comma (+5ms) { currentToken: 'RBRACE', tokenValue: '}', position: 23 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: No comma found, breaking loop (+5ms) { currentToken: 'RBRACE', position: 23 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After loop, expecting RBRACE (+5ms) { currentToken: 'RBRACE', tokenValue: '}', position: 23 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After RBRACE consume (+5ms) { currentToken: 'FROM', tokenValue: 'from', position: 24 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: EXITING named imports block (+5ms) { currentToken: 'FROM', tokenValue: 'from', position: 24 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: About to check for 'from' keyword (+5ms) { currentToken: 'FROM', tokenValue: 'from', position: 24 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: RIGHT BEFORE try block (+5ms) 
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: Got fromToken, checking value (+5ms) { tokenType: 'FROM', tokenValue: 'from', condition: false }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: FROM check passed, about to consume (+5ms) { currentToken: 'FROM', position: 24 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After consuming FROM (+5ms) { currentToken: 'STRING', position: 25 }
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: About to call _expect('STRING') (+5ms) {
+  currentToken: 'STRING',
+  tokenValue: './showcase/pages/about.psr',
+  position: 25
+}
+[2026-02-10T00:09:04.822Z] [PARSER] parseImportDeclaration: After _expect('STRING') (+5ms) { sourceTokenValue: './showcase/pages/about.psr', position: 26 }
+[2026-02-10T00:09:04.822Z] [PARSER] Statement 3 added to AST (+5ms) { statementType: 'ImportDeclaration', position: '27/344' }
+[2026-02-10T00:09:04.822Z] [PARSER] Main loop iteration 4 (+5ms) { position: '27/344', currentToken: 'EXPORT', statementsParsed: 3 }
+[2026-02-10T00:09:04.823Z] [PARSER] Statement 4 added to AST (+6ms) { statementType: 'ExportDeclaration', position: '28/344' }
+[2026-02-10T00:09:04.823Z] [PARSER] Main loop iteration 5 (+6ms) { position: '28/344', currentToken: 'INTERFACE', statementsParsed: 4 }
+[2026-02-10T00:09:04.823Z] [PARSER] Statement 5 added to AST (+6ms) { statementType: 'InterfaceDeclaration', position: '37/344' }
+[2026-02-10T00:09:04.823Z] [PARSER] Main loop iteration 6 (+6ms) { position: '37/344', currentToken: 'EXPORT', statementsParsed: 5 }
+[2026-02-10T00:09:04.823Z] [PARSER] Statement 6 added to AST (+6ms) { statementType: 'ExportDeclaration', position: '38/344' }
+[2026-02-10T00:09:04.823Z] [PARSER] Main loop iteration 7 (+6ms) { position: '38/344', currentToken: 'COMPONENT', statementsParsed: 6 }
+[2026-02-10T00:09:04.823Z] [PARSER] Parsing COMPONENT declaration (+6ms) { position: 38, token: 'component' }
+[2026-02-10T00:09:04.823Z] [PARSER] parseComponentDeclaration: START (+6ms) { currentToken: 'COMPONENT', position: 38 }
+[2026-02-10T00:09:04.823Z] [PARSER] parseComponentDeclaration: After consuming COMPONENT (+6ms) { currentToken: 'IDENTIFIER', position: 39 }
+[2026-02-10T00:09:04.823Z] [PARSER] parseComponentDeclaration: Component name parsed (+6ms) { name: 'App', currentToken: 'LPAREN', position: 40 }
+[2026-02-10T00:09:04.823Z] [PARSER] parseComponentDeclaration: hasParams=true (+6ms) { currentToken: 'RPAREN', position: 41 }
+[2026-02-10T00:09:04.823Z] [PARSER] parseComponentDeclaration: About to expect RPAREN (+6ms) { currentToken: 'RPAREN', position: 41 }
+[2026-02-10T00:09:04.823Z] [PARSER] parseComponentDeclaration: After RPAREN (+6ms) { currentToken: 'LBRACE', position: 42 }
+[2026-02-10T00:09:04.823Z] [PARSER] parseComponentDeclaration: About to expect LBRACE (+6ms) { currentToken: 'LBRACE', position: 42 }
+[2026-02-10T00:09:04.823Z] [PARSER] parseComponentDeclaration: After LBRACE, parsing body (+6ms) { currentToken: 'CONST', position: 43 }
+[2026-02-10T00:09:04.824Z] [PARSER] parseComponentDeclaration: Body statement 1 added (+7ms) { statementType: 'VariableDeclaration', position: 50 }
+[2026-02-10T00:09:04.824Z] [PARSER] parseComponentDeclaration: Body statement 2 added (+7ms) { statementType: 'VariableDeclaration', position: 66 }
+[2026-02-10T00:09:04.824Z] [PARSER] parseComponentDeclaration: Body statement 3 added (+7ms) { statementType: 'VariableDeclaration', position: 85 }
+[2026-02-10T00:09:04.825Z] [PARSER] parseComponentDeclaration: Body statement 4 added (+8ms) { statementType: 'VariableDeclaration', position: 104 }
+[2026-02-10T00:09:04.825Z] [PARSER] parseReturnStatement: START (+8ms) { currentToken: 'RETURN', position: 104 }
+[2026-02-10T00:09:04.825Z] [PARSER] parseReturnStatement: After RETURN (+8ms) { currentToken: 'LPAREN', position: 105 }
+[2026-02-10T00:09:04.825Z] [PARSER] parseReturnStatement: About to parse expression (+8ms) { currentToken: 'LPAREN', position: 105 }
