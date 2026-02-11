@@ -1,0 +1,120 @@
+// Resource Refetch Patterns Test PSR File
+// Tests resource refetch, revalidation, and dependency invalidation
+
+component ResourceRefetchExample() {
+    signal refreshTrigger = 0
+    signal autoRefresh = false
+    signal filters = { category: "all", status: "active" }
+    
+    // Resource that depends on multiple signals
+    const itemsResource = createResource(
+        () => [filters(), refreshTrigger()],
+        async ([currentFilters, trigger]) => {
+            const params = new URLSearchParams(currentFilters)
+            const response = await fetch(`/api/items?${params}&_t=${trigger}`)
+            return response.json()
+        }
+    )
+    
+    // Auto-refreshing resource
+    const statsResource = createResource(
+        () => autoRefresh() ? Date.now() : 0,
+        async () => {
+            const response = await fetch("/api/stats")
+            return response.json()
+        }
+    )
+    
+    // Resource with manual refetch control
+    const expensiveResource = createResource(
+        () => "expensive-data",
+        async () => {
+            await new Promise(resolve => setTimeout(resolve, 3000))
+            return { computed: Math.random(), timestamp: Date.now() }
+        }
+    )
+    
+    // Set up auto-refresh interval
+    createEffect(() => {
+        if (autoRefresh()) {
+            const interval = setInterval(() => {
+                refreshTrigger(prev => prev + 1)
+            }, 5000)
+            
+            return () => clearInterval(interval)
+        }
+    })
+    
+    return (
+        <div>
+            <div class="controls">
+                <button onclick={() => refreshTrigger(prev => prev + 1)}>
+                    Manual Refresh
+                </button>
+                
+                <button onclick={() => itemsResource.refetch()}>
+                    Refetch Items
+                </button>
+                
+                <button onclick={() => expensiveResource.refetch()}>
+                    Refetch Expensive Data
+                </button>
+                
+                <label>
+                    <input 
+                        type="checkbox" 
+                        checked={autoRefresh()} 
+                        onchange={(e) => autoRefresh(e.target.checked)}
+                    />
+                    Auto Refresh
+                </label>
+            </div>
+            
+            <div class="filters">
+                <select onchange={(e) => filters(prev => ({ ...prev, category: e.target.value }))}>
+                    <option value="all">All Categories</option>
+                    <option value="tech">Tech</option>
+                    <option value="design">Design</option>
+                </select>
+                
+                <select onchange={(e) => filters(prev => ({ ...prev, status: e.target.value }))}>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="all">All Status</option>
+                </select>
+            </div>
+            
+            <div class="data-sections">
+                <div class="items-section">
+                    <h3>Items (Refetch Count: {refreshTrigger()})</h3>
+                    {itemsResource.isLoading && <div>Loading items...</div>}
+                    {itemsResource.error && <div>Error loading items</div>}
+                    {itemsResource() && (
+                        <div>
+                            <p>Found {itemsResource().length} items</p>
+                            <pre>{JSON.stringify(itemsResource(), null, 2)}</pre>
+                        </div>
+                    )}
+                </div>
+                
+                <div class="stats-section">
+                    <h3>Stats (Auto: {autoRefresh() ? 'On' : 'Off'})</h3>
+                    {statsResource() && (
+                        <pre>{JSON.stringify(statsResource(), null, 2)}</pre>
+                    )}
+                </div>
+                
+                <div class="expensive-section">
+                    <h3>Expensive Data</h3>
+                    {expensiveResource.isLoading && <div>Computing...</div>}
+                    {expensiveResource() && (
+                        <div>
+                            <p>Result: {expensiveResource().computed}</p>
+                            <p>Computed at: {new Date(expensiveResource().timestamp).toLocaleString()}</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    )
+}

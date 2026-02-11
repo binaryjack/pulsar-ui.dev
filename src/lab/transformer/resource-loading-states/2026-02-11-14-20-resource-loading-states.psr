@@ -1,0 +1,382 @@
+// Resource Loading States Test PSR File
+// Tests resource loading state management (loading, error, success)
+
+component ResourceLoadingStatesExample() {
+    signal userId = 1
+    signal postId = 1
+    signal forceError = false
+    signal slowNetwork = false
+    signal cacheEnabled = true
+    
+    // Resource with loading states
+    const [userData] = createResource(
+        () => ({ id: userId(), forceError: forceError(), slow: slowNetwork() }),
+        async ({ id, forceError, slow }) => {
+            console.log('Fetching user:', id)
+            
+            // Simulate network delay
+            await new Promise(resolve => setTimeout(resolve, slow ? 3000 : 1000))
+            
+            if (forceError) {
+                throw new Error(`Failed to fetch user ${id}`)
+            }
+            
+            return {
+                id,
+                name: `User ${id}`,
+                email: `user${id}@example.com`,
+                role: id % 2 === 0 ? 'Admin' : 'User'
+            }
+        }
+    )
+    
+    // Resource for posts
+    const [postsData] = createResource(
+        () => postId(),
+        async (id) => {
+            console.log('Fetching posts for user:', id)
+            
+            await new Promise(resolve => setTimeout(resolve, 800))
+            
+            return Array.from({ length: 5 }, (_, i) => ({
+                id: i + 1,
+                userId: id,
+                title: `Post ${i + 1} by User ${id}`,
+                body: `This is the content of post ${i + 1}`
+            }))
+        }
+    )
+    
+    return (
+        <div>
+            <h1>Resource Loading States Demo</h1>
+            
+            <div class="controls">
+                <h3>Resource Controls</h3>
+                
+                <div class="control-group">
+                    <button onclick={() => userId(userId() + 1)}>
+                        Next User ({userId()})
+                    </button>
+                    
+                    <button onclick={() => postId(postId() + 1)}>
+                        Next Post Set ({postId()})
+                    </button>
+                    
+                    <button onclick={() => {
+                        userData.refetch()
+                        postsData.refetch()
+                    }}>
+                        Refetch All
+                    </button>
+                </div>
+                
+                <div class="control-group">
+                    <label>
+                        <input 
+                            type="checkbox"
+                            checked={forceError()}
+                            onchange={(e) => forceError(e.target.checked)}
+                        />
+                        Force Error
+                    </label>
+                    
+                    <label>
+                        <input 
+                            type="checkbox"
+                            checked={slowNetwork()}
+                            onchange={(e) => slowNetwork(e.target.checked)}
+                        />
+                        Slow Network (3s delay)
+                    </label>
+                    
+                    <label>
+                        <input 
+                            type="checkbox"
+                            checked={cacheEnabled()}
+                            onchange={(e) => cacheEnabled(e.target.checked)}
+                        />
+                        Enable Cache
+                    </label>
+                </div>
+            </div>
+            
+            <div class="resource-states">
+                {/* User Data Resource States */}
+                <div class="resource-card">
+                    <h3>User Data Resource</h3>
+                    
+                    <div class="state-indicators">
+                        <span class={`indicator ${userData.loading ? 'active' : ''}`}>
+                            Loading: {userData.loading ? '⏳' : '✗'}
+                        </span>
+                        <span class={`indicator ${userData.error ? 'active error' : ''}`}>
+                            Error: {userData.error ? '❌' : '✗'}
+                        </span>
+                        <span class={`indicator ${userData() ? 'active success' : ''}`}>
+                            Success: {userData() ? '✓' : '✗'}
+                        </span>
+                    </div>
+                    
+                    {/* Loading state */}
+                    <Show when={userData.loading}>
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>Loading user data...</p>
+                            <p>Please wait...</p>
+                        </div>
+                    </Show>
+                    
+                    {/* Error state */}
+                    <Show when={userData.error}>
+                        <div class="error-state">
+                            <h4>Error Loading User</h4>
+                            <p class="error-message">{userData.error.message}</p>
+                            <button onclick={() => userData.refetch()}>
+                                Retry
+                            </button>
+                        </div>
+                    </Show>
+                    
+                    {/* Success state */}
+                    <Show when={userData() && !userData.loading && !userData.error}>
+                        <div class="success-state">
+                            <h4>User Data Loaded</h4>
+                            <div class="user-info">
+                                <p><strong>ID:</strong> {userData().id}</p>
+                                <p><strong>Name:</strong> {userData().name}</p>
+                                <p><strong>Email:</strong> {userData().email}</p>
+                                <p><strong>Role:</strong> {userData().role}</p>
+                            </div>
+                        </div>
+                    </Show>
+                </div>
+                
+                {/* Posts Data Resource States */}
+                <div class="resource-card">
+                    <h3>Posts Resource</h3>
+                    
+                    <div class="state-indicators">
+                        <span class={`indicator ${postsData.loading ? 'active' : ''}`}>
+                            Loading: {postsData.loading ? '⏳' : '✗'}
+                        </span>
+                        <span class={`indicator ${postsData.error ? 'active error' : ''}`}>
+                            Error: {postsData.error ? '❌' : '✗'}
+                        </span>
+                        <span class={`indicator ${postsData() ? 'active success' : ''}`}>
+                            Success: {postsData() ? '✓' : '✗'}
+                        </span>
+                    </div>
+                    
+                    {postsData.loading && (
+                        <div class="loading-state">
+                            <div class="skeleton-loader">
+                                <div class="skeleton-line"></div>
+                                <div class="skeleton-line"></div>
+                                <div class="skeleton-line"></div>
+                            </div>
+                        </div>
+                    )}
+                    
+                    {postsData.error && (
+                        <div class="error-state">
+                            <p>Failed to load posts</p>
+                            <button onclick={() => postsData.refetch()}>Retry</button>
+                        </div>
+                    )}
+                    
+                    {postsData() && !postsData.loading && (
+                        <div class="posts-list">
+                            <For each={postsData()} key={(post) => post.id}>
+                                {(post) => (
+                                    <div class="post-item">
+                                        <h5>{post.title}</h5>
+                                        <p>{post.body}</p>
+                                    </div>
+                                )}
+                            </For>
+                        </div>
+                    )}
+                </div>
+            </div>
+            
+            <CombinedStatesExample />
+            <OptimisticUIExample />
+            <StaleWhileRevalidateExample />
+        </div>
+    )
+}
+
+component CombinedStatesExample() {
+    signal productId = 1
+    
+    const [product] = createResource(
+        () => productId(),
+        async (id) => {
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            return {
+                id,
+                name: `Product ${id}`,
+                price: 99.99 + id * 10,
+                stock: Math.floor(Math.random() * 100)
+            }
+        }
+    )
+    
+    const [reviews] = createResource(
+        () => productId(),
+        async (id) => {
+            await new Promise(resolve => setTimeout(resolve, 1500))
+            return Array.from({ length: 3 }, (_, i) => ({
+                id: i,
+                rating: 4 + Math.random(),
+                comment: `Review ${i + 1} for product ${id}`
+            }))
+        }
+    )
+    
+    // Combined loading state
+    const isLoading = () => product.loading || reviews.loading
+    const hasError = () => product.error || reviews.error
+    const allLoaded = () => product() && reviews()
+    
+    return (
+        <div class="combined-states">
+            <h3>Combined Resource States</h3>
+            
+            <button onclick={() => productId(productId() + 1)}>
+                Next Product ({productId()})
+            </button>
+            
+            <div class="state-badge">
+                {isLoading() && <span class="badge loading">Loading...</span>}
+                {hasError() && <span class="badge error">Error</span>}
+                {allLoaded() && <span class="badge success">All Loaded</span>}
+            </div>
+            
+            <Show when={!isLoading() && allLoaded()}>
+                <div class="product-view">
+                    <div class="product-info">
+                        <h4>{product().name}</h4>
+                        <p>Price: ${product().price.toFixed(2)}</p>
+                        <p>Stock: {product().stock} units</p>
+                    </div>
+                    
+                    <div class="reviews">
+                        <h5>Reviews:</h5>
+                        <For each={reviews()} key={(review) => review.id}>
+                            {(review) => (
+                                <div class="review">
+                                    <span class="rating">★ {review.rating.toFixed(1)}</span>
+                                    <span class="comment">{review.comment}</span>
+                                </div>
+                            )}
+                        </For>
+                    </div>
+                </div>
+            </Show>
+        </div>
+    )
+}
+
+component OptimisticUIExample() {
+    signal items = [
+        { id: 1, text: 'Item 1', saved: true },
+        { id: 2, text: 'Item 2', saved: true }
+    ]
+    signal nextId = 3
+    
+    const addItem = async (text) => {
+        const optimisticItem = { id: nextId(), text, saved: false }
+        
+        // Optimistic update
+        items(prev => [...prev, optimisticItem])
+        nextId(prev => prev + 1)
+        
+        try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 2000))
+            
+            // Update to saved state
+            items(prev => prev.map(item => 
+                item.id === optimisticItem.id 
+                    ? { ...item, saved: true }
+                    : item
+            ))
+        } catch (error) {
+            // Rollback on error
+            items(prev => prev.filter(item => item.id !== optimisticItem.id))
+        }
+    }
+    
+    return (
+        <div class="optimistic-ui">
+            <h3>Optimistic UI Pattern</h3>
+            
+            <button onclick={() => addItem(`New Item ${nextId()}`)}>
+                Add Item (Optimistic)
+            </button>
+            
+            <div class="items-list">
+                <For each={items()} key={(item) => item.id}>
+                    {(item) => (
+                        <div class={`item ${item.saved ? 'saved' : 'saving'}`}>
+                            <span class="text">{item.text}</span>
+                            <span class="status">
+                                {item.saved ? '✓ Saved' : '⏳ Saving...'}
+                            </span>
+                        </div>
+                    )}
+                </For>
+            </div>
+        </div>
+    )
+}
+
+component StaleWhileRevalidateExample() {
+    signal dataVersion = 0
+    
+    const [data] = createResource(
+        () => dataVersion(),
+        async (version) => {
+            // Show stale data while fetching
+            await new Promise(resolve => setTimeout(resolve, 2000))
+            
+            return {
+                version,
+                timestamp: Date.now(),
+                data: `Fresh data version ${version}`
+            }
+        },
+        {
+            // Keep stale data while revalidating
+            keepPreviousData: true
+        }
+    )
+    
+    return (
+        <div class="stale-while-revalidate">
+            <h3>Stale-While-Revalidate Pattern</h3>
+            
+            <button onclick={() => dataVersion(prev => prev + 1)}>
+                Fetch New Data
+            </button>
+            
+            <div class="data-display">
+                {data() && (
+                    <div class={data.loading ? 'stale' : 'fresh'}>
+                        <p>Version: {data().version}</p>
+                        <p>Data: {data().data}</p>
+                        <p>Timestamp: {new Date(data().timestamp).toLocaleTimeString()}</p>
+                        
+                        {data.loading && (
+                            <div class="revalidating-badge">
+                                ♻️ Revalidating...
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+        </div>
+    )
+}

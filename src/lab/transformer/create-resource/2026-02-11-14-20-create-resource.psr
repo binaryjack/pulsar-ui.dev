@@ -1,0 +1,80 @@
+// Create Resource Test PSR File
+// Tests createResource() transformation for async data fetching
+
+component CreateResourceExample() {
+    signal userId = 1
+    
+    // Basic resource creation
+    const userResource = createResource(
+        () => userId(),
+        async (id) => {
+            const response = await fetch(`/api/users/${id}`)
+            return response.json()
+        }
+    )
+    
+    // Resource with dependencies
+    const postsResource = createResource(
+        () => [userId(), userResource()?.role],
+        async ([id, role]) => {
+            const response = await fetch(`/api/users/${id}/posts?role=${role}`)
+            return response.json()
+        }
+    )
+    
+    // Resource with options
+    const cacheableResource = createResource(
+        () => "static-data",
+        async () => {
+            const response = await fetch("/api/static-data")
+            return response.json()
+        },
+        {
+            cache: true,
+            retryAttempts: 3,
+            retryDelay: 1000
+        }
+    )
+    
+    // Computed resources
+    computed combinedData = () => {
+        const user = userResource()
+        const posts = postsResource()
+        if (user && posts) {
+            return {
+                userName: user.name,
+                postCount: posts.length,
+                latestPost: posts[0]?.title
+            }
+        }
+        return null
+    }
+    
+    return (
+        <div>
+            <div class="controls">
+                <button onclick={() => userId(userId() + 1)}>
+                    Next User ({userId()})
+                </button>
+                <button onclick={() => userResource.refetch()}>
+                    Refresh User
+                </button>
+            </div>
+            
+            <div class="user-info">
+                <h2>User Resource</h2>
+                <pre>{JSON.stringify(userResource(), null, 2)}</pre>
+            </div>
+            
+            <div class="posts-info">
+                <h2>Posts Resource</h2>
+                <pre>{JSON.stringify(postsResource(), null, 2)}</pre>
+            </div>
+            
+            <div class="combined-info">
+                <h2>Combined Data</h2>
+                <pre>{JSON.stringify(combinedData(), null, 2)}</pre>
+            </div>
+        </div>
+    )
+}

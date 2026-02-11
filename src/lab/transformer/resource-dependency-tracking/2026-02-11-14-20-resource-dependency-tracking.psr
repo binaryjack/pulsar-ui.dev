@@ -1,0 +1,153 @@
+// Resource Dependency Tracking Test PSR File
+// Tests automatic dependency tracking and invalidation
+
+component ResourceDependencyExample() {
+    signal userId = 1
+    signal includeProfile = true
+    signal includePosts = false
+    
+    // Base user resource
+    const userResource = createResource(
+        () => userId(),
+        async (id) => {
+            const response = await fetch(`/api/users/${id}`)
+            return response.json()
+        }
+    )
+    
+    // Dependent profile resource
+    const profileResource = createResource(
+        () => includeProfile() && userResource() && userResource().id,
+        async (userId) => {
+            const response = await fetch(`/api/users/${userId}/profile`)
+            return response.json()
+        }
+    )
+    
+    // Posts resource that depends on user
+    const postsResource = createResource(
+        () => includePosts() && userResource() && userResource().id,
+        async (userId) => {
+            const response = await fetch(`/api/users/${userId}/posts`)
+            return response.json()
+        }
+    )
+    
+    // Aggregated resource that depends on multiple resources
+    const aggregatedResource = createResource(
+        () => [userResource(), profileResource(), postsResource()],
+        async ([user, profile, posts]) => {
+            if (!user) return null
+            
+            return {
+                summary: {
+                    userName: user.name,
+                    hasProfile: !!profile,
+                    postCount: posts ? posts.length : 0,
+                    profileViews: profile?.views || 0,
+                    totalLikes: posts ? posts.reduce((sum, post) => sum + post.likes, 0) : 0
+                },
+                lastUpdated: Date.now()
+            }
+        }
+    )
+    
+    // Computed that tracks all dependencies
+    computed allDataLoaded = () => {
+        const hasUser = !!userResource()
+        const hasProfile = !includeProfile() || !!profileResource()
+        const hasPosts = !includePosts() || !!postsResource()
+        
+        return hasUser && hasProfile && hasPosts
+    }
+    
+    return (
+        <div>
+            <div class="controls">
+                <div>
+                    <label>User ID:</label>
+                    <input 
+                        type="number" 
+                        value={userId()} 
+                        onchange={(e) => userId(parseInt(e.target.value))}
+                    />
+                </div>
+                
+                <label>
+                    <input 
+                        type="checkbox" 
+                        checked={includeProfile()} 
+                        onchange={(e) => includeProfile(e.target.checked)}
+                    />
+                    Include Profile
+                </label>
+                
+                <label>
+                    <input 
+                        type="checkbox" 
+                        checked={includePosts()} 
+                        onchange={(e) => includePosts(e.target.checked)}
+                    />
+                    Include Posts
+                </label>
+            </div>
+            
+            <div class="status">
+                <p>All Data Loaded: {allDataLoaded() ? 'Yes' : 'No'}</p>
+                <p>Dependencies Loading: 
+                    {[userResource, profileResource, postsResource, aggregatedResource]
+                        .filter(resource => resource.isLoading)
+                        .length} of 4
+                </p>
+            </div>
+            
+            <div class="resources">
+                <div class="resource-section">
+                    <h3>User Resource</h3>
+                    {userResource.isLoading && <div>Loading user...</div>}
+                    {userResource() && (
+                        <div>Name: {userResource().name}</div>
+                    )}
+                </div>
+                
+                <div class="resource-section">
+                    <h3>Profile Resource</h3>
+                    {includeProfile() ? (
+                        profileResource.isLoading ? (
+                            <div>Loading profile...</div>
+                        ) : profileResource() ? (
+                            <div>Views: {profileResource().views}</div>
+                        ) : (
+                            <div>No profile data</div>
+                        )
+                    ) : (
+                        <div>Profile disabled</div>
+                    )}
+                </div>
+                
+                <div class="resource-section">
+                    <h3>Posts Resource</h3>
+                    {includePosts() ? (
+                        postsResource.isLoading ? (
+                            <div>Loading posts...</div>
+                        ) : postsResource() ? (
+                            <div>Posts: {postsResource().length}</div>
+                        ) : (
+                            <div>No posts data</div>
+                        )
+                    ) : (
+                        <div>Posts disabled</div>
+                    )}
+                </div>
+                
+                <div class="resource-section">
+                    <h3>Aggregated Data</h3>
+                    {aggregatedResource.isLoading && <div>Computing aggregation...</div>}
+                    {aggregatedResource() && (
+                        <pre>{JSON.stringify(aggregatedResource(), null, 2)}</pre>
+                    )}
+                </div>
+            </div>
+        </div>
+    )
+}

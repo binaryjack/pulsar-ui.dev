@@ -1,0 +1,339 @@
+// Create Effect Side Effects Test PSR File
+// Tests createEffect(() => {}) side effect transformations
+
+component CreateEffectSideEffectsExample() {
+    signal count = 0
+    signal name = "John"
+    signal effectRunCount = 0
+    signal effectLogs = []
+    
+    const addLog = (message) => {
+        effectLogs(prev => [...prev, {
+            id: Date.now(),
+            message,
+            timestamp: new Date().toLocaleTimeString()
+        }])
+    }
+    
+    // Basic effect - runs on any tracked dependency change
+    createEffect(() => {
+        effectRunCount(prev => prev + 1)
+        addLog(`Effect ran: count=${count()}, name="${name()}"`)
+        console.log('Effect executed:', { count: count(), name: name() })
+    })
+    
+    return (
+        <div>
+            <h1>createEffect Side Effects Demo</h1>
+            
+            <div class="stats">
+                <h3>Effect Statistics</h3>
+                <p>Total effect runs: {effectRunCount()}</p>
+                <p>Current count: {count()}</p>
+                <p>Current name: {name()}</p>
+            </div>
+            
+            <div class="controls">
+                <button onclick={() => count(count() + 1)}>
+                    Increment Count ({count()})
+                </button>
+                
+                <input 
+                    type="text"
+                    value={name()}
+                    oninput={(e) => name(e.target.value)}
+                    placeholder="Enter name"
+                />
+                
+                <button onclick={() => {
+                    count(0)
+                    name("John")
+                    addLog('Reset to defaults')
+                }}>
+                    Reset
+                </button>
+                
+                <button onclick={() => effectLogs([])}>
+                    Clear Logs
+                </button>
+            </div>
+            
+            <div class="effect-log">
+                <h3>Effect Execution Log</h3>
+                <div class="log-entries">
+                    <For each={effectLogs()} key={(log) => log.id}>
+                        {(log) => (
+                            <div class="log-entry">
+                                <span class="timestamp">{log.timestamp}</span>
+                                <span class="message">{log.message}</span>
+                            </div>
+                        )}
+                    </For>
+                </div>
+            </div>
+            
+            <LocalStorageEffect />
+            <DOMManipulationEffect />
+            <AsyncEffectExample />
+            <ConditionalEffectExample />
+            <NestedEffectExample />
+        </div>
+    )
+}
+
+component LocalStorageEffect() {
+    signal username = localStorage.getItem('username') || ''
+    signal theme = localStorage.getItem('theme') || 'light'
+    signal saveCount = 0
+    
+    // Effect that syncs with localStorage
+    createEffect(() => {
+        console.log('Saving to localStorage:', { username: username(), theme: theme() })
+        
+        localStorage.setItem('username', username())
+        localStorage.setItem('theme', theme())
+        
+        saveCount(prev => prev + 1)
+    })
+    
+    onCleanup(() => {
+        console.log('LocalStorageEffect cleanup')
+    })
+    
+    return (
+        <div class="local-storage-effect">
+            <h3>Local Storage Sync Effect</h3>
+            <p>Saves to localStorage: {saveCount()} times</p>
+            
+            <div class="controls">
+                <input 
+                    type="text"
+                    value={username()}
+                    oninput={(e) => username(e.target.value)}
+                    placeholder="Username"
+                />
+                
+                <select onchange={(e) => theme(e.target.value)}>
+                    <option value="light" selected={theme() === 'light'}>Light</option>
+                    <option value="dark" selected={theme() === 'dark'}>Dark</option>
+                    <option value="auto" selected={theme() === 'auto'}>Auto</option>
+                </select>
+                
+                <button onclick={() => {
+                    localStorage.clear()
+                    username('')
+                    theme('light')
+                }}>
+                    Clear Storage
+                </button>
+            </div>
+        </div>
+    )
+}
+
+component DOMManipulationEffect() {
+    signal color = '#3b82f6'
+    signal fontSize = 16
+    signal elementRef = null
+    
+    // Effect that manipulates DOM directly
+    createEffect(() => {
+        if (elementRef()) {
+            console.log('Updating DOM styles:', { color: color(), fontSize: fontSize() })
+            
+            elementRef().style.color = color()
+            elementRef().style.fontSize = `${fontSize()}px`
+            elementRef().style.transition = 'all 0.3s ease'
+        }
+    })
+    
+    return (
+        <div class="dom-manipulation-effect">
+            <h3>DOM Manipulation Effect</h3>
+            
+            <div class="controls">
+                <label>
+                    Color:
+                    <input 
+                        type="color"
+                        value={color()}
+                        oninput={(e) => color(e.target.value)}
+                    />
+                </label>
+                
+                <label>
+                    Font Size: {fontSize()}px
+                    <input 
+                        type="range"
+                        min="12"
+                        max="32"
+                        value={fontSize()}
+                        oninput={(e) => fontSize(parseInt(e.target.value))}
+                    />
+                </label>
+            </div>
+            
+            <div class="styled-content" ref={elementRef}>
+                This text is styled by a createEffect that directly manipulates the DOM.
+            </div>
+        </div>
+    )
+}
+
+component AsyncEffectExample() {
+    signal query = ''
+    signal results = []
+    signal isSearching = false
+    signal searchCount = 0
+    
+    // Effect with async operations
+    createEffect(() => {
+        const currentQuery = query()
+        
+        if (!currentQuery) {
+            results([])
+            return
+        }
+        
+        isSearching(true)
+        searchCount(prev => prev + 1)
+        
+        console.log('Searching for:', currentQuery)
+        
+        // Simulate API call
+        const timeoutId = setTimeout(async () => {
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            
+            // Simulate search results
+            const mockResults = Array.from({ length: 5 }, (_, i) => ({
+                id: i,
+                title: `Result ${i + 1} for "${currentQuery}"`,
+                description: `Description for result ${i + 1}`
+            }))
+            
+            results(mockResults)
+            isSearching(false)
+        }, 500)
+        
+        onCleanup(() => {
+            console.log('Cleaning up search for:', currentQuery)
+            clearTimeout(timeoutId)
+            isSearching(false)
+        })
+    })
+    
+    return (
+        <div class="async-effect">
+            <h3>Async Effect Example</h3>
+            <p>Search count: {searchCount()}</p>
+            
+            <input 
+                type="text"
+                value={query()}
+                oninput={(e) => query(e.target.value)}
+                placeholder="Type to search..."
+            />
+            
+            {isSearching() && <p class="searching">Searching...</p>}
+            
+            <div class="results">
+                <For each={results()} key={(result) => result.id}>
+                    {(result) => (
+                        <div class="result-item">
+                            <h4>{result.title}</h4>
+                            <p>{result.description}</p>
+                        </div>
+                    )}
+                </For>
+            </div>
+        </div>
+    )
+}
+
+component ConditionalEffectExample() {
+    signal isActive = false
+    signal conditionalEffectCount = 0
+    signal logs = []
+    
+    // Effect with conditional logic
+    createEffect(() => {
+        if (!isActive()) {
+            console.log('Effect skipped - not active')
+            return
+        }
+        
+        conditionalEffectCount(prev => prev + 1)
+        
+        const log = `Conditional effect ran at ${new Date().toLocaleTimeString()}`
+        logs(prev => [...prev, log])
+        
+        console.log('Conditional effect running:', conditionalEffectCount())
+    })
+    
+    return (
+        <div class="conditional-effect">
+            <h3>Conditional Effect</h3>
+            <p>Effect runs: {conditionalEffectCount()}</p>
+            
+            <label>
+                <input 
+                    type="checkbox"
+                    checked={isActive()}
+                    onchange={(e) => isActive(e.target.checked)}
+                />
+                Activate Effect
+            </label>
+            
+            <div class="effect-logs">
+                <For each={logs()} key={(_, i) => i()}>
+                    {(log) => <div class="log">{log}</div>}
+                </For>
+            </div>
+        </div>
+    )
+}
+
+component NestedEffectExample() {
+    signal outerValue = 0
+    signal innerValue = 0
+    signal outerEffectCount = 0
+    signal innerEffectCount = 0
+    
+    // Outer effect
+    createEffect(() => {
+        outerEffectCount(prev => prev + 1)
+        console.log('Outer effect running:', outerValue())
+        
+        // Inner effect (nested)
+        createEffect(() => {
+            innerEffectCount(prev => prev + 1)
+            console.log('Inner effect running:', innerValue())
+        })
+    })
+    
+    return (
+        <div class="nested-effect">
+            <h3>Nested Effect Example</h3>
+            
+            <div class="stats">
+                <p>Outer effect runs: {outerEffectCount()}</p>
+                <p>Inner effect runs: {innerEffectCount()}</p>
+            </div>
+            
+            <div class="controls">
+                <button onclick={() => outerValue(outerValue() + 1)}>
+                    Update Outer ({outerValue()})
+                </button>
+                
+                <button onclick={() => innerValue(innerValue() + 1)}>
+                    Update Inner ({innerValue()})
+                </button>
+            </div>
+            
+            <p class="note">
+                Note: Nested effects can create complex dependency graphs. 
+                The inner effect will re-run when the outer effect re-runs.
+            </p>
+        </div>
+    )
+}

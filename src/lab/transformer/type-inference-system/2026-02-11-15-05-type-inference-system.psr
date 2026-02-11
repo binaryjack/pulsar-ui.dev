@@ -1,0 +1,353 @@
+/**
+ * Type Inference System Test - PSR File
+ * 
+ * Tests automatic type inference across variables, signals, functions, and components
+ * This file should transform with full TypeScript type annotations if type inference is implemented
+ */
+
+import { createSignal, createEffect, createComputed, batch } from '@pulsar-framework/pulsar.dev';
+
+export interface IUser {
+  id: number;
+  name: string;
+  email: string;
+  role: 'admin' | 'user' | 'guest';
+  preferences: {
+    theme: 'light' | 'dark';
+    notifications: boolean;
+  };
+}
+
+export interface IProduct {
+  id: string;
+  name: string;
+  price: number;
+  inStock: boolean;
+  category: string;
+  tags: string[];
+}
+
+// Test 1: Basic type inference from initialization
+export component TypeInferenceTest({
+  initialCount = 42,
+  title = "Type inference demo",
+  isEnabled = true,
+  items = [],
+  config = { debug: false, version: '1.0' },
+  onUpdate,
+  onError
+}) {
+  
+  // Test 2: Signal type inference from initial values
+  const [count, setCount] = createSignal(initialCount);
+  const [message, setMessage] = createSignal("Hello World");
+  const [isVisible, setIsVisible] = createSignal(true);
+  const [user, setUser] = createSignal(null);
+  const [products, setProducts] = createSignal([]);
+  const [selectedProduct, setSelectedProduct] = createSignal(undefined);
+  
+  // Test 3: Complex object signal type inference
+  const [state, setState] = createSignal({
+    loading: false,
+    error: null,
+    data: {
+      users: [],
+      totalCount: 0,
+      lastUpdated: new Date()
+    }
+  });
+  
+  // Test 4: Array and nested type inference
+  const [users, setUsers] = createSignal([
+    { id: 1, name: 'Tadeo', role: 'admin' },
+    { id: 2, name: 'Alice', role: 'user' }
+  ]);
+  
+  // Test 5: Function return type inference
+  const incrementCount = () => {
+    setCount(count() + 1);
+    return count();
+  };
+  
+  const formatUser = (user) => {
+    if (!user) return 'No user';
+    return `${user.name} (${user.role})`;
+  };
+  
+  const calculateTotal = (products) => {
+    return products.reduce((sum, product) => sum + product.price, 0);
+  };
+  
+  // Test 6: Computed signal type inference
+  const doubleCount = createComputed(() => count() * 2);
+  const userCount = createComputed(() => users().length);
+  const isAdminUser = createComputed(() => {
+    const currentUser = user();
+    return currentUser?.role === 'admin';
+  });
+  
+  // Test 7: Complex computed with conditional types
+  const statusMessage = createComputed(() => {
+    const currentState = state();
+    if (currentState.loading) return 'Loading...';
+    if (currentState.error) return `Error: ${currentState.error}`;
+    return `Loaded ${currentState.data.users.length} users`;
+  });
+  
+  // Test 8: Effect with dependency inference
+  createEffect(() => {
+    const currentCount = count();
+    if (currentCount > 10) {
+      onUpdate?.(currentCount);
+    }
+  });
+  
+  createEffect(() => {
+    const currentUsers = users();
+    const currentUser = user();
+    console.log(`Users: ${currentUsers.length}, Current: ${currentUser?.name}`);
+  });
+  
+  // Test 9: Event handler type inference
+  const handleClick = (event) => {
+    event.preventDefault();
+    incrementCount();
+  };
+  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const name = formData.get('name');
+    const email = formData.get('email');
+    
+    setUser({ 
+      id: Date.now(), 
+      name: name || '', 
+      email: email || '', 
+      role: 'user' 
+    });
+  };
+  
+  const handleUserSelect = (selectedUser) => {
+    setUser(selectedUser);
+    onUpdate?.(selectedUser.id);
+  };
+  
+  // Test 10: Async function type inference
+  const loadUsers = async () => {
+    setState(prev => ({ ...prev, loading: true }));
+    
+    try {
+      const response = await fetch('/api/users');
+      const userData = await response.json();
+      
+      batch(() => {
+        setUsers(userData.users);
+        setState(prev => ({
+          ...prev,
+          loading: false,
+          data: { ...prev.data, users: userData.users, totalCount: userData.total }
+        }));
+      });
+      
+      return userData;
+    } catch (error) {
+      setState(prev => ({ ...prev, loading: false, error: error.message }));
+      onError?.(error);
+      throw error;
+    }
+  };
+  
+  // Test 11: Complex destructuring and type inference
+  const processProducts = (productList) => {
+    const { inStock, outOfStock } = productList.reduce(
+      (acc, product) => {
+        if (product.inStock) {
+          acc.inStock.push(product);
+        } else {
+          acc.outOfStock.push(product);
+        }
+        return acc;
+      },
+      { inStock: [], outOfStock: [] }
+    );
+    
+    return { inStock, outOfStock, total: productList.length };
+  };
+  
+  // Test 12: Generic function type inference
+  const createApiCall = (endpoint) => {
+    return async (params) => {
+      const url = new URL(endpoint, 'https://api.example.com');
+      Object.entries(params || {}).forEach(([key, value]) => {
+        url.searchParams.set(key, String(value));
+      });
+      
+      const response = await fetch(url.toString());
+      return response.json();
+    };
+  };
+  
+  const userApi = createApiCall('/users');
+  const productApi = createApiCall('/products');
+  
+  // Test 13: Union type inference
+  const getDisplayValue = (value) => {
+    if (typeof value === 'string') return value;
+    if (typeof value === 'number') return value.toString();
+    if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+    if (Array.isArray(value)) return value.join(', ');
+    if (value && typeof value === 'object') return JSON.stringify(value);
+    return 'N/A';
+  };
+  
+  // Test 14: Conditional type narrowing
+  const validateUser = (userData) => {
+    if (!userData) return { valid: false, error: 'No user data' };
+    if (!userData.name) return { valid: false, error: 'Name required' };
+    if (!userData.email) return { valid: false, error: 'Email required' };
+    if (!['admin', 'user', 'guest'].includes(userData.role)) {
+      return { valid: false, error: 'Invalid role' };
+    }
+    return { valid: true, user: userData };
+  };
+  
+  return (
+    <div style="padding: 20px; font-family: sans-serif;">
+      
+      <h1>{title}</h1>
+      
+      {/* Test 15: JSX expression type inference */}
+      <div style="margin-bottom: 20px;">
+        <h2>Count: {count()}</h2>
+        <p>Double Count: {doubleCount()}</p>
+        <p>Status: {statusMessage()}</p>
+        <p>Admin User: {isAdminUser() ? 'Yes' : 'No'}</p>
+      </div>
+      
+      {/* Test 16: Event handler parameter inference */}
+      <div style="margin-bottom: 20px;">
+        <button 
+          onClick={handleClick}
+          style="padding: 8px 16px; margin-right: 10px; background: #007acc; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Increment ({count()})
+        </button>
+        
+        <button 
+          onClick={() => setCount(0)}
+          style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Reset
+        </button>
+      </div>
+      
+      {/* Test 17: Form handling with type inference */}
+      <form onSubmit={handleSubmit} style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h3>User Registration</h3>
+        <div style="margin-bottom: 10px;">
+          <label style="display: block; margin-bottom: 5px;">Name:</label>
+          <input 
+            type="text" 
+            name="name" 
+            required 
+            style="width: 200px; padding: 4px; border: 1px solid #ccc; border-radius: 2px;"
+          />
+        </div>
+        <div style="margin-bottom: 10px;">
+          <label style="display: block; margin-bottom: 5px;">Email:</label>
+          <input 
+            type="email" 
+            name="email" 
+            required 
+            style="width: 200px; padding: 4px; border: 1px solid #ccc; border-radius: 2px;"
+          />
+        </div>
+        <button 
+          type="submit"
+          style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Register User
+        </button>
+      </form>
+      
+      {/* Test 18: Conditional rendering with type inference */}
+      {user() && (
+        <div style="padding: 15px; background: #f8f9fa; border-radius: 4px; margin-bottom: 20px;">
+          <h3>Current User</h3>
+          <p><strong>Name:</strong> {user().name}</p>
+          <p><strong>Email:</strong> {user().email}</p>
+          <p><strong>Role:</strong> {user().role}</p>
+          <p><strong>Display:</strong> {formatUser(user())}</p>
+        </div>
+      )}
+      
+      {/* Test 19: List rendering with type inference */}
+      <div style="margin-bottom: 20px;">
+        <h3>All Users ({userCount()})</h3>
+        <div>
+          {users().map((u, index) => (
+            <div 
+              key={u.id}
+              onClick={() => handleUserSelect(u)}
+              style="padding: 8px; margin: 4px 0; background: #e9ecef; border-radius: 2px; cursor: pointer;"
+            >
+              {index + 1}. {u.name} - {u.role}
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      {/* Test 20: Complex state display */}
+      <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h3>Application State</h3>
+        <div style="font-family: monospace; font-size: 0.9em;">
+          <div><strong>Loading:</strong> {state().loading ? 'Yes' : 'No'}</div>
+          <div><strong>Error:</strong> {state().error || 'None'}</div>
+          <div><strong>User Count:</strong> {state().data.users.length}</div>
+          <div><strong>Total Count:</strong> {state().data.totalCount}</div>
+          <div><strong>Last Updated:</strong> {state().data.lastUpdated.toISOString()}</div>
+        </div>
+        
+        <button 
+          onClick={loadUsers}
+          disabled={state().loading}
+          style="margin-top: 10px; padding: 8px 16px; background: #17a2b8; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          {state().loading ? 'Loading...' : 'Load Users'}
+        </button>
+      </div>
+      
+      {/* Test 21: Display computed values */}
+      <div style="padding: 15px; background: #fff3cd; border-radius: 4px;">
+        <h3>Computed Values</h3>
+        <p><strong>Display Value (string):</strong> {getDisplayValue("hello")}</p>
+        <p><strong>Display Value (number):</strong> {getDisplayValue(42)}</p>
+        <p><strong>Display Value (boolean):</strong> {getDisplayValue(true)}</p>
+        <p><strong>Display Value (array):</strong> {getDisplayValue(['a', 'b', 'c'])}</p>
+        <p><strong>Display Value (object):</strong> {getDisplayValue({x: 1, y: 2})}</p>
+      </div>
+      
+    </div>
+  );
+}
+
+/**
+ * Expected type inference transformations:
+ * 
+ * 1. Component props interface generation with correct types
+ * 2. Signal type parameters inferred from initial values
+ * 3. Function return types inferred from analysis
+ * 4. Event handler parameter types (MouseEvent, SubmitEvent, etc.)
+ * 5. Computed signal types from dependency analysis
+ * 6. Variable types from initialization values
+ * 7. Array and object literal types
+ * 8. Union types from conditional logic
+ * 9. Generic function type parameters
+ * 10. Async function return types (Promise<T>)
+ * 11. Destructuring assignment types
+ * 12. JSX element prop types
+ * 13. Conditional type narrowing
+ * 14. Method chaining type inference
+ * 15. Callback function parameter types
+ */

@@ -1,0 +1,62 @@
+// For Iteration Test PSR File
+// Tests <For each={array} key={fn}> iteration components
+
+component ForExample() {
+    signal users = [
+        { id: 1, name: "Alice", email: "alice@example.com" },
+        { id: 2, name: "Bob", email: "bob@example.com" },
+        { id: 3, name: "Charlie", email: "charlie@example.com" }
+    ]
+    
+    signal numbers = [1, 2, 3, 4, 5]
+    signal categories = ["Tech", "Design", "Marketing"]
+    
+    return (
+        <div>
+            {/* Basic For iteration */}
+            <For each={users} key={(user) => user.id}>
+                {(user, index) => (
+                    <div class="user-card">
+                        <h3>{user.name}</h3>
+                        <p>{user.email}</p>
+                        <small>Index: {index()}</small>
+                    </div>
+                )}
+            </For>
+            
+            {/* For with numbers */}
+            <div class="numbers">
+                <For each={numbers} key={(num) => num}>
+                    {(num) => (
+                        <span class="number-badge">{num}</span>
+                    )}
+                </For>
+            </div>
+            
+            {/* Nested For loops */}
+            <div class="categories">
+                <For each={categories} key={(category) => category}>
+                    {(category) => (
+                        <div class="category">
+                            <h4>{category}</h4>
+                            <For each={users} key={(user) => `${category}-${user.id}`}>
+                                {(user) => (
+                                    <div class="user-category">
+                                        {user.name} in {category}
+                                    </div>
+                                )}
+                            </For>
+                        </div>
+                    )}
+                </For>
+            </div>
+            
+            {/* For with filtering */}
+            <For each={users.filter(u => u.name.startsWith('A'))} key={(user) => user.id}>
+                {(user) => (
+                    <div class="filtered-user">{user.name}</div>
+                )}
+            </For>
+        </div>
+    )
+}

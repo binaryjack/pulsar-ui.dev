@@ -1,0 +1,78 @@
+// Dynamic Components Test PSR File
+// Tests <Dynamic component={fn} /> dynamic component rendering
+
+component DynamicExample() {
+    signal currentView = "home"
+    signal componentType = "button"
+    
+    const viewComponents = {
+        home: HomeView,
+        profile: ProfileView,
+        settings: SettingsView
+    }
+    
+    const elementTypes = {
+        button: ButtonComponent,
+        input: InputComponent,
+        card: CardComponent
+    }
+    
+    function getCurrentComponent() {
+        return viewComponents[currentView] || HomeView
+    }
+    
+    return (
+        <div>
+            <nav>
+                <button onclick={() => currentView = "home"}>Home</button>
+                <button onclick={() => currentView = "profile"}>Profile</button>
+                <button onclick={() => currentView = "settings"}>Settings</button>
+            </nav>
+            
+            {/* Basic Dynamic component */}
+            <Dynamic component={getCurrentComponent()} />
+            
+            {/* Dynamic with props */}
+            <Dynamic 
+                component={elementTypes[componentType]} 
+                title="Dynamic Title"
+                onClick={() => console.log('clicked')}
+            />
+            
+            {/* Dynamic based on condition */}
+            <Dynamic 
+                component={currentView === "home" ? HomeView : ProfileView}
+                user={{ name: "John", id: 1 }}
+            />
+        </div>
+    )
+}
+
+component HomeView() {
+    return <div class="home-view">Welcome to Home</div>
+}
+
+component ProfileView({ user }) {
+    return (
+        <div class="profile-view">
+            <h2>Profile</h2>
+            <p>User: {user?.name}</p>
+        </div>
+    )
+}
+
+component SettingsView() {
+    return <div class="settings-view">Settings Panel</div>
+}
+
+component ButtonComponent({ title, onClick }) {
+    return <button onclick={onClick}>{title}</button>
+}
+
+component InputComponent({ title }) {
+    return <input placeholder={title} />
+}
+
+component CardComponent({ title }) {
+    return <div class="card">{title}</div>
+}

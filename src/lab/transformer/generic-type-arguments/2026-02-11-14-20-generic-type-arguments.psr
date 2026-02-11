@@ -1,0 +1,53 @@
+// Generic Type Arguments Test PSR File
+// Tests generic type transformations and type constraints
+
+interface DataItem<T> {
+    id: number
+    value: T
+    metadata?: Record<string, any>
+}
+
+interface ListProps<T extends DataItem<any>> {
+    items: T[]
+    renderItem: (item: T) => JSX.Element
+    keyExtractor?: (item: T) => string | number
+}
+
+component GenericList<T extends DataItem<any>>(props: ListProps<T>) {
+    return (
+        <div class="generic-list">
+            {props.items.map(item => (
+                <div key={props.keyExtractor?.(item) || item.id}>
+                    {props.renderItem(item)}
+                </div>
+            ))}
+        </div>
+    )
+}
+
+// Usage with different types
+component GenericExample() {
+    signal stringItems: DataItem<string>[] = [
+        { id: 1, value: "Hello" },
+        { id: 2, value: "World" }
+    ]
+    
+    signal numberItems: DataItem<number>[] = [
+        { id: 1, value: 42 },
+        { id: 2, value: 100 }
+    ]
+    
+    return (
+        <div>
+            <GenericList<DataItem<string>>
+                items={stringItems}
+                renderItem={(item) => <span>{item.value}</span>}
+            />
+            
+            <GenericList<DataItem<number>>
+                items={numberItems}
+                renderItem={(item) => <strong>{item.value}</strong>}
+            />
+        </div>
+    )
+}

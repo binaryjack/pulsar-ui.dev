@@ -1,0 +1,291 @@
+// Concurrent Rendering Test PSR File
+// Tests concurrent rendering mode transformations
+
+component ConcurrentRenderingExample() {
+    signal isPending = false
+    signal currentView = "home"
+    signal items = Array.from({ length: 1000 }, (_, i) => ({ id: i, name: `Item ${i}` }))
+    signal searchQuery = ""
+    signal renderMode = "blocking"
+    
+    // Transition for non-blocking updates
+    const [startTransition, isPendingTransition] = useTransition()
+    
+    // Handle view changes with transition
+    const handleViewChange = (newView) => {
+        if (renderMode() === "concurrent") {
+            startTransition(() => {
+                currentView(newView)
+            })
+        } else {
+            currentView(newView)
+        }
+    }
+    
+    // Handle search with deferred updates
+    const handleSearch = (query) => {
+        if (renderMode() === "concurrent") {
+            // Update UI immediately
+            searchQuery(query)
+            
+            // Defer expensive filtering
+            startTransition(() => {
+                // Trigger re-render with filtered results
+                const filtered = items().filter(item => 
+                    item.name.toLowerCase().includes(query.toLowerCase())
+                )
+                items([...filtered])
+            })
+        } else {
+            searchQuery(query)
+            const filtered = items().filter(item => 
+                item.name.toLowerCase().includes(query.toLowerCase())
+            )
+            items([...filtered])
+        }
+    }
+    
+    return (
+        <div class="concurrent-rendering-demo">
+            <h1>Concurrent Rendering Demo</h1>
+            
+            <div class="controls">
+                <div class="render-mode">
+                    <label>
+                        <input 
+                            type="radio" 
+                            name="renderMode"
+                            value="blocking"
+                            checked={renderMode() === "blocking"}
+                            onchange={() => renderMode("blocking")}
+                        />
+                        Blocking Mode
+                    </label>
+                    <label>
+                        <input 
+                            type="radio" 
+                            name="renderMode"
+                            value="concurrent"
+                            checked={renderMode() === "concurrent"}
+                            onchange={() => renderMode("concurrent")}
+                        />
+                        Concurrent Mode
+                    </label>
+                </div>
+                
+                <div class="pending-indicator">
+                    {isPendingTransition() && (
+                        <span class="pending-badge">⏳ Transition pending...</span>
+                    )}
+                </div>
+            </div>
+            
+            <div class="navigation">
+                <button 
+                    onclick={() => handleViewChange("home")}
+                    class={currentView() === "home" ? "active" : ""}
+                >
+                    Home
+                </button>
+                <button 
+                    onclick={() => handleViewChange("list")}
+                    class={currentView() === "list" ? "active" : ""}
+                >
+                    Large List
+                </button>
+                <button 
+                    onclick={() => handleViewChange("complex")}
+                    class={currentView() === "complex" ? "active" : ""}
+                >
+                    Complex View
+                </button>
+            </div>
+            
+            <div class="search-section">
+                <input 
+                    type="text"
+                    placeholder="Search items..."
+                    value={searchQuery()}
+                    oninput={(e) => handleSearch(e.target.value)}
+                />
+                <small>
+                    Mode: {renderMode()} | 
+                    Items: {items().length} | 
+                    Pending: {isPendingTransition() ? 'Yes' : 'No'}
+                </small>
+            </div>
+            
+            <div class="content">
+                {/* Use Suspense with concurrent features */}
+                <Suspense fallback={<ViewLoadingIndicator />}>
+                    <Show when={currentView() === "home"}>
+                        <HomeView />
+                    </Show>
+                    
+                    <Show when={currentView() === "list"}>
+                        <Suspense fallback={<div>Loading list...</div>}>
+                            <LargeListView items={items()} query={searchQuery()} />
+                        </Suspense>
+                    </Show>
+                    
+                    <Show when={currentView() === "complex"}>
+                        <Suspense fallback={<div>Loading complex view...</div>}>
+                            <ComplexView isPending={isPendingTransition()} />
+                        </Suspense>
+                    </Show>
+                </Suspense>
+            </div>
+            
+            <DeferredComponent />
+        </div>
+    )
+}
+
+component HomeView() {
+    return (
+        <div class="home-view">
+            <h2>Home View</h2>
+            <p>This is the home view with minimal rendering cost.</p>
+            <div class="home-content">
+                <p>Switch to other views to see concurrent rendering in action.</p>
+                <p>In concurrent mode, the UI stays responsive during transitions.</p>
+            </div>
+        </div>
+    )
+}
+
+component LargeListView({ items, query }) {
+    signal renderTime = 0
+    
+    onMount(() => {
+        const start = performance.now()
+        
+        // Simulate expensive render
+        requestIdleCallback(() => {
+            const end = performance.now()
+            renderTime(end - start)
+        })
+    })
+    
+    return (
+        <div class="large-list-view">
+            <h2>Large List View</h2>
+            <p>Items: {items.length} | Render time: {renderTime().toFixed(2)}ms</p>
+            <p>Search query: "{query}"</p>
+            
+            <div class="item-list">
+                <For each={items} key={(item) => item.id}>
+                    {(item) => (
+                        <ExpensiveListItem item={item} />
+                    )}
+                </For>
+            </div>
+        </div>
+    )
+}
+
+component ExpensiveListItem({ item }) {
+    // Simulate expensive component
+    signal hovered = false
+    
+    return (
+        <div 
+            class={`list-item ${hovered() ? 'hovered' : ''}`}
+            onmouseenter={() => hovered(true)}
+            onmouseleave={() => hovered(false)}
+        >
+            <span class="item-id">#{item.id}</span>
+            <span class="item-name">{item.name}</span>
+            
+            <Show when={hovered()}>
+                <div class="item-details">
+                    <p>Additional details for {item.name}</p>
+                    <button onclick={() => console.log('Item clicked:', item.id)}>
+                        View Details
+                    </button>
+                </div>
+            </Show>
+        </div>
+    )
+}
+
+component ComplexView({ isPending }) {
+    signal complexData = Array.from({ length: 50 }, (_, i) => ({
+        id: i,
+        nested: Array.from({ length: 20 }, (_, j) => ({ id: j, value: Math.random() }))
+    }))
+    
+    return (
+        <div class="complex-view">
+            <h2>Complex View</h2>
+            <p>This view has deeply nested components with heavy computation.</p>
+            <p>Pending: {isPending ? 'Yes' : 'No'}</p>
+            
+            <div class="complex-content">
+                <For each={complexData()} key={(item) => item.id}>
+                    {(item) => (
+                        <ComplexCard data={item} />
+                    )}
+                </For>
+            </div>
+        </div>
+    )
+}
+
+component ComplexCard({ data }) {
+    signal expanded = false
+    
+    return (
+        <div class="complex-card">
+            <div class="card-header" onclick={() => expanded(!expanded())}>
+                <h4>Card {data.id}</h4>
+                <span>{expanded() ? '▼' : '▶'}</span>
+            </div>
+            
+            <Show when={expanded()}>
+                <div class="card-content">
+                    <For each={data.nested} key={(item) => item.id}>
+                        {(item) => (
+                            <div class="nested-item">
+                                Item {item.id}: {item.value.toFixed(3)}
+                            </div>
+                        )}
+                    </For>
+                </div>
+            </Show>
+        </div>
+    )
+}
+
+component DeferredComponent() {
+    // useDeferredValue for lower priority updates
+    signal input = ""
+    const deferredInput = useDeferredValue(input)
+    
+    return (
+        <div class="deferred-component">
+            <h3>Deferred Updates</h3>
+            <input 
+                type="text"
+                value={input()}
+                oninput={(e) => input(e.target.value)}
+                placeholder="Type to see deferred value..."
+            />
+            
+            <div class="deferred-display">
+                <p>Immediate value: {input()}</p>
+                <p>Deferred value: {deferredInput()}</p>
+                <p>Values match: {input() === deferredInput() ? 'Yes' : 'No (updating...)'}</p>
+            </div>
+        </div>
+    )
+}
+
+component ViewLoadingIndicator() {
+    return (
+        <div class="view-loading">
+            <div class="loading-spinner"></div>
+            <p>Loading view...</p>
+        </div>
+    )
+}

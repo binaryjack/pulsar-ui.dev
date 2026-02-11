@@ -1,0 +1,34 @@
+// Template Literals Test PSR File
+// Tests template literal transformations with ${} expressions
+
+component TemplateExample() {
+    signal name = "World"
+    signal count = 42
+    signal isVisible = true
+    
+    // Basic template literal
+    computed greeting = `Hello, ${name}!`
+    
+    // Complex nested expressions
+    computed message = `User ${name} has ${count} items ${isVisible ? 'visible' : 'hidden'}`
+    
+    // Template with function calls
+    computed dynamicText = `Current time: ${new Date().toISOString()}`
+    
+    // Multi-line template
+    computed htmlTemplate = `
+        <div class="user-card">
+            <h2>${name}</h2>
+            <p>Count: ${count}</p>
+            <status>${isVisible ? 'Active' : 'Inactive'}</status>
+        </div>
+    `
+    
+    return (
+        <div>
+            <h1>{greeting}</h1>
+            <p>{message}</p>
+            <pre>{htmlTemplate}</pre>
+        </div>
+    )
+}

@@ -1,0 +1,275 @@
+// Memo Optimization Test PSR File
+// Tests createMemo(() => {}) memoization optimization
+
+component MemoOptimizationExample() {
+    signal count = 0
+    signal multiplier = 2
+    signal items = [1, 2, 3, 4, 5]
+    signal filter = "all"
+    signal expensiveCalcCount = 0
+    signal memoCalcCount = 0
+    
+    // Without memo - recalculates every render
+    const expensiveCalculation = () => {
+        expensiveCalcCount(prev => prev + 1)
+        console.log('Expensive calc running:', expensiveCalcCount())
+        
+        // Simulate expensive operation
+        let result = 0
+        for (let i = 0; i < 1000000; i++) {
+            result += Math.sqrt(i)
+        }
+        return count() * multiplier()
+    }
+    
+    // With memo - only recalculates when dependencies change
+    const memoizedCalculation = createMemo(() => {
+        memoCalcCount(prev => prev + 1)
+        console.log('Memoized calc running:', memoCalcCount())
+        
+        // Same expensive operation
+        let result = 0
+        for (let i = 0; i < 1000000; i++) {
+            result += Math.sqrt(i)
+        }
+        return count() * multiplier()
+    })
+    
+    // Memoized filtered list
+    const filteredItems = createMemo(() => {
+        switch (filter()) {
+            case "even":
+                return items().filter(n => n % 2 === 0)
+            case "odd":
+                return items().filter(n => n % 2 !== 0)
+            default:
+                return items()
+        }
+    })
+    
+    // Memoized computed value
+    const totalValue = createMemo(() => {
+        return filteredItems().reduce((sum, item) => sum + item, 0)
+    })
+    
+    // Chain of memoized computations
+    const doubledTotal = createMemo(() => totalValue() * 2)
+    const finalResult = createMemo(() => doubledTotal() + count())
+    
+    return (
+        <div>
+            <h1>Memo Optimization Demo</h1>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>Calculation Counts</h3>
+                    <p>Expensive (no memo): {expensiveCalcCount()}</p>
+                    <p>Memoized: {memoCalcCount()}</p>
+                    <p class="efficiency">
+                        Efficiency: {expensiveCalcCount() > 0 
+                            ? ((1 - memoCalcCount() / expensiveCalcCount()) * 100).toFixed(1) 
+                            : 0}% fewer calculations
+                    </p>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Current Values</h3>
+                    <p>Count: {count()}</p>
+                    <p>Multiplier: {multiplier()}</p>
+                    <p>Filter: {filter()}</p>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Results</h3>
+                    <p>Expensive: {expensiveCalculation()}</p>
+                    <p>Memoized: {memoizedCalculation()}</p>
+                    <p>Match: {expensiveCalculation() === memoizedCalculation() ? '✓' : '✗'}</p>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button onclick={() => count(count() + 1)}>
+                    Increment Count ({count()})
+                </button>
+                
+                <button onclick={() => multiplier(multiplier() + 1)}>
+                    Increment Multiplier ({multiplier()})
+                </button>
+                
+                <button onclick={() => items([...items(), items().length + 1])}>
+                    Add Item
+                </button>
+                
+                <select onchange={(e) => filter(e.target.value)}>
+                    <option value="all">All Items</option>
+                    <option value="even">Even Only</option>
+                    <option value="odd">Odd Only</option>
+                </select>
+                
+                <button onclick={() => {
+                    // Trigger re-render without changing memo dependencies
+                    // This should increase expensiveCalcCount but not memoCalcCount
+                    console.log('Force re-render')
+                }}>
+                    Force Re-render
+                </button>
+            </div>
+            
+            <div class="computed-values">
+                <h3>Memoized Computed Chain</h3>
+                <div class="computation-flow">
+                    <div class="step">
+                        <span class="label">Filtered Items:</span>
+                        <span class="value">[{filteredItems().join(', ')}]</span>
+                    </div>
+                    <div class="arrow">↓</div>
+                    <div class="step">
+                        <span class="label">Total Value:</span>
+                        <span class="value">{totalValue()}</span>
+                    </div>
+                    <div class="arrow">↓</div>
+                    <div class="step">
+                        <span class="label">Doubled Total:</span>
+                        <span class="value">{doubledTotal()}</span>
+                    </div>
+                    <div class="arrow">↓</div>
+                    <div class="step">
+                        <span class="label">Final Result:</span>
+                        <span class="value">{finalResult()}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <ItemsList items={filteredItems()} />
+            <MemoComparison count={count()} multiplier={multiplier()} />
+        </div>
+    )
+}
+
+component ItemsList({ items }) {
+    // Memo inside child component
+    const itemsWithSquares = createMemo(() => {
+        return items.map(item => ({
+            value: item,
+            squared: item * item,
+            cubed: item * item * item
+        }))
+    })
+    
+    return (
+        <div class="items-list">
+            <h3>Items with Computed Values</h3>
+            <div class="items-grid">
+                <For each={itemsWithSquares()} key={(item) => item.value}>
+                    {(item) => (
+                        <ItemCard item={item} />
+                    )}
+                </For>
+            </div>
+        </div>
+    )
+}
+
+component ItemCard({ item }) {
+    signal hovered = false
+    
+    // Memoize expensive formatting
+    const formattedData = createMemo(() => ({
+        value: item.value,
+        squared: item.squared.toLocaleString(),
+        cubed: item.cubed.toLocaleString(),
+        sum: (item.value + item.squared + item.cubed).toLocaleString()
+    }))
+    
+    return (
+        <div 
+            class={`item-card ${hovered() ? 'hovered' : ''}`}
+            onmouseenter={() => hovered(true)}
+            onmouseleave={() => hovered(false)}
+        >
+            <div class="item-value">{formattedData().value}</div>
+            <Show when={hovered()}>
+                <div class="item-details">
+                    <p>Squared: {formattedData().squared}</p>
+                    <p>Cubed: {formattedData().cubed}</p>
+                    <p>Sum: {formattedData().sum}</p>
+                </div>
+            </Show>
+        </div>
+    )
+}
+
+component MemoComparison({ count, multiplier }) {
+    signal renderCount = 0
+    
+    createEffect(() => {
+        renderCount(prev => prev + 1)
+    })
+    
+    // Non-memoized computation
+    const withoutMemo = () => {
+        let result = 0
+        for (let i = 0; i < count * multiplier; i++) {
+            result += i
+        }
+        return result
+    }
+    
+    // Memoized computation
+    const withMemo = createMemo(() => {
+        let result = 0
+        for (let i = 0; i < count * multiplier; i++) {
+            result += i
+        }
+        return result
+    })
+    
+    // Performance tracking
+    const nonMemoTime = createMemo(() => {
+        const start = performance.now()
+        const result = withoutMemo()
+        const end = performance.now()
+        return { result, time: end - start }
+    })
+    
+    const memoTime = createMemo(() => {
+        const start = performance.now()
+        const result = withMemo()
+        const end = performance.now()
+        return { result, time: end - start }
+    })
+    
+    return (
+        <div class="memo-comparison">
+            <h3>Performance Comparison</h3>
+            <p>Component Renders: {renderCount()}</p>
+            
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>Without Memo</h4>
+                    <p>Result: {nonMemoTime().result}</p>
+                    <p>Time: {nonMemoTime().time.toFixed(4)}ms</p>
+                </div>
+                
+                <div class="comparison-card">
+                    <h4>With Memo</h4>
+                    <p>Result: {memoTime().result}</p>
+                    <p>Time: {memoTime().time.toFixed(4)}ms</p>
+                </div>
+                
+                <div class="comparison-card">
+                    <h4>Speedup</h4>
+                    <p>
+                        {memoTime().time > 0 
+                            ? (nonMemoTime().time / memoTime().time).toFixed(2) 
+                            : 'N/A'}x faster
+                    </p>
+                    <p>
+                        {((1 - memoTime().time / nonMemoTime().time) * 100).toFixed(1)}% 
+                        time saved
+                    </p>
+                </div>
+            </div>
+        </div>
+    )
+}

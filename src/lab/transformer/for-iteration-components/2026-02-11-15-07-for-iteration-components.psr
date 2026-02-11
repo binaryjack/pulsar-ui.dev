@@ -1,0 +1,489 @@
+/**
+ * For Iteration Components Test - PSR File
+ * 
+ * Tests For component transformation with reactive array rendering
+ * This file should transform correctly if For iteration components are implemented
+ */
+
+import { createSignal, For, createComputed, batch } from '@pulsar-framework/pulsar.dev';
+
+export interface IUser {
+  id: number;
+  name: string;
+  email: string;
+  active: boolean;
+  role: 'admin' | 'user';
+  joinDate: Date;
+}
+
+export interface IProduct {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  inStock: boolean;
+  rating: number;
+}
+
+export interface IForTestProps {
+  initialUsers?: IUser[];
+  initialProducts?: IProduct[];
+}
+
+export component ForIterationTest({
+  initialUsers = [],
+  initialProducts = []
+}: IForTestProps) {
+  const [users, setUsers] = createSignal<IUser[]>(initialUsers);
+  const [products, setProducts] = createSignal<IProduct[]>(initialProducts);
+  const [selectedUsers, setSelectedUsers] = createSignal<number[]>([]);
+  const [filter, setFilter] = createSignal<string>('');
+  const [sortBy, setSortBy] = createSignal<'name' | 'date' | 'role'>('name');
+
+  // Computed arrays for filtering and sorting
+  const filteredUsers = createComputed(() => {
+    const currentUsers = users();
+    const currentFilter = filter().toLowerCase();
+    
+    if (!currentFilter) return currentUsers;
+    
+    return currentUsers.filter(user => 
+      user.name.toLowerCase().includes(currentFilter) ||
+      user.email.toLowerCase().includes(currentFilter) ||
+      user.role.includes(currentFilter)
+    );
+  });
+
+  const sortedUsers = createComputed(() => {
+    const filtered = filteredUsers();
+    const sort = sortBy();
+    
+    return [...filtered].sort((a, b) => {
+      switch (sort) {
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'date':
+          return a.joinDate.getTime() - b.joinDate.getTime();
+        case 'role':
+          return a.role.localeCompare(b.role);
+        default:
+          return 0;
+      }
+    });
+  });
+
+  const activeUsers = createComputed(() => 
+    users().filter(user => user.active)
+  );
+
+  const inStockProducts = createComputed(() =>
+    products().filter(product => product.inStock)
+  );
+
+  const addUser = () => {
+    const newUser: IUser = {
+      id: Date.now(),
+      name: `User ${users().length + 1}`,
+      email: `user${users().length + 1}@example.com`,
+      active: true,
+      role: Math.random() > 0.5 ? 'user' : 'admin',
+      joinDate: new Date()
+    };
+    setUsers([...users(), newUser]);
+  };
+
+  const removeUser = (id: number) => {
+    setUsers(users().filter(user => user.id !== id));
+  };
+
+  const toggleUserActive = (id: number) => {
+    setUsers(users().map(user => 
+      user.id === id ? { ...user, active: !user.active } : user
+    ));
+  };
+
+  const toggleUserSelection = (id: number) => {
+    const selected = selectedUsers();
+    if (selected.includes(id)) {
+      setSelectedUsers(selected.filter(uid => uid !== id));
+    } else {
+      setSelectedUsers([...selected, id]);
+    }
+  };
+
+  const addProduct = () => {
+    const categories = ['Electronics', 'Books', 'Clothing', 'Sports', 'Home'];
+    const newProduct: IProduct = {
+      id: `prod-${Date.now()}`,
+      name: `Product ${products().length + 1}`,
+      price: Math.random() * 100 + 10,
+      category: categories[Math.floor(Math.random() * categories.length)],
+      inStock: Math.random() > 0.3,
+      rating: Math.random() * 5
+    };
+    setProducts([...products(), newProduct]);
+  };
+
+  const updateProductStock = (id: string, inStock: boolean) => {
+    setProducts(products().map(product =>
+      product.id === id ? { ...product, inStock } : product
+    ));
+  };
+
+  return (
+    <div style="padding: 20px; font-family: sans-serif;">
+      
+      <h1>For Iteration Components Test</h1>
+      
+      {/* Test 1: Simple For with basic array */}
+      <section style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h2>Simple User List</h2>
+        
+        <div style="margin-bottom: 15px;">
+          <button 
+            onClick={addUser}
+            style="padding: 8px 16px; margin-right: 10px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;"
+          >
+            Add User
+          </button>
+          
+          <input 
+            type="text" 
+            placeholder="Filter users..."
+            value={filter()}
+            onInput={(e) => setFilter(e.target.value)}
+            style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;"
+          />
+          
+          <select 
+            value={sortBy()}
+            onChange={(e) => setSortBy(e.target.value)}
+            style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
+          >
+            <option value="name">Sort by Name</option>
+            <option value="date">Sort by Join Date</option>
+            <option value="role">Sort by Role</option>
+          </select>
+        </div>
+        
+        <For each={sortedUsers()}>
+          {(user, index) => (
+            <div
+              key={user.id}
+              style={`
+                padding: 10px; 
+                margin: 5px 0; 
+                background: ${selectedUsers().includes(user.id) ? '#e3f2fd' : '#f8f9fa'};
+                border: 1px solid #dee2e6; 
+                border-radius: 4px;
+                cursor: pointer;
+              `}
+              onClick={() => toggleUserSelection(user.id)}
+            >
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <strong>#{index() + 1}</strong> - {user.name} 
+                  <span style="color: #666; margin-left: 10px;">({user.role})</span>
+                  <div style="font-size: 0.9em; color: #888;">
+                    {user.email} - Joined: {user.joinDate.toLocaleDateString()}
+                  </div>
+                </div>
+                <div>
+                  <span 
+                    style={`
+                      padding: 2px 8px; 
+                      border-radius: 12px; 
+                      font-size: 0.8em; 
+                      margin-right: 10px;
+                      background: ${user.active ? '#d4edda' : '#f8d7da'};
+                      color: ${user.active ? '#155724' : '#721c24'};
+                    `}
+                  >
+                    {user.active ? 'Active' : 'Inactive'}
+                  </span>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleUserActive(user.id);
+                    }}
+                    style="padding: 4px 8px; margin-right: 5px; background: #ffc107; color: black; border: none; border-radius: 2px; cursor: pointer; font-size: 0.8em;"
+                  >
+                    Toggle
+                  </button>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeUser(user.id);
+                    }}
+                    style="padding: 4px 8px; background: #dc3545; color: white; border: none; border-radius: 2px; cursor: pointer; font-size: 0.8em;"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </For>
+        
+        <div style="margin-top: 10px; font-size: 0.9em; color: #666;">
+          Total: {users().length} users, 
+          Filtered: {filteredUsers().length}, 
+          Selected: {selectedUsers().length}
+        </div>
+      </section>
+      
+      {/* Test 2: For with fallback content */}
+      <section style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h2>Active Users (with fallback)</h2>
+        
+        <For 
+          each={activeUsers()} 
+          fallback={
+            <div style="padding: 20px; text-align: center; color: #666; background: #f8f9fa; border-radius: 4px;">
+              <p>No active users found</p>
+              <button 
+                onClick={addUser}
+                style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;"
+              >
+                Add First User
+              </button>
+            </div>
+          }
+        >
+          {(user) => (
+            <div 
+              key={user.id}
+              style="display: inline-block; padding: 8px 12px; margin: 4px; background: #d4edda; color: #155724; border-radius: 4px; font-size: 0.9em;"
+            >
+              {user.name} ({user.role})
+            </div>
+          )}
+        </For>
+      </section>
+      
+      {/* Test 3: Nested For loops */}
+      <section style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h2>User Roles Grouped</h2>
+        
+        <For each={['admin', 'user']}>
+          {(role) => {
+            const usersInRole = () => users().filter(u => u.role === role);
+            
+            return (
+              <div key={role} style="margin-bottom: 20px;">
+                <h3 style="margin-bottom: 10px; color: #333; text-transform: capitalize;">
+                  {role}s ({usersInRole().length})
+                </h3>
+                
+                <For 
+                  each={usersInRole()}
+                  fallback={
+                    <div style="padding: 10px; font-style: italic; color: #888;">
+                      No {role}s found
+                    </div>
+                  }
+                >
+                  {(user, index) => (
+                    <div 
+                      key={user.id}
+                      style={`
+                        padding: 8px; 
+                        margin: 2px 0; 
+                        background: ${role === 'admin' ? '#fff3cd' : '#d1ecf1'}; 
+                        border-radius: 2px;
+                        font-size: 0.9em;
+                      `}
+                    >
+                      {index() + 1}. {user.name} - {user.email}
+                      {!user.active && <span style="color: #dc3545; margin-left: 10px;">(Inactive)</span>}
+                    </div>
+                  )}
+                </For>
+              </div>
+            );
+          }}
+        </For>
+      </section>
+      
+      {/* Test 4: Products with complex data */}
+      <section style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h2>Products Inventory</h2>
+        
+        <div style="margin-bottom: 15px;">
+          <button 
+            onClick={addProduct}
+            style="padding: 8px 16px; background: #17a2b8; color: white; border: none; border-radius: 4px; cursor: pointer;"
+          >
+            Add Product
+          </button>
+        </div>
+        
+        <For each={products()}>
+          {(product, index) => (
+            <div 
+              key={product.id}
+              style="padding: 15px; margin: 10px 0; background: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
+            >
+              <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div style="flex: 1;">
+                  <h4 style="margin: 0 0 5px 0; color: #333;">
+                    #{index() + 1}: {product.name}
+                  </h4>
+                  <p style="margin: 5px 0; color: #666; font-size: 0.9em;">
+                    Category: {product.category} | Price: ${product.price.toFixed(2)}
+                  </p>
+                  <div style="display: flex; align-items: center; margin-top: 8px;">
+                    <span style="margin-right: 15px;">
+                      Rating: {'★'.repeat(Math.floor(product.rating))}{'☆'.repeat(5 - Math.floor(product.rating))} 
+                      ({product.rating.toFixed(1)})
+                    </span>
+                    <span 
+                      style={`
+                        padding: 2px 8px; 
+                        border-radius: 12px; 
+                        font-size: 0.8em;
+                        background: ${product.inStock ? '#d4edda' : '#f8d7da'};
+                        color: ${product.inStock ? '#155724' : '#721c24'};
+                      `}
+                    >
+                      {product.inStock ? 'In Stock' : 'Out of Stock'}
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <button 
+                    onClick={() => updateProductStock(product.id, !product.inStock)}
+                    style={`
+                      padding: 6px 12px; 
+                      border: none; 
+                      border-radius: 4px; 
+                      cursor: pointer; 
+                      font-size: 0.8em;
+                      background: ${product.inStock ? '#dc3545' : '#28a745'};
+                      color: white;
+                    `}
+                  >
+                    {product.inStock ? 'Mark Out' : 'Mark In'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </For>
+        
+        <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 4px; font-size: 0.9em;">
+          <strong>Summary:</strong> {products().length} total products, 
+          {inStockProducts().length} in stock, 
+          {products().length - inStockProducts().length} out of stock
+        </div>
+      </section>
+      
+      {/* Test 5: For with function-based each */}
+      <section style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h2>Dynamic Computed Lists</h2>
+        
+        <h3>In-Stock Products Only</h3>
+        <For each={() => products().filter(p => p.inStock)}>
+          {(product) => (
+            <div 
+              key={product.id}
+              style="display: inline-block; padding: 6px 12px; margin: 3px; background: #d4edda; border-radius: 4px; font-size: 0.9em;"
+            >
+              {product.name} (${product.price.toFixed(2)})
+            </div>
+          )}
+        </For>
+        
+        <h3 style="margin-top: 20px;">Selected Users Details</h3>
+        <For each={() => users().filter(u => selectedUsers().includes(u.id))}>
+          {(user, index) => (
+            <div 
+              key={user.id}
+              style="padding: 10px; margin: 5px 0; background: #e3f2fd; border-radius: 4px;"
+            >
+              <strong>Selected #{index() + 1}:</strong> {user.name} ({user.email})
+              <div style="font-size: 0.8em; color: #666; margin-top: 4px;">
+                Role: {user.role}, Status: {user.active ? 'Active' : 'Inactive'}
+              </div>
+            </div>
+          )}
+        </For>
+      </section>
+      
+      {/* Test 6: For with complex children expressions */}
+      <section style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h2>Complex Expressions Test</h2>
+        
+        <For each={users()}>
+          {(user, index) => {
+            const isSelected = selectedUsers().includes(user.id);
+            const isEven = index() % 2 === 0;
+            const userProducts = products().filter(p => 
+              p.name.toLowerCase().includes(user.name.toLowerCase().split(' ')[0])
+            );
+            
+            return (
+              <div 
+                key={user.id}
+                style={`
+                  padding: 12px; 
+                  margin: 8px 0; 
+                  border-radius: 4px;
+                  background: ${isSelected ? '#e8f5e8' : (isEven ? '#f8f9fa' : '#ffffff')};
+                  border: 1px solid ${isSelected ? '#28a745' : '#dee2e6'};
+                `}
+              >
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <span style="font-weight: bold;">
+                      {user.name} {isSelected && '✓'}
+                    </span>
+                    <span style="margin-left: 10px; font-size: 0.9em; color: #666;">
+                      Position: {index() + 1}/{users().length}
+                    </span>
+                  </div>
+                  <div style="font-size: 0.8em; color: #888;">
+                    {isEven ? 'Even' : 'Odd'} | {userProducts.length} related products
+                  </div>
+                </div>
+                
+                {userProducts.length > 0 && (
+                  <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee;">
+                    <div style="font-size: 0.8em; color: #666; margin-bottom: 4px;">
+                      Related Products:
+                    </div>
+                    <For each={userProducts}>
+                      {(product) => (
+                        <span 
+                          key={product.id}
+                          style="display: inline-block; padding: 2px 6px; margin: 2px; background: #fff3cd; border-radius: 2px; font-size: 0.7em;"
+                        >
+                          {product.name}
+                        </span>
+                      )}
+                    </For>
+                  </div>
+                )}
+              </div>
+            );
+          }}
+        </For>
+      </section>
+      
+    </div>
+  );
+}
+
+/**
+ * Expected transformation should handle:
+ * 1. Basic For components: <For each={array}>
+ * 2. For with fallback: <For each={array} fallback={content}>
+ * 3. Children render functions: {(item, index) => JSX}
+ * 4. Reactive array updates with efficient reconciliation
+ * 5. Nested For components
+ * 6. Function-based each: each={() => computedArray()}
+ * 7. Complex children expressions with local variables
+ * 8. Key-based item identification for performance
+ * 9. Proper cleanup when items are removed
+ * 10. Integration with Pulsar registry system
+ */

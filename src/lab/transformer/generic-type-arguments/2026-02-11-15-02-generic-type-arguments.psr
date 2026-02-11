@@ -1,0 +1,140 @@
+/**
+ * Generic Type Arguments Test - PSR File
+ * 
+ * Tests comprehensive generic type functionality in PSR
+ * This file should transform correctly if generic type arguments are implemented
+ */
+
+import { createSignal, createResource, useMemo } from '@pulsar-framework/pulsar.dev';
+
+export interface IGenericTestProps<T extends object> {
+  initialData: T[];
+  onSelect?: (item: T) => void;
+  formatter?: (item: T) => string;
+}
+
+export interface IUser {
+  id: number;
+  name: string;
+  email: string;
+  profile?: {
+    avatar: string;
+    preferences: Record<string, any>;
+  };
+}
+
+// Test 1: Generic component with constraints
+export component GenericList<T extends object>({
+  initialData,
+  onSelect,
+  formatter = (item: T) => JSON.stringify(item)
+}: IGenericTestProps<T>) {
+  
+  // Test 2: Generic signal creation
+  const [items, setItems] = createSignal<T[]>(initialData);
+  const [selectedItem, setSelectedItem] = createSignal<T | null>(null);
+  const [isLoading, setIsLoading] = createSignal<boolean>(false);
+  const [filter, setFilter] = createSignal<string>('');
+  
+  // Test 3: Generic resource creation
+  const additionalData = createResource<T[]>(
+    async () => {
+      const response = await fetch('/api/data');
+      return response.json() as T[];
+    }
+  );
+  
+  // Test 4: Generic memo with complex types
+  const filteredItems = useMemo<T[]>(() => {
+    return items().filter((item: T) => {
+      const searchText = formatter(item).toLowerCase();
+      return searchText.includes(filter().toLowerCase());
+    });
+  });
+  
+  // Test 5: Generic computed with nested types
+  const itemMap = useMemo<Map<string, T>>(() => {
+    return new Map<string, T>(
+      items().map<[string, T]>((item: T) => [
+        (item as any).id?.toString() || Math.random().toString(),
+        item
+      ])
+    );
+  });
+  
+  const handleSelect = (item: T) => {
+    setSelectedItem(item);
+    onSelect?.(item);
+  };
+  
+  return (
+    <div style="padding: 20px;">
+      
+      {/* Test 6: Generic type in JSX expressions */}
+      <h2>Generic List&lt;T&gt; ({items().length} items)</h2>
+      
+      {/* Test 7: Generic operations in JSX */}
+      <div>
+        <p>Filtered: {filteredItems().length} items</p>
+        <p>Map size: {itemMap().size} entries</p>
+      </div>
+      
+      {/* Test 8: Generic array rendering */}
+      <div>
+        {filteredItems().map<HTMLElement>((item, index) => (
+          <div 
+            key={index}
+            onClick={() => handleSelect(item)}
+            style={`
+              padding: 12px;
+              border: 1px solid #ddd;
+              cursor: pointer;
+              background: ${selectedItem() === item ? '#e3f2fd' : '#ffffff'};
+            `}
+          >
+            {formatter(item)}
+          </div>
+        ))}
+      </div>
+      
+      {/* Test 9: Generic conditional rendering */}
+      {selectedItem() && (
+        <div style="margin-top: 20px; padding: 15px; background: #f5f5f5;">
+          <h3>Selected Item</h3>
+          <pre>{JSON.stringify(selectedItem(), null, 2)}</pre>
+        </div>
+      )}
+      
+    </div>
+  );
+}
+
+// Test 10: Specialized generic components
+export component UserList({ users }: { users: IUser[] }) {
+  return (
+    <GenericList<IUser>
+      initialData={users}
+      onSelect={(user) => console.log('Selected user:', user.name)}
+      formatter={(user) => `${user.name} (${user.email})`}
+    />
+  );
+}
+
+// Test 11: Generic utility functions
+export function createTypedSignal<T>(initialValue: T): [() => T, (value: T) => void] {
+  return createSignal<T>(initialValue);
+}
+
+/**
+ * Expected transformation should handle:
+ * 1. Generic function calls: createSignal<T>()
+ * 2. Generic type annotations: Array<T>
+ * 3. Generic constraints: T extends object
+ * 4. Generic components with type parameters
+ * 5. Generic method calls: map<U>()
+ * 6. Nested generics: Map<string, T[]>
+ * 7. Generic imports and exports
+ * 8. Type preservation in generated code
+ * 9. IDE IntelliSense support
+ * 10. TypeScript compatibility
+ */

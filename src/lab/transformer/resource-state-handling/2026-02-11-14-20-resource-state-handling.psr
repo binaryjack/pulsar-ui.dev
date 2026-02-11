@@ -1,0 +1,104 @@
+// Resource State Handling Test PSR File
+// Tests resource.isLoading, resource.error, resource.data patterns
+
+component ResourceStateExample() {
+    signal postId = 1
+    
+    const postResource = createResource(
+        () => postId(),
+        async (id) => {
+            // Simulate random delay and potential error
+            await new Promise(resolve => setTimeout(resolve, Math.random() * 2000))
+            if (Math.random() > 0.8) {
+                throw new Error(`Failed to fetch post ${id}`)
+            }
+            return {
+                id,
+                title: `Post ${id} Title`,
+                content: `This is the content of post ${id}`,
+                author: `Author ${id}`
+            }
+        }
+    )
+    
+    const commentsResource = createResource(
+        () => postResource() && postResource().id,
+        async (postId) => {
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            return Array.from({ length: 3 }, (_, i) => ({
+                id: i + 1,
+                postId,
+                text: `Comment ${i + 1} on post ${postId}`,
+                author: `Commenter ${i + 1}`
+            }))
+        }
+    )
+    
+    return (
+        <div>
+            <div class="controls">
+                <button onclick={() => postId(postId() + 1)}>
+                    Load Post {postId() + 1}
+                </button>
+                <button onclick={() => postResource.refetch()}>
+                    Retry Current Post
+                </button>
+            </div>
+            
+            {/* Loading state handling */}
+            <div class="post-section">
+                <h2>Post Data</h2>
+                
+                {postResource.isLoading && (
+                    <div class="loading">Loading post...</div>
+                )}
+                
+                {postResource.error && (
+                    <div class="error">
+                        Error: {postResource.error.message}
+                        <button onclick={() => postResource.refetch()}>Retry</button>
+                    </div>
+                )}
+                
+                {postResource() && (
+                    <div class="post">
+                        <h3>{postResource().title}</h3>
+                        <p>{postResource().content}</p>
+                        <small>By: {postResource().author}</small>
+                    </div>
+                )}
+            </div>
+            
+            {/* Nested resource state */}
+            <div class="comments-section">
+                <h2>Comments</h2>
+                
+                {commentsResource.isLoading && (
+                    <div class="loading">Loading comments...</div>
+                )}
+                
+                {commentsResource.error && (
+                    <div class="error">Failed to load comments</div>
+                )}
+                
+                {commentsResource() && (
+                    <div class="comments">
+                        {commentsResource().map(comment => (
+                            <div key={comment.id} class="comment">
+                                <p>{comment.text}</p>
+                                <small>By: {comment.author}</small>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+            
+            {/* Combined state checking */}
+            <div class="status">
+                <p>Post Loading: {postResource.isLoading ? 'Yes' : 'No'}</p>
+                <p>Comments Loading: {commentsResource.isLoading ? 'Yes' : 'No'}</p>
+                <p>Has Errors: {(postResource.error || commentsResource.error) ? 'Yes' : 'No'}</p>
+            </div>
+        </div>
+    )
+}

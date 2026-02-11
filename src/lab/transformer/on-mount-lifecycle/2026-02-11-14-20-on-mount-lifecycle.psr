@@ -1,0 +1,347 @@
+// On Mount Lifecycle Test PSR File
+// Tests onMount(() => {}) lifecycle hook transformations
+
+component OnMountLifecycleExample() {
+    signal mountLog = []
+    signal unmountLog = []
+    signal showComponentA = true
+    signal showComponentB = true
+    signal showComponentC = true
+    
+    const logMount = (component) => {
+        mountLog(prev => [...prev, {
+            component,
+            timestamp: new Date().toLocaleTimeString()
+        }])
+    }
+    
+    const logUnmount = (component) => {
+        unmountLog(prev => [...prev, {
+            component,
+            timestamp: new Date().toLocaleTimeString()
+        }])
+    }
+    
+    onMount(() => {
+        logMount('OnMountLifecycleExample')
+        console.log('Parent component mounted')
+    })
+    
+    return (
+        <div>
+            <h1>onMount Lifecycle Demo</h1>
+            
+            <div class="lifecycle-log">
+                <div class="log-section">
+                    <h3>Mount Log</h3>
+                    <button onclick={() => mountLog([])}>Clear</button>
+                    <div class="log-entries">
+                        <For each={mountLog()} key={(_, i) => i()}>
+                            {(log) => (
+                                <div class="log-entry mount">
+                                    <span class="timestamp">{log.timestamp}</span>
+                                    <span class="component">{log.component}</span>
+                                    <span class="badge">MOUNTED</span>
+                                </div>
+                            )}
+                        </For>
+                    </div>
+                </div>
+                
+                <div class="log-section">
+                    <h3>Unmount Log</h3>
+                    <button onclick={() => unmountLog([])}>Clear</button>
+                    <div class="log-entries">
+                        <For each={unmountLog()} key={(_, i) => i()}>
+                            {(log) => (
+                                <div class="log-entry unmount">
+                                    <span class="timestamp">{log.timestamp}</span>
+                                    <span class="component">{log.component}</span>
+                                    <span class="badge">UNMOUNTED</span>
+                                </div>
+                            )}
+                        </For>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <h3>Toggle Components</h3>
+                
+                <label>
+                    <input 
+                        type="checkbox"
+                        checked={showComponentA()}
+                        onchange={(e) => showComponentA(e.target.checked)}
+                    />
+                    Component A
+                </label>
+                
+                <label>
+                    <input 
+                        type="checkbox"
+                        checked={showComponentB()}
+                        onchange={(e) => showComponentB(e.target.checked)}
+                    />
+                    Component B
+                </label>
+                
+                <label>
+                    <input 
+                        type="checkbox"
+                        checked={showComponentC()}
+                        onchange={(e) => showComponentC(e.target.checked)}
+                    />
+                    Component C
+                </label>
+            </div>
+            
+            <div class="components-container">
+                <Show when={showComponentA()}>
+                    <ComponentA onMount={logMount} onUnmount={logUnmount} />
+                </Show>
+                
+                <Show when={showComponentB()}>
+                    <ComponentB onMount={logMount} onUnmount={logUnmount} />
+                </Show>
+                
+                <Show when={showComponentC()}>
+                    <ComponentC onMount={logMount} onUnmount={logUnmount} />
+                </Show>
+            </div>
+        </div>
+    )
+}
+
+component ComponentA({ onMount, onUnmount }) {
+    signal data = null
+    signal isLoading = true
+    
+    onMount(async () => {
+        onMount('ComponentA')
+        console.log('ComponentA mounted - fetching data')
+        
+        // Simulate data fetch
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        
+        data({ message: 'Data loaded for Component A' })
+        isLoading(false)
+    })
+    
+    onCleanup(() => {
+        onUnmount('ComponentA')
+        console.log('ComponentA unmounting')
+    })
+    
+    return (
+        <div class="component-box component-a">
+            <h3>Component A</h3>
+            {isLoading() ? (
+                <p>Loading data...</p>
+            ) : (
+                <p>{data().message}</p>
+            )}
+            <ChildComponentA />
+        </div>
+    )
+}
+
+component ChildComponentA() {
+    signal mountTime = null
+    
+    onMount(() => {
+        mountTime(new Date().toLocaleTimeString())
+        console.log('ChildComponentA mounted')
+    })
+    
+    return (
+        <div class="child-component">
+            <p>Child Component A</p>
+            <p>Mounted at: {mountTime()}</p>
+        </div>
+    )
+}
+
+component ComponentB({ onMount, onUnmount }) {
+    signal elementRef = null
+    signal dimensions = { width: 0, height: 0 }
+    
+    onMount(() => {
+        onMount('ComponentB')
+        console.log('ComponentB mounted')
+        
+        // Access DOM element
+        if (elementRef()) {
+            const rect = elementRef().getBoundingClientRect()
+            dimensions({ width: rect.width, height: rect.height })
+        }
+        
+        // Setup ResizeObserver
+        const observer = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                dimensions({
+                    width: entry.contentRect.width,
+                    height: entry.contentRect.height
+                })
+            }
+        })
+        
+        if (elementRef()) {
+            observer.observe(elementRef())
+        }
+        
+        onCleanup(() => {
+            observer.disconnect()
+        })
+    })
+    
+    onCleanup(() => {
+        onUnmount('ComponentB')
+        console.log('ComponentB unmounting')
+    })
+    
+    return (
+        <div class="component-box component-b" ref={elementRef}>
+            <h3>Component B</h3>
+            <p>Width: {dimensions().width.toFixed(0)}px</p>
+            <p>Height: {dimensions().height.toFixed(0)}px</p>
+            <p>This component observes its own dimensions using ResizeObserver.</p>
+        </div>
+    )
+}
+
+component ComponentC({ onMount, onUnmount }) {
+    signal counter = 0
+    signal intervalId = null
+    
+    onMount(() => {
+        onMount('ComponentC')
+        console.log('ComponentC mounted - starting interval')
+        
+        const id = setInterval(() => {
+            counter(prev => prev + 1)
+        }, 1000)
+        
+        intervalId(id)
+        
+        onCleanup(() => {
+            console.log('ComponentC cleanup - clearing interval')
+            if (intervalId()) {
+                clearInterval(intervalId())
+            }
+        })
+    })
+    
+    onCleanup(() => {
+        onUnmount('ComponentC')
+        console.log('ComponentC unmounting')
+    })
+    
+    return (
+        <div class="component-box component-c">
+            <h3>Component C</h3>
+            <p>Counter: {counter()}</p>
+            <p>This component increments a counter every second.</p>
+            <button onclick={() => counter(0)}>Reset Counter</button>
+        </div>
+    )
+}
+
+// Advanced pattern: Multiple onMount hooks
+component MultipleOnMountExample() {
+    signal step1Complete = false
+    signal step2Complete = false
+    signal step3Complete = false
+    
+    // First onMount - initialization
+    onMount(() => {
+        console.log('Step 1: Initializing...')
+        setTimeout(() => {
+            step1Complete(true)
+            console.log('Step 1: Complete')
+        }, 500)
+    })
+    
+    // Second onMount - more setup
+    onMount(() => {
+        console.log('Step 2: Setting up...')
+        setTimeout(() => {
+            step2Complete(true)
+            console.log('Step 2: Complete')
+        }, 1000)
+    })
+    
+    // Third onMount - final configuration
+    onMount(() => {
+        console.log('Step 3: Configuring...')
+        setTimeout(() => {
+            step3Complete(true)
+            console.log('Step 3: Complete')
+        }, 1500)
+    })
+    
+    return (
+        <div class="multiple-onmount">
+            <h3>Multiple onMount Hooks</h3>
+            <div class="progress">
+                <div class={`step ${step1Complete() ? 'complete' : 'pending'}`}>
+                    Step 1: {step1Complete() ? '✓' : '⏳'}
+                </div>
+                <div class={`step ${step2Complete() ? 'complete' : 'pending'}`}>
+                    Step 2: {step2Complete() ? '✓' : '⏳'}
+                </div>
+                <div class={`step ${step3Complete() ? 'complete' : 'pending'}`}>
+                    Step 3: {step3Complete() ? '✓' : '⏳'}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+// Pattern: Async operations in onMount
+component AsyncOnMountExample() {
+    signal posts = []
+    signal loading = true
+    signal error = null
+    
+    onMount(async () => {
+        console.log('Fetching posts...')
+        
+        try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 2000))
+            
+            const mockPosts = Array.from({ length: 5 }, (_, i) => ({
+                id: i + 1,
+                title: `Post ${i + 1}`,
+                body: `This is the content of post ${i + 1}`
+            }))
+            
+            posts(mockPosts)
+            loading(false)
+        } catch (err) {
+            error(err.message)
+            loading(false)
+        }
+    })
+    
+    return (
+        <div class="async-onmount">
+            <h3>Async onMount</h3>
+            
+            {loading() && <p>Loading posts...</p>}
+            {error() && <p class="error">Error: {error()}</p>}
+            
+            <div class="posts">
+                <For each={posts()} key={(post) => post.id}>
+                    {(post) => (
+                        <div class="post">
+                            <h4>{post.title}</h4>
+                            <p>{post.body}</p>
+                        </div>
+                    )}
+                </For>
+            </div>
+        </div>
+    )
+}

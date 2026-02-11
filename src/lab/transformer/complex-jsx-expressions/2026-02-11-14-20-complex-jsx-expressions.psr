@@ -1,0 +1,49 @@
+// Complex JSX Expressions Test PSR File
+// Tests complex JSX expressions, conditionals, and logical operators
+
+component ComplexJSXExample() {
+    signal user = { name: "John", age: 30, isAdmin: true }
+    signal items = [1, 2, 3, 4, 5]
+    signal loading = false
+    signal error = null
+    
+    return (
+        <div>
+            {/* Conditional rendering with ternary */}
+            {loading ? <div>Loading...</div> : <div>Content loaded</div>}
+            
+            {/* Logical AND operators */}
+            {user.isAdmin && <AdminPanel />}
+            {error && <ErrorMessage error={error} />}
+            
+            {/* Complex nested expressions */}
+            {user.age >= 18 && user.isAdmin ? (
+                <div>
+                    <h2>Admin Dashboard for {user.name}</h2>
+                    {items.length > 0 && (
+                        <ul>
+                            {items.map(item => (
+                                <li key={item}>
+                                    {item % 2 === 0 ? `Even: ${item}` : `Odd: ${item}`}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            ) : (
+                <div>Access Denied</div>
+            )}
+            
+            {/* Logical OR with fallback */}
+            {user.name || "Anonymous User"}
+        </div>
+    )
+}
+
+component AdminPanel() {
+    return <div class="admin-panel">Admin Controls</div>
+}
+
+component ErrorMessage({ error }) {
+    return <div class="error">{error.message}</div>
+}

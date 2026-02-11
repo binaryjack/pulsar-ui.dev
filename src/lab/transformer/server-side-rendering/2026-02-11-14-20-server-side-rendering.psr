@@ -1,0 +1,234 @@
+// Server Side Rendering Test PSR File
+// Tests server-side rendering transformations and hydration
+
+component SSRExample() {
+    signal clientOnly = false
+    signal hydrated = false
+    signal serverData = null
+    
+    // Server-side data fetching
+    const initialData = createServerResource(async () => {
+        // This runs on the server during SSR
+        return {
+            timestamp: Date.now(),
+            userAgent: "server",
+            initialContent: "Server-rendered content",
+            metadata: {
+                renderMode: "ssr",
+                buildTime: "2026-02-11T14:20:00Z"
+            }
+        }
+    })
+    
+    // Client-side hydration effect
+    onMount(() => {
+        hydrated(true)
+        
+        // Update data after hydration
+        serverData({
+            ...initialData(),
+            clientTimestamp: Date.now(),
+            hydrationComplete: true
+        })
+    })
+    
+    return (
+        <div class="ssr-container">
+            <ServerOnly>
+                <div class="server-only-banner">
+                    <p>⚡ This content only renders on the server</p>
+                    <p>Build time: {initialData()?.metadata.buildTime}</p>
+                </div>
+            </ServerOnly>
+            
+            <ClientOnly>
+                <div class="client-only-banner">
+                    <p>🌐 This content only renders on the client</p>
+                    <p>Hydrated: {hydrated() ? 'Yes' : 'No'}</p>
+                </div>
+            </ClientOnly>
+            
+            <div class="universal-content">
+                <h1>Universal Content (SSR + Hydration)</h1>
+                
+                <div class="data-section">
+                    <h3>Server Data:</h3>
+                    <pre>{JSON.stringify(initialData(), null, 2)}</pre>
+                </div>
+                
+                <Show when={hydrated()}>
+                    <div class="client-data-section">
+                        <h3>Post-Hydration Data:</h3>
+                        <pre>{JSON.stringify(serverData(), null, 2)}</pre>
+                    </div>
+                </Show>
+                
+                <HydratedComponent initialValue={initialData()?.initialContent} />
+                
+                <div class="interactive-section">
+                    <button onclick={() => clientOnly(!clientOnly())}>
+                        Toggle Client Only: {clientOnly() ? 'ON' : 'OFF'}
+                    </button>
+                    
+                    <Show when={clientOnly()}>
+                        <div class="client-interactive">
+                            <p>🎯 Interactive client-only content</p>
+                            <InteractiveWidget />
+                        </div>
+                    </Show>
+                </div>
+                
+                <StaticContent />
+                <MetaDataComponent />
+            </div>
+        </div>
+    )
+}
+
+component HydratedComponent({ initialValue }) {
+    signal value = initialValue || "Default value"
+    signal interactions = 0
+    
+    const handleInteraction = () => {
+        interactions(prev => prev + 1)
+        value(`Interacted ${interactions()} times`)
+    }
+    
+    return (
+        <div class="hydrated-component">
+            <h3>Hydrated Interactive Component</h3>
+            <p>Current value: {value()}</p>
+            <p>Interactions: {interactions()}</p>
+            
+            <button onclick={handleInteraction}>
+                Interact with Component
+            </button>
+            
+            {/* This content should be present in SSR and become interactive after hydration */}
+            <div class="server-rendered-form">
+                <input 
+                    type="text" 
+                    value={value()} 
+                    oninput={(e) => value(e.target.value)}
+                    placeholder="Server-rendered input"
+                />
+            </div>
+        </div>
+    )
+}
+
+component InteractiveWidget() {
+    signal counter = 0
+    signal logs = []
+    
+    const addLog = (message) => {
+        logs(prev => [...prev, { 
+            id: Date.now(), 
+            message, 
+            timestamp: new Date().toLocaleTimeString() 
+        }])
+    }
+    
+    return (
+        <div class="interactive-widget">
+            <h4>Client-Only Interactive Widget</h4>
+            
+            <div class="widget-controls">
+                <button onclick={() => {
+                    counter(prev => prev + 1)
+                    addLog(`Counter incremented to ${counter() + 1}`)
+                }}>
+                    Increment ({counter()})
+                </button>
+                
+                <button onclick={() => {
+                    counter(0)
+                    addLog('Counter reset')
+                }}>
+                    Reset
+                </button>
+                
+                <button onclick={() => logs([])}>
+                    Clear Logs
+                </button>
+            </div>
+            
+            <div class="widget-logs">
+                <h5>Activity Log:</h5>
+                <div class="logs">
+                    <For each={logs()} key={(log) => log.id}>
+                        {(log) => (
+                            <div class="log-entry">
+                                <span class="timestamp">{log.timestamp}</span>
+                                <span class="message">{log.message}</span>
+                            </div>
+                        )}
+                    </For>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+component StaticContent() {
+    // This should be fully server-rendered and require no hydration
+    return (
+        <div class="static-content">
+            <h3>Static Content</h3>
+            <p>This content is fully static and doesn't require JavaScript.</p>
+            <div class="static-list">
+                <h4>Features:</h4>
+                <ul>
+                    <li>Server-side rendered</li>
+                    <li>SEO friendly</li>
+                    <li>Fast initial paint</li>
+                    <li>No JavaScript required</li>
+                </ul>
+            </div>
+        </div>
+    )
+}
+
+component MetaDataComponent() {
+    // Should inject meta tags during SSR
+    return (
+        <div class="metadata-component">
+            <Head>
+                <title>SSR Example - Visual Schema Builder</title>
+                <meta name="description" content="Server-side rendering demo with Pulsar" />
+                <meta property="og:title" content="SSR Demo" />
+                <meta property="og:description" content="Demonstrating SSR capabilities" />
+            </Head>
+            
+            <div class="seo-content">
+                <h3>SEO Optimized Content</h3>
+                <p>This component includes meta tags for SEO optimization.</p>
+                <p>The metadata is injected during server-side rendering.</p>
+            </div>
+        </div>
+    )
+}
+
+// Server-only component wrapper
+component ServerOnly({ children }) {
+    return (
+        <Show when={typeof window === 'undefined'}>
+            {children}
+        </Show>
+    )
+}
+
+// Client-only component wrapper  
+component ClientOnly({ children }) {
+    signal mounted = false
+    
+    onMount(() => {
+        mounted(true)
+    })
+    
+    return (
+        <Show when={mounted()}>
+            {children}
+        </Show>
+    )
+}

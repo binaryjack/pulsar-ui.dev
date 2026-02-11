@@ -1,0 +1,399 @@
+// Resource Mutations Test PSR File
+// Tests resource mutation and optimistic update patterns
+
+component ResourceMutationsExample() {
+    signal todos = [
+        { id: 1, text: 'Learn Pulsar', completed: false },
+        { id: 2, text: 'Build app', completed: false },
+        { id: 3, text: 'Deploy', completed: false }
+    ]
+    signal nextId = 4
+    signal newTodoText = ''
+    
+    // Resource for remote todos
+    const [remoteTodos, { refetch, mutate }] = createResource(
+        async () => {
+            console.log('Fetching todos from server...')
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            return todos()
+        }
+    )
+    
+    // Add todo with optimistic update
+    const addTodo = async () => {
+        if (!newTodoText().trim()) return
+        
+        const newTodo = {
+            id: nextId(),
+            text: newTodoText(),
+            completed: false
+        }
+        
+        console.log('Adding todo optimistically:', newTodo)
+        
+        // Optimistic update
+        mutate(prev => prev ? [...prev, newTodo] : [newTodo])
+        
+        const savedText = newTodoText()
+        newTodoText('')
+        nextId(prev => prev + 1)
+        
+        try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500))
+            
+            // Update local state
+            todos(prev => [...prev, newTodo])
+            
+            console.log('Todo added successfully')
+        } catch (error) {
+            console.error('Failed to add todo:', error)
+            
+            // Rollback on error
+            mutate(prev => prev.filter(t => t.id !== newTodo.id))
+            newTodoText(savedText)
+            nextId(prev => prev - 1)
+        }
+    }
+    
+    // Toggle todo with optimistic update
+    const toggleTodo = async (id) => {
+        console.log('Toggling todo:', id)
+        
+        // Optimistic update
+        mutate(prev => prev?.map(todo =>
+            todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        ))
+        
+        try {
+            await new Promise(resolve => setTimeout(resolve, 800))
+            
+            // Update local state
+            todos(prev => prev.map(todo =>
+                todo.id === id ? { ...todo, completed: !todo.completed } : todo
+            ))
+            
+            console.log('Todo toggled successfully')
+        } catch (error) {
+            console.error('Failed to toggle todo:', error)
+            
+            // Rollback
+            mutate(prev => prev?.map(todo =>
+                todo.id === id ? { ...todo, completed: !todo.completed } : todo
+            ))
+        }
+    }
+    
+    // Delete todo with optimistic update
+    const deleteTodo = async (id) => {
+        console.log('Deleting todo:', id)
+        
+        // Store for rollback
+        const todoToDelete = remoteTodos()?.find(t => t.id === id)
+        
+        // Optimistic delete
+        mutate(prev => prev?.filter(t => t.id !== id))
+        
+        try {
+            await new Promise(resolve => setTimeout(resolve, 800))
+            
+            // Update local state
+            todos(prev => prev.filter(t => t.id !== id))
+            
+            console.log('Todo deleted successfully')
+        } catch (error) {
+            console.error('Failed to delete todo:', error)
+            
+            // Rollback - add it back
+            if (todoToDelete) {
+                mutate(prev => prev ? [...prev, todoToDelete].sort((a, b) => a.id - b.id) : [todoToDelete])
+            }
+        }
+    }
+    
+    return (
+        <div>
+            <h1>Resource Mutations Demo</h1>
+            
+            <div class="mutation-controls">
+                <h3>Add Todo</h3>
+                <div class="add-todo">
+                    <input 
+                        type="text"
+                        value={newTodoText()}
+                        oninput={(e) => newTodoText(e.target.value)}
+                        onkeypress={(e) => e.key === 'Enter' && addTodo()}
+                        placeholder="Enter todo text..."
+                    />
+                    <button onclick={addTodo} disabled={!newTodoText().trim()}>
+                        Add Todo
+                    </button>
+                    <button onclick={refetch}>
+                        Refresh from Server
+                    </button>
+                </div>
+            </div>
+            
+            <div class="todos-container">
+                <div class="state-indicator">
+                    {remoteTodos.loading && <span class="badge loading">Loading...</span>}
+                    {remoteTodos.error && <span class="badge error">Error</span>}
+                    {remoteTodos() && <span class="badge success">Loaded ({remoteTodos().length} todos)</span>}
+                </div>
+                
+                {remoteTodos.loading && <div class="loading">Loading todos...</div>}
+                
+                {remoteTodos.error && (
+                    <div class="error">
+                        <p>Failed to load todos: {remoteTodos.error.message}</p>
+                        <button onclick={refetch}>Retry</button>
+                    </div>
+                )}
+                
+                {remoteTodos() && (
+                    <div class="todos-list">
+                        <For each={remoteTodos()} key={(todo) => todo.id}>
+                            {(todo) => (
+                                <div class={`todo-item ${todo.completed ? 'completed' : ''}`}>
+                                    <input 
+                                        type="checkbox"
+                                        checked={todo.completed}
+                                        onchange={() => toggleTodo(todo.id)}
+                                    />
+                                    <span class="todo-text">{todo.text}</span>
+                                    <button 
+                                        class="delete-btn"
+                                        onclick={() => deleteTodo(todo.id)}
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                            )}
+                        </For>
+                    </div>
+                )}
+            </div>
+            
+            <BulkMutationExample />
+            <PessimisticUpdateExample />
+            <OptimisticWithRollbackExample />
+        </div>
+    )
+}
+
+component BulkMutationExample() {
+    signal items = Array.from({ length: 5 }, (_, i) => ({ 
+        id: i + 1, 
+        status: 'pending' 
+    }))
+    
+    const [remoteItems, { mutate }] = createResource(
+        async () => {
+            await new Promise(resolve => setTimeout(resolve, 500))
+            return items()
+        }
+    )
+    
+    const processAllItems = async () => {
+        console.log('Processing all items...')
+        
+        // Optimistic: mark all as processing
+        mutate(prev => prev?.map(item => ({ ...item, status: 'processing' })))
+        
+        try {
+            // Simulate bulk operation
+            await new Promise(resolve => setTimeout(resolve, 2000))
+            
+            // Update to completed
+            mutate(prev => prev?.map(item => ({ ...item, status: 'completed' })))
+            items(prev => prev.map(item => ({ ...item, status: 'completed' })))
+            
+            console.log('All items processed successfully')
+        } catch (error) {
+            console.error('Bulk operation failed:', error)
+            
+            // Rollback
+            mutate(prev => prev?.map(item => ({ ...item, status: 'pending' })))
+        }
+    }
+    
+    const resetItems = () => {
+        const resetData = items().map(item => ({ ...item, status: 'pending' }))
+        mutate(resetData)
+        items(resetData)
+    }
+    
+    return (
+        <div class="bulk-mutation">
+            <h3>Bulk Mutation Example</h3>
+            
+            <div class="controls">
+                <button onclick={processAllItems}>
+                    Process All Items
+                </button>
+                <button onclick={resetItems}>
+                    Reset
+                </button>
+            </div>
+            
+            <div class="items-grid">
+                {remoteItems() && (
+                    <For each={remoteItems()} key={(item) => item.id}>
+                        {(item) => (
+                            <div class={`item status-${item.status}`}>
+                                <span class="item-id">Item {item.id}</span>
+                                <span class="item-status">{item.status}</span>
+                            </div>
+                        )}
+                    </For>
+                )}
+            </div>
+        </div>
+    )
+}
+
+component PessimisticUpdateExample() {
+    signal counter = 0
+    signal isUpdating = false
+    
+    const [remoteCounter, { refetch, mutate }] = createResource(
+        async () => {
+            await new Promise(resolve => setTimeout(resolve, 500))
+            return counter()
+        }
+    )
+    
+    // Pessimistic: wait for server before updating UI
+    const incrementPessimistic = async () => {
+        isUpdating(true)
+        console.log('Pessimistic increment...')
+        
+        try {
+            // Simulate server request
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            
+            // Update local state
+            counter(prev => prev + 1)
+            
+            // Then update resource
+            mutate(counter())
+            
+            console.log('Pessimistic update complete')
+        } catch (error) {
+            console.error('Update failed:', error)
+        } finally {
+            isUpdating(false)
+        }
+    }
+    
+    return (
+        <div class="pessimistic-update">
+            <h3>Pessimistic Update Example</h3>
+            <p>Counter: {remoteCounter() || 0}</p>
+            
+            <button 
+                onclick={incrementPessimistic}
+                disabled={isUpdating()}
+            >
+                {isUpdating() ? 'Updating...' : 'Increment (Pessimistic)'}
+            </button>
+            
+            <p class="note">
+                Pessimistic updates wait for server confirmation before updating the UI.
+                Notice the delay before the counter updates.
+            </p>
+        </div>
+    )
+}
+
+component OptimisticWithRollbackExample() {
+    signal users = [
+        { id: 1, name: 'Alice', online: false },
+        { id: 2, name: 'Bob', online: false },
+        { id: 3, name: 'Charlie', online: false }
+    ]
+    signal failNext = false
+    
+    const [remoteUsers, { mutate }] = createResource(
+        async () => {
+            await new Promise(resolve => setTimeout(resolve, 500))
+            return users()
+        }
+    )
+    
+    const toggleUserStatus = async (userId) => {
+        console.log('Toggling user status:', userId)
+        
+        // Store previous state for rollback
+        const previousState = remoteUsers()
+        
+        // Optimistic update
+        mutate(prev => prev?.map(user =>
+            user.id === userId ? { ...user, online: !user.online } : user
+        ))
+        
+        try {
+            // Simulate API call that might fail
+            await new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    if (failNext()) {
+                        reject(new Error('Server error'))
+                    } else {
+                        resolve()
+                    }
+                }, 1000)
+            })
+            
+            // Update local state
+            users(prev => prev.map(user =>
+                user.id === userId ? { ...user, online: !user.online } : user
+            ))
+            
+            console.log('Status updated successfully')
+        } catch (error) {
+            console.error('Failed to toggle status:', error)
+            
+            // Rollback to previous state
+            mutate(previousState)
+            
+            alert(`Failed to update status: ${error.message}`)
+        }
+    }
+    
+    return (
+        <div class="optimistic-rollback">
+            <h3>Optimistic with Rollback Example</h3>
+            
+            <label>
+                <input 
+                    type="checkbox"
+                    checked={failNext()}
+                    onchange={(e) => failNext(e.target.checked)}
+                />
+                Simulate next update failure
+            </label>
+            
+            <div class="users-list">
+                {remoteUsers() && (
+                    <For each={remoteUsers()} key={(user) => user.id}>
+                        {(user) => (
+                            <div class="user-card">
+                                <span class="user-name">{user.name}</span>
+                                <span class={`status-indicator ${user.online ? 'online' : 'offline'}`}>
+                                    {user.online ? '🟢 Online' : '⚫ Offline'}
+                                </span>
+                                <button onclick={() => toggleUserStatus(user.id)}>
+                                    Toggle Status
+                                </button>
+                            </div>
+                        )}
+                    </For>
+                )}
+            </div>
+            
+            <p class="note">
+                Try toggling with "simulate failure" enabled to see the rollback behavior.
+            </p>
+        </div>
+    )
+}

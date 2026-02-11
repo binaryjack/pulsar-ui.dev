@@ -1,0 +1,228 @@
+// Batch Updates Test PSR File
+// Tests batch(() => {}) batched update transformations
+
+component BatchUpdatesExample() {
+    signal count = 0
+    signal name = "Initial"
+    signal items = [1, 2, 3]
+    signal theme = "light"
+    signal renderCount = 0
+    
+    // Track renders to show batching effectiveness
+    createEffect(() => {
+        renderCount(prev => prev + 1)
+    })
+    
+    // Regular updates (multiple re-renders)
+    const handleRegularUpdates = () => {
+        count(count() + 1)
+        name(`Updated ${count()}`)
+        items([...items(), count()])
+        theme(theme() === 'light' ? 'dark' : 'light')
+    }
+    
+    // Batched updates (single re-render)
+    const handleBatchedUpdates = () => {
+        batch(() => {
+            count(count() + 10)
+            name(`Batched ${count()}`)
+            items([...items(), count(), count() + 1, count() + 2])
+            theme(theme() === 'light' ? 'dark' : 'light')
+        })
+    }
+    
+    // Nested batching
+    const handleNestedBatching = () => {
+        batch(() => {
+            count(count() + 5)
+            
+            batch(() => {
+                name(`Nested ${count()}`)
+                items([...items(), count()])
+            })
+            
+            theme('nested')
+        })
+    }
+    
+    // Async batching
+    const handleAsyncBatching = async () => {
+        // Updates before async operation
+        batch(() => {
+            count(count() + 1)
+            name("Loading...")
+        })
+        
+        // Simulate async operation
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        
+        // Batched updates after async operation
+        batch(() => {
+            name("Async Complete")
+            items([...items(), count(), count() + 1])
+            theme("async")
+        })
+    }
+    
+    // Conditional batching
+    const handleConditionalBatching = (useBatch = true) => {
+        const updates = () => {
+            count(count() + 2)
+            name(`Conditional ${count()}`)
+            items([...items(), count()])
+        }
+        
+        if (useBatch) {
+            batch(updates)
+        } else {
+            updates()
+        }
+    }
+    
+    return (
+        <div class={`app ${theme()}`}>
+            <div class="stats">
+                <h2>Batch Updates Demo</h2>
+                <p>Render Count: {renderCount()}</p>
+                <p>Current Count: {count()}</p>
+                <p>Current Name: {name()}</p>
+                <p>Items: {items().join(', ')} ({items().length} items)</p>
+                <p>Theme: {theme()}</p>
+            </div>
+            
+            <div class="controls">
+                <button onclick={handleRegularUpdates}>
+                    Regular Updates (Multiple Renders)
+                </button>
+                
+                <button onclick={handleBatchedUpdates}>
+                    Batched Updates (Single Render)
+                </button>
+                
+                <button onclick={handleNestedBatching}>
+                    Nested Batching
+                </button>
+                
+                <button onclick={handleAsyncBatching}>
+                    Async Batching
+                </button>
+                
+                <button onclick={() => handleConditionalBatching(true)}>
+                    Conditional Batch (True)
+                </button>
+                
+                <button onclick={() => handleConditionalBatching(false)}>
+                    Conditional Batch (False)
+                </button>
+                
+                <button onclick={() => {
+                    // Reset all
+                    batch(() => {
+                        count(0)
+                        name("Reset")
+                        items([1, 2, 3])
+                        theme("light")
+                        renderCount(0)
+                    })
+                }}>
+                    Reset All (Batched)
+                </button>
+            </div>
+            
+            {/* Components that depend on the signals */}
+            <CounterDisplay count={count()} />
+            <NameDisplay name={name()} />
+            <ItemsList items={items()} />
+            <ThemeDisplay theme={theme()} />
+            <RenderTracker renderCount={renderCount()} />
+        </div>
+    )
+}
+
+component CounterDisplay({ count }) {
+    signal localRenderCount = 0
+    
+    createEffect(() => {
+        localRenderCount(prev => prev + 1)
+    })
+    
+    return (
+        <div class="counter-display">
+            <h3>Counter: {count}</h3>
+            <small>Component renders: {localRenderCount()}</small>
+        </div>
+    )
+}
+
+component NameDisplay({ name }) {
+    signal localRenderCount = 0
+    
+    createEffect(() => {
+        localRenderCount(prev => prev + 1)
+    })
+    
+    return (
+        <div class="name-display">
+            <h3>Name: {name}</h3>
+            <small>Component renders: {localRenderCount()}</small>
+        </div>
+    )
+}
+
+component ItemsList({ items }) {
+    signal localRenderCount = 0
+    
+    createEffect(() => {
+        localRenderCount(prev => prev + 1)
+    })
+    
+    return (
+        <div class="items-list">
+            <h3>Items:</h3>
+            <ul>
+                <For each={items} key={(item) => item}>
+                    {(item, index) => (
+                        <li>Item {item} (position {index() + 1})</li>
+                    )}
+                </For>
+            </ul>
+            <small>Component renders: {localRenderCount()}</small>
+        </div>
+    )
+}
+
+component ThemeDisplay({ theme }) {
+    signal localRenderCount = 0
+    
+    createEffect(() => {
+        localRenderCount(prev => prev + 1)
+    })
+    
+    return (
+        <div class={`theme-display theme-${theme}`}>
+            <h3>Current Theme: {theme}</h3>
+            <div class="theme-preview">
+                <div class="color-swatch bg"></div>
+                <div class="color-swatch text"></div>
+            </div>
+            <small>Component renders: {localRenderCount()}</small>
+        </div>
+    )
+}
+
+component RenderTracker({ renderCount }) {
+    return (
+        <div class="render-tracker">
+            <h3>Global Render Tracking</h3>
+            <div class="render-stats">
+                <div class="render-counter">
+                    Total App Renders: {renderCount}
+                </div>
+                <div class="render-explanation">
+                    Batched updates should result in fewer renders compared to individual updates.
+                    Each batch() call should only trigger one render cycle.
+                </div>
+            </div>
+        </div>
+    )
+}

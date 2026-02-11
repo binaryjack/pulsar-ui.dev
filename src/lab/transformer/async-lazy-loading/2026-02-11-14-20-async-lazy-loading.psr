@@ -1,0 +1,242 @@
+// Async Lazy Loading Test PSR File
+// Tests lazy(() => import()) async component loading
+
+const LazyUserProfile = lazy(() => import('./components/UserProfile'))
+const LazyDataTable = lazy(() => import('./components/DataTable'))
+const LazyChart = lazy(() => import('./components/Chart'))
+const LazyEditor = lazy(() => import('./components/Editor'))
+
+component AsyncLazyLoadingExample() {
+    signal showProfile = false
+    signal showTable = false
+    signal showChart = false
+    signal showEditor = false
+    signal loadingStates = {}
+    
+    const trackLoading = (component, loading) => {
+        loadingStates(prev => ({ ...prev, [component]: loading }))
+    }
+    
+    return (
+        <div class="lazy-loading-demo">
+            <h1>Async Lazy Loading Demo</h1>
+            
+            <div class="controls">
+                <button onclick={() => {
+                    showProfile(!showProfile())
+                    if (!loadingStates()['profile']) {
+                        trackLoading('profile', true)
+                    }
+                }}>
+                    {showProfile() ? 'Hide' : 'Show'} User Profile
+                </button>
+                
+                <button onclick={() => {
+                    showTable(!showTable())
+                    if (!loadingStates()['table']) {
+                        trackLoading('table', true)
+                    }
+                }}>
+                    {showTable() ? 'Hide' : 'Show'} Data Table
+                </button>
+                
+                <button onclick={() => {
+                    showChart(!showChart())
+                    if (!loadingStates()['chart']) {
+                        trackLoading('chart', true)
+                    }
+                }}>
+                    {showChart() ? 'Hide' : 'Show'} Chart
+                </button>
+                
+                <button onclick={() => {
+                    showEditor(!showEditor())
+                    if (!loadingStates()['editor']) {
+                        trackLoading('editor', true)
+                    }
+                }}>
+                    {showEditor() ? 'Hide' : 'Show'} Code Editor
+                </button>
+            </div>
+            
+            <div class="loading-status">
+                <h3>Component Loading Status:</h3>
+                <ul>
+                    <li>Profile: {loadingStates()['profile'] ? '⏳ Loading...' : '✓ Ready'}</li>
+                    <li>Table: {loadingStates()['table'] ? '⏳ Loading...' : '✓ Ready'}</li>
+                    <li>Chart: {loadingStates()['chart'] ? '⏳ Loading...' : '✓ Ready'}</li>
+                    <li>Editor: {loadingStates()['editor'] ? '⏳ Loading...' : '✓ Ready'}</li>
+                </ul>
+            </div>
+            
+            {/* Lazy loaded components with Suspense boundaries */}
+            <div class="lazy-content">
+                <Show when={showProfile()}>
+                    <Suspense fallback={<LoadingSpinner text="Loading User Profile..." />}>
+                        <LazyUserProfile 
+                            userId={123}
+                            onLoad={() => trackLoading('profile', false)}
+                        />
+                    </Suspense>
+                </Show>
+                
+                <Show when={showTable()}>
+                    <Suspense fallback={<LoadingSpinner text="Loading Data Table..." />}>
+                        <LazyDataTable 
+                            dataSource="/api/data"
+                            onLoad={() => trackLoading('table', false)}
+                        />
+                    </Suspense>
+                </Show>
+                
+                <Show when={showChart()}>
+                    <Suspense fallback={<LoadingSpinner text="Loading Chart..." />}>
+                        <LazyChart 
+                            data={[1, 2, 3, 4, 5]}
+                            onLoad={() => trackLoading('chart', false)}
+                        />
+                    </Suspense>
+                </Show>
+                
+                <Show when={showEditor()}>
+                    <Suspense fallback={<LoadingSpinner text="Loading Code Editor..." />}>
+                        <LazyEditor 
+                            language="typescript"
+                            onLoad={() => trackLoading('editor', false)}
+                        />
+                    </Suspense>
+                </Show>
+            </div>
+            
+            {/* Nested lazy loading */}
+            <NestedLazyComponents />
+            
+            {/* Conditional lazy loading based on feature flags */}
+            <ConditionalLazyLoad />
+        </div>
+    )
+}
+
+component LoadingSpinner({ text }) {
+    return (
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>{text || 'Loading...'}</p>
+        </div>
+    )
+}
+
+component NestedLazyComponents() {
+    signal showNested = false
+    
+    const LazyNestedComponent = lazy(() => import('./components/NestedComponent'))
+    
+    return (
+        <div class="nested-lazy">
+            <h3>Nested Lazy Loading</h3>
+            <button onclick={() => showNested(!showNested())}>
+                Toggle Nested Component
+            </button>
+            
+            <Show when={showNested()}>
+                <Suspense fallback={<div>Loading outer component...</div>}>
+                    <LazyNestedComponent>
+                        {/* This component itself lazy-loads children */}
+                        <InnerLazyContent />
+                    </LazyNestedComponent>
+                </Suspense>
+            </Show>
+        </div>
+    )
+}
+
+component InnerLazyContent() {
+    const LazyInnerWidget = lazy(() => import('./components/InnerWidget'))
+    
+    return (
+        <div class="inner-lazy-content">
+            <p>Inner content with lazy-loaded widget:</p>
+            <Suspense fallback={<div>Loading inner widget...</div>}>
+                <LazyInnerWidget />
+            </Suspense>
+        </div>
+    )
+}
+
+component ConditionalLazyLoad() {
+    signal featureEnabled = false
+    
+    // Only define the lazy import if feature is enabled
+    const LazyFeatureComponent = createMemo(() => {
+        return featureEnabled() 
+            ? lazy(() => import('./components/FeatureComponent'))
+            : null
+    })
+    
+    return (
+        <div class="conditional-lazy">
+            <h3>Conditional Lazy Load</h3>
+            <label>
+                <input 
+                    type="checkbox" 
+                    checked={featureEnabled()} 
+                    onchange={(e) => featureEnabled(e.target.checked)}
+                />
+                Enable Feature
+            </label>
+            
+            <Show when={featureEnabled() && LazyFeatureComponent()}>
+                <Suspense fallback={<div>Loading feature...</div>}>
+                    <Dynamic component={LazyFeatureComponent()} />
+                </Suspense>
+            </Show>
+        </div>
+    )
+}
+
+// Preloading example
+component PreloadExample() {
+    const LazyModal = lazy(() => import('./components/Modal'))
+    
+    // Preload on mouse enter
+    const handleMouseEnter = () => {
+        // Trigger the import early
+        LazyModal.preload()
+    }
+    
+    signal showModal = false
+    
+    return (
+        <div class="preload-example">
+            <button 
+                onmouseenter={handleMouseEnter}
+                onclick={() => showModal(true)}
+            >
+                Open Modal (preloads on hover)
+            </button>
+            
+            <Show when={showModal()}>
+                <Suspense fallback={<LoadingSpinner text="Loading modal..." />}>
+                    <LazyModal onClose={() => showModal(false)} />
+                </Suspense>
+            </Show>
+        </div>
+    )
+}
+
+// Error boundary for lazy loading failures
+component LazyErrorBoundary({ children }) {
+    return (
+        <Tryer 
+            fallback={(error, retry) => (
+                <div class="lazy-load-error">
+                    <h4>Failed to load component</h4>
+                    <p>Error: {error.message}</p>
+                    <button onclick={retry}>Retry Loading</button>
+                </div>
+            )}
+        >
+            {children}
+        </Tryer>
+    )
+}

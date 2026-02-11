@@ -1,0 +1,211 @@
+// Catcher Error Handlers Test PSR File
+// Tests <Catcher showRetry={true}> error handlers with retry functionality
+
+component CatcherExample() {
+    signal failureRate = 0.5
+    signal maxRetries = 3
+    signal autoRetry = false
+    
+    return (
+        <div>
+            <div class="controls">
+                <label>
+                    Failure Rate: 
+                    <input 
+                        type="range" 
+                        min="0" 
+                        max="1" 
+                        step="0.1"
+                        value={failureRate()} 
+                        onchange={(e) => failureRate(parseFloat(e.target.value))}
+                    />
+                    {Math.round(failureRate() * 100)}%
+                </label>
+                
+                <label>
+                    Max Retries:
+                    <input 
+                        type="number" 
+                        min="1" 
+                        max="10"
+                        value={maxRetries()} 
+                        onchange={(e) => maxRetries(parseInt(e.target.value))}
+                    />
+                </label>
+                
+                <label>
+                    <input 
+                        type="checkbox" 
+                        checked={autoRetry()} 
+                        onchange={(e) => autoRetry(e.target.checked)}
+                    />
+                    Auto Retry
+                </label>
+            </div>
+            
+            {/* Basic Catcher with retry */}
+            <Catcher 
+                showRetry={true}
+                maxRetries={maxRetries()}
+                retryDelay={1000}
+                fallback={(error, retry, retryCount) => (
+                    <div class="catcher-error">
+                        <h4>Operation Failed</h4>
+                        <p>{error.message}</p>
+                        <p>Retry attempt: {retryCount} / {maxRetries()}</p>
+                        <button onclick={retry} disabled={retryCount >= maxRetries()}>
+                            {retryCount >= maxRetries() ? 'Max retries reached' : 'Retry'}
+                        </button>
+                    </div>
+                )}
+            >
+                <UnreliableService failureRate={failureRate()} />
+            </Catcher>
+            
+            {/* Auto-retry Catcher */}
+            <Catcher 
+                showRetry={autoRetry()}
+                maxRetries={5}
+                retryDelay={2000}
+                exponentialBackoff={true}
+                fallback={(error, retry, retryCount, isRetrying) => (
+                    <div class="auto-retry-catcher">
+                        <p>Service Error: {error.message}</p>
+                        {isRetrying ? (
+                            <div class="retrying">
+                                <span>Auto-retrying... ({retryCount}/5)</span>
+                                <div class="spinner"></div>
+                            </div>
+                        ) : (
+                            <div class="manual-retry">
+                                <button onclick={retry}>Manual Retry</button>
+                            </div>
+                        )}
+                    </div>
+                )}
+            >
+                <AsyncService failureRate={failureRate()} />
+            </Catcher>
+            
+            {/* Catcher with custom retry logic */}
+            <Catcher 
+                showRetry={true}
+                retryCondition={(error, retryCount) => {
+                    // Only retry on network errors, not validation errors
+                    return error.type !== 'validation' && retryCount < 3
+                }}
+                fallback={(error, retry, retryCount, isRetrying) => (
+                    <div class="custom-retry-catcher">
+                        <h4>Smart Retry Handler</h4>
+                        <p>Error type: {error.type || 'unknown'}</p>
+                        <p>Message: {error.message}</p>
+                        {error.type === 'validation' ? (
+                            <div class="no-retry">
+                                <p>Validation errors cannot be retried</p>
+                                <button onclick={() => window.location.reload()}>Reset</button>
+                            </div>
+                        ) : (
+                            <button onclick={retry} disabled={retryCount >= 3}>
+                                Retry ({retryCount}/3)
+                            </button>
+                        )}
+                    </div>
+                )}
+            >
+                <SmartService failureRate={failureRate()} />
+            </Catcher>
+        </div>
+    )
+}
+
+component UnreliableService({ failureRate }) {
+    signal data = null
+    
+    createEffect(async () => {
+        try {
+            await new Promise(resolve => setTimeout(resolve, 500))
+            
+            if (Math.random() < failureRate) {
+                throw new Error(`Service failed (${Math.round(failureRate * 100)}% failure rate)`)
+            }
+            
+            data({ result: "Success!", timestamp: Date.now() })
+        } catch (error) {
+            throw error
+        }
+    })
+    
+    return (
+        <div class="service-result">
+            <h4>Unreliable Service</h4>
+            {data() ? (
+                <div>
+                    <p>✓ {data().result}</p>
+                    <small>Loaded at: {new Date(data().timestamp).toLocaleTime()}</small>
+                </div>
+            ) : (
+                <div>Loading...</div>
+            )}
+        </div>
+    )
+}
+
+component AsyncService({ failureRate }) {
+    const [data] = createResource(
+        () => failureRate,
+        async (rate) => {
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            
+            if (Math.random() < rate) {
+                const error = new Error("Async service timeout")
+                error.type = "network"
+                throw error
+            }
+            
+            return { data: "Async success", timestamp: Date.now() }
+        }
+    )
+    
+    return (
+        <div class="async-service">
+            <h4>Async Service</h4>
+            {data.loading && <div>Loading async data...</div>}
+            {data() && (
+                <div>Result: {data().data}</div>
+            )}
+        </div>
+    )
+}
+
+component SmartService({ failureRate }) {
+    signal attempts = 0
+    
+    const tryOperation = async () => {
+        attempts(prev => prev + 1)
+        await new Promise(resolve => setTimeout(resolve, 300))
+        
+        const random = Math.random()
+        if (random < failureRate * 0.7) {
+            const error = new Error("Network timeout")
+            error.type = "network"
+            throw error
+        } else if (random < failureRate) {
+            const error = new Error("Invalid input data")
+            error.type = "validation"
+            throw error
+        }
+        
+        return `Success after ${attempts()} attempts`
+    }
+    
+    const [result] = createResource(() => attempts(), tryOperation)
+    
+    return (
+        <div class="smart-service">
+            <h4>Smart Service</h4>
+            <p>Attempts: {attempts()}</p>
+            {result.loading && <div>Processing...</div>}
+            {result() && <div>Result: {result()}</div>}
+        </div>
+    )
+}

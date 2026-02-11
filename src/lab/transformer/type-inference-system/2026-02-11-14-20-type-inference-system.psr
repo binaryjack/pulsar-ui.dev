@@ -1,0 +1,50 @@
+// Type Inference System Test PSR File
+// Tests automatic type inference for variables and functions
+
+component TypeInferenceExample() {
+    // Type inference for signals
+    signal count = 0  // inferred as number
+    signal name = "John"  // inferred as string
+    signal isVisible = true  // inferred as boolean
+    signal items = [1, 2, 3]  // inferred as number[]
+    
+    // Type inference for computed values
+    computed doubledCount = count * 2  // inferred as number
+    computed upperName = name.toUpperCase()  // inferred as string
+    computed itemsLength = items.length  // inferred as number
+    
+    // Function return type inference
+    function processData(input) {  // params and return type should be inferred
+        if (typeof input === 'string') {
+            return input.length
+        }
+        if (typeof input === 'number') {
+            return input * 2
+        }
+        return 0
+    }
+    
+    // Complex type inference with objects
+    signal user = {
+        id: 1,
+        profile: {
+            name: "Jane",
+            settings: {
+                theme: "dark",
+                notifications: true
+            }
+        }
+    }  // should infer nested object structure
+    
+    // Array with mixed operations
+    computed processedItems = items.map(x => x * 2).filter(x => x > 2)
+    
+    return (
+        <div>
+            <p>Count: {count} (doubled: {doubledCount})</p>
+            <p>Name: {name} (upper: {upperName})</p>
+            <p>Items: {items.join(', ')}</p>
+            <p>User: {user.profile.name}</p>
+        </div>
+    )
+}

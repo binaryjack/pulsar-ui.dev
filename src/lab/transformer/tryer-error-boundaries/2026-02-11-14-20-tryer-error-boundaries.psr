@@ -1,0 +1,111 @@
+// Tryer Error Boundaries Test PSR File
+// Tests <Tryer fallback={error}> error boundary components
+
+component TryerExample() {
+    signal shouldThrow = false
+    signal errorType = "simple"
+    
+    return (
+        <div>
+            <div class="controls">
+                <label>
+                    <input 
+                        type="checkbox" 
+                        checked={shouldThrow()} 
+                        onchange={(e) => shouldThrow(e.target.checked)}
+                    />
+                    Trigger Error
+                </label>
+                
+                <select onchange={(e) => errorType(e.target.value)}>
+                    <option value="simple">Simple Error</option>
+                    <option value="async">Async Error</option>
+                    <option value="render">Render Error</option>
+                </select>
+            </div>
+            
+            {/* Basic Tryer boundary */}
+            <Tryer fallback={(error) => (
+                <div class="error-boundary">
+                    <h3>Something went wrong!</h3>
+                    <p>{error.message}</p>
+                    <button onclick={() => shouldThrow(false)}>Reset</button>
+                </div>
+            )}>
+                <RiskyComponent shouldThrow={shouldThrow()} errorType={errorType()} />
+            </Tryer>
+            
+            {/* Nested Tryer boundaries */}
+            <Tryer fallback={(error) => <div class="outer-error">Outer error: {error.message}</div>}>
+                <div class="outer-content">
+                    <h3>Outer Content</h3>
+                    <Tryer fallback={(error) => <div class="inner-error">Inner error: {error.message}</div>}>
+                        <InnerRiskyComponent shouldThrow={shouldThrow()} />
+                    </Tryer>
+                </div>
+            </Tryer>
+            
+            {/* Tryer with recovery */}
+            <Tryer 
+                fallback={(error, retry) => (
+                    <div class="error-with-retry">
+                        <p>Error: {error.message}</p>
+                        <button onclick={retry}>Try Again</button>
+                        <button onclick={() => shouldThrow(false)}>Reset State</button>
+                    </div>
+                )}
+            >
+                <RecoverableComponent shouldThrow={shouldThrow()} />
+            </Tryer>
+        </div>
+    )
+}
+
+component RiskyComponent({ shouldThrow, errorType }) {
+    if (shouldThrow) {
+        switch (errorType) {
+            case "simple":
+                throw new Error("Simple component error")
+            case "async":
+                throw new Error("Async operation failed")
+            case "render":
+                throw new Error("Render-time error")
+            default:
+                throw new Error("Unknown error type")
+        }
+    }
+    
+    return (
+        <div class="safe-content">
+            <p>This component is working fine!</p>
+            <p>Error type would be: {errorType}</p>
+        </div>
+    )
+}
+
+component InnerRiskyComponent({ shouldThrow }) {
+    if (shouldThrow) {
+        throw new Error("Inner component failed")
+    }
+    
+    return <div class="inner-safe">Inner component is safe</div>
+}
+
+component RecoverableComponent({ shouldThrow }) {
+    signal attemptCount = 0
+    
+    createEffect(() => {
+        if (shouldThrow) {
+            attemptCount(prev => prev + 1)
+            if (attemptCount() < 3) {
+                throw new Error(`Attempt ${attemptCount()} failed`)
+            }
+        }
+    })
+    
+    if (shouldThrow && attemptCount() >= 3) {
+        return <div class="recovered">Recovered after {attemptCount()} attempts</div>
+    }
+    
+    return <div class="normal">Component working normally</div>
+}

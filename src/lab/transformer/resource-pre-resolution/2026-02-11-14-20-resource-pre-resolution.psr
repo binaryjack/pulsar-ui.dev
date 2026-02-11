@@ -1,0 +1,405 @@
+// Resource Pre Resolution Test PSR File
+// Tests resource pre-resolution and preloading strategies
+
+component ResourcePreResolutionExample() {
+    signal selectedUserId = null
+    signal preloadEnabled = true
+    signal hoverDelay = 500
+    signal preloadedUserIds = []
+    
+    const users = [
+        { id: 1, name: 'Alice' },
+        { id: 2, name: 'Bob' },
+        { id: 3, name: 'Charlie' },
+        { id: 4, name: 'Diana' },
+        { id: 5, name: 'Eve' }
+    ]
+    
+    // Resource that can be pre-resolved
+    const [userDetails, { preload }] = createResource(
+        () => selectedUserId(),
+        async (id) => {
+            console.log('Fetching user details for:', id)
+            await new Promise(resolve => setTimeout(resolve, 1500))
+            
+            return {
+                id,
+                name: users.find(u => u.id === id)?.name,
+                email: `user${id}@example.com`,
+                bio: `Biography for user ${id}. This is a detailed description.`,
+                posts: 42 + id * 10,
+                followers: 100 + id * 50
+            }
+        }
+    )
+    
+    // Hover to preload
+    const handleUserHover = (userId) => {
+        if (!preloadEnabled()) return
+        
+        if (!preloadedUserIds().includes(userId)) {
+            console.log('Preloading user:', userId)
+            preloadedUserIds(prev => [...prev, userId])
+            
+            // Trigger preload after delay
+            setTimeout(() => {
+                preload(userId)
+            }, hoverDelay())
+        }
+    }
+    
+    const handleUserClick = (userId) => {
+        console.log('Loading user:', userId)
+        selectedUserId(userId)
+    }
+    
+    return (
+        <div>
+            <h1>Resource Pre-Resolution Demo</h1>
+            
+            <div class="controls">
+                <h3>Preload Settings</h3>
+                
+                <label>
+                    <input 
+                        type="checkbox"
+                        checked={preloadEnabled()}
+                        onchange={(e) => preloadEnabled(e.target.checked)}
+                    />
+                    Enable hover preloading
+                </label>
+                
+                <label>
+                    Hover delay: {hoverDelay()}ms
+                    <input 
+                        type="range"
+                        min="0"
+                        max="2000"
+                        step="100"
+                        value={hoverDelay()}
+                        oninput={(e) => hoverDelay(parseInt(e.target.value))}
+                    />
+                </label>
+                
+                <div class="preload-status">
+                    Preloaded users: {preloadedUserIds().join(', ') || 'None'}
+                </div>
+            </div>
+            
+            <div class="content-layout">
+                <div class="user-list">
+                    <h3>Users</h3>
+                    <p class="hint">
+                        {preloadEnabled() 
+                            ? 'Hover over a user to preload their data' 
+                            : 'Preloading disabled - click to load'}
+                    </p>
+                    
+                    <For each={users} key={(user) => user.id}>
+                        {(user) => (
+                            <div 
+                                class={`user-item ${selectedUserId() === user.id ? 'selected' : ''} ${preloadedUserIds().includes(user.id) ? 'preloaded' : ''}`}
+                                onmouseenter={() => handleUserHover(user.id)}
+                                onclick={() => handleUserClick(user.id)}
+                            >
+                                <span class="user-name">{user.name}</span>
+                                {preloadedUserIds().includes(user.id) && (
+                                    <span class="preload-badge">✓ Preloaded</span>
+                                )}
+                            </div>
+                        )}
+                    </For>
+                </div>
+                
+                <div class="user-details">
+                    <h3>User Details</h3>
+                    
+                    {!selectedUserId() && (
+                        <div class="empty-state">
+                            Select a user to view details
+                        </div>
+                    )}
+                    
+                    {selectedUserId() && (
+                        <div class="details-content">
+                            {userDetails.loading && (
+                                <div class="loading-indicator">
+                                    <div class="spinner"></div>
+                                    <p>
+                                        {preloadedUserIds().includes(selectedUserId()) 
+                                            ? 'Loading from cache...' 
+                                            : 'Fetching user data...'}
+                                    </p>
+                                </div>
+                            )}
+                            
+                            {userDetails() && !userDetails.loading && (
+                                <div class="details-card">
+                                    <h4>{userDetails().name}</h4>
+                                    <p class="email">{userDetails().email}</p>
+                                    <p class="bio">{userDetails().bio}</p>
+                                    
+                                    <div class="stats">
+                                        <div class="stat">
+                                            <strong>{userDetails().posts}</strong>
+                                            <span>Posts</span>
+                                        </div>
+                                        <div class="stat">
+                                            <strong>{userDetails().followers}</strong>
+                                            <span>Followers</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+            
+            <RoutePreloadingExample />
+            <PrefetchOnVisibleExample />
+            <AggressivePreloadExample />
+        </div>
+    )
+}
+
+component RoutePreloadingExample() {
+    signal currentRoute = 'home'
+    signal hoveredRoute = null
+    
+    const routes = [
+        { path: 'home', label: 'Home' },
+        { path: 'dashboard', label: 'Dashboard' },
+        { path: 'profile', label: 'Profile' },
+        { path: 'settings', label: 'Settings' }
+    ]
+    
+    const [routeData, { preload }] = createResource(
+        () => currentRoute(),
+        async (route) => {
+            console.log('Loading route:', route)
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            
+            return {
+                route,
+                content: `Content for ${route} page`,
+                loadedAt: Date.now()
+            }
+        }
+    )
+    
+    const handleRouteHover = (routePath) => {
+        hoveredRoute(routePath)
+        
+        // Preload route data on hover
+        setTimeout(() => {
+            if (hoveredRoute() === routePath) {
+                console.log('Preloading route:', routePath)
+                preload(routePath)
+            }
+        }, 300)
+    }
+    
+    return (
+        <div class="route-preloading">
+            <h3>Route Preloading Pattern</h3>
+            
+            <nav class="route-nav">
+                <For each={routes} key={(route) => route.path}>
+                    {(route) => (
+                        <a 
+                            class={`nav-link ${currentRoute() === route.path ? 'active' : ''}`}
+                            onmouseenter={() => handleRouteHover(route.path)}
+                            onmouseleave={() => hoveredRoute(null)}
+                            onclick={(e) => {
+                                e.preventDefault()
+                                currentRoute(route.path)
+                            }}
+                            href={`#${route.path}`}
+                        >
+                            {route.label}
+                            {hoveredRoute() === route.path && ' 🔄'}
+                        </a>
+                    )}
+                </For>
+            </nav>
+            
+            <div class="route-content">
+                {routeData.loading && (
+                    <div class="loading">Loading {currentRoute()}...</div>
+                )}
+                
+                {routeData() && !routeData.loading && (
+                    <div class="page-content">
+                        <h4>{routeData().route}</h4>
+                        <p>{routeData().content}</p>
+                        <small>Loaded at: {new Date(routeData().loadedAt).toLocaleTimeString()}</small>
+                    </div>
+                )}
+            </div>
+        </div>
+    )
+}
+
+component PrefetchOnVisibleExample() {
+    signal elementRef = null
+    signal isVisible = false
+    signal dataFetched = false
+    
+    const [visibleData] = createResource(
+        () => isVisible() && !dataFetched(),
+        async () => {
+            console.log('Fetching data when visible...')
+            dataFetched(true)
+            await new Promise(resolve => setTimeout(resolve, 1500))
+            
+            return {
+                items: Array.from({ length: 10 }, (_, i) => ({
+                    id: i + 1,
+                    name: `Item ${i + 1}`
+                }))
+            }
+        }
+    )
+    
+    // Setup intersection observer
+    onMount(() => {
+        if (!elementRef()) return
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    console.log('Element is visible - prefetching')
+                    isVisible(true)
+                }
+            })
+        }, { threshold: 0.1 })
+        
+        observer.observe(elementRef())
+        
+        onCleanup(() => {
+            observer.disconnect()
+        })
+    })
+    
+    return (
+        <div class="prefetch-on-visible">
+            <h3>Prefetch on Visible Pattern</h3>
+            
+            <div class="spacer">
+                Scroll down to load data when the section becomes visible...
+            </div>
+            
+            <div class="content-section" ref={elementRef}>
+                <h4>Below-the-Fold Content</h4>
+                
+                {!isVisible() && (
+                    <div class="not-visible">
+                        Content not visible yet - data will load when scrolled into view
+                    </div>
+                )}
+                
+                {visibleData.loading && (
+                    <div class="loading">
+                        Loading content... (triggered by visibility)
+                    </div>
+                )}
+                
+                {visibleData() && (
+                    <div class="items">
+                        <For each={visibleData().items} key={(item) => item.id}>
+                            {(item) => (
+                                <div class="item">{item.name}</div>
+                            )}
+                        </For>
+                    </div>
+                )}
+            </div>
+        </div>
+    )
+}
+
+component AggressivePreloadExample() {
+    signal currentPage = 1
+    const totalPages = 5
+    
+    // Preload current, previous, and next pages
+    const pagesToPreload = () => {
+        const pages = [currentPage()]
+        if (currentPage() > 1) pages.push(currentPage() - 1)
+        if (currentPage() < totalPages) pages.push(currentPage() + 1)
+        return pages
+    }
+    
+    const [pageData, { preload }] = createResource(
+        () => currentPage(),
+        async (page) => {
+            console.log('Loading page:', page)
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            
+            return {
+                page,
+                items: Array.from({ length: 10 }, (_, i) => ({
+                    id: (page - 1) * 10 + i + 1,
+                    title: `Item ${(page - 1) * 10 + i + 1} on page ${page}`
+                }))
+            }
+        }
+    )
+    
+    // Aggressively preload adjacent pages
+    createEffect(() => {
+        const pages = pagesToPreload()
+        pages.forEach(page => {
+            if (page !== currentPage()) {
+                console.log('Aggressively preloading page:', page)
+                setTimeout(() => preload(page), 500)
+            }
+        })
+    })
+    
+    return (
+        <div class="aggressive-preload">
+            <h3>Aggressive Preload Pattern</h3>
+            <p>Current page and adjacent pages are automatically preloaded</p>
+            
+            <div class="pagination">
+                <button 
+                    onclick={() => currentPage(Math.max(1, currentPage() - 1))}
+                    disabled={currentPage() === 1}
+                >
+                    Previous
+                </button>
+                
+                <span class="page-indicator">
+                    Page {currentPage()} of {totalPages}
+                </span>
+                
+                <button 
+                    onclick={() => currentPage(Math.min(totalPages, currentPage() + 1))}
+                    disabled={currentPage() === totalPages}
+                >
+                    Next
+                </button>
+            </div>
+            
+            <div class="page-content">
+                {pageData.loading && <div class="loading">Loading page...</div>}
+                
+                {pageData() && !pageData.loading && (
+                    <div class="items-list">
+                        <For each={pageData().items} key={(item) => item.id}>
+                            {(item) => (
+                                <div class="item-card">{item.title}</div>
+                            )}
+                        </For>
+                    </div>
+                )}
+            </div>
+            
+            <div class="preload-hint">
+                Preloaded pages: {pagesToPreload().join(', ')}
+            </div>
+        </div>
+    )
+}

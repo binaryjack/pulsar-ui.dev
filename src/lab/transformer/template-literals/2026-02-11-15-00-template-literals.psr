@@ -1,0 +1,146 @@
+/**
+ * Template Literals Test - PSR File
+ * 
+ * Tests comprehensive template literal functionality with ${} interpolation
+ * This file should transform correctly if template literals are implemented
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+export interface ITemplateLiteralTestProps {
+  initialTheme?: 'light' | 'dark';
+  initialSize?: number;
+}
+
+export component TemplateLiteralTest({
+  initialTheme = 'light',
+  initialSize = 16
+}: ITemplateLiteralTestProps) {
+  const [theme, setTheme] = createSignal<'light' | 'dark'>(initialTheme);
+  const [size, setSize] = createSignal<number>(initialSize);
+  const [isActive, setIsActive] = createSignal<boolean>(true);
+  const [count, setCount] = createSignal<number>(0);
+  const [userName, setUserName] = createSignal<string>('Tadeo');
+
+  const toggleTheme = () => {
+    setTheme(theme() === 'light' ? 'dark' : 'light');
+  };
+
+  const increaseSize = () => {
+    setSize(size() + 2);
+  };
+
+  const toggleActive = () => {
+    setIsActive(!isActive());
+  };
+
+  const increment = () => {
+    setCount(count() + 1);
+  };
+
+  // Test 1: Simple template literal in style attribute
+  return (
+    <div style={`background: ${theme() === 'light' ? '#ffffff' : '#000000'}; padding: 20px;`}>
+      
+      {/* Test 2: Complex template literal with multiple expressions */}
+      <h1 
+        className={`title size-${size()} theme-${theme()} ${isActive() ? 'active' : 'inactive'}`}
+        style={`
+          font-size: ${size()}px; 
+          color: ${theme() === 'light' ? '#333' : '#fff'};
+          margin-bottom: ${size() / 2}px;
+          font-weight: ${isActive() ? 'bold' : 'normal'};
+        `}
+      >
+        {/* Test 3: Template literal in text content */}
+        {`Welcome ${userName()}! You have ${count()} notifications.`}
+      </h1>
+
+      {/* Test 4: Template literal with ternary and function calls */}
+      <button
+        onClick={toggleTheme}
+        className={`btn btn-${theme()} ${isActive() ? 'btn-active' : 'btn-inactive'}`}
+        style={`
+          padding: ${size() - 8}px ${size()}px;
+          background: ${theme() === 'light' ? '#007bff' : '#0056b3'};
+          border: 2px solid ${isActive() ? '#0056b3' : '#6c757d'};
+          border-radius: ${Math.max(4, size() / 4)}px;
+          font-size: ${Math.min(size(), 24)}px;
+        `}
+      >
+        {`Switch to ${theme() === 'light' ? 'Dark' : 'Light'} Theme`}
+      </button>
+
+      {/* Test 5: Nested template literals and complex expressions */}
+      <div 
+        className={`stats-panel ${theme()}-theme`}
+        style={`
+          margin-top: ${size()}px;
+          padding: ${size() / 2}px;
+          background: ${theme() === 'light' ? '#f8f9fa' : '#343a40'};
+          border-left: 4px solid ${isActive() ? '#28a745' : '#dc3545'};
+        `}
+      >
+        {/* Test 6: Template literal with object property access */}
+        <p style={`color: ${theme() === 'light' ? '#212529' : '#f8f9fa'}; margin: 0;`}>
+          {`Status: ${isActive() ? 'Online' : 'Offline'} | Size: ${size()}px | Count: ${count()}`}
+        </p>
+        
+        {/* Test 7: Template literal with method chaining */}
+        <p style={`font-size: ${size() * 0.875}px; color: ${theme() === 'light' ? '#6c757d' : '#adb5bd'};`}>
+          {`Theme: ${theme().toUpperCase()} | User: ${userName().toLowerCase()}`}
+        </p>
+      </div>
+
+      {/* Test 8: Template literals in event handlers */}
+      <div style={`margin-top: ${size()}px; display: flex; gap: ${size() / 2}px;`}>
+        <button 
+          onClick={increaseSize}
+          style={`padding: ${size() / 2}px; font-size: ${size() * 0.75}px;`}
+        >
+          {`Increase Size (${size()}px)`}
+        </button>
+        
+        <button 
+          onClick={toggleActive}
+          style={`padding: ${size() / 2}px; font-size: ${size() * 0.75}px;`}
+        >
+          {`Toggle ${isActive() ? 'Off' : 'On'}`}
+        </button>
+        
+        <button 
+          onClick={increment}
+          style={`padding: ${size() / 2}px; font-size: ${size() * 0.75}px;`}
+        >
+          {`Count: ${count()}`}
+        </button>
+      </div>
+
+      {/* Test 9: Escaped characters in template literals */}
+      <div style={`margin-top: ${size()}px; font-family: monospace;`}>
+        <code style={`background: ${theme() === 'light' ? '#f1f3f4' : '#2d3748'}; padding: 4px;`}>
+          {`Template literal: \`Hello \${world}\` - Size: ${size()}px`}
+        </code>
+      </div>
+
+    </div>
+  );
+}
+
+/**
+ * Expected transformation should generate:
+ * - t_element calls with reactive template literal attributes
+ * - Proper ${} expression wiring for reactivity  
+ * - Clean string concatenation for static parts
+ * - Reactive updates when signals change
+ * 
+ * This tests covers all major template literal scenarios:
+ * 1. Simple expressions: ${signal()}
+ * 2. Complex expressions: ${condition ? 'a' : 'b'}  
+ * 3. Method calls: ${signal().method()}
+ * 4. Nested expressions: ${Math.max(a, b)}
+ * 5. Multiple expressions per template
+ * 6. Template literals in different JSX contexts
+ * 7. Escaped characters
+ * 8. Mixed quotes and expressions
+ */

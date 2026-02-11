@@ -1,0 +1,375 @@
+// On Cleanup Patterns Test PSR File
+// Tests onCleanup(() => {}) cleanup pattern transformations
+
+component OnCleanupPatternsExample() {
+    signal activeTab = "intervals"
+    signal cleanupLogs = []
+    
+    const addLog = (message) => {
+        cleanupLogs(prev => [...prev, {
+            id: Date.now(),
+            message,
+            timestamp: new Date().toLocaleTimeString()
+        }])
+    }
+    
+    return (
+        <div>
+            <h1>onCleanup Patterns Demo</h1>
+            
+            <div class="tabs">
+                <button 
+                    class={activeTab() === "intervals" ? "active" : ""}
+                    onclick={() => activeTab("intervals")}
+                >
+                    Intervals
+                </button>
+                <button 
+                    class={activeTab() === "events" ? "active" : ""}
+                    onclick={() => activeTab("events")}
+                >
+                    Event Listeners
+                </button>
+                <button 
+                    class={activeTab() === "subscriptions" ? "active" : ""}
+                    onclick={() => activeTab("subscriptions")}
+                >
+                    Subscriptions
+                </button>
+                <button 
+                    class={activeTab() === "resources" ? "active" : ""}
+                    onclick={() => activeTab("resources")}
+                >
+                    Resources
+                </button>
+            </div>
+            
+            <div class="cleanup-log">
+                <h3>Cleanup Log</h3>
+                <button onclick={() => cleanupLogs([])}>Clear Log</button>
+                <div class="log-entries">
+                    <For each={cleanupLogs()} key={(log) => log.id}>
+                        {(log) => (
+                            <div class="log-entry">
+                                <span class="timestamp">{log.timestamp}</span>
+                                <span class="message">{log.message}</span>
+                            </div>
+                        )}
+                    </For>
+                </div>
+            </div>
+            
+            <div class="content">
+                {/* Components will cleanup when tab changes */}
+                <Show when={activeTab() === "intervals"}>
+                    <IntervalCleanupExample onLog={addLog} />
+                </Show>
+                
+                <Show when={activeTab() === "events"}>
+                    <EventListenerCleanupExample onLog={addLog} />
+                </Show>
+                
+                <Show when={activeTab() === "subscriptions"}>
+                    <SubscriptionCleanupExample onLog={addLog} />
+                </Show>
+                
+                <Show when={activeTab() === "resources"}>
+                    <ResourceCleanupExample onLog={addLog} />
+                </Show>
+            </div>
+        </div>
+    )
+}
+
+component IntervalCleanupExample({ onLog }) {
+    signal count = 0
+    signal intervalDelay = 1000
+    signal isRunning = false
+    
+    createEffect(() => {
+        if (!isRunning()) return
+        
+        onLog('Starting interval')
+        
+        const interval = setInterval(() => {
+            count(prev => prev + 1)
+        }, intervalDelay())
+        
+        onCleanup(() => {
+            onLog('Cleaning up interval')
+            clearInterval(interval)
+        })
+    })
+    
+    onMount(() => {
+        onLog('IntervalCleanupExample mounted')
+    })
+    
+    onCleanup(() => {
+        onLog('IntervalCleanupExample unmounted')
+    })
+    
+    return (
+        <div class="interval-cleanup">
+            <h3>Interval Cleanup</h3>
+            <p>Count: {count()}</p>
+            <p>Delay: {intervalDelay()}ms</p>
+            
+            <div class="controls">
+                <button onclick={() => isRunning(!isRunning())}>
+                    {isRunning() ? 'Stop' : 'Start'} Interval
+                </button>
+                
+                <input 
+                    type="range"
+                    min="100"
+                    max="5000"
+                    step="100"
+                    value={intervalDelay()}
+                    oninput={(e) => {
+                        intervalDelay(parseInt(e.target.value))
+                        onLog(`Interval delay changed to ${e.target.value}ms`)
+                    }}
+                />
+                
+                <button onclick={() => count(0)}>Reset Count</button>
+            </div>
+        </div>
+    )
+}
+
+component EventListenerCleanupExample({ onLog }) {
+    signal mouseX = 0
+    signal mouseY = 0
+    signal trackingEnabled = false
+    
+    createEffect(() => {
+        if (!trackingEnabled()) return
+        
+        const handleMouseMove = (e) => {
+            mouseX(e.clientX)
+            mouseY(e.clientY)
+        }
+        
+        const handleResize = () => {
+            onLog(`Window resized to ${window.innerWidth}x${window.innerHeight}`)
+        }
+        
+        onLog('Adding event listeners')
+        
+        window.addEventListener('mousemove', handleMouseMove)
+        window.addEventListener('resize', handleResize)
+        
+        onCleanup(() => {
+            onLog('Removing event listeners')
+            window.removeEventListener('mousemove', handleMouseMove)
+            window.removeEventListener('resize', handleResize)
+        })
+    })
+    
+    onCleanup(() => {
+        onLog('EventListenerCleanupExample unmounted')
+    })
+    
+    return (
+        <div class="event-cleanup">
+            <h3>Event Listener Cleanup</h3>
+            
+            <div class="controls">
+                <label>
+                    <input 
+                        type="checkbox"
+                        checked={trackingEnabled()}
+                        onchange={(e) => {
+                            trackingEnabled(e.target.checked)
+                            onLog(`Mouse tracking ${e.target.checked ? 'enabled' : 'disabled'}`)
+                        }}
+                    />
+                    Track Mouse Movement
+                </label>
+            </div>
+            
+            <Show when={trackingEnabled()}>
+                <div class="mouse-position">
+                    <p>Mouse X: {mouseX()}</p>
+                    <p>Mouse Y: {mouseY()}</p>
+                </div>
+            </Show>
+        </div>
+    )
+}
+
+component SubscriptionCleanupExample({ onLog }) {
+    signal messages = []
+    signal subscribed = false
+    
+    // Fake WebSocket/EventSource
+    class FakeSubscription {
+        constructor(onMessage) {
+            this.onMessage = onMessage
+            this.interval = null
+        }
+        
+        start() {
+            this.interval = setInterval(() => {
+                this.onMessage({
+                    id: Date.now(),
+                    data: `Message ${Math.floor(Math.random() * 100)}`
+                })
+            }, 2000)
+        }
+        
+        stop() {
+            if (this.interval) {
+                clearInterval(this.interval)
+                this.interval = null
+            }
+        }
+    }
+    
+    createEffect(() => {
+        if (!subscribed()) return
+        
+        onLog('Creating subscription')
+        
+        const subscription = new FakeSubscription((message) => {
+            messages(prev => [...prev, message])
+        })
+        
+        subscription.start()
+        
+        onCleanup(() => {
+            onLog('Cleaning up subscription')
+            subscription.stop()
+        })
+    })
+    
+    onCleanup(() => {
+        onLog('SubscriptionCleanupExample unmounted')
+    })
+    
+    return (
+        <div class="subscription-cleanup">
+            <h3>Subscription Cleanup</h3>
+            
+            <div class="controls">
+                <button onclick={() => {
+                    subscribed(!subscribed())
+                    onLog(`Subscription ${!subscribed() ? 'started' : 'stopped'}`)
+                }}>
+                    {subscribed() ? 'Unsubscribe' : 'Subscribe'}
+                </button>
+                
+                <button onclick={() => messages([])}>
+                    Clear Messages
+                </button>
+            </div>
+            
+            <div class="messages">
+                <h4>Messages ({messages().length}):</h4>
+                <div class="message-list">
+                    <For each={messages()} key={(msg) => msg.id}>
+                        {(message) => (
+                            <div class="message">
+                                {message.data}
+                            </div>
+                        )}
+                    </For>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+component ResourceCleanupExample({ onLog }) {
+    signal userId = 1
+    signal autoRefresh = false
+    signal refreshInterval = null
+    
+    const [userData] = createResource(
+        () => userId(),
+        async (id) => {
+            onLog(`Fetching user ${id}`)
+            
+            const controller = new AbortController()
+            
+            // Setup cleanup for the fetch
+            onCleanup(() => {
+                onLog(`Aborting fetch for user ${id}`)
+                controller.abort()
+            })
+            
+            try {
+                await new Promise((resolve, reject) => {
+                    const timeout = setTimeout(resolve, 2000)
+                    
+                    controller.signal.addEventListener('abort', () => {
+                        clearTimeout(timeout)
+                        reject(new Error('Aborted'))
+                    })
+                })
+                
+                return {
+                    id,
+                    name: `User ${id}`,
+                    email: `user${id}@example.com`
+                }
+            } catch (error) {
+                onLog(`Fetch aborted for user ${id}`)
+                throw error
+            }
+        }
+    )
+    
+    createEffect(() => {
+        if (!autoRefresh()) return
+        
+        onLog('Starting auto-refresh')
+        
+        const interval = setInterval(() => {
+            userId(prev => prev + 1)
+        }, 5000)
+        
+        onCleanup(() => {
+            onLog('Stopping auto-refresh')
+            clearInterval(interval)
+        })
+    })
+    
+    onCleanup(() => {
+        onLog('ResourceCleanupExample unmounted')
+    })
+    
+    return (
+        <div class="resource-cleanup">
+            <h3>Resource Cleanup</h3>
+            
+            <div class="controls">
+                <button onclick={() => userId(prev => prev + 1)}>
+                    Load Next User ({userId()})
+                </button>
+                
+                <label>
+                    <input 
+                        type="checkbox"
+                        checked={autoRefresh()}
+                        onchange={(e) => autoRefresh(e.target.checked)}
+                    />
+                    Auto-refresh every 5s
+                </label>
+            </div>
+            
+            <div class="user-data">
+                {userData.loading && <p>Loading user...</p>}
+                {userData.error && <p class="error">Error: {userData.error.message}</p>}
+                {userData() && (
+                    <div>
+                        <p>ID: {userData().id}</p>
+                        <p>Name: {userData().name}</p>
+                        <p>Email: {userData().email}</p>
+                    </div>
+                )}
+            </div>
+        </div>
+    )
+}

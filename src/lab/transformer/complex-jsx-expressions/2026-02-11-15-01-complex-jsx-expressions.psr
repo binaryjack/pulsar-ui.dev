@@ -1,0 +1,227 @@
+/**
+ * Complex JSX Expressions Test - PSR File
+ * 
+ * Tests comprehensive complex expression functionality in JSX
+ * This file should transform correctly if complex JSX expressions are implemented
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+export interface IComplexJSXTestProps {
+  initialItems?: Array<{
+    id: number;
+    name: string;
+    status: 'active' | 'inactive' | 'pending';
+    createdAt: Date;
+    checked: boolean;
+    metadata?: {
+      category: string;
+      tags: string[];
+      priority?: number;
+    };
+  }>;
+}
+
+export component ComplexJSXTest({ initialItems = [] }: IComplexJSXTestProps) {
+  const [items, setItems] = createSignal(initialItems);
+  const [filter, setFilter] = createSignal<'all' | 'active' | 'checked'>('all');
+  const [user, setUser] = createSignal<{
+    profile?: {
+      name: string;
+      settings?: {
+        theme: 'light' | 'dark';
+        locale: string;
+      };
+    };
+  }>({});
+
+  // Test 1: Method chaining with filter and map
+  const filteredItems = () => {
+    return items()
+      .filter(item => {
+        if (filter() === 'all') return true;
+        if (filter() === 'active') return item.status === 'active';
+        if (filter() === 'checked') return item.checked;
+        return false;
+      })
+      .sort((a, b) => a.name.localeCompare(b.name));
+  };
+
+  const formatDate = (date: Date): string => {
+    return date.toLocaleDateString();
+  };
+
+  const toggleItem = (id: number) => {
+    setItems(items().map(item => 
+      item.id === id ? { ...item, checked: !item.checked } : item
+    ));
+  };
+
+  const updateSelected = () => {
+    const selected = items().filter(item => item.checked);
+    console.log('Selected items:', selected);
+  };
+
+  return (
+    <div style="padding: 20px; font-family: sans-serif;">
+      
+      {/* Test 1: Simple method chaining in JSX */}
+      <h2>Items Count: {items().length} (Filtered: {filteredItems().length})</h2>
+      
+      {/* Test 2: Complex method chaining with callbacks */}
+      <div>
+        {filteredItems()
+          .filter(item => item.status !== 'inactive')
+          .map((item, index) => (
+            <div 
+              key={item.id}
+              className={`item-${index} status-${item.status} ${item.checked ? 'checked' : 'unchecked'}`}
+              style={`
+                padding: 10px; 
+                margin: 5px 0; 
+                background: ${item.checked ? '#e7f3ff' : '#f8f9fa'}; 
+                border-left: 4px solid ${item.status === 'active' ? '#28a745' : '#6c757d'};
+              `}
+            >
+              {/* Test 3: Object property access chains */}
+              <h3>{item.name} - {formatDate(item.createdAt)}</h3>
+              
+              {/* Test 4: Optional chaining */}
+              {item.metadata?.category && (
+                <span>Category: {item.metadata.category}</span>
+              )}
+              
+              {/* Test 5: Complex conditional with method calls */}
+              {item.metadata?.tags?.length > 0 ? (
+                <div>
+                  Tags: {item.metadata.tags.join(', ')}
+                  {item.metadata.priority && ` (Priority: ${item.metadata.priority})`}
+                </div>
+              ) : (
+                <div>No tags</div>
+              )}
+              
+              {/* Test 6: Event handler with complex expression */}
+              <button 
+                onClick={() => toggleItem(item.id)}
+                style={`background: ${item.checked ? '#dc3545' : '#007bff'}; color: white; border: none; padding: 5px 10px;`}
+              >
+                {item.checked ? 'Uncheck' : 'Check'}
+              </button>
+            </div>
+          ))
+        }
+      </div>
+
+      {/* Test 7: Nested method calls and conditional rendering */}
+      <div style="margin-top: 20px;">
+        <h3>Statistics</h3>
+        
+        {/* Test 8: Complex filtering and calculations */}
+        <div>
+          Active Items: {items().filter(item => item.status === 'active').length}
+        </div>
+        <div>
+          Checked Items: {items().filter(item => item.checked).length}
+        </div>
+        <div>
+          Items with Tags: {items().filter(item => item.metadata?.tags?.length > 0).length}
+        </div>
+        
+        {/* Test 9: Method chaining with reduce */}
+        <div>
+          Total Priority: {items()
+            .filter(item => item.metadata?.priority)
+            .reduce((sum, item) => sum + (item.metadata?.priority || 0), 0)
+          }
+        </div>
+      </div>
+
+      {/* Test 10: Optional chaining in different contexts */}
+      <div style="margin-top: 20px;">
+        <h3>User Profile</h3>
+        
+        {user()?.profile ? (
+          <div>
+            <p>Name: {user().profile?.name}</p>
+            <p>Theme: {user().profile?.settings?.theme || 'default'}</p>
+            <p>Locale: {user().profile?.settings?.locale || 'en-US'}</p>
+          </div>
+        ) : (
+          <p>No user profile available</p>
+        )}
+      </div>
+
+      {/* Test 11: Event handlers with complex expressions */}
+      <div style="margin-top: 20px;">
+        <button 
+          onClick={() => setFilter(filter() === 'all' ? 'active' : 'all')}
+          style="margin-right: 10px;"
+        >
+          Filter: {filter() === 'all' ? 'Show All' : 'Show Active'} 
+          ({(filter() === 'all' ? items() : items().filter(i => i.status === 'active')).length})
+        </button>
+        
+        <button 
+          onClick={updateSelected}
+          disabled={items().filter(item => item.checked).length === 0}
+        >
+          Update {items().filter(item => item.checked).length} Selected Items
+        </button>
+      </div>
+
+      {/* Test 12: Conditional rendering with complex expressions */}
+      {items().some(item => item.checked) && (
+        <div style="margin-top: 20px; padding: 15px; background: #d4edda; border-radius: 4px;">
+          <strong>Selection Summary:</strong>
+          <ul>
+            {items()
+              .filter(item => item.checked)
+              .map(item => (
+                <li key={item.id}>
+                  {item.name} 
+                  {item.metadata?.category && ` (${item.metadata.category})`}
+                  {item.metadata?.priority && ` - Priority: ${item.metadata.priority}`}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      )}
+
+      {/* Test 13: Nested ternary with method calls */}
+      <div style="margin-top: 20px;">
+        <p style={`color: ${
+          items().filter(i => i.checked).length > items().length / 2 
+            ? '#28a745' 
+            : items().filter(i => i.checked).length > 0 
+              ? '#ffc107' 
+              : '#dc3545'
+        };`}>
+          Selection Status: {
+            items().filter(i => i.checked).length > items().length / 2
+              ? 'Majority Selected'
+              : items().filter(i => i.checked).length > 0
+                ? 'Partially Selected' 
+                : 'None Selected'
+          }
+        </p>
+      </div>
+
+    </div>
+  );
+}
+
+/**
+ * Expected transformation should handle:
+ * 1. Method chaining: items().filter().map()
+ * 2. Arrow functions in JSX: (item, index) => <div/>
+ * 3. Optional chaining: user?.profile?.name
+ * 4. Complex conditionals: condition ? a : b  
+ * 5. Nested expressions with proper reactivity
+ * 6. Event handlers with complex logic
+ * 7. Property access chains: item.metadata.category
+ * 8. Method calls within expressions: formatDate()
+ * 9. Reactive dependency tracking
+ * 10. Performance optimization for static parts
+ */

@@ -1,0 +1,240 @@
+// Context Providers Test PSR File
+// Tests createContext() provider transformations
+
+const ThemeContext = createContext()
+const UserContext = createContext()
+const AppStateContext = createContext()
+
+component CreateContextExample() {
+    signal currentTheme = "light"
+    signal user = { name: "John", id: 1, preferences: {} }
+    signal appState = { 
+        notifications: [], 
+        isOnline: true, 
+        lastSync: Date.now() 
+    }
+    
+    const themeValue = () => ({
+        theme: currentTheme(),
+        setTheme: (newTheme) => currentTheme(newTheme),
+        colors: currentTheme() === 'light' 
+            ? { bg: '#fff', text: '#000' }
+            : { bg: '#000', text: '#fff' }
+    })
+    
+    const userValue = () => ({
+        user: user(),
+        updateUser: (updates) => user(prev => ({ ...prev, ...updates })),
+        logout: () => user(null)
+    })
+    
+    const appStateValue = () => ({
+        ...appState(),
+        addNotification: (notification) => {
+            appState(prev => ({
+                ...prev,
+                notifications: [...prev.notifications, {
+                    id: Date.now(),
+                    ...notification
+                }]
+            }))
+        },
+        clearNotifications: () => {
+            appState(prev => ({ ...prev, notifications: [] }))
+        },
+        setOnlineStatus: (status) => {
+            appState(prev => ({ ...prev, isOnline: status }))
+        }
+    })
+    
+    return (
+        <div>
+            <div class="context-controls">
+                <select onchange={(e) => currentTheme(e.target.value)}>
+                    <option value="light">Light Theme</option>
+                    <option value="dark">Dark Theme</option>
+                </select>
+                
+                <button onclick={() => userValue().updateUser({ name: 'Jane' })}>
+                    Change User Name
+                </button>
+                
+                <button onclick={() => appStateValue().addNotification({ 
+                    message: 'Test notification', 
+                    type: 'info' 
+                })}>
+                    Add Notification
+                </button>
+            </div>
+            
+            {/* Nested Context Providers */}
+            <ThemeContext.Provider value={themeValue()}>
+                <UserContext.Provider value={userValue()}>
+                    <AppStateContext.Provider value={appStateValue()}>
+                        <div class="app-container">
+                            <Header />
+                            <MainContent />
+                            <Sidebar />
+                            <NotificationCenter />
+                        </div>
+                    </AppStateContext.Provider>
+                </UserContext.Provider>
+            </ThemeContext.Provider>
+            
+            {/* Context consumer outside providers (should get default) */}
+            <div class="outside-context">
+                <OutsideComponent />
+            </div>
+        </div>
+    )
+}
+
+component Header() {
+    const theme = useContext(ThemeContext)
+    const user = useContext(UserContext)
+    
+    return (
+        <header style={{ 
+            backgroundColor: theme.colors.bg, 
+            color: theme.colors.text 
+        }}>
+            <h1>My App ({theme.theme} theme)</h1>
+            <div class="user-info">
+                Welcome, {user.user?.name || 'Guest'}
+            </div>
+            <ThemeToggle />
+        </header>
+    )
+}
+
+component ThemeToggle() {
+    const theme = useContext(ThemeContext)
+    
+    return (
+        <button onclick={() => theme.setTheme(theme.theme === 'light' ? 'dark' : 'light')}>
+            Switch to {theme.theme === 'light' ? 'Dark' : 'Light'} Mode
+        </button>
+    )
+}
+
+component MainContent() {
+    const theme = useContext(ThemeContext)
+    const user = useContext(UserContext)
+    
+    return (
+        <main style={{ 
+            backgroundColor: theme.colors.bg, 
+            color: theme.colors.text 
+        }}>
+            <h2>Main Content</h2>
+            <p>Current user: {user.user?.name}</p>
+            <p>Theme: {theme.theme}</p>
+            
+            {/* Nested components that also consume context */}
+            <UserProfile />
+            <ContentArea />
+        </main>
+    )
+}
+
+component UserProfile() {
+    const user = useContext(UserContext)
+    const theme = useContext(ThemeContext)
+    
+    return (
+        <div class="user-profile" style={{ 
+            border: `1px solid ${theme.colors.text}` 
+        }}>
+            <h3>User Profile</h3>
+            {user.user ? (
+                <div>
+                    <p>Name: {user.user.name}</p>
+                    <p>ID: {user.user.id}</p>
+                    <button onclick={() => user.updateUser({ 
+                        name: prompt('New name:') || user.user.name 
+                    })}>
+                        Edit Name
+                    </button>
+                    <button onclick={user.logout}>Logout</button>
+                </div>
+            ) : (
+                <p>Not logged in</p>
+            )}
+        </div>
+    )
+}
+
+component ContentArea() {
+    const theme = useContext(ThemeContext)
+    
+    return (
+        <div class="content-area" style={{ 
+            backgroundColor: theme.theme === 'light' ? '#f5f5f5' : '#333' 
+        }}>
+            <p>This content area adapts to the theme context.</p>
+        </div>
+    )
+}
+
+component Sidebar() {
+    const appState = useContext(AppStateContext)
+    const theme = useContext(ThemeContext)
+    
+    return (
+        <aside class="sidebar" style={{ 
+            backgroundColor: theme.colors.bg, 
+            color: theme.colors.text 
+        }}>
+            <h3>Sidebar</h3>
+            <div class="connection-status">
+                Status: {appState.isOnline ? '🟢 Online' : '🔴 Offline'}
+                <button onclick={() => appState.setOnlineStatus(!appState.isOnline)}>
+                    Toggle Status
+                </button>
+            </div>
+            <div class="last-sync">
+                Last sync: {new Date(appState.lastSync).toLocaleTimeString()}
+            </div>
+        </aside>
+    )
+}
+
+component NotificationCenter() {
+    const appState = useContext(AppStateContext)
+    const theme = useContext(ThemeContext)
+    
+    return (
+        <div class="notification-center" style={{ 
+            backgroundColor: theme.colors.bg, 
+            color: theme.colors.text 
+        }}>
+            <h3>Notifications ({appState.notifications.length})</h3>
+            <button onclick={appState.clearNotifications}>Clear All</button>
+            
+            <div class="notifications">
+                <For each={appState.notifications} key={(notif) => notif.id}>
+                    {(notification) => (
+                        <div class="notification">
+                            <span class="type">[{notification.type}]</span>
+                            <span class="message">{notification.message}</span>
+                        </div>
+                    )}
+                </For>
+            </div>
+        </div>
+    )
+}
+
+component OutsideComponent() {
+    // This should receive default context values
+    const theme = useContext(ThemeContext)
+    const user = useContext(UserContext)
+    
+    return (
+        <div class="outside-context">
+            <p>Outside context providers:</p>
+            <p>Theme: {theme ? theme.theme : 'No theme context'}</p>
+            <p>User: {user ? user.user?.name : 'No user context'}</p>
+        </div>
+    )
+}

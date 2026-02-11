@@ -1,0 +1,326 @@
+// Untrack Isolation Test PSR File
+// Tests untrack(() => {}) reactivity isolation
+
+component UntrackIsolationExample() {
+    signal count = 0
+    signal name = "John"
+    signal age = 25
+    signal city = "New York"
+    signal trackedEffectCount = 0
+    signal untrackedEffectCount = 0
+    
+    // Effect that tracks all signals
+    createEffect(() => {
+        trackedEffectCount(prev => prev + 1)
+        console.log('Tracked effect running:', {
+            count: count(),
+            name: name(),
+            age: age(),
+            city: city()
+        })
+    })
+    
+    // Effect that selectively untracks some signals
+    createEffect(() => {
+        untrackedEffectCount(prev => prev + 1)
+        
+        // Track count
+        const currentCount = count()
+        
+        // Untrack other signals
+        const untrackedData = untrack(() => ({
+            name: name(),
+            age: age(),
+            city: city()
+        }))
+        
+        console.log('Untracked effect running:', {
+            count: currentCount,
+            ...untrackedData
+        })
+    })
+    
+    return (
+        <div>
+            <h1>Untrack Isolation Demo</h1>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>Effect Execution Counts</h3>
+                    <p>Tracked Effect: {trackedEffectCount()}</p>
+                    <p>Untracked Effect: {untrackedEffectCount()}</p>
+                    <p class="difference">
+                        Difference: {trackedEffectCount() - untrackedEffectCount()} 
+                        extra executions in tracked effect
+                    </p>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Current State</h3>
+                    <p>Count: {count()}</p>
+                    <p>Name: {name()}</p>
+                    <p>Age: {age()}</p>
+                    <p>City: {city()}</p>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <h3>Update Signals</h3>
+                
+                <div class="control-group">
+                    <label>Count (tracked by both effects):</label>
+                    <button onclick={() => count(count() + 1)}>
+                        Increment Count ({count()})
+                    </button>
+                    <p class="note">
+                        ✓ Both effects will run
+                    </p>
+                </div>
+                
+                <div class="control-group">
+                    <label>Name (untracked):</label>
+                    <input 
+                        type="text" 
+                        value={name()} 
+                        oninput={(e) => name(e.target.value)}
+                    />
+                    <p class="note">
+                        ⚠️ Only tracked effect will run
+                    </p>
+                </div>
+                
+                <div class="control-group">
+                    <label>Age (untracked):</label>
+                    <input 
+                        type="number" 
+                        value={age()} 
+                        oninput={(e) => age(parseInt(e.target.value))}
+                    />
+                    <p class="note">
+                        ⚠️ Only tracked effect will run
+                    </p>
+                </div>
+                
+                <div class="control-group">
+                    <label>City (untracked):</label>
+                    <input 
+                        type="text" 
+                        value={city()} 
+                        oninput={(e) => city(e.target.value)}
+                    />
+                    <p class="note">
+                        ⚠️ Only tracked effect will run
+                    </p>
+                </div>
+            </div>
+            
+            <UntrackInComponents 
+                count={count()} 
+                name={name()} 
+                age={age()} 
+                city={city()} 
+            />
+            
+            <ComplexUntrackExample />
+            <ConditionalUntrackExample />
+        </div>
+    )
+}
+
+component UntrackInComponents({ count, name, age, city }) {
+    signal componentRenderCount = 0
+    
+    // Component effect with partial untracking
+    createEffect(() => {
+        componentRenderCount(prev => prev + 1)
+        
+        // Track count only
+        console.log('Component tracking count:', count)
+        
+        // Use other props without tracking
+        const staticData = untrack(() => ({
+            name,
+            age,
+            city
+        }))
+        
+        console.log('Static data (untracked):', staticData)
+    })
+    
+    return (
+        <div class="component-untrack">
+            <h3>Untrack in Components</h3>
+            <p>Component renders: {componentRenderCount()}</p>
+            <p>This component only re-renders when count changes.</p>
+            
+            <div class="component-data">
+                <p>Tracked: Count = {count}</p>
+                <p>Untracked: Name = {name} (won't trigger re-render)</p>
+                <p>Untracked: Age = {age} (won't trigger re-render)</p>
+                <p>Untracked: City = {city} (won't trigger re-render)</p>
+            </div>
+        </div>
+    )
+}
+
+component ComplexUntrackExample() {
+    signal x = 0
+    signal y = 0
+    signal z = 0
+    signal computeCount = 0
+    
+    // Complex computation with selective tracking
+    const result = createMemo(() => {
+        computeCount(prev => prev + 1)
+        
+        // Track x
+        const trackedX = x()
+        
+        // Untrack y and z
+        const untrackedValues = untrack(() => ({
+            y: y(),
+            z: z()
+        }))
+        
+        // Computation only re-runs when x changes
+        return trackedX * 2 + untrackedValues.y + untrackedValues.z
+    })
+    
+    return (
+        <div class="complex-untrack">
+            <h3>Complex Untrack Example</h3>
+            <p>Memo compute count: {computeCount()}</p>
+            <p>Result: {result()}</p>
+            
+            <div class="controls">
+                <button onclick={() => x(x() + 1)}>
+                    Update X ({x()}) - Will trigger computation
+                </button>
+                
+                <button onclick={() => y(y() + 1)}>
+                    Update Y ({y()}) - Won't trigger computation
+                </button>
+                
+                <button onclick={() => z(z() + 1)}>
+                    Update Z ({z()}) - Won't trigger computation
+                </button>
+                
+                <button onclick={() => {
+                    // Batch update with untrack
+                    batch(() => {
+                        x(x() + 1)
+                        untrack(() => {
+                            y(y() + 1)
+                            z(z() + 1)
+                        })
+                    })
+                }}>
+                    Update All (batched with untrack)
+                </button>
+            </div>
+        </div>
+    )
+}
+
+component ConditionalUntrackExample() {
+    signal condition = true
+    signal trackedValue = 0
+    signal untrackedValue = 0
+    signal effectRunCount = 0
+    
+    createEffect(() => {
+        effectRunCount(prev => prev + 1)
+        
+        if (condition()) {
+            // When true, track the value
+            console.log('Tracking value:', trackedValue())
+        } else {
+            // When false, don't track the value
+            untrack(() => {
+                console.log('Not tracking value:', untrackedValue())
+            })
+        }
+    })
+    
+    return (
+        <div class="conditional-untrack">
+            <h3>Conditional Untrack</h3>
+            <p>Effect runs: {effectRunCount()}</p>
+            
+            <div class="controls">
+                <label>
+                    <input 
+                        type="checkbox"
+                        checked={condition()}
+                        onchange={(e) => condition(e.target.checked)}
+                    />
+                    Track values in effect
+                </label>
+                
+                <button onclick={() => trackedValue(trackedValue() + 1)}>
+                    Update Tracked Value ({trackedValue()})
+                </button>
+                
+                <button onclick={() => untrackedValue(untrackedValue() + 1)}>
+                    Update Untracked Value ({untrackedValue()})
+                </button>
+            </div>
+            
+            <div class="explanation">
+                <p>
+                    When condition is true: Effect tracks trackedValue changes.
+                    <br />
+                    When condition is false: Effect uses untrack() and doesn't re-run on untrackedValue changes.
+                </p>
+            </div>
+        </div>
+    )
+}
+
+// Advanced pattern: Untrack in resource fetching
+component UntrackResourceExample() {
+    signal userId = 1
+    signal refreshToken = 0
+    signal fetchCount = 0
+    
+    const [userData] = createResource(
+        () => userId(),  // Track userId
+        async (id) => {
+            fetchCount(prev => prev + 1)
+            
+            // Use refreshToken without tracking it
+            const token = untrack(() => refreshToken())
+            
+            console.log('Fetching user', id, 'with token', token)
+            
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            return { id, name: `User ${id}`, token }
+        }
+    )
+    
+    return (
+        <div class="untrack-resource">
+            <h3>Untrack in Resources</h3>
+            <p>Fetch count: {fetchCount()}</p>
+            
+            <button onclick={() => userId(userId() + 1)}>
+                Change User ID ({userId()}) - Will refetch
+            </button>
+            
+            <button onclick={() => refreshToken(refreshToken() + 1)}>
+                Update Token ({refreshToken()}) - Won't refetch
+            </button>
+            
+            <div class="resource-data">
+                {userData.loading && <p>Loading...</p>}
+                {userData() && (
+                    <div>
+                        <p>User ID: {userData().id}</p>
+                        <p>Name: {userData().name}</p>
+                        <p>Token: {userData().token}</p>
+                    </div>
+                )}
+            </div>
+        </div>
+    )
+}

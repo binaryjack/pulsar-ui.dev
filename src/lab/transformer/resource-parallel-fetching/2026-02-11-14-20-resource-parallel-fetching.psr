@@ -1,0 +1,446 @@
+// Resource Parallel Fetching Test PSR File
+// Tests parallel resource fetching and coordination
+
+component ResourceParallelFetchingExample() {
+    signal userId = 1
+    signal includeProfile = true
+    signal includePosts = true
+    signal includeComments = true
+    signal includeStats = true
+    
+    // Multiple resources fetched in parallel
+    const [userProfile] = createResource(
+        () => includeProfile() ? userId() : null,
+        async (id) => {
+            console.log('Fetching user profile:', id)
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            return {
+                id,
+                name: `User ${id}`,
+                email: `user${id}@example.com`,
+                avatar: `https://avatar.example.com/${id}`
+            }
+        }
+    )
+    
+    const [userPosts] = createResource(
+        () => includePosts() ? userId() : null,
+        async (id) => {
+            console.log('Fetching user posts:', id)
+            await new Promise(resolve => setTimeout(resolve, 1500))
+            return Array.from({ length: 5 }, (_, i) => ({
+                id: i + 1,
+                userId: id,
+                title: `Post ${i + 1}`,
+                content: `Content for post ${i + 1}`
+            }))
+        }
+    )
+    
+    const [userComments] = createResource(
+        () => includeComments() ? userId() : null,
+        async (id) => {
+            console.log('Fetching user comments:', id)
+            await new Promise(resolve => setTimeout(resolve, 1200))
+            return Array.from({ length: 10 }, (_, i) => ({
+                id: i + 1,
+                userId: id,
+                text: `Comment ${i + 1} by user ${id}`
+            }))
+        }
+    )
+    
+    const [userStats] = createResource(
+        () => includeStats() ? userId() : null,
+        async (id) => {
+            console.log('Fetching user stats:', id)
+            await new Promise(resolve => setTimeout(resolve, 800))
+            return {
+                userId: id,
+                postsCount: 42,
+                commentsCount: 156,
+                followers: 234,
+                following: 123
+            }
+        }
+    )
+    
+    // Derived states
+    const allLoading = () => 
+        userProfile.loading || userPosts.loading || userComments.loading || userStats.loading
+    
+    const anyError = () =>
+        userProfile.error || userPosts.error || userComments.error || userStats.error
+    
+    const allLoaded = () =>
+        (!includeProfile() || userProfile()) &&
+        (!includePosts() || userPosts()) &&
+        (!includeComments() || userComments()) &&
+        (!includeStats() || userStats())
+    
+    const loadedCount = () => {
+        let count = 0
+        if (includeProfile() && userProfile()) count++
+        if (includePosts() && userPosts()) count++
+        if (includeComments() && userComments()) count++
+        if (includeStats() && userStats()) count++
+        return count
+    }
+    
+    const totalCount = () => {
+        let count = 0
+        if (includeProfile()) count++
+        if (includePosts()) count++
+        if (includeComments()) count++
+        if (includeStats()) count++
+        return count
+    }
+    
+    return (
+        <div>
+            <h1>Resource Parallel Fetching Demo</h1>
+            
+            <div class="controls">
+                <h3>Fetch Controls</h3>
+                
+                <div class="fetch-options">
+                    <label>
+                        <input 
+                            type="checkbox"
+                            checked={includeProfile()}
+                            onchange={(e) => includeProfile(e.target.checked)}
+                        />
+                        Fetch Profile
+                    </label>
+                    
+                    <label>
+                        <input 
+                            type="checkbox"
+                            checked={includePosts()}
+                            onchange={(e) => includePosts(e.target.checked)}
+                        />
+                        Fetch Posts
+                    </label>
+                    
+                    <label>
+                        <input 
+                            type="checkbox"
+                            checked={includeComments()}
+                            onchange={(e) => includeComments(e.target.checked)}
+                        />
+                        Fetch Comments
+                    </label>
+                    
+                    <label>
+                        <input 
+                            type="checkbox"
+                            checked={includeStats()}
+                            onchange={(e) => includeStats(e.target.checked)}
+                        />
+                        Fetch Stats
+                    </label>
+                </div>
+                
+                <div class="user-controls">
+                    <button onclick={() => userId(userId() + 1)}>
+                        Next User ({userId()})
+                    </button>
+                    
+                    <button onclick={() => {
+                        userProfile.refetch()
+                        userPosts.refetch()
+                        userComments.refetch()
+                        userStats.refetch()
+                    }}>
+                        Refetch All
+                    </button>
+                </div>
+            </div>
+            
+            <div class="fetch-progress">
+                <h3>Fetch Progress</h3>
+                <div class="progress-bar">
+                    <div 
+                        class="progress-fill"
+                        style={{ width: `${(loadedCount() / totalCount()) * 100}%` }}
+                    >
+                        {loadedCount()} / {totalCount()}
+                    </div>
+                </div>
+                
+                <div class="status-indicators">
+                    <span class={`indicator ${allLoading() ? 'active' : ''}`}>
+                        Loading: {allLoading() ? '⏳' : '✗'}
+                    </span>
+                    <span class={`indicator ${anyError() ? 'active error' : ''}`}>
+                        Errors: {anyError() ? '❌' : '✗'}
+                    </span>
+                    <span class={`indicator ${allLoaded() ? 'active success' : ''}`}>
+                        Complete: {allLoaded() ? '✓' : '✗'}
+                    </span>
+                </div>
+            </div>
+            
+            <div class="resources-container">
+                {/* Profile Resource */}
+                <Show when={includeProfile()}>
+                    <div class="resource-card">
+                        <h3>Profile {userProfile.loading && '⏳'}</h3>
+                        {userProfile.loading && <div class="loading">Loading...</div>}
+                        {userProfile.error && <div class="error">Error: {userProfile.error.message}</div>}
+                        {userProfile() && (
+                            <div class="profile-data">
+                                <p>Name: {userProfile().name}</p>
+                                <p>Email: {userProfile().email}</p>
+                            </div>
+                        )}
+                    </div>
+                </Show>
+                
+                {/* Posts Resource */}
+                <Show when={includePosts()}>
+                    <div class="resource-card">
+                        <h3>Posts {userPosts.loading && '⏳'}</h3>
+                        {userPosts.loading && <div class="loading">Loading...</div>}
+                        {userPosts.error && <div class="error">Error: {userPosts.error.message}</div>}
+                        {userPosts() && (
+                            <div>
+                                <p>Total posts: {userPosts().length}</p>
+                                <For each={userPosts().slice(0, 3)} key={(post) => post.id}>
+                                    {(post) => <div class="post-preview">{post.title}</div>}
+                                </For>
+                            </div>
+                        )}
+                    </div>
+                </Show>
+                
+                {/* Comments Resource */}
+                <Show when={includeComments()}>
+                    <div class="resource-card">
+                        <h3>Comments {userComments.loading && '⏳'}</h3>
+                        {userComments.loading && <div class="loading">Loading...</div>}
+                        {userComments.error && <div class="error">Error: {userComments.error.message}</div>}
+                        {userComments() && (
+                            <div>
+                                <p>Total comments: {userComments().length}</p>
+                            </div>
+                        )}
+                    </div>
+                </Show>
+                
+                {/* Stats Resource */}
+                <Show when={includeStats()}>
+                    <div class="resource-card">
+                        <h3>Stats {userStats.loading && '⏳'}</h3>
+                        {userStats.loading && <div class="loading">Loading...</div>}
+                        {userStats.error && <div class="error">Error: {userStats.error.message}</div>}
+                        {userStats() && (
+                            <div class="stats-grid">
+                                <div class="stat">Posts: {userStats().postsCount}</div>
+                                <div class="stat">Comments: {userStats().commentsCount}</div>
+                                <div class="stat">Followers: {userStats().followers}</div>
+                                <div class="stat">Following: {userStats().following}</div>
+                            </div>
+                        )}
+                    </div>
+                </Show>
+            </div>
+            
+            <DependentResourcesExample />
+            <WaterfallVsParallelExample />
+        </div>
+    )
+}
+
+component DependentResourcesExample() {
+    signal categoryId = 1
+    
+    // First resource - load category
+    const [category] = createResource(
+        () => categoryId(),
+        async (id) => {
+            console.log('Fetching category:', id)
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            return {
+                id,
+                name: `Category ${id}`,
+                productCount: 5
+            }
+        }
+    )
+    
+    // Second resource - depends on first
+    const [products] = createResource(
+        () => category()?.id,
+        async (catId) => {
+            console.log('Fetching products for category:', catId)
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            return Array.from({ length: 5 }, (_, i) => ({
+                id: i + 1,
+                categoryId: catId,
+                name: `Product ${i + 1}`
+            }))
+        }
+    )
+    
+    return (
+        <div class="dependent-resources">
+            <h3>Dependent Resources (Sequential)</h3>
+            
+            <button onclick={() => categoryId(categoryId() + 1)}>
+                Next Category ({categoryId()})
+            </button>
+            
+            <div class="sequential-flow">
+                <div class={`step ${category.loading ? 'loading' : category() ? 'loaded' : ''}`}>
+                    Step 1: Category
+                    {category.loading && ' ⏳'}
+                    {category() && ` ✓ ${category().name}`}
+                </div>
+                
+                <div class="arrow">↓</div>
+                
+                <div class={`step ${products.loading ? 'loading' : products() ? 'loaded' : ''}`}>
+                    Step 2: Products
+                    {products.loading && ' ⏳'}
+                    {products() && ` ✓ ${products().length} products`}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+component WaterfallVsParallelExample() {
+    signal mode = 'parallel'
+    signal dataId = 1
+    
+    // Waterfall mode - sequential
+    signal step1Data = null
+    signal step2Data = null
+    signal step3Data = null
+    signal waterfallLoading = false
+    
+    const fetchWaterfall = async () => {
+        waterfallLoading(true)
+        step1Data(null)
+        step2Data(null)
+        step3Data(null)
+        
+        try {
+            console.log('Fetching step 1...')
+            await new Promise(resolve => setTimeout(resolve, 800))
+            step1Data({ result: 'Step 1 complete' })
+            
+            console.log('Fetching step 2...')
+            await new Promise(resolve => setTimeout(resolve, 800))
+            step2Data({ result: 'Step 2 complete' })
+            
+            console.log('Fetching step 3...')
+            await new Promise(resolve => setTimeout(resolve, 800))
+            step3Data({ result: 'Step 3 complete' })
+        } finally {
+            waterfallLoading(false)
+        }
+    }
+    
+    // Parallel mode - simultaneous
+    const [p1] = createResource(
+        () => mode() === 'parallel' ? dataId() : null,
+        async (id) => {
+            console.log('Parallel fetch 1:', id)
+            await new Promise(resolve => setTimeout(resolve, 800))
+            return { result: 'Parallel 1 complete' }
+        }
+    )
+    
+    const [p2] = createResource(
+        () => mode() === 'parallel' ? dataId() : null,
+        async (id) => {
+            console.log('Parallel fetch 2:', id)
+            await new Promise(resolve => setTimeout(resolve, 800))
+            return { result: 'Parallel 2 complete' }
+        }
+    )
+    
+    const [p3] = createResource(
+        () => mode() === 'parallel' ? dataId() : null,
+        async (id) => {
+            console.log('Parallel fetch 3:', id)
+            await new Promise(resolve => setTimeout(resolve, 800))
+            return { result: 'Parallel 3 complete' }
+        }
+    )
+    
+    const parallelLoading = () => p1.loading || p2.loading || p3.loading
+    const parallelLoaded = () => p1() && p2() && p3()
+    
+    return (
+        <div class="waterfall-vs-parallel">
+            <h3>Waterfall vs Parallel Fetching</h3>
+            
+            <div class="mode-selector">
+                <button 
+                    class={mode() === 'waterfall' ? 'active' : ''}
+                    onclick={() => mode('waterfall')}
+                >
+                    Waterfall (Sequential)
+                </button>
+                <button 
+                    class={mode() === 'parallel' ? 'active' : ''}
+                    onclick={() => mode('parallel')}
+                >
+                    Parallel (Simultaneous)
+                </button>
+            </div>
+            
+            <Show when={mode() === 'waterfall'}>
+                <div class="waterfall-mode">
+                    <button onclick={fetchWaterfall} disabled={waterfallLoading()}>
+                        {waterfallLoading() ? 'Fetching...' : 'Fetch Waterfall'}
+                    </button>
+                    
+                    <div class="steps">
+                        <div class={`step ${step1Data() ? 'loaded' : ''}`}>
+                            Step 1 {step1Data() && `✓ ${step1Data().result}`}
+                        </div>
+                        <div class="arrow">↓</div>
+                        <div class={`step ${step2Data() ? 'loaded' : ''}`}>
+                            Step 2 {step2Data() && `✓ ${step2Data().result}`}
+                        </div>
+                        <div class="arrow">↓</div>
+                        <div class={`step ${step3Data() ? 'loaded' : ''}`}>
+                            Step 3 {step3Data() && `✓ ${step3Data().result}`}
+                        </div>
+                    </div>
+                    
+                    <p class="note">Total time: ~2.4 seconds (800ms × 3)</p>
+                </div>
+            </Show>
+            
+            <Show when={mode() === 'parallel'}>
+                <div class="parallel-mode">
+                    <button onclick={() => dataId(dataId() + 1)}>
+                        Fetch Parallel ({dataId()})
+                    </button>
+                    
+                    <div class="parallel-steps">
+                        <div class={`step ${p1() ? 'loaded' : p1.loading ? 'loading' : ''}`}>
+                            Fetch 1 {p1.loading && '⏳'} {p1() && `✓ ${p1().result}`}
+                        </div>
+                        <div class={`step ${p2() ? 'loaded' : p2.loading ? 'loading' : ''}`}>
+                            Fetch 2 {p2.loading && '⏳'} {p2() && `✓ ${p2().result}`}
+                        </div>
+                        <div class={`step ${p3() ? 'loaded' : p3.loading ? 'loading' : ''}`}>
+                            Fetch 3 {p3.loading && '⏳'} {p3() && `✓ ${p3().result}`}
+                        </div>
+                    </div>
+                    
+                    <p class="note">Total time: ~800ms (all fetched simultaneously)</p>
+                    <p class="performance">
+                        {parallelLoaded() && '✓ 3x faster than waterfall!'}
+                    </p>
+                </div>
+            </Show>
+        </div>
+    )
+}

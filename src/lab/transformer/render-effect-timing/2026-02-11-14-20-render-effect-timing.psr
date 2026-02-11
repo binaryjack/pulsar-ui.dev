@@ -1,0 +1,334 @@
+// Render Effect Timing Test PSR File
+// Tests renderEffect(() => {}) DOM timing transformations
+
+component RenderEffectTimingExample() {
+    signal renderEffectLogs = []
+    signal normalEffectLogs = []
+    signal count = 0
+    signal elementRef = null
+    
+    const addRenderLog = (message) => {
+        renderEffectLogs(prev => [...prev, {
+            id: Date.now(),
+            message,
+            timestamp: new Date().toLocaleTimeString(),
+            microseconds: performance.now()
+        }])
+    }
+    
+    const addNormalLog = (message) => {
+        normalEffectLogs(prev => [...prev, {
+            id: Date.now(),
+            message,
+            timestamp: new Date().toLocaleTimeString(),
+            microseconds: performance.now()
+        }])
+    }
+    
+    // Normal effect - runs before render
+    createEffect(() => {
+        addNormalLog(`createEffect runs BEFORE render (count: ${count()})`)
+        console.log('createEffect:', count())
+    })
+    
+    // Render effect - runs after DOM updates
+    renderEffect(() => {
+        addRenderLog(`renderEffect runs AFTER render (count: ${count()})`)
+        console.log('renderEffect:', count())
+        
+        if (elementRef()) {
+            addRenderLog(`DOM element height: ${elementRef().offsetHeight}px`)
+        }
+    })
+    
+    return (
+        <div>
+            <h1>renderEffect Timing Demo</h1>
+            
+            <div class="explanation">
+                <p><strong>createEffect:</strong> Runs during the reactive update cycle, before DOM updates.</p>
+                <p><strong>renderEffect:</strong> Runs after the DOM has been updated, ideal for measuring or manipulating rendered elements.</p>
+            </div>
+            
+            <div class="controls">
+                <button onclick={() => count(count() + 1)}>
+                    Increment Count ({count()})
+                </button>
+                
+                <button onclick={() => {
+                    renderEffectLogs([])
+                    normalEffectLogs([])
+                }}>
+                    Clear Logs
+                </button>
+            </div>
+            
+            <div class="logs-container">
+                <div class="log-section">
+                    <h3>createEffect Logs (Pre-Render)</h3>
+                    <div class="log-entries">
+                        <For each={normalEffectLogs()} key={(log) => log.id}>
+                            {(log) => (
+                                <div class="log-entry normal-effect">
+                                    <span class="time">{log.timestamp}</span>
+                                    <span class="message">{log.message}</span>
+                                    <span class="perf">{log.microseconds.toFixed(2)}ms</span>
+                                </div>
+                            )}
+                        </For>
+                    </div>
+                </div>
+                
+                <div class="log-section">
+                    <h3>renderEffect Logs (Post-Render)</h3>
+                    <div class="log-entries">
+                        <For each={renderEffectLogs()} key={(log) => log.id}>
+                            {(log) => (
+                                <div class="log-entry render-effect">
+                                    <span class="time">{log.timestamp}</span>
+                                    <span class="message">{log.message}</span>
+                                    <span class="perf">{log.microseconds.toFixed(2)}ms</span>
+                                </div>
+                            )}
+                        </For>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="test-element" ref={elementRef}>
+                <p>Count: {count()}</p>
+                <p>This element's dimensions are measured by renderEffect</p>
+            </div>
+            
+            <DOMReadExample />
+            <AnimationExample />
+            <FocusManagementExample />
+        </div>
+    )
+}
+
+component DOMReadExample() {
+    signal width = 0
+    signal height = 0
+    signal scrollHeight = 0
+    signal containerRef = null
+    signal items = Array.from({ length: 5 }, (_, i) => `Item ${i + 1}`)
+    
+    // renderEffect for reading DOM properties
+    renderEffect(() => {
+        if (containerRef()) {
+            width(containerRef().offsetWidth)
+            height(containerRef().offsetHeight)
+            scrollHeight(containerRef().scrollHeight)
+            
+            console.log('DOM measurements:', {
+                width: containerRef().offsetWidth,
+                height: containerRef().offsetHeight,
+                scrollHeight: containerRef().scrollHeight
+            })
+        }
+    })
+    
+    return (
+        <div class="dom-read-example">
+            <h3>DOM Read Example (renderEffect)</h3>
+            
+            <div class="measurements">
+                <p>Width: {width()}px</p>
+                <p>Height: {height()}px</p>
+                <p>Scroll Height: {scrollHeight()}px</p>
+            </div>
+            
+            <button onclick={() => items(prev => [...prev, `Item ${prev.length + 1}`])}>
+                Add Item
+            </button>
+            
+            <div class="measured-container" ref={containerRef}>
+                <For each={items()} key={(item) => item}>
+                    {(item) => (
+                        <div class="measured-item">{item}</div>
+                    )}
+                </For>
+            </div>
+        </div>
+    )
+}
+
+component AnimationExample() {
+    signal isAnimating = false
+    signal elementRef = null
+    signal animationFrame = null
+    
+    // renderEffect for coordinating animations
+    renderEffect(() => {
+        if (!isAnimating() || !elementRef()) return
+        
+        console.log('Starting animation with renderEffect')
+        
+        let progress = 0
+        const duration = 2000
+        const startTime = performance.now()
+        
+        const animate = (currentTime) => {
+            progress = (currentTime - startTime) / duration
+            
+            if (progress < 1 && elementRef()) {
+                const translateX = Math.sin(progress * Math.PI * 2) * 200
+                const scale = 1 + Math.sin(progress * Math.PI * 2) * 0.3
+                
+                elementRef().style.transform = `translateX(${translateX}px) scale(${scale})`
+                
+                const frameId = requestAnimationFrame(animate)
+                animationFrame(frameId)
+            } else {
+                if (elementRef()) {
+                    elementRef().style.transform = 'translateX(0) scale(1)'
+                }
+                isAnimating(false)
+            }
+        }
+        
+        const frameId = requestAnimationFrame(animate)
+        animationFrame(frameId)
+        
+        onCleanup(() => {
+            if (animationFrame()) {
+                cancelAnimationFrame(animationFrame())
+                console.log('Animation cleanup')
+            }
+        })
+    })
+    
+    return (
+        <div class="animation-example">
+            <h3>Animation Example (renderEffect)</h3>
+            
+            <button 
+                onclick={() => isAnimating(!isAnimating())}
+                disabled={isAnimating()}
+            >
+                {isAnimating() ? 'Animating...' : 'Start Animation'}
+            </button>
+            
+            <div class="animation-container">
+                <div class="animated-box" ref={elementRef}>
+                    Animated Box
+                </div>
+            </div>
+        </div>
+    )
+}
+
+component FocusManagementExample() {
+    signal showInput = false
+    signal inputRef = null
+    signal focusCount = 0
+    
+    // renderEffect for managing focus after render
+    renderEffect(() => {
+        if (showInput() && inputRef()) {
+            console.log('renderEffect: Focusing input element')
+            inputRef().focus()
+            focusCount(prev => prev + 1)
+        }
+    })
+    
+    return (
+        <div class="focus-management-example">
+            <h3>Focus Management Example (renderEffect)</h3>
+            <p>Auto-focus count: {focusCount()}</p>
+            
+            <button onclick={() => showInput(!showInput())}>
+                {showInput() ? 'Hide' : 'Show'} Input
+            </button>
+            
+            <Show when={showInput()}>
+                <div class="input-container">
+                    <input 
+                        ref={inputRef}
+                        type="text"
+                        placeholder="This input is auto-focused with renderEffect"
+                    />
+                    <p class="note">
+                        The input is automatically focused when it appears, 
+                        using renderEffect to ensure the DOM is ready.
+                    </p>
+                </div>
+            </Show>
+        </div>
+    )
+}
+
+// Advanced: Comparing effect timing
+component EffectTimingComparison() {
+    signal trigger = 0
+    signal elementRef = null
+    signal timingResults = []
+    
+    createEffect(() => {
+        const start = performance.now()
+        
+        // Try to read DOM (might not be ready)
+        const height = elementRef()?.offsetHeight || 0
+        
+        const end = performance.now()
+        
+        timingResults(prev => [...prev, {
+            type: 'createEffect',
+            trigger: trigger(),
+            height,
+            time: end - start,
+            timestamp: Date.now()
+        }])
+    })
+    
+    renderEffect(() => {
+        const start = performance.now()
+        
+        // Read DOM (definitely ready)
+        const height = elementRef()?.offsetHeight || 0
+        
+        const end = performance.now()
+        
+        timingResults(prev => [...prev, {
+            type: 'renderEffect',
+            trigger: trigger(),
+            height,
+            time: end - start,
+            timestamp: Date.now()
+        }])
+    })
+    
+    return (
+        <div class="timing-comparison">
+            <h3>Effect Timing Comparison</h3>
+            
+            <button onclick={() => trigger(trigger() + 1)}>
+                Trigger Effects ({trigger()})
+            </button>
+            
+            <button onclick={() => timingResults([])}>
+                Clear Results
+            </button>
+            
+            <div class="test-element" ref={elementRef}>
+                <p>Trigger: {trigger()}</p>
+                <p>This element's height is read by both effects</p>
+            </div>
+            
+            <div class="timing-results">
+                <h4>Timing Results:</h4>
+                <For each={timingResults()} key={(result) => result.timestamp}>
+                    {(result) => (
+                        <div class={`result ${result.type}`}>
+                            <strong>{result.type}</strong>: 
+                            Height {result.height}px, 
+                            Time {result.time.toFixed(4)}ms, 
+                            Trigger {result.trigger}
+                        </div>
+                    )}
+                </For>
+            </div>
+        </div>
+    )
+}

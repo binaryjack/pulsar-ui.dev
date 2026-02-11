@@ -1,0 +1,141 @@
+// Portal Transformation Test PSR File
+// Tests <Portal mount="#root"> portal component transformations
+
+component PortalExample() {
+    signal showModal = false
+    signal showTooltip = false
+    signal portalTarget = "#portal-root"
+    
+    return (
+        <div>
+            <div class="controls">
+                <button onclick={() => showModal(!showModal())}>
+                    {showModal() ? 'Close' : 'Open'} Modal
+                </button>
+                
+                <button onclick={() => showTooltip(!showTooltip())}>
+                    {showTooltip() ? 'Hide' : 'Show'} Tooltip
+                </button>
+                
+                <select onchange={(e) => portalTarget(e.target.value)}>
+                    <option value="#portal-root">Portal Root</option>
+                    <option value="#modal-root">Modal Root</option>
+                    <option value="body">Document Body</option>
+                </select>
+            </div>
+            
+            <div class="main-content">
+                <p>This is the main application content.</p>
+                
+                {/* Basic Portal */}
+                <Portal mount="#portal-root">
+                    <div class="portal-content">
+                        <p>This content is rendered in a portal!</p>
+                        <p>Current time: {new Date().toLocaleTimeString()}</p>
+                    </div>
+                </Portal>
+                
+                {/* Conditional Portal */}
+                <Show when={showModal()}>
+                    <Portal mount={portalTarget()}>
+                        <ModalComponent onClose={() => showModal(false)} />
+                    </Portal>
+                </Show>
+                
+                {/* Portal with dynamic target */}
+                <Portal mount={() => document.querySelector(portalTarget())}>
+                    <div class="dynamic-portal">
+                        <h4>Dynamic Portal</h4>
+                        <p>Target: {portalTarget()}</p>
+                    </div>
+                </Portal>
+                
+                {/* Nested Portals */}
+                <Portal mount="#outer-portal">
+                    <div class="outer-portal-content">
+                        <h3>Outer Portal</h3>
+                        <Portal mount="#inner-portal">
+                            <div class="inner-portal-content">
+                                <p>Inner Portal Content</p>
+                            </div>
+                        </Portal>
+                    </div>
+                </Portal>
+                
+                {/* Tooltip Portal */}
+                <div 
+                    class="tooltip-trigger"
+                    onmouseenter={() => showTooltip(true)}
+                    onmouseleave={() => showTooltip(false)}
+                >
+                    Hover for tooltip
+                    
+                    <Show when={showTooltip()}>
+                        <Portal mount="body">
+                            <TooltipComponent />
+                        </Portal>
+                    </Show>
+                </div>
+            </div>
+            
+            {/* Portal target containers */}
+            <div id="portal-root" class="portal-container">
+                <p>Portal Root Container:</p>
+            </div>
+            
+            <div id="modal-root" class="modal-container">
+                <p>Modal Root Container:</p>
+            </div>
+            
+            <div id="outer-portal" class="outer-portal-container">
+                <p>Outer Portal Container:</p>
+            </div>
+            
+            <div id="inner-portal" class="inner-portal-container">
+                <p>Inner Portal Container:</p>
+            </div>
+        </div>
+    )
+}
+
+component ModalComponent({ onClose }) {
+    return (
+        <div class="modal-overlay" onclick={onClose}>
+            <div class="modal-content" onclick={(e) => e.stopPropagation()}>
+                <div class="modal-header">
+                    <h3>Portal Modal</h3>
+                    <button class="close-btn" onclick={onClose}>×</button>
+                </div>
+                <div class="modal-body">
+                    <p>This modal is rendered through a portal!</p>
+                    <p>It appears outside the normal component hierarchy.</p>
+                    
+                    {/* Nested portal within modal */}
+                    <Portal mount="#nested-modal-content">
+                        <div class="nested-modal-content">
+                            <p>Nested content within modal portal</p>
+                        </div>
+                    </Portal>
+                </div>
+                <div class="modal-footer">
+                    <button onclick={onClose}>Close</button>
+                </div>
+                
+                <div id="nested-modal-content" class="nested-container">
+                    <p>Nested container:</p>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+component TooltipComponent() {
+    return (
+        <div class="tooltip">
+            <div class="tooltip-arrow"></div>
+            <div class="tooltip-content">
+                This is a tooltip rendered in a portal to the document body!
+            </div>
+        </div>
+    )
+}

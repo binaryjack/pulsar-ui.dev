@@ -1,0 +1,57 @@
+// Show Components Test PSR File
+// Tests <Show when={condition}> conditional rendering
+
+component ShowExample() {
+    signal isLoggedIn = false
+    signal hasPermissions = true
+    signal user = null
+    signal loading = false
+    
+    return (
+        <div>
+            <Show when={isLoggedIn}>
+                <div class="user-dashboard">
+                    Welcome to your dashboard!
+                </div>
+            </Show>
+            
+            <Show when={!isLoggedIn}>
+                <div class="login-prompt">
+                    Please log in to continue
+                </div>
+            </Show>
+            
+            {/* Show with fallback */}
+            <Show when={user} fallback={<div>No user data</div>}>
+                <div class="user-profile">
+                    <h2>{user.name}</h2>
+                    <p>{user.email}</p>
+                </div>
+            </Show>
+            
+            {/* Nested Show components */}
+            <Show when={isLoggedIn}>
+                <Show when={hasPermissions} fallback={<div>Access denied</div>}>
+                    <AdminPanel />
+                </Show>
+            </Show>
+            
+            {/* Show with complex conditions */}
+            <Show when={!loading && user && user.isActive}>
+                <div class="active-user">
+                    User is active and ready
+                </div>
+            </Show>
+        </div>
+    )
+}
+
+component AdminPanel() {
+    return (
+        <div class="admin-panel">
+            <h3>Admin Controls</h3>
+            <button>Manage Users</button>
+            <button>System Settings</button>
+        </div>
+    )
+}

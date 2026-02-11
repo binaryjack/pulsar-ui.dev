@@ -1,0 +1,78 @@
+// Waiting Suspense Test PSR File
+// Tests <Waiting default={fallback}> suspense-like components
+
+component WaitingExample() {
+    signal isLoading = true
+    signal slowResource = createResource(fetchSlowData)
+    
+    async function fetchSlowData() {
+        await new Promise(resolve => setTimeout(resolve, 2000))
+        return { data: "Loaded data", timestamp: Date.now() }
+    }
+    
+    return (
+        <div>
+            {/* Basic Waiting component */}
+            <Waiting default={<div class="spinner">Loading...</div>}>
+                <SlowComponent />
+            </Waiting>
+            
+            {/* Waiting with timeout */}
+            <Waiting 
+                default={<div>Please wait...</div>}
+                timeout={5000}
+                onTimeout={() => console.log('Timeout reached')}
+            >
+                <DataComponent resource={slowResource} />
+            </Waiting>
+            
+            {/* Nested Waiting boundaries */}
+            <Waiting default={<div>Loading outer...</div>}>
+                <div class="outer-content">
+                    <h2>Outer Content</h2>
+                    <Waiting default={<div>Loading inner...</div>}>
+                        <SlowInnerComponent />
+                    </Waiting>
+                </div>
+            </Waiting>
+            
+            {/* Waiting with error handling */}
+            <Waiting 
+                default={<div>Loading...</div>}
+                error={(error) => <div class="error">Failed to load: {error.message}</div>}
+            >
+                <RiskyComponent />
+            </Waiting>
+        </div>
+    )
+}
+
+component SlowComponent() {
+    const [data, setData] = createSignal(null)
+    
+    onMount(async () => {
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        setData("Component loaded!")
+    })
+    
+    return <div>{data() || "Still loading..."}</div>
+}
+
+component DataComponent({ resource }) {
+    return <div>Resource: {resource()?.data}</div>
+}
+
+component SlowInnerComponent() {
+    return <div>Inner component loaded</div>
+}
+
+component RiskyComponent() {
+    // Simulates a component that might throw
+    const [shouldThrow] = createSignal(Math.random() > 0.5)
+    
+    if (shouldThrow()) {
+        throw new Error("Random error occurred")
+    }
+    
+    return <div>Component loaded successfully</div>
+}

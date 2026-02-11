@@ -1,0 +1,468 @@
+/**
+ * Dynamic Components Test - PSR File
+ * 
+ * Tests Dynamic component transformation with runtime component selection
+ * This file should transform correctly if Dynamic components are implemented
+ */
+
+import { createSignal, Dynamic, createComputed, batch } from '@pulsar-framework/pulsar.dev';
+
+// Mock component definitions for testing
+const Button = ({ variant = 'default', children, onClick, disabled }) => {
+  return (
+    <button 
+      style={`
+        padding: 8px 16px; 
+        border: none; 
+        border-radius: 4px; 
+        cursor: ${disabled ? 'not-allowed' : 'pointer'};
+        background: ${variant === 'primary' ? '#007bff' : variant === 'secondary' ? '#6c757d' : '#f8f9fa'};
+        color: ${variant === 'primary' || variant === 'secondary' ? 'white' : 'black'};
+        opacity: ${disabled ? 0.6 : 1};
+      `}
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
+    >
+      {children}
+    </button>
+  );
+};
+
+const Input = ({ type = 'text', placeholder, value, onInput, disabled }) => {
+  return (
+    <input 
+      type={type}
+      placeholder={placeholder}
+      value={value}
+      onInput={onInput}
+      disabled={disabled}
+      style={`
+        padding: 8px 12px; 
+        border: 1px solid #ccc; 
+        border-radius: 4px; 
+        font-size: 14px;
+        width: 200px;
+        opacity: ${disabled ? 0.6 : 1};
+      `}
+    />
+  );
+};
+
+const Card = ({ title, children, variant = 'default' }) => {
+  return (
+    <div style={`
+      padding: 16px; 
+      border: 1px solid #ddd; 
+      border-radius: 8px; 
+      background: ${variant === 'highlighted' ? '#f8f9fa' : 'white'};
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      max-width: 300px;
+    `}>
+      {title && (
+        <h3 style="margin: 0 0 12px 0; color: #333; font-size: 16px;">
+          {title}
+        </h3>
+      )}
+      <div>{children}</div>
+    </div>
+  );
+};
+
+const Alert = ({ type = 'info', children }) => {
+  const colors = {
+    info: { bg: '#d1ecf1', color: '#0c5460' },
+    success: { bg: '#d4edda', color: '#155724' },
+    warning: { bg: '#fff3cd', color: '#856404' },
+    error: { bg: '#f8d7da', color: '#721c24' }
+  };
+  
+  return (
+    <div style={`
+      padding: 12px; 
+      border-radius: 4px; 
+      background: ${colors[type].bg}; 
+      color: ${colors[type].color};
+      border-left: 4px solid ${colors[type].color};
+      margin: 8px 0;
+    `}>
+      {children}
+    </div>
+  );
+};
+
+const LoadingSpinner = ({ size = 'medium' }) => {
+  const sizes = {
+    small: '16px',
+    medium: '32px',
+    large: '48px'
+  };
+  
+  return (
+    <div style={`
+      width: ${sizes[size]}; 
+      height: ${sizes[size]}; 
+      border: 2px solid #f3f3f3; 
+      border-top: 2px solid #007bff; 
+      border-radius: 50%; 
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      margin: 8px;
+    `} />
+  );
+};
+
+export interface IDynamicTestProps {
+  initialComponent?: string;
+  showAdvanced?: boolean;
+}
+
+export component DynamicComponentTest({
+  initialComponent = 'button',
+  showAdvanced = false
+}: IDynamicTestProps) {
+  
+  // Component registry
+  const componentRegistry = {
+    button: Button,
+    input: Input,
+    card: Card,
+    alert: Alert,
+    loader: LoadingSpinner
+  };
+  
+  // State management
+  const [selectedComponentType, setSelectedComponentType] = createSignal<string>(initialComponent);
+  const [componentProps, setComponentProps] = createSignal<Record<string, any>>({});
+  const [isLoading, setIsLoading] = createSignal<boolean>(false);
+  const [inputValue, setInputValue] = createSignal<string>('Dynamic input text');
+  
+  // Computed component reference
+  const currentComponent = createComputed(() => 
+    componentRegistry[selectedComponentType()]
+  );
+  
+  // Dynamic props based on component type
+  const dynamicProps = createComputed(() => {
+    const type = selectedComponentType();
+    const base = componentProps();
+    
+    switch (type) {
+      case 'button':
+        return { 
+          variant: 'primary',
+          onClick: () => alert(`Button clicked! Type: ${type}`),
+          disabled: isLoading(),
+          ...base
+        };
+        
+      case 'input':
+        return {
+          placeholder: 'Enter text here...',
+          value: inputValue(),
+          onInput: (e) => setInputValue(e.target.value),
+          disabled: isLoading(),
+          ...base
+        };
+        
+      case 'card':
+        return {
+          title: `Dynamic ${type.charAt(0).toUpperCase() + type.slice(1)}`,
+          variant: 'highlighted',
+          ...base
+        };
+        
+      case 'alert':
+        return {
+          type: 'success',
+          ...base
+        };
+        
+      case 'loader':
+        return {
+          size: 'medium',
+          ...base
+        };
+        
+      default:
+        return base;
+    }
+  });
+  
+  // Component switching handlers
+  const switchToComponent = (componentType: string) => {
+    setIsLoading(true);
+    
+    // Simulate async component loading
+    setTimeout(() => {
+      batch(() => {
+        setSelectedComponentType(componentType);
+        setIsLoading(false);
+      });
+    }, 300);
+  };
+  
+  const updateProps = (newProps: Record<string, any>) => {
+    setComponentProps(prev => ({ ...prev, ...newProps }));
+  };
+  
+  return (
+    <div style="padding: 20px; font-family: sans-serif;">
+      
+      <h1>Dynamic Components Test</h1>
+      
+      {/* Test 1: Basic Dynamic component with reactive type */}
+      <section style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h2>Basic Dynamic Component</h2>
+        
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 8px; font-weight: bold;">
+            Select Component Type:
+          </label>
+          <div>
+            {Object.keys(componentRegistry).map(type => (
+              <button
+                key={type}
+                onClick={() => switchToComponent(type)}
+                style={`
+                  padding: 6px 12px; 
+                  margin: 2px; 
+                  border: 1px solid #ccc; 
+                  border-radius: 4px; 
+                  cursor: pointer;
+                  background: ${selectedComponentType() === type ? '#007bff' : 'white'};
+                  color: ${selectedComponentType() === type ? 'white' : 'black'};
+                `}
+              >
+                {type.charAt(0).toUpperCase() + type.slice(1)}
+              </button>
+            ))}
+          </div>
+        </div>
+        
+        <div style="padding: 20px; background: #f8f9fa; border-radius: 4px; min-height: 80px; display: flex; align-items: center; justify-content: center;">
+          <Dynamic 
+            component={currentComponent()}
+            {...dynamicProps()}
+          >
+            This is dynamic content for: {selectedComponentType()}
+          </Dynamic>
+        </div>
+        
+        <div style="margin-top: 10px; font-size: 0.9em; color: #666;">
+          Current Component: <strong>{selectedComponentType()}</strong>
+          {isLoading() && <span style="margin-left: 10px; color: #007bff;">Loading...</span>}
+        </div>
+      </section>
+      
+      {/* Test 2: Dynamic component with function-based reference */}
+      <section style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h2>Function-Based Component Reference</h2>
+        
+        <Dynamic 
+          component={() => {
+            const type = selectedComponentType();
+            console.log(`Resolving component: ${type}`);
+            return componentRegistry[type];
+          }}
+          variant={selectedComponentType() === 'button' ? 'secondary' : undefined}
+          type={selectedComponentType() === 'alert' ? 'info' : undefined}
+          disabled={isLoading()}
+        >
+          Function-resolved component: {selectedComponentType()}
+        </Dynamic>
+      </section>
+      
+      {/* Test 3: Conditional Dynamic components */}
+      <section style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h2>Conditional Dynamic Components</h2>
+        
+        <div style="margin-bottom: 15px;">
+          <button onClick={() => setIsLoading(!isLoading())}>
+            Toggle Loading State
+          </button>
+        </div>
+        
+        <Dynamic 
+          component={isLoading() ? LoadingSpinner : currentComponent()}
+          size={isLoading() ? 'large' : undefined}
+          {...(isLoading() ? {} : dynamicProps())}
+        >
+          {isLoading() ? undefined : `Content for: ${selectedComponentType()}`}
+        </Dynamic>
+      </section>
+      
+      {/* Test 4: Array of Dynamic components */}
+      <section style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h2>Multiple Dynamic Components</h2>
+        
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          {Object.entries(componentRegistry).map(([type, ComponentRef], index) => (
+            <div key={type} style="border: 1px solid #eee; padding: 10px; border-radius: 4px; min-width: 150px;">
+              <div style="font-size: 0.8em; color: #666; margin-bottom: 8px; text-align: center;">
+                {type} #{index + 1}
+              </div>
+              <Dynamic 
+                component={ComponentRef}
+                variant={type === 'button' ? 'primary' : undefined}
+                type={type === 'alert' ? 'warning' : undefined}
+                title={type === 'card' ? `Card ${index + 1}` : undefined}
+                size={type === 'loader' ? 'small' : undefined}
+                placeholder={type === 'input' ? `Input ${index + 1}` : undefined}
+                onClick={type === 'button' ? () => console.log(`${type} ${index + 1} clicked`) : undefined}
+              >
+                {type !== 'loader' && type !== 'input' && `${type} content ${index + 1}`}
+              </Dynamic>
+            </div>
+          ))}
+        </div>
+      </section>
+      
+      {/* Test 5: Dynamic component with complex prop forwarding */}
+      <section style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h2>Complex Prop Forwarding</h2>
+        
+        <div style="margin-bottom: 15px;">
+          <div style="margin-bottom: 10px;">
+            <label style="margin-right: 10px;">Button Variant:</label>
+            <select onChange={(e) => updateProps({ variant: e.target.value })}>
+              <option value="primary">Primary</option>
+              <option value="secondary">Secondary</option>
+              <option value="default">Default</option>
+            </select>
+          </div>
+          
+          <div style="margin-bottom: 10px;">
+            <label style="margin-right: 10px;">Alert Type:</label>
+            <select onChange={(e) => updateProps({ type: e.target.value })}>
+              <option value="info">Info</option>
+              <option value="success">Success</option>
+              <option value="warning">Warning</option>
+              <option value="error">Error</option>
+            </select>
+          </div>
+        </div>
+        
+        <Dynamic 
+          component={currentComponent()}
+          {...dynamicProps()}
+          style="margin: 8px;"
+          data-testid={`dynamic-${selectedComponentType()}`}
+          onMouseEnter={() => console.log(`Hovering ${selectedComponentType()}`)}
+        >
+          Complex forwarded props for {selectedComponentType()}
+        </Dynamic>
+      </section>
+      
+      {/* Test 6: Nested Dynamic components */}
+      <section style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h2>Nested Dynamic Components</h2>
+        
+        <Dynamic 
+          component={Card}
+          title="Outer Dynamic Card"
+          variant="highlighted"
+        >
+          <p>This card contains nested dynamic components:</p>
+          
+          <div style="margin: 10px 0;">
+            <Dynamic 
+              component={selectedComponentType() === 'input' ? Input : Button}
+              variant="secondary"
+              placeholder={selectedComponentType() === 'input' ? 'Nested input' : undefined}
+              onClick={selectedComponentType() !== 'input' ? () => alert('Nested button!') : undefined}
+            >
+              {selectedComponentType() !== 'input' && 'Nested Button'}
+            </Dynamic>
+          </div>
+          
+          <Dynamic 
+            component={Alert}
+            type="info"
+          >
+            This alert is always rendered, but the above component is: {selectedComponentType()}
+          </Dynamic>
+        </Dynamic>
+      </section>
+      
+      {/* Test 7: Dynamic component with null/undefined handling */}
+      <section style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+        <h2>Null/Undefined Component Handling</h2>
+        
+        <div style="margin-bottom: 10px;">
+          <button onClick={() => setSelectedComponentType('nonExistent')}>
+            Set Invalid Component
+          </button>
+          <button onClick={() => setSelectedComponentType('button')} style="margin-left: 10px;">
+            Reset to Button
+          </button>
+        </div>
+        
+        <div style="padding: 15px; background: #f8f9fa; border-radius: 4px;">
+          <Dynamic 
+            component={componentRegistry[selectedComponentType()]}
+            variant="primary"
+          >
+            {componentRegistry[selectedComponentType()] 
+              ? `Valid component: ${selectedComponentType()}` 
+              : `Invalid component: ${selectedComponentType()}`
+            }
+          </Dynamic>
+        </div>
+      </section>
+      
+      {/* Advanced tests if enabled */}
+      {showAdvanced && (
+        <section style="margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 4px; background: #fffbf0;">
+          <h2>Advanced Dynamic Component Tests</h2>
+          
+          <h3>Dynamic Component with Refs</h3>
+          <Dynamic 
+            component={Input}
+            ref={(el) => el && console.log('Dynamic input ref:', el)}
+            placeholder="Input with ref"
+          />
+          
+          <h3 style="margin-top: 20px;">Dynamic Component with Complex Children</h3>
+          <Dynamic 
+            component={Card}
+            title="Complex Children"
+          >
+            <div>
+              <p>Static paragraph</p>
+              <Dynamic component={Button} variant="primary">Nested Button</Dynamic>
+              <p>Current type: <strong>{selectedComponentType()}</strong></p>
+            </div>
+          </Dynamic>
+          
+          <h3 style="margin-top: 20px;">Dynamic Component with Async Resolution</h3>
+          <Dynamic 
+            component={() => {
+              // Simulate async component resolution
+              return new Promise(resolve => {
+                setTimeout(() => resolve(Alert), 100);
+              });
+            }}
+            type="success"
+          >
+            Async resolved component
+          </Dynamic>
+        </section>
+      )}
+      
+    </div>
+  );
+}
+
+/**
+ * Expected transformation should handle:
+ * 1. Basic Dynamic components: <Dynamic component={ComponentRef}>
+ * 2. Function-based component resolution: component={() => resolve()}
+ * 3. Prop spreading and forwarding: {...props}
+ * 4. Children passing to dynamic components
+ * 5. Reactive component switching
+ * 6. Null/undefined component handling
+ * 7. Nested Dynamic components
+ * 8. Complex prop forwarding patterns
+ * 9. Component lifecycle management during switches
+ * 10. Integration with Pulsar registry system
+ */
