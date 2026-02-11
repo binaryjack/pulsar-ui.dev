@@ -5,22 +5,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [
     pulsar({
-      debug: true,
-      autoInjectHMR: true, // Auto-inject HMR for pulse() calls
-      debugChannels: [
-        'emitter',
-        'signal-binding',
-        'wire',
-        'reactivity',
-        'lexer',
-        'parser',
-        'analyzer',
-        'transform',
-        'validator',
-        'pipeline',
-        'effect',
-        'signal-creation',
-      ],
+      autoInjectHMR: true,
       enableDependencyResolution: true,
     }),
   ],

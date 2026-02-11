@@ -27,7 +27,6 @@ export component App() {
   
   return (
     <div style="min-height: 100vh; background: #0a0a0a; color: white; font-family: system-ui;">
-      {/* Navigation Bar */}
       <nav style="background: #1a1a1a; padding: 20px; border-bottom: 2px solid #3b82f6; margin-bottom: 20px;">
         <div style="max-width: 1200px; margin: 0 auto; display: flex; gap: 20px; align-items: center;">
           <h1 style="font-size: 24px; margin: 0; color: #3b82f6; flex: 1;">Pulsar Framework</h1>
@@ -66,7 +65,6 @@ export component App() {
         </div>
       </nav>
       
-      {/* Router with Routes */}
       <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
         <Router>
           <Route path="/" component={HomePage} default={true} label="Home" />

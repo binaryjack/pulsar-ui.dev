@@ -1,0 +1,15 @@
+/**
+ * Test file for Phase 1 fixes:
+ * - Keyword attributes (component={X})
+ * - JSX comments
+ */
+
+export component KeywordTest() {
+  return (
+    <div>
+      {/* This is a JSX comment - should be skipped */}
+      <Route component={HomePage} default={true} />
+      <Input const={value} />
+    </div>
+  );
+}

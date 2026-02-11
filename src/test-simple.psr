@@ -1,0 +1,12 @@
+/**
+ * Simple test component - minimal PSR to verify transformation
+ */
+
+export component TestSimple() {
+  return (
+    <div style="padding: 20px; background: #1a1a1a; color: white;">
+      <h1>Test Component Rendered!</h1>
+      <p>If you see this, the transformer is working.</p>
+    </div>
+  );
+}
