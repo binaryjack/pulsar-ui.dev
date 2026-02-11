@@ -11,7 +11,7 @@ export interface IAppProps {
   id?: string;
 }
 
-export component App() {
+component App() {
   const navigate = useNavigate();
   const [currentPath, setCurrentPath] = createSignal(window.location.pathname);
   
@@ -74,3 +74,5 @@ export component App() {
     </div>
   );
 }
+
+export { App };

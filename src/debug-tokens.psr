@@ -1,0 +1,11 @@
+/**
+ * Debug: Check lexer tokens for simple JSX
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+component App() {
+  return <div>Hello</div>;
+}
+
+export default App;

@@ -1,0 +1,23 @@
+/**
+ * Simple test version
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+component App() {
+  const [count, setCount] = createSignal(0);
+  
+  return (
+    <div>
+      <h1>Hello Pulsar</h1>
+      <p>Count: {count()}</p>
+      <button onClick={() => setCount(count() + 1)}>
+        Increment
+      </button>
+    </div>
+  );
+}
+
+export { App };
+
+
