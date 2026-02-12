@@ -12,6 +12,7 @@ import { ControlFlowTestPage } from './showcase/pages/control-flow-test.psr';
 import { ResourceTestPage } from './showcase/pages/resource-test.psr';
 import { ErrorBoundaryTestPage } from './showcase/pages/error-boundary-test.psr';
 import { ContextTestPage } from './showcase/pages/context-test.psr';
+import { AssignmentTest } from './showcase/pages/assignment-test.psr';
 
 export interface IAppProps {
   id?: string;
