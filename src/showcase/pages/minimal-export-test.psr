@@ -1,0 +1,7 @@
+/**
+ * Minimal component test
+ */
+
+export component MinimalTest() {
+  return <div>Hello</div>;
+}

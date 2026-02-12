@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [
     pulsar({
-      debug: true, // Enable debug logging to see what's happening
+      debug: true, // Re-enable to see if plugin is being called
       autoInjectHMR: true,
       enableDependencyResolution: true,
     }),
@@ -16,6 +16,10 @@ export default defineConfig({
     outDir: resolve(__dirname, 'dist'),
     emptyOutDir: true,
   },
+  optimizeDeps: {
+    extensions: ['.psr', '.ts', '.tsx', '.js', '.jsx'],
+  },
+  assetsInclude: [], // Don't treat .psr as assets
   server: {
     port: 3000,
     open: true,
@@ -36,5 +40,6 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src'),
     },
+    extensions: ['.psr', '.ts', '.tsx', '.js', '.jsx', '.json'],
   },
 });

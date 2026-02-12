@@ -1,5 +1,0 @@
-
-> @pulsar-framework/ui@0.7.0-alpha build C:\Users\Piana Tadeo\source\repos\visual-schema-builder\packages\pulsar-ui.dev
-> echo 'Skipping TypeScript build - using source files directly with Vite runtime compilation'
-
-'Skipping TypeScript build - using source files directly with Vite runtime compilation'

@@ -41,14 +41,12 @@ export component AboutPage() {
         
         <button 
           onClick={toggleDetails}
-          style="margin-top: 20px; padding: 12px 24px; font-size: 16px; background: #6b7280; 
-                 border: none; color: white; border-radius: 6px; cursor: pointer; font-weight: bold;">
+          style="margin-top: 20px; padding: 12px 24px; font-size: 16px; background: #6b7280; border: none; color: white; border-radius: 6px; cursor: pointer; font-weight: bold;">
           {showDetails() ? '▼ Hide Details' : '▶ Show More Details'}
         </button>
         
         {showDetails() ? (
-          <div style="margin-top: 20px; padding: 20px; background: #2a2a2a; border-radius: 8px; 
-                      border-left: 4px solid #3b82f6;">
+          <div style="margin-top: 20px; padding: 20px; background: #2a2a2a; border-radius: 8px; border-left: 4px solid #3b82f6;">
             <h4 style="font-size: 18px; margin-bottom: 10px; color: #3b82f6;">Navigation System</h4>
             <p style="color: #9ca3af; line-height: 1.6;">
               This page demonstrates Pulsar's built-in client-side routing capabilities. 
@@ -77,9 +75,7 @@ export component AboutPage() {
       
       <button 
         onClick={goBack}
-        style="padding: 14px 28px; font-size: 18px; background: #3b82f6; border: none; 
-               color: white; border-radius: 8px; cursor: pointer; font-weight: bold; 
-               box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);">
+        style="padding: 14px 28px; font-size: 18px; background: #3b82f6; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);">
         ← Back to Home
       </button>
     </div>

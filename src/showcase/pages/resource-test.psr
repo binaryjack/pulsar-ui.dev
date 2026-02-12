@@ -1,0 +1,291 @@
+/**
+ * PHASE 3: Resource Management & Async Data - TESTING FRESH SERVER
+ * Testing: createResource, async loading states
+ */
+
+import { createSignal, createEffect, createResource, ShowRegistry } from '@pulsar-framework/pulsar.dev';
+
+// Mock API functions
+async function fetchUser(id) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        id,
+        name: `User ${id}`,
+        email: `user${id}@example.com`,
+        avatar: `https://i.pravatar.cc/150?img=${id}`,
+      });
+    }, 1500);
+  });
+}
+
+async function fetchPosts(userId) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        { id: 1, title: 'Getting Started with Pulsar', likes: 42 },
+        { id: 2, title: 'Reactive Programming Patterns', likes: 38 },
+        { id: 3, title: 'Building Scalable Apps', likes: 51 },
+      ]);
+    }, 1200);
+  });
+}
+
+async function searchProducts(query) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (query === 'error') {
+        reject(new Error('Search service unavailable'));
+      } else if (query.length < 2) {
+        resolve([]);
+      } else {
+        const products = [
+          { id: 1, name: 'Laptop', price: 999, inStock: true },
+          { id: 2, name: 'Mouse', price: 29, inStock: true },
+          { id: 3, name: 'Keyboard', price: 79, inStock: false },
+          { id: 4, name: 'Monitor', price: 349, inStock: true },
+        ];
+        resolve(products.filter(p => p.name.toLowerCase().includes(query.toLowerCase())));
+      }
+    }, 800);
+  });
+}
+
+export component ResourceTestPage() {
+  // Test 1: Basic Resource - Single fetch
+  const [userId, setUserId] = createSignal(1);
+  const user = createResource(() => fetchUser(userId()));
+  
+  // Trigger refetch when userId changes
+  let skipFirst = true;
+  createEffect(() => {
+    userId(); // Track dependency
+    if (skipFirst) {
+      skipFirst = false;
+    } else {
+      user.refetch();
+    }
+  });
+  
+  const nextUser = () => setUserId((id) => (id % 10) + 1);
+  const prevUser = () => setUserId((id) => (id === 1 ? 10 : id - 1));
+  
+  // Test 2: Dependent Resource - Posts depend on user
+  const posts = createResource(() => fetchPosts(userId()));
+  
+  let skipFirstPost = true;
+  createEffect(() => {
+    userId(); // Track dependency
+    if (skipFirstPost) {
+      skipFirstPost = false;
+    } else {
+      posts.refetch();
+    }
+  });
+  
+  // Test 3: Search with debounce
+  const [searchQuery, setSearchQuery] = createSignal('');
+  const searchResults = createResource(() => searchProducts(searchQuery()), { lazy: true });
+  
+  createEffect(() => {
+    const query = searchQuery();
+    if (query.length >= 2 || query === 'error') {
+      searchResults.load();
+    }
+  });
+  
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+  
+  // Test 4: Manual refetch
+  const [refreshCount, setRefreshCount] = createSignal(0);
+  
+  const refreshAll = () => {
+    setRefreshCount(c => c + 1);
+    user.refetch();
+    posts.refetch();
+  };
+  
+  return (
+    <div>
+      <h2 style="font-size: 32px; margin-bottom: 20px; color: #06b6d4;">
+        🌊 Phase 3: Resource Management & Async Data
+      </h2>
+      
+      {/* Test 1: Basic Resource Loading */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #06b6d4;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #06b6d4;">
+          1️⃣ Basic Resource - User Profile
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          createResource automatically manages loading, error, and success states for async data.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+          <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <button 
+              onClick={prevUser}
+              style="padding: 10px 20px; background: #06b6d4; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;">
+              ← Previous User
+            </button>
+            
+            <button 
+              onClick={nextUser}
+              style="padding: 10px 20px; background: #06b6d4; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;">
+              Next User →
+            </button>
+            
+            <button 
+              onClick={refreshAll}
+              style="padding: 10px 20px; background: #8b5cf6; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;">
+              🔄 Refresh (Count: {refreshCount()})
+            </button>
+          </div>
+          
+          <div style="min-height: 150px;">
+            <ShowRegistry when={() => user.isLoading}>
+              <div style="color: #06b6d4; padding: 20px; text-align: center;">⏳ Loading user {userId()}...</div>
+            </ShowRegistry>
+            
+            <ShowRegistry when={() => user.error}>
+              <div style="color: #ef4444; padding: 20px; background: #7f1d1d; border-radius: 4px;">
+                ❌ Error: {user.error ? user.error.message : ''}
+              </div>
+            </ShowRegistry>
+            
+            <ShowRegistry when={() => user.data && !user.isLoading}>
+              <div style="display: flex; gap: 20px; align-items: center; padding: 20px; background: #1a1a1a; border-radius: 4px;">
+                <img 
+                  src={user.data ? user.data.avatar : ''} 
+                  alt={user.data ? user.data.name : ''}
+                  style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #06b6d4;"
+                />
+                <div>
+                  <h4 style="margin: 0 0 5px 0; color: white; font-size: 20px;">{user.data ? user.data.name : ''}</h4>
+                  <p style="margin: 0; color: #94a3b8;">{user.data ? user.data.email : ''}</p>
+                  <p style="margin: 5px 0 0 0; color: #06b6d4; font-size: 12px;">User ID: {user.data ? user.data.id : ''}</p>
+                </div>
+              </div>
+            </ShowRegistry>
+          </div>
+        </div>
+      </section>
+      
+      {/* Test 2: Dependent Resource */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #06b6d4;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #06b6d4;">
+          2️⃣ Dependent Resource - User Posts
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          Resources can depend on other signals/resources. Posts automatically refetch when userId changes.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px;">
+          <ShowRegistry when={() => posts.isLoading}>
+            <div style="color: #06b6d4; padding: 20px; text-align: center;">⏳ Loading posts...</div>
+          </ShowRegistry>
+          
+          <ShowRegistry when={() => posts.error}>
+            <div style="color: #ef4444;">❌ {posts.error ? posts.error.message : ''}</div>
+          </ShowRegistry>
+          
+          <ShowRegistry when={() => posts.data && !posts.isLoading}>
+            <div style="display: grid; gap: 10px;">
+              {posts.data && posts.data.map ? posts.data.map(post => (
+                <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border-left: 3px solid #06b6d4;">
+                  <h5 style="margin: 0 0 8px 0; color: white; font-size: 16px;">{post.title}</h5>
+                  <div style="color: #94a3b8; font-size: 14px;">
+                    ❤️ {post.likes} likes
+                  </div>
+                </div>
+              )) : null}
+            </div>
+          </ShowRegistry>
+        </div>
+      </section>
+      
+      {/* Test 3: Search with Resource */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #06b6d4;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #06b6d4;">
+          3️⃣ Search Resource - Product Search
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          Resources update automatically when the source signal changes. Type "error" to trigger error state.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px;">
+          <input
+            type="text"
+            placeholder="Search products... (try 'lap' or 'error')"
+            onInput={handleSearch}
+            value={searchQuery()}
+            style="width: 100%; padding: 12px; background: #1a1a1a; border: 2px solid #334155; border-radius: 4px; color: white; font-size: 14px; margin-bottom: 15px;"
+          />
+          
+          <div style="min-height: 100px;">
+            <ShowRegistry when={() => searchQuery().length > 0 && searchQuery().length < 2}>
+              <p style="color: #64748b; padding: 10px;">Type at least 2 characters to search...</p>
+            </ShowRegistry>
+            
+            <ShowRegistry when={() => searchResults.isLoading}>
+              <div style="color: #06b6d4; padding: 10px;">🔍 Searching...</div>
+            </ShowRegistry>
+            
+            <ShowRegistry when={() => searchResults.error}>
+              <div style="color: #ef4444; padding: 15px; background: #7f1d1d; border-radius: 4px;">
+                ❌ {searchResults.error ? searchResults.error.message : ''}
+                <div style="margin-top: 8px; font-size: 12px; color: #fca5a5;">
+                  Try a different search term
+                </div>
+              </div>
+            </ShowRegistry>
+            
+            <ShowRegistry when={() => searchResults.data && !searchResults.isLoading}>
+              <div>
+                {searchResults.data && searchResults.data.length === 0 ? (
+                  <p style="color: #64748b; padding: 10px;">No products found</p>
+                ) : (
+                  <div style="display: grid; gap: 10px;">
+                    {searchResults.data && searchResults.data.map ? searchResults.data.map(product => (
+                      <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #1a1a1a; border-radius: 4px;">
+                        <div>
+                          <span style="color: white; font-weight: bold; margin-right: 10px;">
+                            {product.name}
+                          </span>
+                          <span style="color: #10b981; font-size: 16px;">
+                            ${product.price}
+                          </span>
+                        </div>
+                        <span style={product.inStock ? "color: #10b981;" : "color: #ef4444;"}>
+                          {product.inStock ? '✓ In Stock' : '✗ Out of Stock'}
+                        </span>
+                      </div>
+                    )) : null}
+                  </div>
+                )}
+              </div>
+            </ShowRegistry>
+          </div>
+        </div>
+      </section>
+      
+      {/* Summary */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981;">
+        <h3 style="font-size: 20px; margin-bottom: 10px; color: #10b981;">
+          ✓ Resource Management Summary
+        </h3>
+        <ul style="color: #94a3b8; line-height: 1.8; margin: 0; padding-left: 20px;">
+          <li><strong style="color: white;">createResource:</strong> Automatic async state management with isLoading, data, and error</li>
+          <li><strong style="color: white;">ShowRegistry:</strong> Conditional rendering based on resource states</li>
+          <li><strong style="color: white;">Dependent Resources:</strong> Manual refetch with createEffect tracking dependencies</li>
+          <li><strong style="color: white;">refetch():</strong> Manual refresh capability</li>
+          <li><strong style="color: white;">lazy:</strong> Opt-in loading with load() method</li>
+        </ul>
+      </section>
+    </div>
+  );
+}

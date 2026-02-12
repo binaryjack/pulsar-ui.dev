@@ -1,0 +1,353 @@
+/**
+ * PHASE 4: Error Boundaries & Error Handling
+ * Testing: Tryer/Catcher error boundary pattern
+ */
+
+import { createSignal, Tryer, Catcher } from '@pulsar-framework/pulsar.dev';
+
+// Components that can throw errors
+function SafeComponent() {
+  return (
+    <div style="padding: 15px; background: #10b981; color: white; border-radius: 4px;">
+      This component is safe and renders successfully
+    </div>
+  );
+}
+
+function ErrorComponent({ message }) {
+  throw new Error(message || 'Component rendering failed!');
+}
+
+function AsyncErrorComponent() {
+  const [data, setData] = createSignal(null);
+  
+  // Simulated async error
+  setTimeout(() => {
+    throw new Error('Async operation failed after 2 seconds');
+  }, 2000);
+  
+  return <div>Waiting for async error...</div>;
+}
+
+export component ErrorBoundaryTestPage() {
+  // Test 1: Basic error boundary
+  const [throwError, setThrowError] = createSignal(false);
+  const [errorMessage, setErrorMessage] = createSignal('Critical render error!');
+  
+  const toggleError = () => setThrowError(!throwError());
+  const resetError = () => setThrowError(false);
+  
+  // Test 2: Multiple boundaries
+  const [section1Error, setSection1Error] = createSignal(false);
+  const [section2Error, setSection2Error] = createSignal(false);
+  const [section3Error, setSection3Error] = createSignal(false);
+  
+  // Test 3: Nested boundaries
+  const [outerError, setOuterError] = createSignal(false);
+  const [innerError, setInnerError] = createSignal(false);
+  
+  // Test 4: Error recovery
+  const [attemptCount, setAttemptCount] = createSignal(0);
+  const [shouldFail, setShouldFail] = createSignal(true);
+  
+  const tryAgain = () => {
+    setAttemptCount(c => c + 1);
+    if (attemptCount() >= 2) {
+      setShouldFail(false);
+    }
+  };
+  
+  return (
+    <div>
+      <h2 style="font-size: 32px; margin-bottom: 20px; color: #ef4444;">
+        🛡️ Phase 4: Error Boundaries & Error Handling
+      </h2>
+      
+      {/* Test 1: Basic Error Boundary */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ef4444;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #ef4444;">
+          1️⃣ Basic Error Boundary - Tryer/Catcher
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          Tryer/Catcher provides error boundaries to catch and handle component errors gracefully.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+          <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <button 
+              onClick={toggleError}
+              style="padding: 10px 20px; background: #ef4444; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;">
+              {throwError() ? 'Fix Error' : 'Trigger Error'}
+            </button>
+            
+            <input
+              type="text"
+              value={errorMessage()}
+              onInput={(e) => setErrorMessage(e.target.value)}
+              placeholder="Custom error message"
+              style="flex: 1; padding: 10px; background: #1a1a1a; border: 2px solid #334155; border-radius: 4px; color: white; font-size: 14px;"
+            />
+          </div>
+          
+          <div style="min-height: 80px;">
+            <Tryer>
+              {throwError() ? (
+                <ErrorComponent message={errorMessage()} />
+              ) : (
+                <SafeComponent />
+              )}
+              
+              <Catcher>
+                {(error, reset) => (
+                  <div style="padding: 20px; background: #7f1d1d; border-left: 4px solid #ef4444; border-radius: 4px;">
+                    <h4 style="margin: 0 0 10px 0; color: #fca5a5; font-size: 18px;">
+                      ⚠️ Error Caught
+                    </h4>
+                    <p style="margin: 0 0 15px 0; color: #fecaca; font-family: monospace; font-size: 14px;">
+                      {error.message}
+                    </p>
+                    <button
+                      onClick={() => { reset(); resetError(); }}
+                      style="padding: 8px 16px; background: #ef4444; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;"
+                    >
+                      Reset Boundary
+                    </button>
+                  </div>
+                )}
+              </Catcher>
+            </Tryer>
+          </div>
+        </div>
+      </section>
+      
+      {/* Test 2: Multiple Independent Boundaries */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ef4444;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #ef4444;">
+          2️⃣ Multiple Independent Boundaries
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          Each boundary is isolated - errors in one section don't affect others.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px;">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+            {/* Section 1 */}
+            <div style="background: #1a1a1a; padding: 15px; border-radius: 4px;">
+              <h4 style="margin: 0 0 10px 0; color: white; font-size: 16px;">Section 1</h4>
+              <button
+                onClick={() => setSection1Error(!section1Error())}
+                style="padding: 8px 12px; background: #ef4444; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 12px; margin-bottom: 10px; width: 100%;"
+              >
+                Toggle Error
+              </button>
+              <Tryer>
+                {section1Error() ? (
+                  <ErrorComponent message="Section 1 failed" />
+                ) : (
+                  <div style="padding: 10px; background: #10b981; color: white; border-radius: 4px; text-align: center;">
+                    ✓ OK
+                  </div>
+                )}
+                <Catcher>
+                  {(error) => (
+                    <div style="padding: 10px; background: #7f1d1d; color: #fca5a5; border-radius: 4px; font-size: 12px;">
+                      ⚠️ {error.message}
+                    </div>
+                  )}
+                </Catcher>
+              </Tryer>
+            </div>
+            
+            {/* Section 2 */}
+            <div style="background: #1a1a1a; padding: 15px; border-radius: 4px;">
+              <h4 style="margin: 0 0 10px 0; color: white; font-size: 16px;">Section 2</h4>
+              <button
+                onClick={() => setSection2Error(!section2Error())}
+                style="padding: 8px 12px; background: #ef4444; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 12px; margin-bottom: 10px; width: 100%;"
+              >
+                Toggle Error
+              </button>
+              <Tryer>
+                {section2Error() ? (
+                  <ErrorComponent message="Section 2 failed" />
+                ) : (
+                  <div style="padding: 10px; background: #10b981; color: white; border-radius: 4px; text-align: center;">
+                    ✓ OK
+                  </div>
+                )}
+                <Catcher>
+                  {(error) => (
+                    <div style="padding: 10px; background: #7f1d1d; color: #fca5a5; border-radius: 4px; font-size: 12px;">
+                      ⚠️ {error.message}
+                    </div>
+                  )}
+                </Catcher>
+              </Tryer>
+            </div>
+            
+            {/* Section 3 */}
+            <div style="background: #1a1a1a; padding: 15px; border-radius: 4px;">
+              <h4 style="margin: 0 0 10px 0; color: white; font-size: 16px;">Section 3</h4>
+              <button
+                onClick={() => setSection3Error(!section3Error())}
+                style="padding: 8px 12px; background: #ef4444; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 12px; margin-bottom: 10px; width: 100%;"
+              >
+                Toggle Error
+              </button>
+              <Tryer>
+                {section3Error() ? (
+                  <ErrorComponent message="Section 3 failed" />
+                ) : (
+                  <div style="padding: 10px; background: #10b981; color: white; border-radius: 4px; text-align: center;">
+                    ✓ OK
+                  </div>
+                )}
+                <Catcher>
+                  {(error) => (
+                    <div style="padding: 10px; background: #7f1d1d; color: #fca5a5; border-radius: 4px; font-size: 12px;">
+                      ⚠️ {error.message}
+                    </div>
+                  )}
+                </Catcher>
+              </Tryer>
+            </div>
+          </div>
+          
+          <div style="margin-top: 15px; padding: 10px; background: #1a1a1a; border-radius: 4px; font-size: 12px; color: #94a3b8;">
+            💡 Note: Each section has its own boundary. Errors are contained to their section.
+          </div>
+        </div>
+      </section>
+      
+      {/* Test 3: Nested Boundaries */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ef4444;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #ef4444;">
+          3️⃣ Nested Error Boundaries
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          Inner boundaries catch errors first. Outer boundary only activates if inner doesn't exist.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px;">
+          <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <button
+              onClick={() => setOuterError(!outerError())}
+              style="padding: 10px 20px; background: #f59e0b; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;"
+            >
+              Toggle Outer Error
+            </button>
+            <button
+              onClick={() => setInnerError(!innerError())}
+              style="padding: 10px 20px; background: #8b5cf6; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;"
+            >
+              Toggle Inner Error
+            </button>
+          </div>
+          
+          <Tryer>
+            <div style="padding: 15px; background: #1a1a1a; border: 2px solid #f59e0b; border-radius: 4px;">
+              <div style="color: #f59e0b; font-weight: bold; margin-bottom: 10px;">Outer Boundary</div>
+              
+              {outerError() ? (
+                <ErrorComponent message="Outer component failed!" />
+              ) : (
+                <Tryer>
+                  <div style="padding: 15px; background: #0a0a0a; border: 2px solid #8b5cf6; border-radius: 4px;">
+                    <div style="color: #8b5cf6; font-weight: bold; margin-bottom: 10px;">Inner Boundary</div>
+                    
+                    {innerError() ? (
+                      <ErrorComponent message="Inner component failed!" />
+                    ) : (
+                      <div style="padding: 10px; background: #10b981; color: white; border-radius: 4px; text-align: center;">
+                        ✓ All components healthy
+                      </div>
+                    )}
+                  </div>
+                  
+                  <Catcher>
+                    {(error) => (
+                      <div style="padding: 15px; background: #581c87; border-left: 4px solid #8b5cf6; border-radius: 4px; color: #e9d5ff;">
+                        ⚠️ Inner boundary caught: {error.message}
+                      </div>
+                    )}
+                  </Catcher>
+                </Tryer>
+              )}
+            </div>
+            
+            <Catcher>
+              {(error) => (
+                <div style="padding: 15px; background: #78350f; border-left: 4px solid #f59e0b; border-radius: 4px; color: #fbbf24;">
+                  ⚠️ Outer boundary caught: {error.message}
+                </div>
+              )}
+            </Catcher>
+          </Tryer>
+        </div>
+      </section>
+      
+      {/* Test 4: Error Recovery Pattern */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ef4444;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #ef4444;">
+          4️⃣ Error Recovery Pattern
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          Implement retry logic with error boundaries. Component succeeds after 3 attempts.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px;">
+          <Tryer>
+            {shouldFail() ? (
+              <ErrorComponent message={`Attempt ${attemptCount() + 1}: Service temporarily unavailable`} />
+            ) : (
+              <div style="padding: 20px; background: #10b981; color: white; border-radius: 4px; text-align: center;">
+                ✓ Success! Component loaded after {attemptCount()} retries
+              </div>
+            )}
+            
+            <Catcher>
+              {(error, reset) => (
+                <div style="padding: 20px; background: #7f1d1d; border-left: 4px solid #ef4444; border-radius: 4px;">
+                  <h4 style="margin: 0 0 10px 0; color: #fca5a5; font-size: 16px;">
+                    ⚠️ Loading Failed
+                  </h4>
+                  <p style="margin: 0 0 15px 0; color: #fecaca; font-size: 14px;">
+                    {error.message}
+                  </p>
+                  <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 12px;">
+                    Attempts: {attemptCount()} / 3 (succeeds on 3rd attempt)
+                  </p>
+                  <button
+                    onClick={() => { reset(); tryAgain(); }}
+                    style="padding: 10px 20px; background: #ef4444; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;"
+                  >
+                    {attemptCount() < 2 ? 'Retry' : 'Final Attempt'}
+                  </button>
+                </div>
+              )}
+            </Catcher>
+          </Tryer>
+        </div>
+      </section>
+      
+      {/* Summary */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981;">
+        <h3 style="font-size: 20px; margin-bottom: 10px; color: #10b981;">
+          ✓ Error Boundary Summary
+        </h3>
+        <ul style="color: #94a3b8; line-height: 1.8; margin: 0; padding-left: 20px;">
+          <li><strong style="color: white;">Tryer:</strong> Creates an error boundary context</li>
+          <li><strong style="color: white;">Catcher:</strong> Renders when errors are caught, provides error and reset function</li>
+          <li><strong style="color: white;">Isolation:</strong> Errors don't propagate beyond their boundary</li>
+          <li><strong style="color: white;">Nesting:</strong> Inner boundaries catch first, outer as fallback</li>
+          <li><strong style="color: white;">Recovery:</strong> reset() function to recover from errors</li>
+          <li><strong style="color: white;">User Experience:</strong> Graceful degradation instead of white screen</li>
+        </ul>
+      </section>
+    </div>
+  );
+}

@@ -38,31 +38,24 @@ export component Counter({id}:ICounterProps) {
       <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
         <button 
           onClick={increment}
-          style="padding: 16px 32px; font-size: 20px; background: #3b82f6; border: none; 
-                 color: white; border-radius: 8px; cursor: pointer; font-weight: bold;
-                 transition: background 0.2s;">
+          style="padding: 16px 32px; font-size: 20px; background: #3b82f6; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s;">
           ➕ Increment
         </button>
         
         <button 
           onClick={decrement}
-          style="padding: 16px 32px; font-size: 20px; background: #ef4444; border: none; 
-                 color: white; border-radius: 8px; cursor: pointer; font-weight: bold;
-                 transition: background 0.2s;">
+          style="padding: 16px 32px; font-size: 20px; background: #ef4444; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s;">
           ➖ Decrement
         </button>
         
         <button 
           onClick={reset}
-          style="padding: 16px 32px; font-size: 20px; background: #6b7280; border: none; 
-                 color: white; border-radius: 8px; cursor: pointer; font-weight: bold;
-                 transition: background 0.2s;">
+          style="padding: 16px 32px; font-size: 20px; background: #6b7280; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s;">
           🔄 Reset
         </button>
       </div>
       
-      <div style="font-size: 48px; font-weight: bold; color: #10b981; margin-top: 20px; 
-                  padding: 20px; background: #0a0a0a; border-radius: 8px; text-align: center;">
+      <div style="font-size: 48px; font-weight: bold; color: #10b981; margin-top: 20px; padding: 20px; background: #0a0a0a; border-radius: 8px; text-align: center;">
         Count: {count()}
       </div>
       

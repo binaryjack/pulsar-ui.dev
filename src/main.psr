@@ -6,6 +6,12 @@
 import { createSignal, useNavigate, Router, Route } from '@pulsar-framework/pulsar.dev';
 import { HomePage } from './showcase/pages/home.psr';
 import { AboutPage } from './showcase/pages/about.psr';
+import { ReactivityTestPage } from './showcase/pages/reactivity-test.psr';
+import { JsxTestPage } from './showcase/pages/jsx-test.psr';
+import { ControlFlowTestPage } from './showcase/pages/control-flow-test.psr';
+import { ResourceTestPage } from './showcase/pages/resource-test.psr';
+import { ErrorBoundaryTestPage } from './showcase/pages/error-boundary-test.psr';
+import { ContextTestPage } from './showcase/pages/context-test.psr';
 
 export interface IAppProps {
   id?: string;
@@ -25,41 +31,87 @@ component App() {
     setCurrentPath('/about');
   };
   
+  const goReactivity = () => {
+    navigate('/reactivity');
+    setCurrentPath('/reactivity');
+  };
+  
+  const goJsx = () => {
+    navigate('/jsx');
+    setCurrentPath('/jsx');
+  };
+  
+  const goControlFlow = () => {
+    navigate('/control-flow');
+    setCurrentPath('/control-flow');
+  };
+  
+  const goResources = () => {
+    navigate('/resources');
+    setCurrentPath('/resources');
+  };
+  
+  const goErrorBoundary = () => {
+    navigate('/error-boundary');
+    setCurrentPath('/error-boundary');
+  };
+  
+  const goContext = () => {
+    navigate('/context');
+    setCurrentPath('/context');
+  };
+  
   return (
     <div style="min-height: 100vh; background: #0a0a0a; color: white; font-family: system-ui;">
       <nav style="background: #1a1a1a; padding: 20px; border-bottom: 2px solid #3b82f6; margin-bottom: 20px;">
-        <div style="max-width: 1200px; margin: 0 auto; display: flex; gap: 20px; align-items: center;">
-          <h1 style="font-size: 24px; margin: 0; color: #3b82f6; flex: 1;">Pulsar Framework</h1>
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+          <h1 style="font-size: 24px; margin: 0; color: #3b82f6; flex: 1; min-width: 200px;">Pulsar Framework</h1>
           
           <button 
             onClick={goHome}
-            style={{
-              padding: '12px 24px',
-              fontSize: '16px',
-              background: currentPath() === '/' ? '#3b82f6' : '#2a2a2a',
-              border: '2px solid #3b82f6',
-              color: 'white',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontWeight: currentPath() === '/' ? 'bold' : 'normal',
-              transition: 'all 0.2s'
-            }}>
+            style="padding: 10px 20px; font-size: 14px; background: #3b82f6; border: 2px solid #3b82f6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
             Home
           </button>
           
           <button 
+            onClick={goReactivity}
+            style="padding: 10px 20px; font-size: 14px; background: #10b981; border: 2px solid #10b981; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🧪 Reactivity
+          </button>
+          
+          <button 
+            onClick={goJsx}
+            style="padding: 10px 20px; font-size: 14px; background: #8b5cf6; border: 2px solid #8b5cf6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🎨 JSX
+          </button>
+          
+          <button 
+            onClick={goControlFlow}
+            style="padding: 10px 20px; font-size: 14px; background: #f59e0b; border: 2px solid #f59e0b; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🎯 Control Flow
+          </button>
+          
+          <button 
+            onClick={goResources}
+            style="padding: 10px 20px; font-size: 14px; background: #06b6d4; border: 2px solid #06b6d4; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🌊 Resources
+          </button>
+          
+          <button 
+            onClick={goErrorBoundary}
+            style="padding: 10px 20px; font-size: 14px; background: #ef4444; border: 2px solid #ef4444; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🛡️ Errors
+          </button>
+          
+          <button 
+            onClick={goContext}
+            style="padding: 10px 20px; font-size: 14px; background: #8b5cf6; border: 2px solid #8b5cf6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🔌 Context
+          </button>
+          
+          <button 
             onClick={goAbout}
-            style={{
-              padding: '12px 24px',
-              fontSize: '16px',
-              background: currentPath() === '/about' ? '#3b82f6' : '#2a2a2a',
-              border: '2px solid #3b82f6',
-              color: 'white',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontWeight: currentPath() === '/about' ? 'bold' : 'normal',
-              transition: 'all 0.2s'
-            }}>
+            style="padding: 10px 20px; font-size: 14px; background: #3b82f6; border: 2px solid #3b82f6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
             About
           </button>
         </div>
@@ -68,6 +120,12 @@ component App() {
       <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
         <Router>
           <Route path="/" component={HomePage} default={true} label="Home" />
+          <Route path="/reactivity" component={ReactivityTestPage} label="Reactivity Tests" />
+          <Route path="/jsx" component={JsxTestPage} label="JSX Tests" />
+          <Route path="/control-flow" component={ControlFlowTestPage} label="Control Flow" />
+          <Route path="/resources" component={ResourceTestPage} label="Resources" />
+          <Route path="/error-boundary" component={ErrorBoundaryTestPage} label="Error Boundaries" />
+          <Route path="/context" component={ContextTestPage} label="Context API" />
           <Route path="/about" component={AboutPage} label="About" />
         </Router>
       </div>

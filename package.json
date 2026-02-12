@@ -14,7 +14,7 @@
   "scripts": {
     "build": "echo 'Skipping TypeScript build - using source files directly with Vite runtime compilation'",
     "build:types": "tsc -p tsconfig.build.json",
-    "dev": "cross-env PULSAR_TRACE=1 PULSAR_TRACE_CHANNELS=lexer,parser node --max-old-space-size=8192 ../../node_modules/vite/bin/vite.js",
+    "dev": "cross-env PULSAR_DEBUG=1 node --max-old-space-size=8192 ../../node_modules/vite/bin/vite.js",
     "dev:http": "cross-env PULSAR_TRACE=1 PULSAR_TRACE_HTTP=http://localhost:9339/trace PULSAR_TRACE_CHANNELS=lexer,parser node --max-old-space-size=8192 ../../node_modules/vite/bin/vite.js",
     "typecheck": "tsc --noEmit",
     "showcase:dev": "vite",

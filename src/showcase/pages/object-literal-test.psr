@@ -1,0 +1,25 @@
+/**
+ * Test object literal support in JSX
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+export component ObjectLiteralTest() {
+  const [color, setColor] = createSignal('#3b82f6');
+  
+  return (
+    <div>
+      <h2>Object Literal Style Test</h2>
+      <div style={{
+        padding: '20px',
+        background: color(),
+        color: 'white',
+        borderRadius: '8px'
+      }}>
+        Background: {color()}
+      </div>
+      <button onClick={() => setColor('#10b981')}>Green</button>
+      <button onClick={() => setColor('#ef4444')}>Red</button>
+    </div>
+  );
+}

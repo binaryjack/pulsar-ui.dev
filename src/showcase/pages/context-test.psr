@@ -1,0 +1,355 @@
+/**
+ * PHASE 5: Context API & Dependency Injection
+ * Testing: createContext, useContext, Provider pattern
+ */
+
+import { createSignal, createContext, useContext } from '@pulsar-framework/pulsar.dev';
+
+// Create theme context
+const ThemeContext = createContext();
+
+// Create user context
+const UserContext = createContext();
+
+// Create settings context
+const SettingsContext = createContext();
+
+// Theme provider component
+function ThemeProvider(props) {
+  const [theme, setTheme] = createSignal('dark');
+  const [primaryColor, setPrimaryColor] = createSignal('#3b82f6');
+  
+  const themeValue = { theme, setTheme, primaryColor, setPrimaryColor };
+  
+  return (
+    <ThemeContext.Provider value={themeValue}>
+      {props.children}
+    </ThemeContext.Provider>
+  );
+}
+
+// User provider component
+function UserProvider(props) {
+  const [user, setUser] = createSignal({ name: 'Guest', role: 'visitor' });
+  const [isLoggedIn, setIsLoggedIn] = createSignal(false);
+  
+  const login = (name, role) => {
+    setUser({ name, role });
+    setIsLoggedIn(true);
+  };
+  
+  const logout = () => {
+    setUser({ name: 'Guest', role: 'visitor' });
+    setIsLoggedIn(false);
+  };
+  
+  const userValue = { user, isLoggedIn, login, logout };
+  
+  return (
+    <UserContext.Provider value={userValue}>
+      {props.children}
+    </UserContext.Provider>
+  );
+}
+
+// Settings provider component
+function SettingsProvider(props) {
+  const [fontSize, setFontSize] = createSignal(16);
+  const [notifications, setNotifications] = createSignal(true);
+  const [language, setLanguage] = createSignal('en');
+  
+  const settingsValue = { fontSize, setFontSize, notifications, setNotifications, language, setLanguage };
+  
+  return (
+    <SettingsContext.Provider value={settingsValue}>
+      {props.children}
+    </SettingsContext.Provider>
+  );
+}
+
+// Consumer component - Theme
+function ThemedBox() {
+  const ctx = useContext(ThemeContext);
+  
+  return (
+    <div style={`padding: 15px; background: ${ctx.theme() === 'dark' ? '#1a1a1a' : '#f1f5f9'}; color: ${ctx.theme() === 'dark' ? 'white' : 'black'}; border: 2px solid ${ctx.primaryColor()}; border-radius: 4px;`}>
+      <p style="margin: 0; font-weight: bold;">Themed Component</p>
+      <p style="margin: 5px 0 0 0; font-size: 12px; opacity: 0.8;">
+        Theme: {ctx.theme()} | Color: {ctx.primaryColor()}
+      </p>
+    </div>
+  );
+}
+
+// Consumer component - User
+function UserProfile() {
+  const ctx = useContext(UserContext);
+  
+  return (
+    <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border-left: 4px solid #10b981;">
+      {ctx.isLoggedIn() ? (
+        <div>
+          <p style="margin: 0; color: white; font-weight: bold;">Welcome, {ctx.user().name}!</p>
+          <p style="margin: 5px 0 0 0; color: #94a3b8; font-size: 12px;">
+            Role: {ctx.user().role}
+          </p>
+        </div>
+      ) : (
+        <p style="margin: 0; color: #94a3b8;">Not logged in</p>
+      )}
+    </div>
+  );
+}
+
+// Consumer component - Settings
+function SettingsDisplay() {
+  const ctx = useContext(SettingsContext);
+  
+  return (
+    <div style={`padding: 15px; background: #1a1a1a; border-radius: 4px; font-size: ${ctx.fontSize()}px;`}>
+      <p style="margin: 0; color: white; font-weight: bold;">Current Settings</p>
+      <p style="margin: 5px 0 0 0; color: #94a3b8;">
+        Font: {ctx.fontSize()}px | 
+        Notifications: {ctx.notifications() ? 'ON' : 'OFF'} | 
+        Language: {ctx.language()}
+      </p>
+    </div>
+  );
+}
+
+// Deeply nested consumer
+function DeeplyNestedComponent() {
+  const themeCtx = useContext(ThemeContext);
+  const userCtx = useContext(UserContext);
+  const settingsCtx = useContext(SettingsContext);
+  
+  return (
+    <div style="padding: 15px; background: #0a0a0a; border: 2px dashed #64748b; border-radius: 4px;">
+      <p style="margin: 0 0 10px 0; color: #8b5cf6; font-weight: bold;">
+        🎯 Deeply Nested Component
+      </p>
+      <p style="margin: 0; color: #94a3b8; font-size: 12px;">
+        Can access all contexts without prop drilling:
+      </p>
+      <ul style="margin: 10px 0 0 0; padding-left: 20px; color: #64748b; font-size: 12px;">
+        <li>Theme: {themeCtx.theme()}</li>
+        <li>User: {userCtx.user().name}</li>
+        <li>Font Size: {settingsCtx.fontSize()}px</li>
+      </ul>
+    </div>
+  );
+}
+
+export component ContextTestPage() {
+  return (
+    <div>
+      <h2 style="font-size: 32px; margin-bottom: 20px; color: #8b5cf6;">
+        🔌 Phase 5: Context API & Dependency Injection
+      </h2>
+      
+      {/* Wrap everything in providers */}
+      <ThemeProvider>
+        <UserProvider>
+          <SettingsProvider>
+            <ContextDemoContent />
+          </SettingsProvider>
+        </UserProvider>
+      </ThemeProvider>
+    </div>
+  );
+}
+
+// Demo content with context consumers
+function ContextDemoContent() {
+  const themeCtx = useContext(ThemeContext);
+  const userCtx = useContext(UserContext);
+  const settingsCtx = useContext(SettingsContext);
+  
+  return (
+    <div>
+      {/* Test 1: Theme Context */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #8b5cf6;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #8b5cf6;">
+          1️⃣ Theme Context - Shared Theme State
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          Context provides a way to pass data through the component tree without prop drilling.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+          <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+            <button
+              onClick={() => themeCtx.setTheme('dark')}
+              style={`padding: 10px 20px; background: ${themeCtx.theme() === 'dark' ? '#8b5cf6' : '#334155'}; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;`}
+            >
+              🌙 Dark
+            </button>
+            
+            <button
+              onClick={() => themeCtx.setTheme('light')}
+              style={`padding: 10px 20px; background: ${themeCtx.theme() === 'light' ? '#8b5cf6' : '#334155'}; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;`}
+            >
+              ☀️ Light
+            </button>
+            
+            <input
+              type="color"
+              value={themeCtx.primaryColor()}
+              onInput={(e) => themeCtx.setPrimaryColor(e.target.value)}
+              style="height: 40px; border: none; border-radius: 4px; cursor: pointer;"
+            />
+            
+            <span style="padding: 10px; color: white; background: #1a1a1a; border-radius: 4px; display: flex; align-items: center;">
+              Primary: {themeCtx.primaryColor()}
+            </span>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+            <ThemedBox />
+            <ThemedBox />
+            <ThemedBox />
+          </div>
+        </div>
+      </section>
+      
+      {/* Test 2: User Context */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #8b5cf6;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #8b5cf6;">
+          2️⃣ User Context - Authentication State
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          Share authentication state across components without passing props.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+          <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            {userCtx.isLoggedIn() ? (
+              <button
+                onClick={userCtx.logout}
+                style="padding: 10px 20px; background: #ef4444; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;"
+              >
+                Logout
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={() => userCtx.login('Alice', 'admin')}
+                  style="padding: 10px 20px; background: #10b981; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;"
+                >
+                  Login as Admin
+                </button>
+                
+                <button
+                  onClick={() => userCtx.login('Bob', 'user')}
+                  style="padding: 10px 20px; background: #3b82f6; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;"
+                >
+                  Login as User
+                </button>
+              </>
+            )}
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+            <UserProfile />
+            <UserProfile />
+          </div>
+        </div>
+      </section>
+      
+      {/* Test 3: Settings Context */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #8b5cf6;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #8b5cf6;">
+          3️⃣ Settings Context - Global Configuration
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          Manage application-wide settings accessible from any component.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+          <div style="display: grid; gap: 15px; margin-bottom: 15px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <label style="color: white; min-width: 100px;">Font Size:</label>
+              <input
+                type="range"
+                min="12"
+                max="24"
+                value={settingsCtx.fontSize()}
+                onInput={(e) => settingsCtx.setFontSize(parseInt(e.target.value))}
+                style="flex: 1;"
+              />
+              <span style="color: white; min-width: 50px;">{settingsCtx.fontSize()}px</span>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <label style="color: white; min-width: 100px;">Notifications:</label>
+              <button
+                onClick={() => settingsCtx.setNotifications(!settingsCtx.notifications())}
+                style={`padding: 8px 16px; background: ${settingsCtx.notifications() ? '#10b981' : '#64748b'}; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;`}
+              >
+                {settingsCtx.notifications() ? 'ON' : 'OFF'}
+              </button>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <label style="color: white; min-width: 100px;">Language:</label>
+              <select
+                value={settingsCtx.language()}
+                onChange={(e) => settingsCtx.setLanguage(e.target.value)}
+                style="padding: 8px; background: #1a1a1a; border: 2px solid #334155; border-radius: 4px; color: white; cursor: pointer;"
+              >
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+              </select>
+            </div>
+          </div>
+          
+          <SettingsDisplay />
+        </div>
+      </section>
+      
+      {/* Test 4: Multiple Contexts in Nested Component */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #8b5cf6;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #8b5cf6;">
+          4️⃣ No Prop Drilling - Deeply Nested Access
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          Nested components can access any context without intermediary props.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px;">
+          <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border: 2px solid #334155;">
+            <p style="margin: 0 0 10px 0; color: #f59e0b;">Level 1 Component</p>
+            <div style="padding: 15px; background: #0a0a0a; border-radius: 4px; border: 2px solid #334155;">
+              <p style="margin: 0 0 10px 0; color: #3b82f6;">Level 2 Component</p>
+              <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border: 2px solid #334155;">
+                <p style="margin: 0 0 10px 0; color: #10b981;">Level 3 Component</p>
+                <DeeplyNestedComponent />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Summary */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981;">
+        <h3 style="font-size: 20px; margin-bottom: 10px; color: #10b981;">
+          ✓ Context API Summary
+        </h3>
+        <ul style="color: #94a3b8; line-height: 1.8; margin: 0; padding-left: 20px;">
+          <li><strong style="color: white;">createContext():</strong> Creates a new context object</li>
+          <li><strong style="color: white;">Context.Provider:</strong> Wraps components to provide context value</li>
+          <li><strong style="color: white;">useContext():</strong> Accesses context value from any nested component</li>
+          <li><strong style="color: white;">No Prop Drilling:</strong> Data flows without explicit prop passing</li>
+          <li><strong style="color: white;">Multiple Contexts:</strong> Components can consume multiple contexts</li>
+          <li><strong style="color: white;">Reactive Updates:</strong> Context consumers re-render when values change</li>
+        </ul>
+      </section>
+    </div>
+  );
+};
