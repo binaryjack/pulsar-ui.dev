@@ -5,6 +5,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [
     pulsar({
+      debug: true, // Enable debug logging to see what's happening
       autoInjectHMR: true,
       enableDependencyResolution: true,
     }),
