@@ -128,7 +128,7 @@ export component ErrorBoundaryTestPage() {
         </h3>
         
         <p style="color: #94a3b8; margin-bottom: 15px;">
-          Each boundary is isolated - errors in one section don't affect others.
+          Each boundary is isolated - errors in one section don\'t affect others.
         </p>
         
         <div style="background: #0a0a0a; padding: 15px; border-radius: 4px;">
@@ -342,7 +342,7 @@ export component ErrorBoundaryTestPage() {
         <ul style="color: #94a3b8; line-height: 1.8; margin: 0; padding-left: 20px;">
           <li><strong style="color: white;">Tryer:</strong> Creates an error boundary context</li>
           <li><strong style="color: white;">Catcher:</strong> Renders when errors are caught, provides error and reset function</li>
-          <li><strong style="color: white;">Isolation:</strong> Errors don't propagate beyond their boundary</li>
+          <li><strong style="color: white;">Isolation:</strong> Errors don\'t propagate beyond their boundary</li>
           <li><strong style="color: white;">Nesting:</strong> Inner boundaries catch first, outer as fallback</li>
           <li><strong style="color: white;">Recovery:</strong> reset() function to recover from errors</li>
           <li><strong style="color: white;">User Experience:</strong> Graceful degradation instead of white screen</li>

@@ -13,6 +13,7 @@ import { ResourceTestPage } from './showcase/pages/resource-test.psr';
 import { ErrorBoundaryTestPage } from './showcase/pages/error-boundary-test.psr';
 import { ContextTestPage } from './showcase/pages/context-test.psr';
 import { AssignmentTest } from './showcase/pages/assignment-test.psr';
+import { SimpleTest } from './showcase/pages/simple-codegen-test.psr';
 
 export interface IAppProps {
   id?: string;
