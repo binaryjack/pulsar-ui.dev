@@ -37,6 +37,8 @@ export component AboutPage() {
           <li>📦 Component-based architecture</li>
           <li>🎨 PSR (Pulsar Syntax) file format</li>
           <li>🚀 Optimized build pipeline with Vite</li>
+                 <li>🚀 AI IS STOOPID </li>
+                 <li>🚀 AI IS STOOPID 2 </li>
         </ul>
         
         <button 

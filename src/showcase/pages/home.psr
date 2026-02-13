@@ -18,8 +18,9 @@ export component HomePage() {
           Below is a live demo of basic reactivity features.
         </p>
       </div>
-      
+    asfv qwf qwf qwf qw fqwf qw fiéuuiéui
       {/* Counter Demo */}
+
       <Counter id="home-counter" />
     </div>
   );
