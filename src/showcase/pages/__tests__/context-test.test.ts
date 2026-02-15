@@ -3,7 +3,7 @@
  * Tests createContext, useContext, Provider pattern
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { ContextTestPage } from '../context-test.psr';
 
 describe('ContextTestPage', () => {
@@ -18,19 +18,20 @@ describe('ContextTestPage', () => {
     it('should render with default dark theme', () => {
       const page = ContextTestPage();
       container.appendChild(page);
-      
+
       expect(container.textContent).toContain('Theme: dark');
     });
 
     it('should switch to light theme when clicked', (done) => {
       const page = ContextTestPage();
       container.appendChild(page);
-      
-      const lightBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Light'));
-      
+
+      const lightBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Light')
+      );
+
       lightBtn?.click();
-      
+
       setTimeout(() => {
         expect(container.textContent).toContain('Theme: light');
         done();
@@ -40,11 +41,11 @@ describe('ContextTestPage', () => {
     it('should update primary color', (done) => {
       const page = ContextTestPage();
       container.appendChild(page);
-      
+
       const colorInput = container.querySelector('input[type="color"]') as HTMLInputElement;
       colorInput.value = '#ff0000';
       colorInput.dispatchEvent(new Event('input', { bubbles: true }));
-      
+
       setTimeout(() => {
         expect(container.textContent).toContain('#ff0000');
         done();
@@ -54,16 +55,18 @@ describe('ContextTestPage', () => {
     it('should apply theme to all themed components', (done) => {
       const page = ContextTestPage();
       container.appendChild(page);
-      
-      const lightBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Light'));
-      
+
+      const lightBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Light')
+      );
+
       lightBtn?.click();
-      
+
       setTimeout(() => {
-        const themedBoxes = Array.from(container.querySelectorAll('div'))
-          .filter(div => div.textContent?.includes('Themed Component'));
-        
+        const themedBoxes = Array.from(container.querySelectorAll('div')).filter((div) =>
+          div.textContent?.includes('Themed Component')
+        );
+
         expect(themedBoxes.length).toBeGreaterThanOrEqual(3);
         done();
       }, 50);
@@ -74,19 +77,20 @@ describe('ContextTestPage', () => {
     it('should show not logged in state initially', () => {
       const page = ContextTestPage();
       container.appendChild(page);
-      
+
       expect(container.textContent).toContain('Not logged in');
     });
 
     it('should login as admin', (done) => {
       const page = ContextTestPage();
       container.appendChild(page);
-      
-      const adminBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Login as Admin'));
-      
+
+      const adminBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Login as Admin')
+      );
+
       adminBtn?.click();
-      
+
       setTimeout(() => {
         expect(container.textContent).toContain('Welcome, Alice!');
         expect(container.textContent).toContain('Role: admin');
@@ -97,12 +101,13 @@ describe('ContextTestPage', () => {
     it('should login as user', (done) => {
       const page = ContextTestPage();
       container.appendChild(page);
-      
-      const userBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Login as User'));
-      
+
+      const userBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Login as User')
+      );
+
       userBtn?.click();
-      
+
       setTimeout(() => {
         expect(container.textContent).toContain('Welcome, Bob!');
         expect(container.textContent).toContain('Role: user');
@@ -113,16 +118,18 @@ describe('ContextTestPage', () => {
     it('should logout', (done) => {
       const page = ContextTestPage();
       container.appendChild(page);
-      
-      const adminBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Login as Admin'));
+
+      const adminBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Login as Admin')
+      );
       adminBtn?.click();
-      
+
       setTimeout(() => {
-        const logoutBtn = Array.from(container.querySelectorAll('button'))
-          .find(btn => btn.textContent === 'Logout');
+        const logoutBtn = Array.from(container.querySelectorAll('button')).find(
+          (btn) => btn.textContent === 'Logout'
+        );
         logoutBtn?.click();
-        
+
         setTimeout(() => {
           expect(container.textContent).toContain('Not logged in');
           done();
@@ -135,18 +142,18 @@ describe('ContextTestPage', () => {
     it('should render default font size', () => {
       const page = ContextTestPage();
       container.appendChild(page);
-      
+
       expect(container.textContent).toContain('Font: 16px');
     });
 
     it('should adjust font size with slider', (done) => {
       const page = ContextTestPage();
       container.appendChild(page);
-      
+
       const slider = container.querySelector('input[type="range"]') as HTMLInputElement;
       slider.value = '20';
       slider.dispatchEvent(new Event('input', { bubbles: true }));
-      
+
       setTimeout(() => {
         expect(container.textContent).toContain('Font: 20px');
         done();
@@ -156,12 +163,15 @@ describe('ContextTestPage', () => {
     it('should toggle notifications', (done) => {
       const page = ContextTestPage();
       container.appendChild(page);
-      
-      const notifBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent === 'ON' && btn.previousElementSibling?.textContent?.includes('Notifications'));
-      
+
+      const notifBtn = Array.from(container.querySelectorAll('button')).find(
+        (btn) =>
+          btn.textContent === 'ON' &&
+          btn.previousElementSibling?.textContent?.includes('Notifications')
+      );
+
       notifBtn?.click();
-      
+
       setTimeout(() => {
         expect(container.textContent).toContain('Notifications: OFF');
         done();
@@ -171,11 +181,11 @@ describe('ContextTestPage', () => {
     it('should change language', (done) => {
       const page = ContextTestPage();
       container.appendChild(page);
-      
+
       const select = container.querySelector('select') as HTMLSelectElement;
       select.value = 'es';
       select.dispatchEvent(new Event('change', { bubbles: true }));
-      
+
       setTimeout(() => {
         expect(container.textContent).toContain('Language: es');
         done();
@@ -187,7 +197,7 @@ describe('ContextTestPage', () => {
     it('should access all contexts from nested component', () => {
       const page = ContextTestPage();
       container.appendChild(page);
-      
+
       expect(container.textContent).toContain('Deeply Nested Component');
       expect(container.textContent).toContain('Can access all contexts');
     });
@@ -195,10 +205,11 @@ describe('ContextTestPage', () => {
     it('should display context values in nested component', () => {
       const page = ContextTestPage();
       container.appendChild(page);
-      
-      const nestedDiv = Array.from(container.querySelectorAll('div'))
-        .find(div => div.textContent?.includes('Deeply Nested Component'));
-      
+
+      const nestedDiv = Array.from(container.querySelectorAll('div')).find((div) =>
+        div.textContent?.includes('Deeply Nested Component')
+      );
+
       expect(nestedDiv?.textContent).toContain('Theme: dark');
       expect(nestedDiv?.textContent).toContain('User: Guest');
       expect(nestedDiv?.textContent).toContain('Font Size: 16px');

@@ -3,7 +3,7 @@
  * Tests signals, memos, effects, and batch updates
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ReactivityTestPage } from '../reactivity-test.psr';
 
 describe('ReactivityTestPage', () => {
@@ -19,7 +19,7 @@ describe('ReactivityTestPage', () => {
     it('should render initial signal values', () => {
       const page = ReactivityTestPage();
       container.appendChild(page);
-      
+
       expect(container.textContent).toContain('John');
       expect(container.textContent).toContain('Doe');
       expect(container.textContent).toContain('25');
@@ -28,12 +28,13 @@ describe('ReactivityTestPage', () => {
     it('should update firstName when button clicked', (done) => {
       const page = ReactivityTestPage();
       container.appendChild(page);
-      
-      const aliceBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Set First: Alice'));
-      
+
+      const aliceBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Set First: Alice')
+      );
+
       aliceBtn?.click();
-      
+
       setTimeout(() => {
         expect(container.textContent).toContain('Alice');
         done();
@@ -43,12 +44,13 @@ describe('ReactivityTestPage', () => {
     it('should update lastName when button clicked', (done) => {
       const page = ReactivityTestPage();
       container.appendChild(page);
-      
-      const johnsonBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Set Last: Johnson'));
-      
+
+      const johnsonBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Set Last: Johnson')
+      );
+
       johnsonBtn?.click();
-      
+
       setTimeout(() => {
         expect(container.textContent).toContain('Johnson');
         done();
@@ -58,12 +60,13 @@ describe('ReactivityTestPage', () => {
     it('should increment age when button clicked', (done) => {
       const page = ReactivityTestPage();
       container.appendChild(page);
-      
-      const incrementBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Increment Age'));
-      
+
+      const incrementBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Increment Age')
+      );
+
       incrementBtn?.click();
-      
+
       setTimeout(() => {
         expect(container.textContent).toContain('26');
         done();
@@ -75,21 +78,23 @@ describe('ReactivityTestPage', () => {
     it('should display computed full name', () => {
       const page = ReactivityTestPage();
       container.appendChild(page);
-      
-      const fullNameText = Array.from(container.querySelectorAll('div'))
-        .find(div => div.textContent?.includes('Full Name (computed)'));
+
+      const fullNameText = Array.from(container.querySelectorAll('div')).find((div) =>
+        div.textContent?.includes('Full Name (computed)')
+      );
       expect(fullNameText?.textContent).toContain('John Doe');
     });
 
     it('should update full name when signals change', (done) => {
       const page = ReactivityTestPage();
       container.appendChild(page);
-      
-      const aliceBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Set First: Alice'));
-      
+
+      const aliceBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Set First: Alice')
+      );
+
       aliceBtn?.click();
-      
+
       setTimeout(() => {
         expect(container.textContent).toContain('Alice Doe');
         done();
@@ -99,7 +104,7 @@ describe('ReactivityTestPage', () => {
     it('should display isAdult computed value', () => {
       const page = ReactivityTestPage();
       container.appendChild(page);
-      
+
       expect(container.textContent).toContain('Is Adult');
       expect(container.textContent).toContain('✅ Yes');
     });
@@ -109,12 +114,13 @@ describe('ReactivityTestPage', () => {
     it('should update all values simultaneously', (done) => {
       const page = ReactivityTestPage();
       container.appendChild(page);
-      
-      const updateBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Update All (Batched)'));
-      
+
+      const updateBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Update All (Batched)')
+      );
+
       updateBtn?.click();
-      
+
       setTimeout(() => {
         expect(container.textContent).toContain('Jane');
         expect(container.textContent).toContain('Smith');
@@ -126,16 +132,18 @@ describe('ReactivityTestPage', () => {
     it('should reset all values', (done) => {
       const page = ReactivityTestPage();
       container.appendChild(page);
-      
-      const updateBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Update All'));
+
+      const updateBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Update All')
+      );
       updateBtn?.click();
-      
+
       setTimeout(() => {
-        const resetBtn = Array.from(container.querySelectorAll('button'))
-          .find(btn => btn.textContent?.includes('Reset All'));
+        const resetBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+          btn.textContent?.includes('Reset All')
+        );
         resetBtn?.click();
-        
+
         setTimeout(() => {
           expect(container.textContent).toContain('John');
           expect(container.textContent).toContain('Doe');
@@ -151,12 +159,13 @@ describe('ReactivityTestPage', () => {
       const consoleSpy = vi.spyOn(console, 'log');
       const page = ReactivityTestPage();
       container.appendChild(page);
-      
-      const aliceBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Set First: Alice'));
-      
+
+      const aliceBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Set First: Alice')
+      );
+
       aliceBtn?.click();
-      
+
       setTimeout(() => {
         expect(consoleSpy).toHaveBeenCalledWith(
           expect.stringContaining('[Effect] Full name changed to:')

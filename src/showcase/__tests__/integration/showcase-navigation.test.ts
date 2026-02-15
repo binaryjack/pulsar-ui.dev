@@ -3,7 +3,7 @@
  * Tests router navigation between showcase pages
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import App from '../../pages/home.psr';
 
 describe('Showcase Navigation Integration', () => {
@@ -20,7 +20,7 @@ describe('Showcase Navigation Integration', () => {
     it('should render all navigation buttons', () => {
       const app = App();
       container.appendChild(app);
-      
+
       expect(container.textContent).toContain('Home');
       expect(container.textContent).toContain('Reactivity');
       expect(container.textContent).toContain('JSX');
@@ -34,7 +34,7 @@ describe('Showcase Navigation Integration', () => {
     it('should have navigation buttons with proper styling', () => {
       const app = App();
       container.appendChild(app);
-      
+
       const navButtons = container.querySelectorAll('nav button');
       expect(navButtons.length).toBeGreaterThanOrEqual(8);
     });
@@ -44,19 +44,20 @@ describe('Showcase Navigation Integration', () => {
     it('should display home page by default', () => {
       const app = App();
       container.appendChild(app);
-      
+
       expect(container.textContent).toContain('Welcome to Pulsar Framework');
     });
 
     it('should navigate to reactivity page', (done) => {
       const app = App();
       container.appendChild(app);
-      
-      const reactivityBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Reactivity'));
-      
+
+      const reactivityBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Reactivity')
+      );
+
       reactivityBtn?.click();
-      
+
       setTimeout(() => {
         expect(window.location.pathname).toBe('/reactivity');
         done();
@@ -66,12 +67,13 @@ describe('Showcase Navigation Integration', () => {
     it('should navigate to about page', (done) => {
       const app = App();
       container.appendChild(app);
-      
-      const aboutBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent === 'About');
-      
+
+      const aboutBtn = Array.from(container.querySelectorAll('button')).find(
+        (btn) => btn.textContent === 'About'
+      );
+
       aboutBtn?.click();
-      
+
       setTimeout(() => {
         expect(window.location.pathname).toBe('/about');
         done();
@@ -81,12 +83,13 @@ describe('Showcase Navigation Integration', () => {
     it('should update currentPath signal on navigation', (done) => {
       const app = App();
       container.appendChild(app);
-      
-      const jsxBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('JSX'));
-      
+
+      const jsxBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('JSX')
+      );
+
       jsxBtn?.click();
-      
+
       setTimeout(() => {
         expect(window.location.pathname).toBe('/jsx');
         done();
@@ -98,12 +101,13 @@ describe('Showcase Navigation Integration', () => {
     it('should load control flow page content', (done) => {
       const app = App();
       container.appendChild(app);
-      
-      const controlFlowBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Control Flow'));
-      
+
+      const controlFlowBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Control Flow')
+      );
+
       controlFlowBtn?.click();
-      
+
       setTimeout(() => {
         expect(container.textContent).toContain('Control Flow Primitives');
         done();
@@ -113,12 +117,13 @@ describe('Showcase Navigation Integration', () => {
     it('should load context page content', (done) => {
       const app = App();
       container.appendChild(app);
-      
-      const contextBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent?.includes('Context'));
-      
+
+      const contextBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+        btn.textContent?.includes('Context')
+      );
+
       contextBtn?.click();
-      
+
       setTimeout(() => {
         expect(container.textContent).toContain('Context API');
         done();
@@ -130,18 +135,20 @@ describe('Showcase Navigation Integration', () => {
     it('should navigate back from about to home', (done) => {
       const app = App();
       container.appendChild(app);
-      
-      const aboutBtn = Array.from(container.querySelectorAll('button'))
-        .find(btn => btn.textContent === 'About');
-      
+
+      const aboutBtn = Array.from(container.querySelectorAll('button')).find(
+        (btn) => btn.textContent === 'About'
+      );
+
       aboutBtn?.click();
-      
+
       setTimeout(() => {
-        const backBtn = Array.from(container.querySelectorAll('button'))
-          .find(btn => btn.textContent?.includes('Back to Home'));
-        
+        const backBtn = Array.from(container.querySelectorAll('button')).find((btn) =>
+          btn.textContent?.includes('Back to Home')
+        );
+
         backBtn?.click();
-        
+
         setTimeout(() => {
           expect(window.location.pathname).toBe('/');
           done();
