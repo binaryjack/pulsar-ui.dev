@@ -4,9 +4,9 @@
  * Testing: For, Show, Index components
  */
 
-import { createSignal, ForRegistry, ShowRegistry, Index } from '@pulsar-framework/pulsar.dev';
+import { createSignal, ForRegistry, ShowRegistry, Index, component } from '@pulsar-framework/pulsar.dev';
 
-export component ControlFlowTestPage() {
+export const ControlFlowTestPage = component(() => {
   // Test 1: Show - Conditional rendering
   const [showContent, setShowContent] = createSignal(true);
   const [hasError, setHasError] = createSignal(false);
@@ -221,4 +221,4 @@ export component ControlFlowTestPage() {
       </section>
     </div>
   );
-}
+});

@@ -5,14 +5,33 @@
 
 import { createSignal, createContext, useContext } from '@pulsar-framework/pulsar.dev';
 
-// Create theme context
-const ThemeContext = createContext();
+// Create theme context with default values to prevent crash if provider missing
+const ThemeContext = createContext({
+  theme: () => 'light',
+  setTheme: () => {},
+  primaryColor: () => '#3b82f6',
+  setPrimaryColor: () => {}
+});
 
 // Create user context
-const UserContext = createContext();
+const UserContext = createContext({
+  user: () => ({ name: 'Guest', role: 'visitor' }),
+  isLoggedIn: () => false,
+  login: () => {},
+  logout: () => {}
+});
 
 // Create settings context
-const SettingsContext = createContext();
+const SettingsContext = createContext({
+  fontSize: () => 16,
+  setFontSize: () => {},
+  notifications: () => true,
+  setNotifications: () => {},
+  language: () => 'en',
+  setLanguage: () => {},
+  animations: () => true,
+  setAnimations: () => {}
+});
 
 // Theme provider component
 function ThemeProvider(props) {
