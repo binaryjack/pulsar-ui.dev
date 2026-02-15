@@ -2,10 +2,18 @@
  * Vitest Configuration for Pulsar UI Showcase Tests
  */
 
+import pulsar from '@pulsar-framework/vite-plugin';
 import path from 'path';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  plugins: [
+    pulsar({
+      debug: false,
+      autoInjectHMR: false,
+      enableDependencyResolution: true,
+    }),
+  ],
   test: {
     globals: true,
     environment: 'jsdom',
@@ -22,6 +30,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '@pulsar-framework/pulsar.dev': path.resolve(__dirname, '../pulsar.dev/src'),
+      '@': path.resolve(__dirname, 'src'),
     },
+    extensions: ['.psr', '.ts', '.tsx', '.js', '.jsx', '.json'],
+  },
+  assetsInclude: [],
+  optimizeDeps: {
+    extensions: ['.psr', '.ts', '.tsx', '.js', '.jsx'],
   },
 });

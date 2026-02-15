@@ -20,6 +20,9 @@
     "showcase:dev": "vite",
     "showcase:build": "vite build",
     "showcase:preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
     "test:reactivity": "vite --open test-comprehensive-reactivity.html",
     "test:comprehensive": "vite --open test-comprehensive-reactivity.html"
   },
