@@ -3,7 +3,7 @@
  * Configures JSDOM environment and test utilities
  */
 
-import { beforeAll, afterEach, vi } from 'vitest';
+import { afterEach, beforeAll, vi } from 'vitest';
 
 // Mock console methods to reduce noise
 beforeAll(() => {
@@ -30,7 +30,7 @@ beforeAll(() => {
     href: 'http://localhost:3004/',
     origin: 'http://localhost:3004',
   } as any;
-  
+
   // Mock window.history
   window.history.pushState = vi.fn();
   window.history.replaceState = vi.fn();
