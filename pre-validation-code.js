@@ -1,26 +1,43 @@
-import { $REGISTRY, createEffect, createSignal, t_element } from '@pulsar-framework/pulsar.dev';
+import { $REGISTRY, ForRegistry, Index, ShowRegistry, createSignal, insert, t_element } from '@pulsar-framework/pulsar.dev';
 
-/**
- * @interface ICounterProps
- * @property {string} id=
- */
-export function Counter({id}) {
-  return $REGISTRY.execute('component:Counter', null, () => {
-    console.log('[Counter] Initializing with id:', id);
-    const [count, setCount] = createSignal(0);
-    const increment = () => {
-      console.log('[Click] Increment, before:', count());
-      setCount(count() + 1);
-      console.log('[Click] After:', count());
+export function ControlFlowTestPage() {
+  return $REGISTRY.execute('component:ControlFlowTestPage', null, () => {
+    const [showContent, setShowContent] = createSignal(true);
+    const [hasError, setHasError] = createSignal(false);
+    const toggleContent = () => setShowContent(!showContent());
+    const toggleError = () => setHasError(!hasError());
+    const [items, setItems] = createSignal([{ id: 1, name: 'Apple', price: 1.99 }, { id: 2, name: 'Banana', price: 0.99 }, { id: 3, name: 'Cherry', price: 2.49 }]);
+    const addItem = () => {
+      const currentItems = items();
+      const ids = currentItems.map((i) => i.id);
+      let maxId = 0;
+      for (let i = 0; i < ids.length; i++)       {
+        if (ids[i] > maxId)         maxId = ids[i];
+      }
+      const newId = maxId + 1;
+      const fruits = ['Orange', 'Grape', 'Mango', 'Pineapple', 'Strawberry'];
+      const randomFruit = fruits[Math.floor(Math.random() * fruits.length)];
+      const randomPrice = Math.random() * 3 + 0.5.toFixed(2);
+      setItems(currentItems.concat([{ id: newId, name: randomFruit, price: parseFloat(randomPrice) }]));
     };
-    const decrement = () => {
-      console.log('[Click] Decrement, before:', count());
-      setCount(count() - 1);
+    const removeItem = (id) => {
+      setItems(items().filter((item) => item.id !== id));
     };
-    const reset = () => {
-      console.log('[Click] Reset');
-      setCount(0);
+    const sortByPrice = () => {
+      const sorted = items().slice().sort((a, b) => a.price - b.price);
+      setItems(sorted);
     };
-    return t_element('div', { style: 'background: #1a1a1a; padding: 30px; border-radius: 12px; margin-bottom: 20px;' }, [t_element('h2', { style: 'font-size: 24px; margin-bottom: 20px; color: #f59e0b;' }, ['🧪 Test: Basic Signal Reactivity']), t_element('div', { style: 'display: flex; gap: 20px; align-items: center; margin-bottom: 20px; flex-wrap: wrap;' }, [t_element('button', { onClick: increment, style: 'padding: 16px 32px; font-size: 20px; background: #3b82f6; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s;' }, ['➕ Increment']), t_element('button', { onClick: decrement, style: 'padding: 16px 32px; font-size: 20px; background: #ef4444; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s;' }, ['➖ Decrement']), t_element('button', { onClick: reset, style: 'padding: 16px 32px; font-size: 20px; background: #6b7280; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s;' }, ['🔄 Reset'])]), t_element('div', { style: 'font-size: 48px; font-weight: bold; color: #10b981; margin-top: 20px; padding: 20px; background: #0a0a0a; border-radius: 8px; text-align: center;' }, ['Count: ', count()]), t_element('div', { style: 'margin-top: 30px; padding: 20px; background: #2a2a2a; border-radius: 8px;' }, [t_element('h3', { style: 'font-size: 18px; margin-bottom: 10px; color: #10b981;' }, ['✅ Features Being Tested']), t_element('ul', { style: 'list-style: none; padding: 0; color: #d1d5db;' }, [t_element('li', { style: 'padding: 5px 0;' }, ['✓ Component props (id:', id || 'none', ')']), t_element('li', { style: 'padding: 5px 0;' }, ['✓ createSignal() reactivity']), t_element('li', { style: 'padding: 5px 0;' }, ['✓ Event handlers (onClick)']), t_element('li', { style: 'padding: 5px 0;' }, ['✓ JSX expression interpolation', ' {count()} ']), t_element('li', { style: 'padding: 5px 0;' }, ['✓ Console logging and debugging'])])])]);
+    const [colors, setColors] = createSignal(['Red', 'Green', 'Blue', 'Yellow']);
+    const shuffleColors = () => {
+      const shuffled = colors().slice();
+      for (let i = shuffled.length - 1; i > 0; i--)       {
+        const j = Math.floor(Math.random() * i + 1);
+        const temp = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = temp;
+      }
+      setColors(shuffled);
+    };
+    return t_element('div', {}, [t_element('h2', { style: 'font-size: 32px; margin-bottom: 20px; color: #f59e0b;' }, ['🎯 Phase 2: Control Flow Primitives']), t_element('section', { style: 'background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #f59e0b;' }, [t_element('h3', { style: 'font-size: 24px; margin-bottom: 15px; color: #f59e0b;' }, ['1️⃣ Show - Conditional Rendering']), t_element('p', { style: 'color: #94a3b8; margin-bottom: 15px;' }, ['The Show component renders children only when the condition is true. Supports fallback content.']), t_element('div', { style: 'background: #0a0a0a; padding: 15px; border-radius: 4px; margin-bottom: 15px;' }, [t_element('div', { style: 'display: flex; gap: 10px; margin-bottom: 15px;' }, [t_element('button', { onClick: toggleContent, style: 'padding: 10px 20px; background: #f59e0b; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;' }, ['ToggleContent']), t_element('button', { onClick: toggleError, style: 'padding: 10px 20px; background: #ef4444; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;' }, ['ToggleError'])]), t_element('div', { style: 'padding: 15px; background: #1a1a1a; border-radius: 4px; min-height: 80px;' }, [ShowRegistry({ when: showContent(), fallback: t_element('p', { style: 'color: #ef4444;' }, ['Content is hidden']) , children: [t_element('div', { style: 'color: #10b981;' }, [t_element('p', { style: 'margin: 0 0 10px 0; font-size: 16px; font-weight: bold;' }, ['✓ Content is visible!']), t_element('p', { style: 'margin: 0; color: #94a3b8;' }, ['This appears when showContent() is true.'])])] }), ShowRegistry({ when: hasError() , children: [t_element('div', { style: 'margin-top: 15px; padding: 10px; background: #7f1d1d; border-left: 3px solid #ef4444; color: #fca5a5;' }, ['⚠️ Error state is active!'])] })])]), (() => { const _el$ = t_element('div', { style: 'background: #0f172a; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px; color: #64748b;' }, ['State: showContent =', ', hasError']); insert(_el$, () => showContent() ? 'true' : 'false'); insert(_el$, () => hasError() ? 'true' : 'false'); return _el$; })()]), t_element('section', { style: 'background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #f59e0b;' }, [t_element('h3', { style: 'font-size: 24px; margin-bottom: 15px; color: #f59e0b;' }, ['2️⃣ For - Keyed List Rendering']), t_element('p', { style: 'color: #94a3b8; margin-bottom: 15px;' }, ['ForRegistry efficiently renders lists with proper keying for optimal updates and animations.']), t_element('div', { style: 'background: #0a0a0a; padding: 15px; border-radius: 4px; margin-bottom: 15px;' }, [t_element('div', { style: 'display: flex; gap: 10px; margin-bottom: 15px;' }, [t_element('button', { onClick: addItem, style: 'padding: 10px 20px; background: #10b981; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;' }, ['AddItem']), t_element('button', { onClick: sortByPrice, style: 'padding: 10px 20px; background: #3b82f6; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;' }, ['SortbyPrice'])]), t_element('div', { style: 'display: grid; gap: 10px;' }, [ForRegistry({ each: items(), fallback: t_element('p', { style: 'color: #64748b;' }, ['No items in cart']) , children: [(item) => t_element('div', { style: 'display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #1a1a1a; border-radius: 4px; border: 1px solid #334155;' }, [t_element('div', {}, [t_element('span', { style: 'font-weight: bold; color: white; margin-right: 10px;' }, [item.name]), t_element('span', { style: 'color: #10b981; font-size: 18px;' }, ['$', item.price.toFixed(2)])]), t_element('button', { onClick: () => removeItem(item.id), style: 'padding: 6px 12px; background: #ef4444; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 12px;' }, ['Remove'])])] })]), t_element('div', { style: 'margin-top: 15px; padding: 10px; background: #1a1a1a; border-radius: 4px;' }, [t_element('strong', { style: 'color: white;' }, ['Total Items:', items().length]), t_element('span', { style: 'margin-left: 20px; color: #10b981;' }, ['Total Cost: $', items().reduce((sum, item) => sum + item.price, 0).toFixed(2)])])])]), t_element('section', { style: 'background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #f59e0b;' }, [t_element('h3', { style: 'font-size: 24px; margin-bottom: 15px; color: #f59e0b;' }, ['3️⃣ Index - Index-based Iteration']), t_element('p', { style: 'color: #94a3b8; margin-bottom: 15px;' }, ['Index component iterates by array index (not by key). Useful when items have no stable identity.']), t_element('div', { style: 'background: #0a0a0a; padding: 15px; border-radius: 4px; margin-bottom: 15px;' }, [t_element('button', { onClick: shuffleColors, style: 'padding: 10px 20px; background: #8b5cf6; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px; margin-bottom: 15px;' }, ['ShuffleColors']), t_element('div', { style: 'display: flex; gap: 10px; flex-wrap: wrap;' }, [Index({ each: colors() , children: [(color, index) => t_element('div', { style: 'padding: 15px 25px; background: #1a1a1a; border-radius: 4px; border: 2px solid #8b5cf6;' }, [t_element('div', { style: 'font-size: 12px; color: #94a3b8; margin-bottom: 5px;' }, ['Index:', index]), t_element('div', { style: 'font-size: 18px; font-weight: bold; color: white;' }, [color()])])] })]), t_element('div', { style: 'margin-top: 15px; padding: 10px; background: #1a1a1a; border-radius: 4px; font-size: 12px; color: #94a3b8;' }, ['💡 Note: Index passes a signal for the value, and raw index number. \r\n            Items update in-place when array changes.'])])]), t_element('section', { style: 'background: #1a1a1a; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981;' }, [t_element('h3', { style: 'font-size: 20px; margin-bottom: 10px; color: #10b981;' }, ['✓ Control Flow Summary']), t_element('ul', { style: 'color: #94a3b8; line-height: 1.8; margin: 0; padding-left: 20px;' }, [t_element('li', {}, [t_element('strong', { style: 'color: white;' }, ['Show:']), 'Conditionalrenderingwithoptionalfallback']), t_element('li', {}, [t_element('strong', { style: 'color: white;' }, ['ForRegistry:']), 'Keyediteration', 'listswithstableidentities']), t_element('li', {}, [t_element('strong', { style: 'color: white;' }, ['Index:']), 'Index', 'basediteration', 'arrayswithoutkeys']), t_element('li', {}, [t_element('strong', { style: 'color: white;' }, ['Performance:']), 'Minimalre', 'renders, onlyaffecteditemsupdate'])])])]);
   });
 }
