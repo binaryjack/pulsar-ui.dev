@@ -1,6 +1,5 @@
-
 /**
- * PHASE 4: Error Boundaries & Error Handling  
+ * PHASE 4: Error Boundaries & Error Handling
  * Testing: Tryer/Catcher error boundary pattern
  */
 

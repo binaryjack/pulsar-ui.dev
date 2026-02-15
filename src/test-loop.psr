@@ -1,0 +1,29 @@
+/**
+ * Test for loop support
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+export component ForLoopTest() {
+  const [items] = createSignal([1, 2, 3, 4, 5]);
+  
+  // Test traditional for loop
+  let sum = 0;
+  for (let i = 0; i < items().length; i++) {
+    sum += items()[i];
+  }
+  
+  // Test while loop
+  let counter = 0;
+  while (counter < 3) {
+    counter++;
+  }
+  
+  return (
+    <div>
+      <h2>Loop Test</h2>
+      <p>Sum: {sum}</p>
+      <p>Counter: {counter}</p>
+    </div>
+  );
+}

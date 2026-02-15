@@ -1,0 +1,9 @@
+/**
+ * Super simple PSR test - minimal complexity
+ */
+
+component TestMin() {
+  return <div>Hello PSR!</div>;
+}
+
+export { TestMin };

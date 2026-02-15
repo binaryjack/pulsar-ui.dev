@@ -5,7 +5,7 @@
 export component SimpleTest() {
   return (
     <div>
-      <span>${"test"}</span>
+      <span>{`${"test"}`}</span>
     </div>
   );
 }

@@ -9,7 +9,7 @@ export interface ICounterProps {
   id?: string;
 }
 
-export component Counter({id}:ICounterProps) {
+export component Counter({id}) {
   console.log('[Counter] Initializing with id:', id);
   
   // Test 1: Basic Signal
