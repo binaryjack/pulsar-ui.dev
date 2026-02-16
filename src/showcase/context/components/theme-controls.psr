@@ -1,0 +1,52 @@
+/**
+ * Theme Controls Component
+ * UI for controlling theme settings
+ */
+
+import { useContext } from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../../common/components/demo-button.psr';
+import { ThemeContext } from './theme-provider.psr';
+
+export const ThemeControls = () => {
+  const ctx = useContext(ThemeContext);
+  
+  const colors = [
+    { name: 'Blue', value: '#3b82f6' },
+    { name: 'Green', value: '#10b981' },
+    { name: 'Purple', value: '#8b5cf6' },
+    { name: 'Orange', value: '#f59e0b' }
+  ];
+  
+  return (
+    <div>
+      <div style="margin-bottom: 15px;">
+        <h4 style="margin: 0 0 10px 0; color: white;">Theme Mode:</h4>
+        <div style="display: flex; gap: 10px;">
+          <DemoButton 
+            onClick={() => ctx.setTheme('light')}
+            color={ctx.theme() === 'light' ? '#10b981' : '#6b7280'}>
+            Light
+          </DemoButton>
+          <DemoButton 
+            onClick={() => ctx.setTheme('dark')}
+            color={ctx.theme() === 'dark' ? '#10b981' : '#6b7280'}>
+            Dark
+          </DemoButton>
+        </div>
+      </div>
+      
+      <div>
+        <h4 style="margin: 0 0 10px 0; color: white;">Primary Color:</h4>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          {colors.map(color => (
+            <DemoButton 
+              onClick={() => ctx.setPrimaryColor(color.value)}
+              color={color.value}>
+              {color.name}
+            </DemoButton>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};

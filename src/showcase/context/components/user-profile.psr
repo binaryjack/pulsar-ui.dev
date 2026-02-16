@@ -1,0 +1,26 @@
+/**
+ * User Profile Component
+ * Consumes user context
+ */
+
+import { useContext } from '@pulsar-framework/pulsar.dev';
+import { UserContext } from './user-provider.psr';
+
+export const UserProfile = () => {
+  const ctx = useContext(UserContext);
+  
+  return (
+    <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border-left: 4px solid #10b981;">
+      {ctx.isLoggedIn() ? (
+        <div>
+          <p style="margin: 0; color: white; font-weight: bold;">Welcome, {ctx.user().name}!</p>
+          <p style="margin: 5px 0 0 0; color: #94a3b8; font-size: 12px;">
+            Role: {ctx.user().role}
+          </p>
+        </div>
+      ) : (
+        <p style="margin: 0; color: #94a3b8;">Not logged in</p>
+      )}
+    </div>
+  );
+};

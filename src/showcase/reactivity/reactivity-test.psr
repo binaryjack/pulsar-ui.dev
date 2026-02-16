@@ -1,0 +1,103 @@
+/**
+ * PHASE 1: Core Reactivity Tests
+ * Refactored with modular components
+ */
+
+import { createSignal, createEffect, createMemo, batch } from '@pulsar-framework/pulsar.dev';
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { SignalDemo } from './components/signal-demo.psr';
+import { MemoDemo } from './components/memo-demo.psr';
+import { EffectDemo } from './components/effect-demo.psr';
+import { BatchDemo } from './components/batch-demo.psr';
+
+export component ReactivityTestPage() {
+  // Signals
+  const [firstName, setFirstName] = createSignal('John');
+  const [lastName, setLastName] = createSignal('Doe');
+  const [age, setAge] = createSignal(25);
+  
+  // Memos
+  const fullName = createMemo(() => `${firstName()} ${lastName()}`);
+  const isAdult = createMemo(() => age() >= 18);
+  
+  // Effects
+  createEffect(() => {
+    console.log(`[Effect] Full name changed to: ${fullName()}`);
+  });
+  
+  // Batch handlers
+  const updateAll = () => {
+    batch(() => {
+      setFirstName('Jane');
+      setLastName('Smith');
+      setAge(30);
+    });
+  };
+  
+  const resetAll = () => {
+    batch(() => {
+      setFirstName('John');
+      setLastName('Doe');
+      setAge(25);
+    });
+  };
+  
+  return (
+    <div>
+      <PageHeader 
+        title="Core Reactivity Tests"
+        emoji="🧪"
+        color="#10b981"
+        description="Testing signals, effects, memos, and hooks"
+      />
+      
+      <DemoSection 
+        title="1️⃣ Multiple Signals" 
+        description="Create and manage multiple reactive signals"
+        borderColor="#3b82f6">
+        <SignalDemo 
+          firstName={firstName}
+          setFirstName={setFirstName}
+          lastName={lastName}
+          setLastName={setLastName}
+          age={age}
+          setAge={setAge}
+        />
+      </DemoSection>
+      
+      <DemoSection 
+        title="2️⃣ Computed Values (Memos)" 
+        description="Derived values that auto-update when dependencies change"
+        borderColor="#8b5cf6">
+        <MemoDemo fullName={fullName} isAdult={isAdult} />
+      </DemoSection>
+      
+      <DemoSection 
+        title="3️⃣ Side Effects (createEffect)" 
+        description="Run code in response to signal changes"
+        borderColor="#10b981">
+        <EffectDemo />
+      </DemoSection>
+      
+      <DemoSection 
+        title="4️⃣ Batched Updates" 
+        description="Update multiple signals without triggering intermediate effects"
+        borderColor="#f59e0b">
+        <BatchDemo updateAll={updateAll} resetAll={resetAll} />
+      </DemoSection>
+      
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; border: 2px solid #10b981;">
+        <h3 style="font-size: 20px; margin-bottom: 15px; color: #10b981;">
+          ✅ Test Status
+        </h3>
+        <ul style="list-style: none; padding: 0; color: #9ca3af;">
+          <li style="margin-bottom: 8px;">✅ Multiple signals working</li>
+          <li style="margin-bottom: 8px;">✅ Memos (computed values)</li>
+          <li style="margin-bottom: 8px;">✅ Effects (side effects)</li>
+          <li style="margin-bottom: 8px;">✅ Batch updates</li>
+        </ul>
+      </section>
+    </div>
+  );
+}

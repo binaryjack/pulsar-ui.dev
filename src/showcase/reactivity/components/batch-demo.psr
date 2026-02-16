@@ -1,0 +1,29 @@
+/**
+ * Batch Demo Component
+ * Demonstrates batched updates
+ */
+
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+interface BatchDemoProps {
+  updateAll: () => void
+  resetAll: () => void
+}
+
+export const BatchDemo = ({ updateAll, resetAll }: BatchDemoProps) => {
+  return (
+    <div>
+      <p style="color: #9ca3af; font-size: 14px; margin-bottom: 15px;">
+        ℹ️ batch() updates multiple signals without triggering intermediate effects
+      </p>
+      <div style="display: flex; gap: 10px;">
+        <DemoButton onClick={updateAll} color="#f59e0b">
+          Update All (Batched)
+        </DemoButton>
+        <DemoButton onClick={resetAll} color="#6b7280">
+          Reset All
+        </DemoButton>
+      </div>
+    </div>
+  );
+};

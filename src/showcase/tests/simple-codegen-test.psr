@@ -1,0 +1,12 @@
+/**
+ * Simple Code Generation Test
+ * Minimal test to isolate the code gen bug
+ */
+
+export component SimpleTest() {
+  return (
+    <div>
+      <span>{`${"test"}`}</span>
+    </div>
+  );
+}

@@ -1,0 +1,15 @@
+/**
+ * Error Component
+ * Component that throws an error when rendered
+ */
+
+import type { Accessor } from '@pulsar-framework/pulsar.dev';
+
+interface ErrorComponentProps {
+  message: string | Accessor<string>
+}
+
+export const ErrorComponent = ({ message }: ErrorComponentProps) => {
+  const errorMsg = typeof message === 'function' ? message() : message;
+  throw new Error(errorMsg || 'Component rendering failed!');
+};

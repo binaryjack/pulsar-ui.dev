@@ -1,0 +1,66 @@
+/**
+ * Reactive Attributes Demo Component
+ * Tests reactive attributes and color changes
+ */
+
+import type { Accessor, Setter } from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+interface ReactiveAttributesDemoProps {
+  bgColor: Accessor<string>
+  setBgColor: Setter<string>
+  isDisabled: Accessor<boolean>
+  setIsDisabled: Setter<boolean>
+}
+
+export const ReactiveAttributesDemo = ({ bgColor, setBgColor, isDisabled, setIsDisabled }: ReactiveAttributesDemoProps) => {
+  const colors = [
+    { name: 'Blue', value: '#3b82f6' },
+    { name: 'Green', value: '#10b981' },
+    { name: 'Orange', value: '#f59e0b' },
+    { name: 'Red', value: '#ef4444' }
+  ];
+  
+  return (
+    <div>
+      <div 
+        style={{
+          padding: '20px',
+          background: bgColor(),
+          color: 'white',
+          borderRadius: '6px',
+          marginBottom: '15px',
+          transition: 'background 0.3s'
+        }}>
+        Background Color: {bgColor()}
+      </div>
+      
+      <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+        {colors.map(color => (
+          <DemoButton onClick={() => setBgColor(color.value)} color={color.value}>
+            {color.name}
+          </DemoButton>
+        ))}
+      </div>
+      
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <button 
+          disabled={isDisabled()}
+          style={{
+            padding: '10px 20px',
+            background: isDisabled() ? '#4b5563' : '#8b5cf6',
+            border: 'none',
+            color: 'white',
+            borderRadius: '6px',
+            cursor: isDisabled() ? 'not-allowed' : 'pointer'
+          }}>
+          {isDisabled() ? 'Disabled Button' : 'Enabled Button'}
+        </button>
+        
+        <DemoButton onClick={() => setIsDisabled(!isDisabled())} color="#6b7280">
+          Toggle Disabled
+        </DemoButton>
+      </div>
+    </div>
+  );
+};

@@ -1,0 +1,48 @@
+/**
+ * Control Button Group Component
+ * Reusable control buttons for error demos
+ */
+
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+interface ControlButtonGroupProps {
+  label: string
+  isError: boolean
+  onTrigger: () => void
+  color?: string
+}
+
+export const ControlButtonGroup = ({ 
+  label, 
+  isError, 
+  onTrigger, 
+  color = "#8b5cf6" 
+}: ControlButtonGroupProps) => {
+  return (
+    <div style="text-align: center;">
+      <div style="font-size: 14px; color: #9ca3af; margin-bottom: 10px; font-weight: bold;">
+        {label}
+      </div>
+      
+      <DemoButton 
+        onClick={onTrigger}
+        color={isError ? "#ef4444" : color}
+        size="md">
+        {isError ? '🔧 FIX' : '💥 BREAK'}
+      </DemoButton>
+      
+      <div style={{
+        marginTop: '8px',
+        padding: '5px 10px',
+        borderRadius: '4px',
+        fontSize: '12px',
+        fontWeight: 'bold',
+        background: isError ? '#450a0a' : '#064e3b',
+        color: isError ? '#fca5a5' : '#6ee7b7',
+        display: 'inline-block'
+      }}>
+        {isError ? '🔥 ERROR' : '✅ SAFE'}
+      </div>
+    </div>
+  );
+};

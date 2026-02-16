@@ -1,0 +1,51 @@
+/**
+ * Simple Test Page
+ * Basic button and conditional rendering test
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+export component SimpleTestPage() {
+  const [count, setCount] = createSignal(0);
+  const [show, setShow] = createSignal(false);
+  
+  console.log('SimpleTestPage rendering, count:', count(), 'show:', show());
+  
+  return (
+    <div style="padding: 20px; background: #1a1a1a; color: white;">
+      <h1>Simple Button Test</h1>
+      
+      <div style="margin: 20px 0;">
+        <button 
+          onclick={() => {
+            console.log('Count button clicked, current count:', count());
+            setCount(count() + 1);
+          }}
+          style="padding: 10px 20px; background: #06b6d4; border: none; border-radius: 4px; color: white; cursor: pointer; margin-right: 10px;">
+          Count: {count()}
+        </button>
+        
+        <button 
+          onclick={() => {
+            console.log('Toggle button clicked, current show:', show());
+            setShow(!show());
+          }}
+          style="padding: 10px 20px; background: #ef4444; border: none; border-radius: 4px; color: white; cursor: pointer;">
+          Toggle: {show() ? 'ON' : 'OFF'}
+        </button>
+      </div>
+      
+      <div style="margin: 20px 0; padding: 15px; background: #0a0a0a; border-radius: 4px;">
+        <p>Count Value: {count()}</p>
+        <p>Show Value: {show() ? 'TRUE' : 'FALSE'}</p>
+        <p>If buttons work, these values should change when clicked.</p>
+      </div>
+      
+      {show() && (
+        <div style="padding: 15px; background: #10b981; border-radius: 4px; color: white;">
+          ✅ Conditional rendering works! Show is TRUE.
+        </div>
+      )}
+    </div>
+  );
+}

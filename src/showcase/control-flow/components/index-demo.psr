@@ -1,0 +1,41 @@
+/**
+ * Index Demo Component
+ * Demonstrates index-based iteration
+ */
+
+import type { Accessor } from '@pulsar-framework/pulsar.dev';
+import { Index } from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+interface IndexDemoProps {
+  colors: Accessor<string[]>
+  shuffleColors: () => void
+}
+
+export const IndexDemo = ({ colors, shuffleColors }: IndexDemoProps) => {
+  return (
+    <div>
+      <DemoButton 
+        onClick={shuffleColors}
+        color="#8b5cf6"
+        style="margin-bottom: 15px;">
+        Shuffle Colors
+      </DemoButton>
+      
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <Index each={colors()}>
+          {(color, index) => (
+            <div style="padding: 15px 25px; background: #1a1a1a; border-radius: 4px; border: 2px solid #8b5cf6;">
+              <div style="font-size: 12px; color: #94a3b8; margin-bottom: 5px;">
+                Index: {index}
+              </div>
+              <div style="font-size: 18px; font-weight: bold; color: white;">
+                {color()}
+              </div>
+            </div>
+          )}
+        </Index>
+      </div>
+    </div>
+  );
+};

@@ -1,0 +1,37 @@
+/**
+ * Assignment Expression Test
+ * Simple test for assignment parsing
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+export component AssignmentTest() {
+  const [count, setCount] = createSignal(0);
+  
+  let skipFirst = true;
+  
+  function testAssignments() {
+    if (skipFirst) {
+      skipFirst = false;
+    }
+    
+    let value = 10;
+    value = value + 1;
+    
+    return value;
+  }
+
+  return (
+    <div style="padding: 20px; background: #1a1a1a; color: white;">
+      <h1>Assignment Expression Test</h1>
+      <p>Count: {count()}</p>
+      <button onclick={() => {
+        setCount(c => c + 1);
+        testAssignments();
+      }}>
+        Test Assignment & Increment
+      </button>
+      <p>If you can see this rendered, assignment expressions are working!</p>
+    </div>
+  );
+}

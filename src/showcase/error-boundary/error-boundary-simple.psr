@@ -1,0 +1,100 @@
+/**
+ * Simple Error Boundary Demo
+ * Simplified version with minimal UI
+ */
+
+import { createSignal, Tryer, Catcher } from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../common/components/demo-button.psr';
+import { SafeComponent, ErrorComponent, ErrorDisplay } from './components';
+
+export component ErrorBoundarySimplePage() {
+  const [throwError, setThrowError] = createSignal(false);
+  const [errorMessage] = createSignal('Critical render error!');
+  
+  const toggleError = () => {
+    setThrowError(!throwError());
+  };
+  
+  return (
+    <div style="padding: 20px;">
+      <h1 style="color: #06b6d4; margin-bottom: 30px; text-align: center; font-size: 36px;">
+        🛡️ Error Boundaries Demo (Simple)
+      </h1>
+      
+      <div style="max-width: 800px; margin: 0 auto;">
+        {/* Control Panel */}
+        <div style="background: #1a1a1a; padding: 30px; border-radius: 12px; margin-bottom: 30px; border: 2px solid #334155;">
+          <h2 style="color: #fbbf24; margin-bottom: 20px; text-align: center; font-size: 24px;">
+            🎮 Control Panel
+          </h2>
+          
+          <div style="text-align: center; margin-bottom: 20px;">
+            <DemoButton 
+              onClick={toggleError}
+              color="#ef4444"
+              size="lg">
+              {throwError() ? '🔧 FIX ERROR' : '💥 TRIGGER ERROR'}
+            </DemoButton>
+          </div>
+          
+          <div style="text-align: center; padding: 15px; background: #0a0a0a; border: 2px solid #334155; border-radius: 8px; font-size: 16px; font-weight: bold;">
+            Current State: <span style={{color: throwError() ? '#ef4444' : '#10b981'}}>
+              {throwError() ? '🔥 ERROR MODE ACTIVE' : '✅ SAFE MODE ACTIVE'}
+            </span>
+          </div>
+        </div>
+        
+        {/* Error Boundary Container */}
+        <div style="background: #1e293b; padding: 30px; border-radius: 12px; border: 3px solid #06b6d4; position: relative;">
+          <h3 style="color: #06b6d4; margin-bottom: 20px; text-align: center; font-size: 20px;">
+            🛡️ ERROR BOUNDARY PROTECTION ZONE
+          </h3>
+          
+          <div style="background: #0f172a; border-radius: 8px; padding: 20px; min-height: 200px; border: 2px dashed #475569;">
+            <Tryer>
+              {() => {
+                if (throwError()) {
+                  return <ErrorComponent message={() => errorMessage()} />;
+                } else {
+                  return (
+                    <div style="text-align: center; padding: 40px;">
+                      <div style="font-size: 48px; margin-bottom: 20px;">✨</div>
+                      <h3 style="color: #10b981; margin-bottom: 15px; font-size: 24px;">
+                        Component Rendering Successfully!
+                      </h3>
+                      <p style="color: #94a3b8; font-size: 16px; margin: 0;">
+                        Everything is working perfectly. No errors detected.
+                      </p>
+                    </div>
+                  );
+                }
+              }}
+              
+              <Catcher>
+                {(error, reset) => (
+                  <div style="background: linear-gradient(135deg, #7f1d1d, #991b1b); border: 3px solid #ef4444; border-radius: 12px; padding: 30px; text-align: center;">
+                    <div style="font-size: 64px; margin-bottom: 20px;">⚠️</div>
+                    
+                    <h2 style="color: #fca5a5; margin-bottom: 20px; font-size: 28px; font-weight: bold;">
+                      🚨 ERROR CAUGHT BY BOUNDARY!
+                    </h2>
+                    
+                    <ErrorDisplay error={error} />
+                    
+                    <DemoButton 
+                      onClick={reset}
+                      color="#10b981"
+                      size="lg"
+                      style="margin-top: 20px;">
+                      🔄 RESET COMPONENT
+                    </DemoButton>
+                  </div>
+                )}
+              </Catcher>
+            </Tryer>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,65 @@
+/**
+ * Cache Demo Component
+ * Shows stale-while-revalidate caching
+ */
+
+import { createSignal, createResource, ShowRegistry } from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../../common/components/demo-button.psr';
+import { fetchUser } from './mock-api.ts';
+
+export const CacheDemo = () => {
+  const [fetchCount, setFetchCount] = createSignal(0);
+  const [cacheHits, setCacheHits] = createSignal(0);
+  
+  const cachedResource = createResource(() => {
+    setFetchCount(c => c + 1);
+    return fetchUser(1);
+  }, { staleTime: 5000 });
+  
+  const refetchWithCheck = () => {
+    if (cachedResource.data && Date.now() - (cachedResource._lastFetchTime || 0) < 5000) {
+      setCacheHits(h => h + 1);
+    }
+    cachedResource.refetch();
+  };
+  
+  return (
+    <div>
+      <DemoButton onClick={refetchWithCheck} color="#8b5cf6" style="margin-bottom: 15px;">
+        🔄 Refetch Data
+      </DemoButton>
+      
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px;">
+        <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; text-align: center;">
+          <div style="font-size: 32px; color: #ef4444; font-weight: bold;">{fetchCount()}</div>
+          <div style="color: #94a3b8; font-size: 12px;">Network Requests</div>
+        </div>
+        
+        <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; text-align: center;">
+          <div style="font-size: 32px; color: #10b981; font-weight: bold;">{cacheHits()}</div>
+          <div style="color: #94a3b8; font-size: 12px;">Cache Hits</div>
+        </div>
+      </div>
+      
+      <ShowRegistry when={() => cachedResource.data}>
+        <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border-left: 3px solid #8b5cf6;">
+          <div style="color: #8b5cf6; font-weight: bold; margin-bottom: 10px;">📦 Cached (Fresh 5s)</div>
+          <div style="display: flex; gap: 15px; align-items: center;">
+            <img 
+              src={cachedResource.data?.avatar} 
+              alt={cachedResource.data?.name}
+              style="width: 50px; height: 50px; border-radius: 50%;"
+            />
+            <div>
+              <div style="color: white; font-weight: bold;">{cachedResource.data?.name}</div>
+              <div style="color: #94a3b8; font-size: 12px;">{cachedResource.data?.email}</div>
+            </div>
+          </div>
+          <div style="color: #64748b; font-size: 11px; margin-top: 10px;">
+            💡 Refetch within 5s for instant cache hit!
+          </div>
+        </div>
+      </ShowRegistry>
+    </div>
+  );
+};

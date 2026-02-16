@@ -1,0 +1,52 @@
+/**
+ * User Card Component
+ * Displays user data from resource
+ */
+
+import { ShowRegistry } from '@pulsar-framework/pulsar.dev';
+
+interface UserData {
+  avatar: string
+  name: string
+  requestId: number
+}
+
+interface Resource<T> {
+  isLoading: boolean
+  data?: T
+}
+
+interface UserCardProps {
+  resource: Resource<UserData>
+  label: string
+}
+
+export const UserCard = ({ resource, label }: UserCardProps) => {
+  return (
+    <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border: 1px solid #334155;">
+      <div style="color: #06b6d4; font-size: 12px; margin-bottom: 10px; font-weight: bold;">
+        {label}
+      </div>
+      
+      <ShowRegistry when={() => resource.isLoading}>
+        <div style="text-align: center; padding: 20px; color: #64748b;">⏳</div>
+      </ShowRegistry>
+      
+      <ShowRegistry when={() => !resource.isLoading && resource.data}>
+        <div style="text-align: center;">
+          <img 
+            src={resource.data?.avatar} 
+            alt={resource.data?.name}
+            style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 10px;"
+          />
+          <div style="color: white; font-size: 14px; font-weight: bold;">
+            {resource.data?.name}
+          </div>
+          <div style="color: #64748b; font-size: 11px; margin-top: 5px;">
+            Request #{resource.data?.requestId}
+          </div>
+        </div>
+      </ShowRegistry>
+    </div>
+  );
+};

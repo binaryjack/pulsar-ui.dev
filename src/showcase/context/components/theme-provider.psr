@@ -1,0 +1,26 @@
+/**
+ * Theme Provider Component
+ * Provides theme context to children
+ */
+
+import { createSignal, createContext } from '@pulsar-framework/pulsar.dev';
+
+interface ThemeProviderProps {
+  children: JSX.Element
+}
+
+export const ThemeContext = createContext({
+  theme: () => 'light',
+  setTheme: () => {},
+  primaryColor: () => '#3b82f6',
+  setPrimaryColor: () => {}
+});
+
+export const ThemeProvider = (props: ThemeProviderProps) => {
+  const [theme, setTheme] = createSignal('dark');
+  const [primaryColor, setPrimaryColor] = createSignal('#3b82f6');
+  
+  const themeValue = { theme, setTheme, primaryColor, setPrimaryColor };
+  
+  return ThemeContext.Provider({ value: themeValue, children: () => props.children });
+};

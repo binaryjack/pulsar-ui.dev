@@ -5,17 +5,17 @@
  */
 
 import { createSignal, useNavigate, Router, Route } from '@pulsar-framework/pulsar.dev';
-import { HomePage } from './showcase/pages/home.psr';
-import { AboutPage } from './showcase/pages/about.psr';
-import { ReactivityTestPage } from './showcase/pages/reactivity-test.psr';
-import { JsxTestPage } from './showcase/pages/jsx-test.psr';
-import { ControlFlowTestPage } from './showcase/pages/control-flow-test.psr';
-import { ResourceTestPage } from './showcase/pages/resource-test.psr';
-import { ErrorBoundaryTestPage } from './showcase/pages/error-boundary-test.psr';
-import { ErrorBoundaryFullDemoPage } from './showcase/pages/error-boundary-mega-demo.psr';
-import { ContextTestPage } from './showcase/pages/context-test.psr';
-import { AssignmentTest } from './showcase/pages/assignment-test.psr';
-import { SimpleTest } from './showcase/pages/simple-codegen-test.psr';
+import { HomePage } from './showcase/home/home.psr';
+import { AboutPage } from './showcase/about/about.psr';
+import { ReactivityTestPage } from './showcase/reactivity/reactivity-test.psr';
+import { JsxTestPage } from './showcase/jsx/jsx-test.psr';
+import { ControlFlowTestPage } from './showcase/control-flow/control-flow-test.psr';
+import { ResourceTestPage } from './showcase/resource/resource-test.psr';
+import { ErrorBoundaryTestPage } from './showcase/error-boundary/error-boundary-test.psr';
+import { ErrorBoundaryMegaPage } from './showcase/error-boundary/error-boundary-mega.psr';
+import { ContextTestPage } from './showcase/context/context-test.psr';
+import { AssignmentTest } from './showcase/tests/assignment-test.psr';
+import { SimpleTest } from './showcase/tests/simple-codegen-test.psr';
 
 export interface IAppProps {
   id?: string;
@@ -143,7 +143,7 @@ component App() {
           <Route path="/control-flow" component={ControlFlowTestPage} label="Control Flow" />
           <Route path="/resources" component={ResourceTestPage} label="Resources" />
           <Route path="/error-boundary" component={ErrorBoundaryTestPage} label="Error Boundaries" />
-          <Route path="/error-boundary-mega" component={ErrorBoundaryFullDemoPage} label="Error Boundaries MEGA" />
+          <Route path="/error-boundary-mega" component={ErrorBoundaryMegaPage} label="Error Boundaries MEGA" />
           <Route path="/context" component={ContextTestPage} label="Context API" />
           <Route path="/about" component={AboutPage} label="About" />
         </Router>

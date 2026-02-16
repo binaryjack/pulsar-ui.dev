@@ -1,0 +1,77 @@
+/**
+ * PHASE 4: Error Boundaries & Error Handling
+ * Refactored with modular components
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { BasicBoundaryDemo } from './components/basic-boundary-demo.psr';
+import { BoundarySection } from './components/boundary-section.psr';
+
+export component ErrorBoundaryTestPage() {
+  // Basic boundary
+  const [throwError, setThrowError] = createSignal(false);
+  const [errorMessage, setErrorMessage] = createSignal('Critical render error!');
+  
+  // Multiple boundaries
+  const [section1Error, setSection1Error] = createSignal(false);
+  const [section2Error, setSection2Error] = createSignal(false);
+  const [section3Error, setSection3Error] = createSignal(false);
+  
+  return (
+    <div>
+      <PageHeader 
+        title="Error Boundaries Demo"
+        emoji="🛡️"
+        color="#06b6d4"
+        description="Demonstrates Tryer/Catcher error boundary pattern"
+      />
+      
+      <div style="background: #0f172a; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+        <h4 style="color: #fbbf24; margin: 0 0 10px 0;">📋 What to Expect:</h4>
+        <ul style="color: #94a3b8; margin: 0; padding-left: 20px; line-height: 1.6;">
+          <li><strong>Click buttons</strong> → Status indicators show state changes</li>
+          <li><strong>Trigger errors</strong> → Watch Tryer/Catcher components in action</li>
+          <li><strong>Error messages</strong> → Appear in red boxes instead of console crashes</li>
+          <li><strong>Independent sections</strong> → Errors in one don't affect others</li>
+        </ul>
+      </div>
+      
+      <DemoSection 
+        title="1️⃣ Basic Error Boundary - Tryer/Catcher" 
+        description="Tryer/Catcher provides error boundaries to catch and handle component errors gracefully."
+        borderColor="#ef4444">
+        <BasicBoundaryDemo 
+          throwError={throwError}
+          setThrowError={setThrowError}
+          errorMessage={errorMessage}
+          setErrorMessage={setErrorMessage}
+        />
+      </DemoSection>
+      
+      <DemoSection 
+        title="2️⃣ Multiple Independent Boundaries" 
+        description="Each boundary is isolated - errors in one section don't affect others."
+        borderColor="#ef4444">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+          <BoundarySection 
+            title="Section 1"
+            hasError={section1Error}
+            toggleError={() => setSection1Error(!section1Error())}
+          />
+          <BoundarySection 
+            title="Section 2"
+            hasError={section2Error}
+            toggleError={() => setSection2Error(!section2Error())}
+          />
+          <BoundarySection 
+            title="Section 3"
+            hasError={section3Error}
+            toggleError={() => setSection3Error(!section3Error())}
+          />
+        </div>
+      </DemoSection>
+    </div>
+  );
+}

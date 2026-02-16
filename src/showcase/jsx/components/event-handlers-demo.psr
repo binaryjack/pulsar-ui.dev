@@ -1,0 +1,78 @@
+/**
+ * Event Handlers Demo Component
+ * Tests onClick, onInput, onKeyPress events
+ */
+
+import type { Accessor, Setter } from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+interface EventHandlersDemoProps {
+  clickCount: Accessor<number>
+  setClickCount: Setter<number>
+  inputValue: Accessor<string>
+  setInputValue: Setter<string>
+  lastKey: Accessor<string>
+  setLastKey: Setter<string>
+}
+
+export const EventHandlersDemo = ({ 
+  clickCount, 
+  setClickCount, 
+  inputValue, 
+  setInputValue,
+  lastKey,
+  setLastKey 
+}: EventHandlersDemoProps) => {
+  const handleClick = () => {
+    setClickCount(clickCount() + 1);
+  };
+  
+  const handleInput = (e) => {
+    setInputValue(e.target.value);
+  };
+  
+  const handleKeyPress = (e) => {
+    setLastKey(e.key);
+  };
+  
+  return (
+    <div>
+      <div style="margin-bottom: 15px;">
+        <div style="margin-bottom: 10px;">
+          <strong style="color: #10b981;">Click Count:</strong> {clickCount()}
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <DemoButton onClick={handleClick} color="#8b5cf6">
+            Click Me!
+          </DemoButton>
+          <DemoButton onClick={() => setClickCount(0)} color="#6b7280">
+            Reset
+          </DemoButton>
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 15px;">
+        <div style="margin-bottom: 10px;">
+          <strong style="color: #10b981;">Input Value:</strong> {inputValue()}
+        </div>
+        <input 
+          type="text"
+          placeholder="Type something..."
+          value={inputValue()}
+          onInput={handleInput}
+          style="padding: 10px; background: #2a2a2a; border: 2px solid #3b82f6; color: white; border-radius: 6px; font-size: 16px; width: 100%; max-width: 300px;" />
+      </div>
+      
+      <div>
+        <div style="margin-bottom: 10px;">
+          <strong style="color: #10b981;">Last Key Pressed:</strong> {lastKey() || '(none)'}
+        </div>
+        <input 
+          type="text"
+          placeholder="Press any key..."
+          onKeyPress={handleKeyPress}
+          style="padding: 10px; background: #2a2a2a; border: 2px solid #8b5cf6; color: white; border-radius: 6px; font-size: 16px; width: 100%; max-width: 300px;" />
+      </div>
+    </div>
+  );
+};

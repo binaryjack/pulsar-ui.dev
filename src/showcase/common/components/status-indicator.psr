@@ -1,0 +1,34 @@
+/**
+ * Status Indicator Component
+ * Shows status with emoji and color coding
+ */
+
+import type { Accessor } from '@pulsar-framework/pulsar.dev';
+
+type Status = 'error' | 'safe' | 'loading' | 'ok';
+
+interface StatusIndicatorProps {
+  status: Status | Accessor<Status>
+  label?: string | Accessor<string>
+}
+
+export const StatusIndicator = ({ status, label }: StatusIndicatorProps) => {
+  const renderStatus = typeof status === 'function' ? status() : status;
+  const renderLabel = typeof label === 'function' ? label() : label;
+  
+  const statusConfig = {
+    error: { emoji: '🔥', text: 'ERROR', color: '#ef4444' },
+    safe: { emoji: '✅', text: 'SAFE', color: '#10b981' },
+    loading: { emoji: '⏳', text: 'LOADING', color: '#f59e0b' },
+    ok: { emoji: '✓', text: 'OK', color: '#10b981' }
+  };
+  
+  const config = statusConfig[renderStatus] || statusConfig.safe;
+  
+  return (
+    <div style={`padding: 10px; background: #1a1a1a; border: 1px solid #334155; border-radius: 4px; color: ${config.color}; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;`}>
+      <span>{config.emoji}</span>
+      <span>{renderLabel || config.text}</span>
+    </div>
+  );
+};

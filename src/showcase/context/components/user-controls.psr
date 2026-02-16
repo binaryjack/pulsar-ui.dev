@@ -1,0 +1,38 @@
+/**
+ * User Controls Component
+ * UI for user authentication controls
+ */
+
+import { useContext } from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../../common/components/demo-button.psr';
+import { UserContext } from './user-provider.psr';
+
+export const UserControls = () => {
+  const ctx = useContext(UserContext);
+  
+  const users = [
+    { name: 'Alice', role: 'admin' },
+    { name: 'Bob', role: 'user' },
+    { name: 'Charlie', role: 'moderator' }
+  ];
+  
+  return (
+    <div>
+      {ctx.isLoggedIn() ? (
+        <DemoButton onClick={ctx.logout} color="#ef4444">
+          Logout
+        </DemoButton>
+      ) : (
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          {users.map(user => (
+            <DemoButton 
+              onClick={() => ctx.login(user.name, user.role)}
+              color="#10b981">
+              Login as {user.name}
+            </DemoButton>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};

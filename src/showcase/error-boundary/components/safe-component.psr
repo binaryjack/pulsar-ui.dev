@@ -1,0 +1,12 @@
+/**
+ * Safe Component
+ * Component that renders successfully without errors
+ */
+
+export const SafeComponent = () => {
+  return (
+    <div style="padding: 15px; background: #10b981; color: white; border-radius: 4px;">
+      ✓ Component is safe and renders successfully
+    </div>
+  );
+};

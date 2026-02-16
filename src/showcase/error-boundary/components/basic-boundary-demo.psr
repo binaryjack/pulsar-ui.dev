@@ -1,0 +1,63 @@
+/**
+ * Basic Boundary Demo Component
+ * Demonstrates basic error boundary with toggle
+ */
+
+import { Tryer, Catcher, ShowRegistry } from '@pulsar-framework/pulsar.dev';
+import type { Accessor, Setter } from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../../common/components/demo-button.psr';
+import { StatusIndicator } from '../../common/components/status-indicator.psr';
+import { SafeComponent } from './safe-component.psr';
+import { ErrorComponent } from './error-component.psr';
+import { ErrorDisplay } from './error-display.psr';
+
+interface BasicBoundaryDemoProps {
+  throwError: Accessor<boolean>
+  setThrowError: Setter<boolean>
+  errorMessage: Accessor<string>
+  setErrorMessage: Setter<string>
+}
+
+export const BasicBoundaryDemo = ({ throwError, setThrowError, errorMessage, setErrorMessage }: BasicBoundaryDemoProps) => {
+  return (
+    <div>
+      <div style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center; flex-wrap: wrap;">
+        <DemoButton 
+          onClick={() => setThrowError(!throwError())}
+          color="#ef4444">
+          {throwError() ? 'Fix Error' : 'Trigger Error'}
+        </DemoButton>
+        
+        <StatusIndicator status={throwError() ? 'error' : 'safe'} />
+        
+        <input
+          type="text"
+          value={errorMessage()}
+          oninput={(e) => setErrorMessage(e.target.value)}
+          placeholder="Custom error message"
+          style="flex: 1; min-width: 200px; padding: 10px; background: #1a1a1a; border: 2px solid #334155; border-radius: 4px; color: white; font-size: 14px;"
+        />
+      </div>
+      
+      <div style="min-height: 80px; border: 2px dashed #334155; border-radius: 4px; padding: 15px;">
+        <Tryer>
+          {function() {
+            if (throwError()) {
+              return <ErrorComponent message={errorMessage} />;
+            } else {
+              return <SafeComponent />;
+            }
+          }}
+          <Catcher>
+            {(error, reset) => (
+              <ErrorDisplay 
+                error={error} 
+                onReset={() => { reset(); setThrowError(false); }} 
+              />
+            )}
+          </Catcher>
+        </Tryer>
+      </div>
+    </div>
+  );
+};

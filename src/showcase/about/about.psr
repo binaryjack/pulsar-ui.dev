@@ -1,0 +1,59 @@
+/**
+ * Pulsar UI Showcase - About Page
+ * Refactored with modular components
+ */
+
+import { createSignal, useRouter } from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../common/components/demo-button.psr';
+import { FeatureList } from './components/feature-list.psr';
+import { RouteInfo } from './components/route-info.psr';
+import { DetailsSection } from './components/details-section.psr';
+
+export component AboutPage() {
+  const router = useRouter();
+  const [showDetails, setShowDetails] = createSignal(false);
+  
+  const toggleDetails = () => {
+    setShowDetails(!showDetails());
+  };
+  
+  const goBack = () => {
+    router.navigate('/');
+  };
+  
+  return (
+    <div style="padding: 20px;">
+      <div style="margin-bottom: 30px;">
+        <h2 style="font-size: 32px; margin-bottom: 10px; color: #3b82f6;">
+          ℹ️ About Pulsar Framework
+        </h2>
+        <p style="font-size: 18px; color: #9ca3af; line-height: 1.6; margin-bottom: 20px;">
+          Pulsar is a reactive UI framework built for performance and developer experience.
+        </p>
+      </div>
+      
+      <div style="background: #1a1a1a; padding: 30px; border-radius: 12px; margin-bottom: 20px;">
+        <h3 style="font-size: 24px; margin-bottom: 20px; color: #10b981;">✨ Key Features</h3>
+        <FeatureList />
+        
+        <DemoButton 
+          onClick={toggleDetails}
+          color="#6b7280"
+          style="margin-top: 20px;">
+          {showDetails() ? '▼ Hide Details' : '▶ Show More Details'}
+        </DemoButton>
+        
+        {showDetails() ? <DetailsSection /> : null}
+      </div>
+      
+      <RouteInfo router={router} />
+      
+      <DemoButton 
+        onClick={goBack}
+        color="#3b82f6"
+        size="lg">
+        ← Back to Home
+      </DemoButton>
+    </div>
+  );
+}

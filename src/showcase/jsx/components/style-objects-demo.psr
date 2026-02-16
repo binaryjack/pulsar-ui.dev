@@ -1,0 +1,40 @@
+/**
+ * Style Objects Demo Component
+ * Tests reactive style objects
+ */
+
+import type { Accessor, Setter } from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+interface StyleObjectsDemoProps {
+  fontSize: Accessor<number>
+  setFontSize: Setter<number>
+}
+
+export const StyleObjectsDemo = ({ fontSize, setFontSize }: StyleObjectsDemoProps) => {
+  return (
+    <div>
+      <div style={{
+        padding: '20px',
+        background: '#2a2a2a',
+        borderRadius: '6px',
+        fontSize: `${fontSize()}px`,
+        marginBottom: '15px'
+      }}>
+        Font size: {fontSize()}px - Adjust with buttons below
+      </div>
+      
+      <div style="display: flex; gap: 10px;">
+        <DemoButton onClick={() => setFontSize(fontSize() - 2)} color="#ef4444">
+          Smaller
+        </DemoButton>
+        <DemoButton onClick={() => setFontSize(16)} color="#6b7280">
+          Reset
+        </DemoButton>
+        <DemoButton onClick={() => setFontSize(fontSize() + 2)} color="#10b981">
+          Larger
+        </DemoButton>
+      </div>
+    </div>
+  );
+};

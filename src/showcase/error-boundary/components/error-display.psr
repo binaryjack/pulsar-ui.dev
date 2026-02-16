@@ -1,0 +1,27 @@
+/**
+ * Error Display Component
+ * Displays error messages in boundary catcher
+ */
+
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+interface ErrorDisplayProps {
+  error: Error
+  onReset: () => void
+}
+
+export const ErrorDisplay = ({ error, onReset }: ErrorDisplayProps) => {
+  return (
+    <div style="padding: 20px; background: #7f1d1d; border-left: 4px solid #ef4444; border-radius: 4px;">
+      <h4 style="margin: 0 0 10px 0; color: #fca5a5; font-size: 18px;">
+        ⚠️ Error Caught
+      </h4>
+      <p style="margin: 0 0 15px 0; color: #fecaca; font-family: monospace; font-size: 14px;">
+        {error.message}
+      </p>
+      <DemoButton onClick={onReset} color="#ef4444" size="sm">
+        Reset Boundary
+      </DemoButton>
+    </div>
+  );
+};

@@ -1,0 +1,42 @@
+/**
+ * Demo Button Component
+ * Shared button for showcase demos with consistent styling
+ */
+
+import type { Accessor } from '@pulsar-framework/pulsar.dev';
+
+interface DemoButtonProps {
+  children: string | Accessor<JSX.Element>
+  onClick: () => void
+  color?: string
+  disabled?: boolean
+  size?: 'sm' | 'md' | 'lg'
+}
+
+export const DemoButton = ({ 
+  children, 
+  onClick, 
+  color = '#3b82f6', 
+  disabled = false,
+  size = 'md'
+}: DemoButtonProps) => {
+  const sizes = {
+    sm: 'padding: 6px 12px; font-size: 12px;',
+    md: 'padding: 10px 20px; font-size: 14px;',
+    lg: 'padding: 14px 28px; font-size: 18px;'
+  };
+  
+  const baseStyle = `${sizes[size]} background: ${disabled ? '#4b5563' : color}; border: none; border-radius: 4px; color: white; cursor: ${disabled ? 'not-allowed' : 'pointer'}; font-weight: 500; transition: all 0.2s;`;
+  
+  // Handle children as function (for reactive content)
+  const renderChildren = typeof children === 'function' ? children() : children;
+  
+  return (
+    <button 
+      onclick={onClick}
+      disabled={disabled}
+      style={baseStyle}>
+      {renderChildren}
+    </button>
+  );
+};

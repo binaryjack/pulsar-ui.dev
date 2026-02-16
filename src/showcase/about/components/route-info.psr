@@ -1,0 +1,29 @@
+/**
+ * Route Info Component
+ * Displays current route information
+ */
+
+interface Router {
+  location: {
+    pathname: string
+    search: string
+  }
+}
+
+interface RouteInfoProps {
+  router: Router
+}
+
+export const RouteInfo = ({ router }: RouteInfoProps) => {
+  return (
+    <div style="background: #2a2a2a; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+      <h3 style="font-size: 20px; margin-bottom: 15px; color: #f59e0b;">Current Route Info</h3>
+      <p style="color: #9ca3af; margin-bottom: 10px;">
+        <strong style="color: white;">Current Path:</strong> {router.location.pathname}
+      </p>
+      <p style="color: #9ca3af;">
+        <strong style="color: white;">Search Params:</strong> {router.location.search || '(none)'}
+      </p>
+    </div>
+  );
+};

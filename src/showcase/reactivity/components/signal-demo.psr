@@ -1,0 +1,45 @@
+/**
+ * Signal Demo Component
+ * Demonstrates multiple signals working together
+ */
+
+import type { Accessor, Setter } from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+interface SignalDemoProps {
+  firstName: Accessor<string>
+  setFirstName: Setter<string>
+  lastName: Accessor<string>
+  setLastName: Setter<string>
+  age: Accessor<number>
+  setAge: Setter<number>
+}
+
+export const SignalDemo = ({ firstName, setFirstName, lastName, setLastName, age, setAge }: SignalDemoProps) => {
+  return (
+    <div>
+      <div style="margin-bottom: 15px;">
+        <div style="margin-bottom: 10px;">
+          <strong style="color: #10b981;">First Name:</strong> {firstName()}
+        </div>
+        <div style="margin-bottom: 10px;">
+          <strong style="color: #10b981;">Last Name:</strong> {lastName()}
+        </div>
+        <div style="margin-bottom: 10px;">
+          <strong style="color: #10b981;">Age:</strong> {age()}
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <DemoButton onClick={() => setFirstName('Alice')}>
+          Set First: Alice
+        </DemoButton>
+        <DemoButton onClick={() => setLastName('Johnson')}>
+          Set Last: Johnson
+        </DemoButton>
+        <DemoButton onClick={() => setAge(age() + 1)}>
+          Increment Age
+        </DemoButton>
+      </div>
+    </div>
+  );
+};

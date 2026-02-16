@@ -1,0 +1,24 @@
+/**
+ * Suspense Skeleton Component
+ * Loading skeleton for waiting demo
+ */
+
+export const SuspenseSkeleton = () => {
+  return (
+    <div style="padding: 15px; background: #1a1a1a; border-radius: 4px;">
+      <div style="color: #06b6d4; margin-bottom: 15px;">⏳ Loading profile...</div>
+      <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+        <div style="width: 60px; height: 60px; border-radius: 50%; background: #334155;"></div>
+        <div style="flex: 1;">
+          <div style="height: 16px; background: #334155; border-radius: 4px; margin-bottom: 8px; width: 40%;"></div>
+          <div style="height: 12px; background: #334155; border-radius: 4px; width: 60%;"></div>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
+        <div style="height: 60px; background: #334155; border-radius: 4px;"></div>
+        <div style="height: 60px; background: #334155; border-radius: 4px;"></div>
+        <div style="height: 60px; background: #334155; border-radius: 4px;"></div>
+      </div>
+    </div>
+  );
+};

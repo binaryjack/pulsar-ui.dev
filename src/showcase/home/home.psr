@@ -1,0 +1,22 @@
+/**
+ * Pulsar UI Showcase - Home Page
+ * Refactored version
+ */
+
+import { Counter } from '../../lab/counter.psr';
+import { PageHeader } from '../common/components/page-header.psr';
+
+export component HomePage() {
+  return (
+    <div>
+      <PageHeader 
+        title="Welcome to Pulsar Framework"
+        emoji="🏠"
+        color="#10b981"
+        description="A reactive UI framework with signal-based state management. Below is a live demo of basic reactivity features."
+      />
+      
+      <Counter id="home-counter" />
+    </div>
+  );
+}

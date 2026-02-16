@@ -1,0 +1,81 @@
+/**
+ * PHASE 2: JSX & DOM Tests
+ * Refactored with modular components
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { ReactiveAttributesDemo } from './components/reactive-attributes-demo.psr';
+import { EventHandlersDemo } from './components/event-handlers-demo.psr';
+import { StyleObjectsDemo } from './components/style-objects-demo.psr';
+
+export component JsxTestPage() {
+  // Reactive Attributes
+  const [bgColor, setBgColor] = createSignal('#3b82f6');
+  const [isDisabled, setIsDisabled] = createSignal(false);
+  
+  // Event Handlers
+  const [clickCount, setClickCount] = createSignal(0);
+  const [inputValue, setInputValue] = createSignal('');
+  const [lastKey, setLastKey] = createSignal('');
+  
+  // Style Objects
+  const [fontSize, setFontSize] = createSignal(16);
+  
+  return (
+    <div>
+      <PageHeader 
+        title="JSX & DOM Tests"
+        emoji="🎨"
+        color="#10b981"
+        description="Testing attributes, events, and nesting"
+      />
+      
+      <DemoSection 
+        title="1️⃣ Reactive Attributes" 
+        description="Dynamic attributes that update with state changes"
+        borderColor="#3b82f6">
+        <ReactiveAttributesDemo 
+          bgColor={bgColor}
+          setBgColor={setBgColor}
+          isDisabled={isDisabled}
+          setIsDisabled={setIsDisabled}
+        />
+      </DemoSection>
+      
+      <DemoSection 
+        title="2️⃣ Event Handlers" 
+        description="Testing onClick, onInput, and onKeyPress events"
+        borderColor="#8b5cf6">
+        <EventHandlersDemo 
+          clickCount={clickCount}
+          setClickCount={setClickCount}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          lastKey={lastKey}
+          setLastKey={setLastKey}
+        />
+      </DemoSection>
+      
+      <DemoSection 
+        title="3️⃣ Reactive Style Objects" 
+        description="Style objects with dynamic values"
+        borderColor="#10b981">
+        <StyleObjectsDemo fontSize={fontSize} setFontSize={setFontSize} />
+      </DemoSection>
+      
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; border: 2px solid #10b981;">
+        <h3 style="font-size: 20px; margin-bottom: 15px; color: #10b981;">
+          ✅ Test Status
+        </h3>
+        <ul style="list-style: none; padding: 0; color: #9ca3af;">
+          <li style="margin-bottom: 8px;">✅ Reactive attributes</li>
+          <li style="margin-bottom: 8px;">✅ Boolean attributes (disabled)</li>
+          <li style="margin-bottom: 8px;">✅ Style objects</li>
+          <li style="margin-bottom: 8px;">✅ Event handlers (onClick, onInput, onKeyPress)</li>
+        </ul>
+      </section>
+    </div>
+  );
+}

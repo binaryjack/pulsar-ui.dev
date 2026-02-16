@@ -1,0 +1,34 @@
+/**
+ * Demo Section Component
+ * Shared showcase section wrapper with consistent styling
+ */
+
+import type { Accessor } from '@pulsar-framework/pulsar.dev';
+
+interface DemoSectionProps {
+  title: string
+  description?: string
+  borderColor?: string
+  children: Accessor<JSX.Element>
+}
+
+export const DemoSection = ({ title, description, borderColor = '#3b82f6', children }: DemoSectionProps) => {
+  // Handle children as function (for reactive content)
+  const renderChildren = typeof children === 'function' ? children() : children;
+  
+  return (
+    <section style={`background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid ${borderColor};`}>
+      <h3 style={`font-size: 24px; margin-bottom: 15px; color: ${borderColor};`}>
+        {title}
+      </h3>
+      {description ? (
+        <p style="color: #94a3b8; margin-bottom: 15px; line-height: 1.6;">
+          {description}
+        </p>
+      ) : null}
+      <div style="background: #0a0a0a; padding: 15px; border-radius: 4px;">
+        {renderChildren}
+      </div>
+    </section>
+  );
+};

@@ -1,0 +1,23 @@
+/**
+ * Feature List Component
+ * Displays key framework features
+ */
+
+export const FeatureList = () => {
+  const features = [
+    '⚡ Signal-based reactivity',
+    '🎯 TypeScript-first design',
+    '🔄 Client-side routing with History API',
+    '📦 Component-based architecture',
+    '🎨 PSR (Pulsar Syntax) file format',
+    '🚀 Optimized build pipeline with Vite'
+  ];
+  
+  return (
+    <ul style="list-style: none; padding: 0; color: #d1d5db; font-size: 16px; line-height: 2;">
+      {features.map(feature => (
+        <li>{feature}</li>
+      ))}
+    </ul>
+  );
+};

@@ -1,0 +1,165 @@
+/**
+ * Error Boundary Mega Demo
+ * Comprehensive demo with maximum visual feedback
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { VisualErrorBoundary } from './components/visual-boundary-wrapper.psr';
+import { ControlButtonGroup } from './components/control-button-group.psr';
+import { SafeComponent, ErrorComponent } from './components';
+
+export component ErrorBoundaryMegaPage() {
+  // Individual error states for each section
+  const [basicError, setBasicError] = createSignal(false);
+  const [section1Error, setSection1Error] = createSignal(false);
+  const [section2Error, setSection2Error] = createSignal(false);
+  const [section3Error, setSection3Error] = createSignal(false);
+  const [nestedOuterError, setNestedOuterError] = createSignal(false);
+  const [nestedInnerError, setNestedInnerError] = createSignal(false);
+  
+  return (
+    <div style="padding: 20px; background: linear-gradient(135deg, #0f172a, #1e293b); min-height: 100vh;">
+      <PageHeader 
+        title="ERROR BOUNDARIES MEGA DEMO"
+        emoji="🛡️"
+        color="#06b6d4"
+        description="Watch how error boundaries protect your app from crashes with MASSIVE VISUAL FEEDBACK!"
+      />
+
+      <div style="max-width: 1000px; margin: 0 auto;">
+        
+        {/* Master Control Panel */}
+        <div style="background: linear-gradient(135deg, #1a1a1a, #2d2d2d); padding: 30px; border-radius: 16px; margin-bottom: 40px; border: 3px solid #fbbf24; box-shadow: 0 8px 32px rgba(251, 191, 36, 0.1);">
+          <h2 style="color: #fbbf24; margin-bottom: 25px; text-align: center; font-size: 28px;">
+            🎮 MASTER CONTROL PANEL
+          </h2>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px;">
+            <ControlButtonGroup 
+              label="BASIC BOUNDARY"
+              isError={basicError()}
+              onTrigger={() => setBasicError(!basicError())}
+              color="#06b6d4"
+            />
+            
+            <ControlButtonGroup 
+              label="SECTION 1"
+              isError={section1Error()}
+              onTrigger={() => setSection1Error(!section1Error())}
+              color="#8b5cf6"
+            />
+            
+            <ControlButtonGroup 
+              label="SECTION 2"
+              isError={section2Error()}
+              onTrigger={() => setSection2Error(!section2Error())}
+              color="#ec4899"
+            />
+            
+            <ControlButtonGroup 
+              label="SECTION 3"
+              isError={section3Error()}
+              onTrigger={() => setSection3Error(!section3Error())}
+              color="#f59e0b"
+            />
+            
+            <ControlButtonGroup 
+              label="NESTED OUTER"
+              isError={nestedOuterError()}
+              onTrigger={() => setNestedOuterError(!nestedOuterError())}
+              color="#10b981"
+            />
+            
+            <ControlButtonGroup 
+              label="NESTED INNER"
+              isError={nestedInnerError()}
+              onTrigger={() => setNestedInnerError(!nestedInnerError())}
+              color="#ef4444"
+            />
+          </div>
+        </div>
+
+        {/* Basic Boundary */}
+        <VisualErrorBoundary title="BASIC BOUNDARY" borderColor="#06b6d4">
+          {() => basicError() 
+            ? <ErrorComponent message="Basic boundary error triggered!" title="Basic Component" /> 
+            : <SafeComponent title="Basic Component" />
+          }
+        </VisualErrorBoundary>
+
+        {/* Multiple Independent Boundaries */}
+        <DemoSection 
+          title="🔄 Multiple Independent Boundaries" 
+          description="Each boundary catches errors independently"
+          borderColor="#8b5cf6">
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            <VisualErrorBoundary title="SECTION 1" borderColor="#8b5cf6">
+              {() => section1Error() 
+                ? <ErrorComponent message="Section 1 crashed!" title="Section 1" /> 
+                : <SafeComponent title="Section 1" />
+              }
+            </VisualErrorBoundary>
+            
+            <VisualErrorBoundary title="SECTION 2" borderColor="#ec4899">
+              {() => section2Error() 
+                ? <ErrorComponent message="Section 2 crashed!" title="Section 2" /> 
+                : <SafeComponent title="Section 2" />
+              }
+            </VisualErrorBoundary>
+            
+            <VisualErrorBoundary title="SECTION 3" borderColor="#f59e0b">
+              {() => section3Error() 
+                ? <ErrorComponent message="Section 3 crashed!" title="Section 3" /> 
+                : <SafeComponent title="Section 3" />
+              }
+            </VisualErrorBoundary>
+          </div>
+        </DemoSection>
+
+        {/* Nested Boundaries */}
+        <DemoSection 
+          title="🪆 Nested Error Boundaries" 
+          description="Boundaries can be nested for granular error handling"
+          borderColor="#10b981">
+          
+          <VisualErrorBoundary title="OUTER BOUNDARY" borderColor="#10b981">
+            {() => nestedOuterError() 
+              ? <ErrorComponent message="Outer boundary error!" title="Outer Component" /> 
+              : (
+                <div>
+                  <SafeComponent title="Outer Component Safe" />
+                  
+                  <div style="margin-top: 20px;">
+                    <VisualErrorBoundary title="INNER BOUNDARY" borderColor="#ef4444">
+                      {() => nestedInnerError() 
+                        ? <ErrorComponent message="Inner boundary error!" title="Inner Component" /> 
+                        : <SafeComponent title="Inner Component Safe" />
+                      }
+                    </VisualErrorBoundary>
+                  </div>
+                </div>
+              )
+            }
+          </VisualErrorBoundary>
+        </DemoSection>
+        
+        {/* Status Summary */}
+        <div style="background: #1a1a1a; padding: 25px; border-radius: 12px; border: 2px solid #10b981; margin-top: 30px;">
+          <h3 style="color: #10b981; margin-bottom: 20px; font-size: 20px; text-align: center;">
+            📊 System Status Summary
+          </h3>
+          
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; color: #9ca3af; font-size: 14px;">
+            <div>✅ Boundaries Active: 6</div>
+            <div>🔥 Current Errors: {[basicError(), section1Error(), section2Error(), section3Error(), nestedOuterError(), nestedInnerError()].filter(Boolean).length}</div>
+            <div>🛡️ Boundaries Catching: {[basicError(), section1Error(), section2Error(), section3Error(), nestedOuterError(), nestedInnerError()].filter(Boolean).length}</div>
+            <div>✨ Safe Components: {6 - [basicError(), section1Error(), section2Error(), section3Error(), nestedOuterError(), nestedInnerError()].filter(Boolean).length}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,33 @@
+/**
+ * Deduplication Demo Component
+ * Shows how 3 components share 1 request
+ */
+
+import { createResource } from '@pulsar-framework/pulsar.dev';
+import { fetchUser } from './mock-api.ts';
+import { UserCard } from './user-card.psr';
+
+export const DeduplicationDemo = () => {
+  const user1 = createResource(() => fetchUser(1));
+  const user2 = createResource(() => fetchUser(1));
+  const user3 = createResource(() => fetchUser(1));
+  
+  return (
+    <div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+        <UserCard resource={user1} label="Component A" />
+        <UserCard resource={user2} label="Component B" />
+        <UserCard resource={user3} label="Component C" />
+      </div>
+      
+      <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border-left: 3px solid #10b981;">
+        <div style="color: #10b981; font-weight: bold; margin-bottom: 5px;">
+          📊 Network Efficiency
+        </div>
+        <div style="color: #94a3b8; font-size: 14px;">
+          3 components requested data, only <strong style="color: #10b981;">1 network request</strong> made!
+        </div>
+      </div>
+    </div>
+  );
+};

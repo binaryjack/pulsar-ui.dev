@@ -1,0 +1,137 @@
+/**
+ * PHASE 3: Resource Management
+ * Refactored with modular components
+ */
+
+import { createSignal, createEffect, ShowRegistry } from '@pulsar-framework/pulsar.dev';
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { DemoButton } from '../common/components/demo-button.psr';
+import { DeduplicationDemo } from './components/deduplication-demo.psr';
+import { CacheDemo } from './components/cache-demo.psr';
+import { WaitingDemo } from './components/waiting-demo.psr';
+import { ImageGalleryDemo } from './components/image-gallery-demo.psr';
+import { resetNetworkCount } from './components/mock-api.ts';
+
+export component ResourceTestPage() {
+  const [showDedupeDemo, setShowDedupeDemo] = createSignal(false);
+  const [showCacheDemo, setShowCacheDemo] = createSignal(false);
+  const [showWaitingDemo, setShowWaitingDemo] = createSignal(false);
+  const [showImagesDemo, setShowImagesDemo] = createSignal(false);
+  
+  createEffect(() => {
+    if (showDedupeDemo() || showCacheDemo() || showWaitingDemo()) {
+      resetNetworkCount();
+    }
+  });
+  
+  return (
+    <div>
+      <PageHeader 
+        title="Resource Management: Real-World Features"
+        emoji="🌊"
+        color="#06b6d4"
+        description="Deduplication, caching, parallel loading, and suspense"
+      />
+      
+      <div style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #f59e0b;">
+        <h3 style="font-size: 20px; margin-bottom: 10px; color: #f59e0b;">
+          ⚡ What Makes Resources Different?
+        </h3>
+        <p style="color: #94a3b8; line-height: 1.6;">
+          Resources provide <strong style="color: white;">deduplication</strong>, 
+          <strong style="color: white;"> caching</strong>, <strong style="color: white;">parallel coordination</strong>, 
+          and <strong style="color: white;">progressive loading</strong> out of the box.
+        </p>
+      </div>
+      
+      <DemoSection 
+        title="1️⃣ Request Deduplication" 
+        description="3 components request same resource = 1 network call, not 3."
+        borderColor="#06b6d4">
+        <div style="margin-bottom: 15px;">
+          <DemoButton 
+            onClick={() => setShowDedupeDemo(!showDedupeDemo())}
+            color="#06b6d4">
+            {showDedupeDemo() ? '🔄 Reset' : '▶️ Run Demo'}
+          </DemoButton>
+        </div>
+        
+        <ShowRegistry when={() => showDedupeDemo()}>
+          <DeduplicationDemo />
+        </ShowRegistry>
+      </DemoSection>
+      
+      <DemoSection 
+        title="2️⃣ Cache with Stale-While-Revalidate" 
+        description="Serve cached data instantly, refetch in background. 0ms perceived load."
+        borderColor="#8b5cf6">
+        <div style="margin-bottom: 15px;">
+          <DemoButton 
+            onClick={() => setShowCacheDemo(!showCacheDemo())}
+            color="#8b5cf6">
+            {showCacheDemo() ? '🔄 Reset' : '▶️ Run Demo'}
+          </DemoButton>
+        </div>
+        
+        <ShowRegistry when={() => showCacheDemo()}>
+          <CacheDemo />
+        </ShowRegistry>
+      </DemoSection>
+      
+      <DemoSection 
+        title="3️⃣ Suspense Boundaries" 
+        description="Multiple resources coordinate - show skeleton until all ready."
+        borderColor="#10b981">
+        <div style="margin-bottom: 15px;">
+          <DemoButton 
+            onClick={() => setShowWaitingDemo(!showWaitingDemo())}
+            color="#10b981">
+            {showWaitingDemo() ? '🔄 Reset' : '▶️ Run Demo'}
+          </DemoButton>
+        </div>
+        
+        <ShowRegistry when={() => showWaitingDemo()}>
+          <WaitingDemo />
+        </ShowRegistry>
+      </DemoSection>
+      
+      <DemoSection 
+        title="4️⃣ Progressive Image Gallery" 
+        description="Real-world demo: Parallel loading with individual states."
+        borderColor="#f59e0b">
+        <div style="margin-bottom: 15px;">
+          <DemoButton 
+            onClick={() => setShowImagesDemo(!showImagesDemo())}
+            color="#f59e0b">
+            {showImagesDemo() ? '🔄 Reset' : '▶️ Load Gallery'}
+          </DemoButton>
+        </div>
+        
+        <ShowRegistry when={() => showImagesDemo()}>
+          <ImageGalleryDemo />
+        </ShowRegistry>
+      </DemoSection>
+      
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981;">
+        <h3 style="font-size: 20px; margin-bottom: 10px; color: #10b981;">
+          ✓ Why Use Resources vs Manual Fetch?
+        </h3>
+        <div style="display: grid; gap: 15px; color: #94a3b8;">
+          <div style="padding: 15px; background: #0a0a0a; border-radius: 4px;">
+            <strong style="color: #06b6d4;">Deduplication:</strong> Multiple components, one request
+          </div>
+          <div style="padding: 15px; background: #0a0a0a; border-radius: 4px;">
+            <strong style="color: #8b5cf6;">Cache + Stale Time:</strong> Instant UI, background refresh
+          </div>
+          <div style="padding: 15px; background: #0a0a0a; border-radius: 4px;">
+            <strong style="color: #10b981;">Suspense Coordination:</strong> Wait for all data
+          </div>
+          <div style="padding: 15px; background: #0a0a0a; border-radius: 4px;">
+            <strong style="color: #f59e0b;">Auto State Management:</strong> No manual tracking
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

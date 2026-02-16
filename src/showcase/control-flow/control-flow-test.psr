@@ -1,0 +1,104 @@
+/**
+ * PHASE 2: Control Flow Primitives
+ * Refactored with modular components
+ */
+
+import { createSignal, component } from '@pulsar-framework/pulsar.dev';
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { ShowDemo } from './components/show-demo.psr';
+import { ForDemo } from './components/for-demo.psr';
+import { IndexDemo } from './components/index-demo.psr';
+
+export const ControlFlowTestPage = component(() => {
+  // Show component signals
+  const [showContent, setShowContent] = createSignal(true);
+  const [hasError, setHasError] = createSignal(false);
+  
+  // For component signals
+  const [items, setItems] = createSignal([
+    { id: 1, name: 'Apple', price: 1.99 },
+    { id: 2, name: 'Banana', price: 0.99 },
+    { id: 3, name: 'Cherry', price: 2.49 },
+  ]);
+  
+  const addItem = () => {
+    const currentItems = items();
+    const ids = currentItems.map(i => i.id);
+    let maxId = 0;
+    for (let i = 0; i < ids.length; i++) {
+      if (ids[i] > maxId) maxId = ids[i];
+    }
+    const newId = maxId + 1;
+    const fruits = ['Orange', 'Grape', 'Mango', 'Pineapple', 'Strawberry'];
+    const randomFruit = fruits[Math.floor(Math.random() * fruits.length)];
+    const randomPrice = (Math.random() * 3 + 0.5).toFixed(2);
+    
+    setItems(currentItems.concat([{ id: newId, name: randomFruit, price: parseFloat(randomPrice) }]));
+  };
+  
+  const removeItem = (id) => {
+    setItems(items().filter(item => item.id !== id));
+  };
+  
+  const sortByPrice = () => {
+    const sorted = items().slice().sort((a, b) => a.price - b.price);
+    setItems(sorted);
+  };
+  
+  // Index component signals
+  const [colors, setColors] = createSignal(['Red', 'Green', 'Blue', 'Yellow']);
+  
+  const shuffleColors = () => {
+    const shuffled = colors().slice();
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = shuffled[i];
+      shuffled[i] = shuffled[j];
+      shuffled[j] = temp;
+    }
+    setColors(shuffled);
+  };
+  
+  return (
+    <div>
+      <PageHeader 
+        title="Control Flow Primitives"
+        emoji="🎯"
+        color="#f59e0b"
+        description="Testing Show, For, and Index components"
+      />
+      
+      <DemoSection 
+        title="1️⃣ Show - Conditional Rendering" 
+        description="The Show component renders children only when the condition is true. Supports fallback content."
+        borderColor="#f59e0b">
+        <ShowDemo 
+          showContent={showContent}
+          setShowContent={setShowContent}
+          hasError={hasError}
+          setHasError={setHasError}
+        />
+      </DemoSection>
+      
+      <DemoSection 
+        title="2️⃣ For - Keyed List Rendering" 
+        description="ForRegistry efficiently renders lists with proper keying for optimal updates and animations."
+        borderColor="#f59e0b">
+        <ForDemo 
+          items={items}
+          addItem={addItem}
+          removeItem={removeItem}
+          sortByPrice={sortByPrice}
+        />
+      </DemoSection>
+      
+      <DemoSection 
+        title="3️⃣ Index - Index-based Iteration" 
+        description="Index component iterates by array index (not by key). Useful when items have no stable identity."
+        borderColor="#f59e0b">
+        <IndexDemo colors={colors} shuffleColors={shuffleColors} />
+      </DemoSection>
+    </div>
+  );
+});

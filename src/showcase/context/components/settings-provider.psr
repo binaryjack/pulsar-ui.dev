@@ -1,0 +1,29 @@
+/**
+ * Settings Provider Component
+ * Provides app settings context
+ */
+
+import { createSignal, createContext } from '@pulsar-framework/pulsar.dev';
+
+interface SettingsProviderProps {
+  children: JSX.Element
+}
+
+export const SettingsContext = createContext({
+  fontSize: () => 16,
+  setFontSize: () => {},
+  notifications: () => true,
+  setNotifications: () => {},
+  language: () => 'en',
+  setLanguage: () => {}
+});
+
+export const SettingsProvider = (props: SettingsProviderProps) => {
+  const [fontSize, setFontSize] = createSignal(16);
+  const [notifications, setNotifications] = createSignal(true);
+  const [language, setLanguage] = createSignal('en');
+  
+  const settingsValue = { fontSize, setFontSize, notifications, setNotifications, language, setLanguage };
+  
+  return SettingsContext.Provider({ value: settingsValue, children: () => props.children });
+};

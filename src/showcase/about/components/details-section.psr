@@ -1,0 +1,29 @@
+/**
+ * Details Section Component
+ * Expandable details about navigation system
+ */
+
+import type { Accessor } from '@pulsar-framework/pulsar.dev';
+
+interface DetailsSectionProps {
+  showDetails: Accessor<boolean>
+}
+
+export const DetailsSection = ({ showDetails }: DetailsSectionProps) => {
+  return (
+    <div style="margin-top: 20px; padding: 20px; background: #2a2a2a; border-radius: 8px; border-left: 4px solid #3b82f6;">
+      <h4 style="font-size: 18px; margin-bottom: 10px; color: #3b82f6;">Navigation System</h4>
+      <p style="color: #9ca3af; line-height: 1.6;">
+        This page demonstrates Pulsar's built-in client-side routing capabilities. 
+        The Router component uses the HTML5 History API to manage navigation without 
+        full page reloads. Features include:
+      </p>
+      <ul style="color: #9ca3af; margin-top: 10px; margin-left: 20px;">
+        <li>Declarative Route definitions</li>
+        <li>useNavigate() and useRouter() hooks</li>
+        <li>Path parameters and query strings</li>
+        <li>Navigation guards</li>
+      </ul>
+    </div>
+  );
+};

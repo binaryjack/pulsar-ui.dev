@@ -1,0 +1,19 @@
+/**
+ * Effect Demo Component
+ * Demonstrates side effects
+ */
+
+import { CodeBlock } from '../../common/components/code-block.psr';
+
+export const EffectDemo = () => {
+  return (
+    <div>
+      <p style="color: #9ca3af; font-size: 14px; margin-bottom: 10px;">
+        ℹ️ Open browser console to see effect logs when name changes
+      </p>
+      <CodeBlock>
+        console.log: Effect runs on fullName() changes
+      </CodeBlock>
+    </div>
+  );
+};
