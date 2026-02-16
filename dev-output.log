@@ -9483,3 +9483,944 @@ const UserContext = createContext({
 [2m02:51:47[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/component.js[22m
 [2m02:51:47[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/context.js[22m
 [2m02:51:47[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/registry.js[22m
+[pulsar] resolveId: Resolving .psr "./main.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.ts
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr
+[pulsar] load() called for: main.psr
+[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar]   Query: none
+[pulsar]   Resolved: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr
+
+[pulsar] ========== TRANSFORMATION START: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr ==========
+[pulsar] File path: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr
+[pulsar] Input length: 5563 chars
+[pulsar] Preprocessing complete
+[pulsar] Preprocessed length: 5563 chars
+[pulsar] Creating transformation pipeline...
+[pulsar] Running transformation pipeline...
+🚀 Starting Babel-based PSR transformation
+Input: 5563 characters
+
+🔧 Phase 0: Character Encoding Preprocessing
+
+📝 Phase 1-4: Babel Pipeline
+
+=== PREPROCESSED SOURCE ===
+
+/**
+ * Pulsar UI Showcase - Main Application Entry Point (PSR)
+ * Navigation System Test
+ */
+
+import { createSignal, useNavigate, Router, Route } from '@pulsar-framework/pulsar.dev';
+import { HomePage } from './showcase/pages/home.psr';
+import { AboutPage } from './showcase/pages/about.psr';
+import { ReactivityTestPage } from './showcase/pages/reactivity-test.psr';
+import { JsxTestPage } from './showcase/pages/jsx-test.psr';
+import { ControlFlowTestPage } from './showcase/pages/control-flow-test.psr';
+import { ResourceTestPage } from './showcase/pages/resource-test.psr';
+import { ErrorBoundaryTestPage } from './showcase/pages/error-boundary-test.psr';
+import { ContextTestPage } from './showcase/pages/context-test.psr';
+import { AssignmentTest } from './showcase/pages/assignment-test.psr';
+import { SimpleTest } from './showcase/pages/simple-codegen-test.psr';
+
+export interface IAppProps {
+  id?: string;
+}
+
+export function App() {
+  const navigate = useNavigate();
+  const [currentPath, setCurrentPath] = createSignal(window.location.pathname);
+  
+  const goHome = () => {
+    navigate('/');
+    setCurrentPath('/');
+  };
+  
+  const goAbout = () => {
+    navigate('/about');
+    setCurrentPath('/about');
+  };
+  
+  const goReactivity = () => {
+    navigate('/reactivity');
+    setCurrentPath('/reactivity');
+  };
+  
+  const goJsx = () => {
+    navigate('/jsx');
+    setCurrentPath('/jsx');
+  };
+  
+  const goControlFlow = () => {
+    navigate('/control-flow');
+    setCurrentPath('/control-flow');
+  };
+  
+  const goResources = () => {
+    navigate('/resources');
+    setCurrentPath('/resources');
+  };
+  
+  const goErrorBoundary = () => {
+    navigate('/error-boundary');
+    setCurrentPath('/error-boundary');
+  };
+  
+  const goContext = () => {
+    navigate('/context');
+    setCurrentPath('/context');
+  };
+  
+  return (
+    <div style="min-height: 100vh; background: #0a0a0a; color: white; font-family: system-ui;">
+      <nav style="background: #1a1a1a; padding: 20px; border-bottom: 2px solid #3b82f6; margin-bottom: 20px;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+          <h1 style="font-size: 24px; margin: 0; color: #3b82f6; flex: 1; min-width: 200px;">Pulsar Framework</h1>
+          
+          <button 
+            onClick={goHome}
+            style="padding: 10px 20px; font-size: 14px; background: #3b82f6; border: 2px solid #3b82f6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            Home
+          </button>
+          
+          <button 
+            onClick={goReactivity}
+            style="padding: 10px 20px; font-size: 14px; background: #10b981; border: 2px solid #10b981; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🧪 Reactivity
+          </button>
+          
+          <button 
+            onClick={goJsx}
+            style="padding: 10px 20px; font-size: 14px; background: #8b5cf6; border: 2px solid #8b5cf6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🎨 JSX
+          </button>
+          
+          <button 
+            onClick={goControlFlow}
+            style="padding: 10px 20px; font-size: 14px; background: #f59e0b; border: 2px solid #f59e0b; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🎯 Control Flow
+          </button>
+          
+          <button 
+            onClick={goResources}
+            style="padding: 10px 20px; font-size: 14px; background: #06b6d4; border: 2px solid #06b6d4; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🌊 Resources
+          </button>
+          
+          <button 
+            onClick={goErrorBoundary}
+            style="padding: 10px 20px; font-size: 14px; background: #ef4444; border: 2px solid #ef4444; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🛡️ Errors
+          </button>
+          
+          <button 
+            onClick={goContext}
+            style="padding: 10px 20px; font-size: 14px; background: #8b5cf6; border: 2px solid #8b5cf6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🔌 Context
+          </button>
+          
+          <button 
+            onClick={goAbout}
+            style="padding: 10px 20px; font-size: 14px; background: #3b82f6; border: 2px solid #3b82f6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            About
+          </button>
+        </div>
+      </nav>
+      
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+        <Router>
+          <Route path="/" component={HomePage} default={true} label="Home" />
+          <Route path="/reactivity" component={ReactivityTestPage} label="Reactivity Tests" />
+          <Route path="/jsx" component={JsxTestPage} label="JSX Tests" />
+          <Route path="/control-flow" component={ControlFlowTestPage} label="Control Flow" />
+          <Route path="/resources" component={ResourceTestPage} label="Resources" />
+          <Route path="/error-boundary" component={ErrorBoundaryTestPage} label="Error Boundaries" />
+          <Route path="/context" component={ContextTestPage} label="Context API" />
+          <Route path="/about" component={AboutPage} label="About" />
+        </Router>
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+
+=== BABEL AST PARSED ===
+Nodes: 14
+
+=== TRANSFORMATION COMPLETE ===
+
+=== PIPELINE COMPLETE ===
+Total time: 4.52ms
+Output size: 5514 characters
+✅ Transformation complete
+Total time: 4.52ms
+[pulsar] Transformation complete in 7.06ms
+[pulsar] Output length: 5514 chars
+[pulsar] Diagnostic count: 0
+[pulsar] METRICS:
+[pulsar]   - Lexer:     0ms
+[pulsar]   - Parser:    0ms
+[pulsar]   - Transform: 4.5159000009298325ms
+[pulsar]   - Total:     4.5159000009298325ms
+
+[pulsar] DEBUG TRANSFORMATION for E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr:
+  Input first 300 chars: 
+/**
+ * Pulsar UI Showcase - Main Application Entry Point (PSR)
+ * Navigation System Test
+ */
+
+import { createSignal, useNavigate, Router, Route } from '@pulsar-framework/pulsar.dev';
+import { HomePage } from './showcase/pages/home.psr';
+import { AboutPage } from './showcase/pages/about.psr'...
+  Output first 300 chars: /**
+ * Pulsar UI Showcase - Main Application Entry Point (PSR)
+ * Navigation System Test
+ */
+
+import { $REGISTRY, createSignal, Route, Router, t_element, useNavigate } from '@pulsar-framework/pulsar.dev';
+import { HomePage } from './showcase/pages/home.psr';
+import { AboutPage } from './showcase/...
+  Has .psr in input: true
+  Has .js in output: false
+[pulsar] ========== TRANSFORMATION END: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr ==========
+
+[pulsar] ⚡ PSR: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr transformed in 7.06ms
+[pulsar] load() called for: main.psr
+[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar]   Query: none
+[pulsar]   Resolved: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr
+[pulsar] ESBuild transformation complete
+  JS Output first 300 chars: import { $REGISTRY, createSignal, Route, Router, t_element, useNavigate } from "@pulsar-framework/pulsar.dev";
+import { HomePage } from "./showcase/pages/home.psr";
+import { AboutPage } from "./showcase/pages/about.psr";
+import { ReactivityTestPage } from "./showcase/pages/reactivity-test.psr";
+impo...
+[pulsar] transform() hook: main.psr already transformed, skipping
+[pulsar] resolveId: Resolving .psr "./showcase/pages/home.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar] resolveId: Resolving .psr "./showcase/pages/about.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar] resolveId: Resolving .psr "./showcase/pages/reactivity-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar] resolveId: Resolving .psr "./showcase/pages/jsx-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar] resolveId: Resolving .psr "./showcase/pages/control-flow-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar] resolveId: Resolving .psr "./showcase/pages/resource-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar] resolveId: Resolving .psr "./showcase/pages/error-boundary-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar] resolveId: Resolving .psr "./showcase/pages/context-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\home.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\about.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\reactivity-test.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\jsx-test.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\control-flow-test.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\resource-test.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\error-boundary-test.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\context-test.psr
+[pulsar] load() called for: context-test.psr
+[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/context-test.psr
+[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/context-test.psr
+[pulsar]   Query: none
+[pulsar]   Resolved: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\context-test.psr
+
+[pulsar] ========== TRANSFORMATION START: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr ==========
+[pulsar] File path: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr
+[pulsar] Input length: 5563 chars
+[pulsar] Preprocessing complete
+[pulsar] Preprocessed length: 5563 chars
+[pulsar] Creating transformation pipeline...
+[pulsar] Running transformation pipeline...
+🚀 Starting Babel-based PSR transformation
+Input: 5563 characters
+
+🔧 Phase 0: Character Encoding Preprocessing
+
+📝 Phase 1-4: Babel Pipeline
+
+=== PREPROCESSED SOURCE ===
+
+/**
+ * Pulsar UI Showcase - Main Application Entry Point (PSR)
+ * Navigation System Test
+ */
+
+import { createSignal, useNavigate, Router, Route } from '@pulsar-framework/pulsar.dev';
+import { HomePage } from './showcase/pages/home.psr';
+import { AboutPage } from './showcase/pages/about.psr';
+import { ReactivityTestPage } from './showcase/pages/reactivity-test.psr';
+import { JsxTestPage } from './showcase/pages/jsx-test.psr';
+import { ControlFlowTestPage } from './showcase/pages/control-flow-test.psr';
+import { ResourceTestPage } from './showcase/pages/resource-test.psr';
+import { ErrorBoundaryTestPage } from './showcase/pages/error-boundary-test.psr';
+import { ContextTestPage } from './showcase/pages/context-test.psr';
+import { AssignmentTest } from './showcase/pages/assignment-test.psr';
+import { SimpleTest } from './showcase/pages/simple-codegen-test.psr';
+
+export interface IAppProps {
+  id?: string;
+}
+
+export function App() {
+  const navigate = useNavigate();
+  const [currentPath, setCurrentPath] = createSignal(window.location.pathname);
+  
+  const goHome = () => {
+    navigate('/');
+    setCurrentPath('/');
+  };
+  
+  const goAbout = () => {
+    navigate('/about');
+    setCurrentPath('/about');
+  };
+  
+  const goReactivity = () => {
+    navigate('/reactivity');
+    setCurrentPath('/reactivity');
+  };
+  
+  const goJsx = () => {
+    navigate('/jsx');
+    setCurrentPath('/jsx');
+  };
+  
+  const goControlFlow = () => {
+    navigate('/control-flow');
+    setCurrentPath('/control-flow');
+  };
+  
+  const goResources = () => {
+    navigate('/resources');
+    setCurrentPath('/resources');
+  };
+  
+  const goErrorBoundary = () => {
+    navigate('/error-boundary');
+    setCurrentPath('/error-boundary');
+  };
+  
+  const goContext = () => {
+    navigate('/context');
+    setCurrentPath('/context');
+  };
+  
+  return (
+    <div style="min-height: 100vh; background: #0a0a0a; color: white; font-family: system-ui;">
+      <nav style="background: #1a1a1a; padding: 20px; border-bottom: 2px solid #3b82f6; margin-bottom: 20px;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+          <h1 style="font-size: 24px; margin: 0; color: #3b82f6; flex: 1; min-width: 200px;">Pulsar Framework</h1>
+          
+          <button 
+            onClick={goHome}
+            style="padding: 10px 20px; font-size: 14px; background: #3b82f6; border: 2px solid #3b82f6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            Home
+          </button>
+          
+          <button 
+            onClick={goReactivity}
+            style="padding: 10px 20px; font-size: 14px; background: #10b981; border: 2px solid #10b981; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🧪 Reactivity
+          </button>
+          
+          <button 
+            onClick={goJsx}
+            style="padding: 10px 20px; font-size: 14px; background: #8b5cf6; border: 2px solid #8b5cf6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🎨 JSX
+          </button>
+          
+          <button 
+            onClick={goControlFlow}
+            style="padding: 10px 20px; font-size: 14px; background: #f59e0b; border: 2px solid #f59e0b; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🎯 Control Flow
+          </button>
+          
+          <button 
+            onClick={goResources}
+            style="padding: 10px 20px; font-size: 14px; background: #06b6d4; border: 2px solid #06b6d4; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🌊 Resources
+          </button>
+          
+          <button 
+            onClick={goErrorBoundary}
+            style="padding: 10px 20px; font-size: 14px; background: #ef4444; border: 2px solid #ef4444; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🛡️ Errors
+          </button>
+          
+          <button 
+            onClick={goContext}
+            style="padding: 10px 20px; font-size: 14px; background: #8b5cf6; border: 2px solid #8b5cf6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            🔌 Context
+          </button>
+          
+          <button 
+            onClick={goAbout}
+            style="padding: 10px 20px; font-size: 14px; background: #3b82f6; border: 2px solid #3b82f6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            About
+          </button>
+        </div>
+      </nav>
+      
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+        <Router>
+          <Route path="/" component={HomePage} default={true} label="Home" />
+          <Route path="/reactivity" component={ReactivityTestPage} label="Reactivity Tests" />
+          <Route path="/jsx" component={JsxTestPage} label="JSX Tests" />
+          <Route path="/control-flow" component={ControlFlowTestPage} label="Control Flow" />
+          <Route path="/resources" component={ResourceTestPage} label="Resources" />
+          <Route path="/error-boundary" component={ErrorBoundaryTestPage} label="Error Boundaries" />
+          <Route path="/context" component={ContextTestPage} label="Context API" />
+          <Route path="/about" component={AboutPage} label="About" />
+        </Router>
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+
+=== BABEL AST PARSED ===
+Nodes: 14
+
+=== TRANSFORMATION COMPLETE ===
+
+=== PIPELINE COMPLETE ===
+Total time: 4.75ms
+Output size: 5514 characters
+✅ Transformation complete
+Total time: 4.75ms
+[pulsar] Transformation complete in 7.71ms
+[pulsar] Output length: 5514 chars
+[pulsar] Diagnostic count: 0
+[pulsar] METRICS:
+[pulsar]   - Lexer:     0ms
+[pulsar]   - Parser:    0ms
+[pulsar]   - Transform: 4.747900001704693ms
+[pulsar]   - Total:     4.747900001704693ms
+
+[pulsar] DEBUG TRANSFORMATION for E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr:
+  Input first 300 chars: 
+/**
+ * Pulsar UI Showcase - Main Application Entry Point (PSR)
+ * Navigation System Test
+ */
+
+import { createSignal, useNavigate, Router, Route } from '@pulsar-framework/pulsar.dev';
+import { HomePage } from './showcase/pages/home.psr';
+import { AboutPage } from './showcase/pages/about.psr'...
+  Output first 300 chars: /**
+ * Pulsar UI Showcase - Main Application Entry Point (PSR)
+ * Navigation System Test
+ */
+
+import { $REGISTRY, createSignal, Route, Router, t_element, useNavigate } from '@pulsar-framework/pulsar.dev';
+import { HomePage } from './showcase/pages/home.psr';
+import { AboutPage } from './showcase/...
+  Has .psr in input: true
+  Has .js in output: false
+[pulsar] ========== TRANSFORMATION END: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr ==========
+
+[pulsar] ⚡ PSR: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr transformed in 7.71ms
+[pulsar] ESBuild transformation complete
+  JS Output first 300 chars: import { $REGISTRY, createSignal, Route, Router, t_element, useNavigate } from "@pulsar-framework/pulsar.dev";
+import { HomePage } from "./showcase/pages/home.psr";
+import { AboutPage } from "./showcase/pages/about.psr";
+import { ReactivityTestPage } from "./showcase/pages/reactivity-test.psr";
+impo...
+[pulsar] transform() hook: main.psr already transformed, skipping
+[pulsar] resolveId: Resolving .psr "./showcase/pages/home.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar] resolveId: Resolving .psr "./showcase/pages/about.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar] resolveId: Resolving .psr "./showcase/pages/reactivity-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar] resolveId: Resolving .psr "./showcase/pages/jsx-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar] resolveId: Resolving .psr "./showcase/pages/control-flow-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar] resolveId: Resolving .psr "./showcase/pages/resource-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar] resolveId: Resolving .psr "./showcase/pages/error-boundary-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+[pulsar] resolveId: Resolving .psr "./showcase/pages/context-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.psr
+
+[pulsar] ========== TRANSFORMATION START: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\context-test.psr ==========
+[pulsar] File path: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\context-test.psr
+[pulsar] Input length: 16051 chars
+[pulsar] Preprocessing complete
+[pulsar] Preprocessed length: 16051 chars
+[pulsar] Creating transformation pipeline...
+[pulsar] Running transformation pipeline...
+🚀 Starting Babel-based PSR transformation
+Input: 16051 characters
+
+🔧 Phase 0: Character Encoding Preprocessing
+
+📝 Phase 1-4: Babel Pipeline
+
+=== PREPROCESSED SOURCE ===
+/**
+ * PHASE 5: Context API & Dependency Injection
+ * Testing: createContext, useContext, Provider pattern
+ */
+
+import { createSignal, createContext, useContext } from '@pulsar-framework/pulsar.dev';
+
+// Create theme context with default values to prevent crash if provider missing
+const ThemeContext = createContext({
+  theme: () => 'light',
+  setTheme: () => {},
+  primaryColor: () => '#3b82f6',
+  setPrimaryColor: () => {}
+});
+
+// Create user context
+const UserContext = createContext({
+  user: () => ({ name: 'Guest', role: 'visitor' }),
+  isLoggedIn: () => false,
+  login: () => {},
+  logout: () => {}
+});
+
+// Create settings context
+const SettingsContext = createContext({
+  fontSize: () => 16,
+  setFontSize: () => {},
+  notifications: () => true,
+  setNotifications: () => {},
+  language: () => 'en',
+  setLanguage: () => {},
+  animations: () => true,
+  setAnimations: () => {}
+});
+
+// Theme provider component
+function ThemeProvider(props) {
+  const [theme, setTheme] = createSignal('dark');
+  const [primaryColor, setPrimaryColor] = createSignal('#3b82f6');
+  
+  const themeValue = { theme, setTheme, primaryColor, setPrimaryColor };
+  
+  return ThemeContext.Provider({ value: themeValue, children: () => props.children });
+}
+
+// User provider component
+function UserProvider(props) {
+  const [user, setUser] = createSignal({ name: 'Guest', role: 'visitor' });
+  const [isLoggedIn, setIsLoggedIn] = createSignal(false);
+  
+  const login = (name, role) => {
+    setUser({ name, role });
+    setIsLoggedIn(true);
+  };
+  
+  const logout = () => {
+    setUser({ name: 'Guest', role: 'visitor' });
+    setIsLoggedIn(false);
+  };
+  
+  const userValue = { user, isLoggedIn, login, logout };
+  
+  return UserContext.Provider({ value: userValue, children: () => props.children });
+}
+
+// Settings provider component
+function SettingsProvider(props) {
+  const [fontSize, setFontSize] = createSignal(16);
+  const [notifications, setNotifications] = createSignal(true);
+  const [language, setLanguage] = createSignal('en');
+  const [animations, setAnimations] = createSignal(true);
+  
+  const settingsValue = { fontSize, setFontSize, notifications, setNotifications, language, setLanguage, animations, setAnimations };
+  
+  return SettingsContext.Provider({ value: settingsValue, children: () => props.children });
+}
+
+// Consumer component - Theme
+function ThemedBox() {
+  const ctx = useContext(ThemeContext);
+  
+  return (
+    <div style={`padding: 15px; background: ${ctx.theme() === 'dark' ? '#1a1a1a' : '#f1f5f9'}; color: ${ctx.theme() === 'dark' ? 'white' : 'black'}; border: 2px solid ${ctx.primaryColor()}; border-radius: 4px;`}>
+      <p style="margin: 0; font-weight: bold;">Themed Component</p>
+      <p style="margin: 5px 0 0 0; font-size: 12px; opacity: 0.8;">
+        Theme: {ctx.theme()} | Color: {ctx.primaryColor()}
+      </p>
+    </div>
+  );
+}
+
+// Consumer component - User
+function UserProfile() {
+  const ctx = useContext(UserContext);
+  
+  return (
+    <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border-left: 4px solid #10b981;">
+      {ctx.isLoggedIn() ? (
+        <div>
+          <p style="margin: 0; color: white; font-weight: bold;">Welcome, {ctx.user().name}!</p>
+          <p style="margin: 5px 0 0 0; color: #94a3b8; font-size: 12px;">
+            Role: {ctx.user().role}
+          </p>
+        </div>
+      ) : (
+        <p style="margin: 0; color: #94a3b8;">Not logged in</p>
+      )}
+    </div>
+  );
+}
+
+// Consumer component - Settings
+function SettingsDisplay() {
+  const ctx = useContext(SettingsContext);
+  
+  return (
+    <div style={`padding: 15px; background: #1a1a1a; border-radius: 4px; font-size: ${ctx.fontSize()}px;`}>
+      <p style="margin: 0; color: white; font-weight: bold;">Current Settings</p>
+      <p style="margin: 5px 0 0 0; color: #94a3b8;">
+        {'Font: '}{ctx.fontSize()}{'px | '}
+        {'Notifications: '}{ctx.notifications() ? 'ON' : 'OFF'}{' | '}
+        {'Language: '}{ctx.language()}
+      </p>
+    </div>
+  );
+}
+
+// Deeply nested consumer
+function DeeplyNestedComponent() {
+  const themeCtx = useContext(ThemeContext);
+  const userCtx = useContext(UserContext);
+  const settingsCtx = useContext(SettingsContext);
+  
+  return (
+    <div style="padding: 15px; background: #0a0a0a; border: 2px dashed #64748b; border-radius: 4px;">
+      <p style="margin: 0 0 10px 0; color: #8b5cf6; font-weight: bold;">
+        🎯 Deeply Nested Component
+      </p>
+      <p style="margin: 0; color: #94a3b8; font-size: 12px;">
+        Can access all contexts without prop drilling:
+      </p>
+      <ul style="margin: 10px 0 0 0; padding-left: 20px; color: #64748b; font-size: 12px;">
+        <li>Theme: {themeCtx.theme()}</li>
+        <li>User: {userCtx.user().name}</li>
+        <li>Font Size: {settingsCtx.fontSize()}px</li>
+      </ul>
+    </div>
+  );
+}
+
+export function ContextTestPage() {
+  // Create signals for contexts locally
+  const [theme, setTheme] = createSignal('dark');
+  const [primaryColor, setPrimaryColor] = createSignal('#3b82f6');
+  const themeValue = { theme, setTheme, primaryColor, setPrimaryColor };
+  
+  const [user, setUser] = createSignal({ name: 'Guest', role: 'visitor' });
+  const [isLoggedIn, setIsLoggedIn] = createSignal(false);
+  const login = (name, role) => {
+    setUser({ name, role });
+    setIsLoggedIn(true);
+  };
+  const logout = () => {
+    setUser({ name: 'Guest', role: 'visitor' });
+    setIsLoggedIn(false);
+  };
+  const userValue = { user, isLoggedIn, login, logout };
+  
+  const [fontSize, setFontSize] = createSignal(16);
+  const [notifications, setNotifications] = createSignal(true);
+  const [language, setLanguage] = createSignal('en');
+  const [animations, setAnimations] = createSignal(true);
+  const settingsValue = { fontSize, setFontSize, notifications, setNotifications, language, setLanguage, animations, setAnimations };
+  
+  // Build provider tree with deferred children - no wrappers
+  const content = ThemeContext.Provider({ 
+    value: themeValue,
+    children: () => UserContext.Provider({ 
+      value: userValue,
+      children: () => SettingsContext.Provider({ 
+        value: settingsValue,
+        children: () => ContextDemoContent() 
+      }) 
+    }) 
+  });
+  
+  return (
+    <div>
+      <h2 style="font-size: 32px; margin-bottom: 20px; color: #8b5cf6;">
+        🔌 Phase 5: Context API & Dependency Injection
+      </h2>
+      {content}
+    </div>
+  );
+}
+
+// Demo content with context consumers
+function ContextDemoContent() {
+  const themeCtx = useContext(ThemeContext);
+  const userCtx = useContext(UserContext);
+  const settingsCtx = useContext(SettingsContext);
+  
+  return (
+    <div>
+      {/* Test 1: Theme Context */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #8b5cf6;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #8b5cf6;">
+          1️⃣ Theme Context - Shared Theme State
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          Context provides a way to pass data through the component tree without prop drilling.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+          <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+            <button
+              onClick={() => themeCtx.setTheme('dark')}
+              style={`padding: 10px 20px; background: ${themeCtx.theme() === 'dark' ? '#8b5cf6' : '#334155'}; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;`}
+            >
+              🌙 Dark
+            </button>
+            
+            <button
+              onClick={() => themeCtx.setTheme('light')}
+              style={`padding: 10px 20px; background: ${themeCtx.theme() === 'light' ? '#8b5cf6' : '#334155'}; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;`}
+            >
+              ☀️ Light
+            </button>
+            
+            <input
+              type="color"
+              value={themeCtx.primaryColor()}
+              onInput={(e) => themeCtx.setPrimaryColor(e.target.value)}
+              style="height: 40px; border: none; border-radius: 4px; cursor: pointer;"
+            />
+            
+            <span style="padding: 10px; color: white; background: #1a1a1a; border-radius: 4px; display: flex; align-items: center;">
+              Primary: {themeCtx.primaryColor()}
+            </span>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+            <ThemedBox />
+            <ThemedBox />
+            <ThemedBox />
+          </div>
+        </div>
+      </section>
+      
+      {/* Test 2: User Context */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #8b5cf6;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #8b5cf6;">
+          2️⃣ User Context - Authentication State
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          Share authentication state across components without passing props.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+          <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            {userCtx.isLoggedIn() ? (
+              <button
+                onClick={userCtx.logout}
+                style="padding: 10px 20px; background: #ef4444; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;"
+              >
+                Logout
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={() => userCtx.login('Alice', 'admin')}
+                  style="padding: 10px 20px; background: #10b981; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;"
+                >
+                  Login as Admin
+                </button>
+                
+                <button
+                  onClick={() => userCtx.login('Bob', 'user')}
+                  style="padding: 10px 20px; background: #3b82f6; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;"
+                >
+                  Login as User
+                </button>
+              </>
+            )}
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+            <UserProfile />
+            <UserProfile />
+          </div>
+        </div>
+      </section>
+      
+      {/* Test 3: Settings Context */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #8b5cf6;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #8b5cf6;">
+          3️⃣ Settings Context - Global Configuration
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          Manage application-wide settings accessible from any component.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+          <div style="display: grid; gap: 15px; margin-bottom: 15px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <label style="color: white; min-width: 100px;">Font Size:</label>
+              <input
+                type="range"
+                min="12"
+                max="24"
+                value={settingsCtx.fontSize()}
+                onInput={(e) => settingsCtx.setFontSize(parseInt(e.target.value))}
+                style="flex: 1;"
+              />
+              <span style="color: white; min-width: 50px;">{settingsCtx.fontSize()}px</span>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <label style="color: white; min-width: 100px;">Notifications:</label>
+              <button
+                onClick={() => settingsCtx.setNotifications(!settingsCtx.notifications())}
+                style={`padding: 8px 16px; background: ${settingsCtx.notifications() ? '#10b981' : '#64748b'}; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 14px;`}
+              >
+                {settingsCtx.notifications() ? 'ON' : 'OFF'}
+              </button>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <label style="color: white; min-width: 100px;">Language:</label>
+              <select
+                value={settingsCtx.language()}
+                onChange={(e) => settingsCtx.setLanguage(e.target.value)}
+                style="padding: 8px; background: #1a1a1a; border: 2px solid #334155; border-radius: 4px; color: white; cursor: pointer;"
+              >
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+              </select>
+            </div>
+          </div>
+          
+          <SettingsDisplay />
+        </div>
+      </section>
+      
+      {/* Test 4: Multiple Contexts in Nested Component */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #8b5cf6;">
+        <h3 style="font-size: 24px; margin-bottom: 15px; color: #8b5cf6;">
+          4️⃣ No Prop Drilling - Deeply Nested Access
+        </h3>
+        
+        <p style="color: #94a3b8; margin-bottom: 15px;">
+          Nested components can access any context without intermediary props.
+        </p>
+        
+        <div style="background: #0a0a0a; padding: 15px; border-radius: 4px;">
+          <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border: 2px solid #334155;">
+            <p style="margin: 0 0 10px 0; color: #f59e0b;">Level 1 Component</p>
+            <div style="padding: 15px; background: #0a0a0a; border-radius: 4px; border: 2px solid #334155;">
+              <p style="margin: 0 0 10px 0; color: #3b82f6;">Level 2 Component</p>
+              <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border: 2px solid #334155;">
+                <p style="margin: 0 0 10px 0; color: #10b981;">Level 3 Component</p>
+                <DeeplyNestedComponent />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Summary */}
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981;">
+        <h3 style="font-size: 20px; margin-bottom: 10px; color: #10b981;">
+          ✓ Context API Summary
+        </h3>
+        <ul style="color: #94a3b8; line-height: 1.8; margin: 0; padding-left: 20px;">
+          <li><strong style="color: white;">createContext():</strong> Creates a new context object</li>
+          <li><strong style="color: white;">Context.Provider:</strong> Wraps components to provide context value</li>
+          <li><strong style="color: white;">useContext():</strong> Accesses context value from any nested component</li>
+          <li><strong style="color: white;">No Prop Drilling:</strong> Data flows without explicit prop passing</li>
+          <li><strong style="color: white;">Multiple Contexts:</strong> Components can consume multiple contexts</li>
+          <li><strong style="color: white;">Reactive Updates:</strong> Context consumers re-render when values change</li>
+        </ul>
+      </section>
+    </div>
+  );
+};
+
+
+=== BABEL AST PARSED ===
+Nodes: 14
+
+=== TRANSFORMATION COMPLETE ===
+
+=== PIPELINE COMPLETE ===
+Total time: 10.77ms
+Output size: 15376 characters
+✅ Transformation complete
+Total time: 10.77ms
+[pulsar] Transformation complete in 13.69ms
+[pulsar] Output length: 15376 chars
+[pulsar] Diagnostic count: 0
+[pulsar] METRICS:
+[pulsar]   - Lexer:     0ms
+[pulsar]   - Parser:    0ms
+[pulsar]   - Transform: 10.77369999885559ms
+[pulsar]   - Total:     10.77369999885559ms
+
+[pulsar] DEBUG TRANSFORMATION for E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\context-test.psr:
+  Input first 300 chars: /**
+ * PHASE 5: Context API & Dependency Injection
+ * Testing: createContext, useContext, Provider pattern
+ */
+
+import { createSignal, createContext, useContext } from '@pulsar-framework/pulsar.dev';
+
+// Create theme context with default values to prevent crash if provider missing
+const Them...
+  Output first 300 chars: /**
+ * PHASE 5: Context API & Dependency Injection
+ * Testing: createContext, useContext, Provider pattern
+ */
+
+import { $REGISTRY, createContext, createSignal, t_element, useContext } from '@pulsar-framework/pulsar.dev';
+
+// Create theme context with default values to prevent crash if provider m...
+  Has .psr in input: false
+  Has .js in output: false
+[pulsar] ========== TRANSFORMATION END: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\context-test.psr ==========
+
+[pulsar] ⚡ PSR: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\context-test.psr transformed in 13.69ms
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\home.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\about.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\reactivity-test.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\jsx-test.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\control-flow-test.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\resource-test.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\error-boundary-test.psr
+[pulsar]   ✓ Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\context-test.psr
+[pulsar] ESBuild transformation complete
+  JS Output first 300 chars: import { $REGISTRY, createContext, createSignal, t_element, useContext } from "@pulsar-framework/pulsar.dev";
+const ThemeContext = createContext({
+  theme: () => "light",
+  setTheme: () => {
+  },
+  primaryColor: () => "#3b82f6",
+  setPrimaryColor: () => {
+  }
+});
+const UserContext = createContext({
+...
+[pulsar] transform() hook: context-test.psr already transformed, skipping

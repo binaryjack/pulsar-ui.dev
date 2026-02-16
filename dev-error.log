@@ -76,3 +76,9 @@
 [2m20:17:46[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error: Failed to load url /@fs/E:/Sources/visual-schema-builder/packages/pulsar.dev/dist/index.js (resolved id: E:/Sources/visual-schema-builder/packages/pulsar.dev/dist/index.js) in E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.ts. Does the file exist?
 [2m20:17:46[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error: Failed to load url /@fs/E:/Sources/visual-schema-builder/packages/pulsar.dev/dist/index.js (resolved id: E:/Sources/visual-schema-builder/packages/pulsar.dev/dist/index.js) in E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.ts. Does the file exist?
 [2m20:17:46[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error: Failed to load url /@fs/E:/Sources/visual-schema-builder/packages/pulsar.dev/dist/index.js (resolved id: E:/Sources/visual-schema-builder/packages/pulsar.dev/dist/index.js) in E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/main.ts. Does the file exist?
+[pulsar] ⚠️  E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr: Found 1 uses of '**' operator
+[pulsar]    Exponentiation operator not yet supported - transformation may fail
+[pulsar] ⚠️  E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\main.psr: Found 1 uses of '**' operator
+[pulsar]    Exponentiation operator not yet supported - transformation may fail
+[pulsar] ⚠️  E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\context-test.psr: Found 1 uses of '**' operator
+[pulsar]    Exponentiation operator not yet supported - transformation may fail

@@ -1,16 +1,23 @@
 
 > @pulsar-framework/ui@0.7.0-alpha test E:\Sources\visual-schema-builder\packages\pulsar-ui.dev
-> vitest run "--reporter=verbose"
+> vitest run
 
 
 [1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mE:/Sources/visual-schema-builder/packages/pulsar-ui.dev[39m
 
-[pulsar] resolveId: Resolving .psr "../error-boundary-test.psr"
-[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/error-boundary-test.test.ts
-[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\error-boundary-test.psr
-[pulsar] load() called for: error-boundary-test.psr
-[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/error-boundary-test.psr
-[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/error-boundary-test.psr
+[pulsar] resolveId: Resolving .psr "../resource-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/resource-test.test.ts
+[pulsar] resolveId: Resolving .psr "../home.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/home.test.ts
+[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\resource-test.psr
+[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\home.psr
+[pulsar] load() called for: home.psr
+[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/home.psr
+[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/home.psr
+[pulsar]   Query: none
+[pulsar] load() called for: resource-test.psr
+[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/resource-test.psr
+[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/resource-test.psr
 [pulsar]   Query: none
 [TRACER INIT] Environment vars:
   PULSAR_TRACE: undefined
@@ -20,73 +27,66 @@
 [TRACER] Transformer instrumentation complete
 [TRACER] Code generator instrumentation complete
 [TRACER] Semantic analyzer instrumentation complete
-[pulsar] resolveId: Resolving .psr "../resource-test.psr"
-[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/resource-test.test.ts
-[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\resource-test.psr
-[pulsar] load() called for: resource-test.psr
-[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/resource-test.psr
-[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/resource-test.psr
-[pulsar]   Query: none
-[pulsar] resolveId: Resolving .psr "../home.psr"
-[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/home.test.ts
-[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\home.psr
-[pulsar] resolveId: Resolving .psr "../about.psr"
-[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/about.test.ts
-[pulsar] resolveId: Resolving .psr "../assignment-test.psr"
-[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/assignment-test.test.ts
-[pulsar] resolveId: Resolving .psr "../context-test.psr"
-[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/context-test.test.ts
-[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\about.psr
-[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\assignment-test.psr
-[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\context-test.psr
-[pulsar] load() called for: home.psr
-[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/home.psr
-[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/home.psr
-[pulsar]   Query: none
-[pulsar] resolveId: Resolving .psr "../reactivity-test.psr"
-[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/reactivity-test.test.ts
-[pulsar] resolveId: Resolving .psr "../control-flow-test.psr"
-[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/control-flow-test.test.ts
+[pulsar] resolveId: Resolving .psr "../../lab/counter.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/home.psr
+[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\lab\counter.psr
+[pulsar] resolveId: Resolving .psr "../error-boundary-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/error-boundary-test.test.ts
 [pulsar] resolveId: Resolving .psr "../jsx-test.psr"
 [pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/jsx-test.test.ts
-[pulsar] resolveId: Resolving .psr "../../pages/context-test.psr"
-[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/__tests__/integration/context-provider-consumer.test.ts
+[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\error-boundary-test.psr
+[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\jsx-test.psr
+[pulsar] resolveId: Resolving .psr "../assignment-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/assignment-test.test.ts
+[pulsar] resolveId: Resolving .psr "../control-flow-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/control-flow-test.test.ts
 [pulsar] resolveId: Resolving .psr "../../pages/reactivity-test.psr"
 [pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/__tests__/integration/reactivity-cross-component.test.ts
 [pulsar] resolveId: Resolving .psr "../../pages/home.psr"
 [pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/__tests__/integration/showcase-navigation.test.ts
-[pulsar] load() called for: about.psr
-[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/about.psr
-[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/about.psr
-[pulsar]   Query: none
+[pulsar] resolveId: Resolving .psr "../about.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/about.test.ts
+[pulsar] resolveId: Resolving .psr "../../pages/context-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/__tests__/integration/context-provider-consumer.test.ts
+[pulsar] resolveId: Resolving .psr "../context-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/context-test.test.ts
+[pulsar] resolveId: Resolving .psr "../reactivity-test.psr"
+[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/__tests__/reactivity-test.test.ts
+[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\assignment-test.psr
 [pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\reactivity-test.psr
 [pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\control-flow-test.psr
-[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\jsx-test.psr
-[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\reactivity-test.psr
-[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\context-test.psr
 [pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\home.psr
-[pulsar] load() called for: assignment-test.psr
-[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/assignment-test.psr
-[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/assignment-test.psr
-[pulsar]   Query: none
-[pulsar] load() called for: context-test.psr
-[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/context-test.psr
-[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/context-test.psr
-[pulsar]   Query: none
-[pulsar] resolveId: Resolving .psr "../../lab/counter.psr"
-[pulsar]   From: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/home.psr
-[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\lab\counter.psr
-[pulsar] load() called for: reactivity-test.psr
-[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/reactivity-test.psr
-[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/reactivity-test.psr
-[pulsar]   Query: none
+[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\about.psr
+[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\context-test.psr
+[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\context-test.psr
+[pulsar]   Γ£ô Resolved to: E:\Sources\visual-schema-builder\packages\pulsar-ui.dev\src\showcase\pages\reactivity-test.psr
 [pulsar] load() called for: jsx-test.psr
 [pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/jsx-test.psr
 [pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/jsx-test.psr
 [pulsar]   Query: none
+[pulsar] load() called for: error-boundary-test.psr
+[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/error-boundary-test.psr
+[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/error-boundary-test.psr
+[pulsar]   Query: none
+[pulsar] load() called for: assignment-test.psr
+[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/assignment-test.psr
+[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/assignment-test.psr
+[pulsar]   Query: none
+[pulsar] load() called for: reactivity-test.psr
+[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/reactivity-test.psr
+[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/reactivity-test.psr
+[pulsar]   Query: none
 [pulsar] load() called for: control-flow-test.psr
 [pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/control-flow-test.psr
 [pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/control-flow-test.psr
+[pulsar]   Query: none
+[pulsar] load() called for: about.psr
+[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/about.psr
+[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/about.psr
+[pulsar]   Query: none
+[pulsar] load() called for: context-test.psr
+[pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/context-test.psr
+[pulsar]   Clean ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/context-test.psr
 [pulsar]   Query: none
 [pulsar] load() called for: counter.psr
 [pulsar]   Full ID: E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/lab/counter.psr
@@ -96,24 +96,16 @@
 [22m[39m[REGISTRY.execute] START: component:AssignmentTest parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:AssignmentTest result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
- [31m├ù[39m src/showcase/__tests__/integration/showcase-navigation.test.ts[2m > [22mShowcase Navigation Integration[2m > [22mNavigation Bar[2m > [22mshould render all navigation buttons[32m 4[2mms[22m[39m
-[31m   ΓåÆ (0 , __vite_ssr_import_1__.default) is not a function[39m
- [31m├ù[39m src/showcase/__tests__/integration/showcase-navigation.test.ts[2m > [22mShowcase Navigation Integration[2m > [22mNavigation Bar[2m > [22mshould have navigation buttons with proper styling[32m 1[2mms[22m[39m
-[31m   ΓåÆ (0 , __vite_ssr_import_1__.default) is not a function[39m
- [31m├ù[39m src/showcase/__tests__/integration/showcase-navigation.test.ts[2m > [22mShowcase Navigation Integration[2m > [22mRoute Navigation[2m > [22mshould display home page by default[32m 1[2mms[22m[39m
-[31m   ΓåÆ (0 , __vite_ssr_import_1__.default) is not a function[39m
- [31m├ù[39m src/showcase/__tests__/integration/showcase-navigation.test.ts[2m > [22mShowcase Navigation Integration[2m > [22mRoute Navigation[2m > [22mshould navigate to reactivity page[32m 1[2mms[22m[39m
-[31m   ΓåÆ (0 , __vite_ssr_import_1__.default) is not a function[39m
- [31m├ù[39m src/showcase/__tests__/integration/showcase-navigation.test.ts[2m > [22mShowcase Navigation Integration[2m > [22mRoute Navigation[2m > [22mshould navigate to about page[32m 1[2mms[22m[39m
-[31m   ΓåÆ (0 , __vite_ssr_import_1__.default) is not a function[39m
- [31m├ù[39m src/showcase/__tests__/integration/showcase-navigation.test.ts[2m > [22mShowcase Navigation Integration[2m > [22mRoute Navigation[2m > [22mshould update currentPath signal on navigation[32m 0[2mms[22m[39m
-[31m   ΓåÆ (0 , __vite_ssr_import_1__.default) is not a function[39m
- [31m├ù[39m src/showcase/__tests__/integration/showcase-navigation.test.ts[2m > [22mShowcase Navigation Integration[2m > [22mPage Content Loading[2m > [22mshould load control flow page content[32m 0[2mms[22m[39m
-[31m   ΓåÆ (0 , __vite_ssr_import_1__.default) is not a function[39m
- [31m├ù[39m src/showcase/__tests__/integration/showcase-navigation.test.ts[2m > [22mShowcase Navigation Integration[2m > [22mPage Content Loading[2m > [22mshould load context page content[32m 0[2mms[22m[39m
-[31m   ΓåÆ (0 , __vite_ssr_import_1__.default) is not a function[39m
- [31m├ù[39m src/showcase/__tests__/integration/showcase-navigation.test.ts[2m > [22mShowcase Navigation Integration[2m > [22mBack Navigation[2m > [22mshould navigate back from about to home[32m 1[2mms[22m[39m
-[31m   ΓåÆ (0 , __vite_ssr_import_1__.default) is not a function[39m
+ [31mΓ¥»[39m src/showcase/__tests__/integration/showcase-navigation.test.ts [2m([22m[2m9 tests[22m[2m | [22m[31m9 failed[39m[2m)[22m[32m 10[2mms[22m[39m
+[31m       [31m├ù[31m should render all navigation buttons[39m[32m 4[2mms[22m[39m
+[31m       [31m├ù[31m should have navigation buttons with proper styling[39m[32m 1[2mms[22m[39m
+[31m       [31m├ù[31m should display home page by default[39m[32m 1[2mms[22m[39m
+[31m       [31m├ù[31m should navigate to reactivity page[39m[32m 0[2mms[22m[39m
+[31m       [31m├ù[31m should navigate to about page[39m[32m 0[2mms[22m[39m
+[31m       [31m├ù[31m should update currentPath signal on navigation[39m[32m 0[2mms[22m[39m
+[31m       [31m├ù[31m should load control flow page content[39m[32m 0[2mms[22m[39m
+[31m       [31m├ù[31m should load context page content[39m[32m 0[2mms[22m[39m
+[31m       [31m├ù[31m should navigate back from about to home[39m[32m 1[2mms[22m[39m
 [90mstdout[2m | src/showcase/pages/__tests__/assignment-test.test.ts[2m > [22m[2mAssignmentTest[2m > [22m[2mRendering[2m > [22m[2mshould display initial count
 [22m[39m[REGISTRY.execute] START: component:AssignmentTest parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:AssignmentTest result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
@@ -130,43 +122,10 @@
 [22m[39m[REGISTRY.execute] START: component:AssignmentTest parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:AssignmentTest result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
- [32mΓ£ô[39m src/showcase/pages/__tests__/assignment-test.test.ts[2m > [22mAssignmentTest[2m > [22mRendering[2m > [22mshould render without errors[32m 17[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/assignment-test.test.ts[2m > [22mAssignmentTest[2m > [22mRendering[2m > [22mshould display initial count[32m 2[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/assignment-test.test.ts[2m > [22mAssignmentTest[2m > [22mRendering[2m > [22mshould display success message[32m 1[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/assignment-test.test.ts[2m > [22mAssignmentTest[2m > [22mAssignment Operations[2m > [22mshould increment count when button clicked[32m 5[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/assignment-test.test.ts[2m > [22mAssignmentTest[2m > [22mAssignment Operations[2m > [22mshould execute assignment in testAssignments function[32m 2[2mms[22m[39m
-[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mRendering[2m > [22m[2mshould render about heading
-[22m[39m[REGISTRY.execute] START: component:AboutPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:AboutPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
-[90mstdout[2m | src/showcase/__tests__/integration/reactivity-cross-component.test.ts[2m > [22m[2mReactivity Cross-Component Integration[2m > [22m[2mSignal-Memo Integration[2m > [22m[2mshould update memo when dependent signals change
-[22m[39m[REGISTRY.execute] START: component:ReactivityTestPage parentId: [1mnull[22m
-[Effect] Full name changed to: John Doe
-[REGISTRY.execute] RESULT: component:ReactivityTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-[Effect] Full name changed to: John Doe
-
-[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mRendering[2m > [22m[2mshould render key features list
-[22m[39m[REGISTRY.execute] START: component:AboutPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:AboutPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
+ [32mΓ£ô[39m src/showcase/pages/__tests__/assignment-test.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 31[2mms[22m[39m
 [90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mUser Resource[2m > [22m[2mshould show loading state initially
 [22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
-[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mRendering[2m > [22m[2mshould render toggle details button
-[22m[39m[REGISTRY.execute] START: component:AboutPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:AboutPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
-[90mstdout[2m | src/showcase/pages/__tests__/home.test.ts[2m > [22m[2mHomePage[2m > [22m[2mRendering[2m > [22m[2mshould render welcome heading
-[22m[39m[REGISTRY.execute] START: component:HomePage parentId: [1mnull[22m
-[REGISTRY.execute] START: component:Counter parentId: [1mnull[22m
-[Counter] Initializing with id: home-counter
-[REGISTRY.execute] RESULT: component:Counter result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-[REGISTRY.execute] RESULT: component:HomePage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
-[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mRendering[2m > [22m[2mshould render back to home button
-[22m[39m[REGISTRY.execute] START: component:AboutPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:AboutPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
 [90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mTheme Context[2m > [22m[2mshould render with default dark theme
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
@@ -280,6 +239,27 @@
 }
 [REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
+[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mRendering[2m > [22m[2mshould render about heading
+[22m[39m[REGISTRY.execute] START: component:AboutPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:AboutPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+[90mstdout[2m | src/showcase/__tests__/integration/reactivity-cross-component.test.ts[2m > [22m[2mReactivity Cross-Component Integration[2m > [22m[2mSignal-Memo Integration[2m > [22m[2mshould update memo when dependent signals change
+[22m[39m[REGISTRY.execute] START: component:ReactivityTestPage parentId: [1mnull[22m
+[Effect] Full name changed to: John Doe
+[REGISTRY.execute] RESULT: component:ReactivityTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+[Effect] Full name changed to: John Doe
+
+[90mstdout[2m | src/showcase/pages/__tests__/home.test.ts[2m > [22m[2mHomePage[2m > [22m[2mRendering[2m > [22m[2mshould render welcome heading
+[22m[39m[REGISTRY.execute] START: component:HomePage parentId: [1mnull[22m
+[REGISTRY.execute] START: component:Counter parentId: [1mnull[22m
+[Counter] Initializing with id: home-counter
+[REGISTRY.execute] RESULT: component:Counter result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+[REGISTRY.execute] RESULT: component:HomePage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+[90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mBasic Error Boundary[2m > [22m[2mshould render safe component initially
+[22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
 [90mstdout[2m | src/showcase/pages/__tests__/home.test.ts[2m > [22m[2mHomePage[2m > [22m[2mRendering[2m > [22m[2mshould render description text
 [22m[39m[REGISTRY.execute] START: component:HomePage parentId: [1mnull[22m
 [REGISTRY.execute] START: component:Counter parentId: [1mnull[22m
@@ -287,7 +267,7 @@
 [REGISTRY.execute] RESULT: component:Counter result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 [REGISTRY.execute] RESULT: component:HomePage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
-[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mToggle Details Behavior[2m > [22m[2mshould hide details by default
+[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mRendering[2m > [22m[2mshould render key features list
 [22m[39m[REGISTRY.execute] START: component:AboutPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:AboutPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
@@ -295,14 +275,14 @@
 [22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
+[90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mUser Resource[2m > [22m[2mshould display user data after loading
+[22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
 [90mstdout[2m | src/showcase/__tests__/integration/reactivity-cross-component.test.ts[2m > [22m[2mReactivity Cross-Component Integration[2m > [22m[2mSignal-Memo Integration[2m > [22m[2mshould update multiple dependent memos
 [22m[39m[REGISTRY.execute] START: component:ReactivityTestPage parentId: [1mnull[22m
 [Effect] Full name changed to: John Doe
 [REGISTRY.execute] RESULT: component:ReactivityTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
-[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mToggle Details Behavior[2m > [22m[2mshould show details after clicking toggle button
-[22m[39m[REGISTRY.execute] START: component:AboutPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:AboutPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
 [90mstdout[2m | src/showcase/pages/__tests__/home.test.ts[2m > [22m[2mHomePage[2m > [22m[2mRendering[2m > [22m[2mshould render Counter component
 [22m[39m[REGISTRY.execute] START: component:HomePage parentId: [1mnull[22m
@@ -311,34 +291,9 @@
 [REGISTRY.execute] RESULT: component:Counter result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 [REGISTRY.execute] RESULT: component:HomePage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
-[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mToggle Details Behavior[2m > [22m[2mshould toggle button text when clicked
+[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mRendering[2m > [22m[2mshould render toggle details button
 [22m[39m[REGISTRY.execute] START: component:AboutPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:AboutPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
-[90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mUser Resource[2m > [22m[2mshould display user data after loading
-[22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
-[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mRouter Integration[2m > [22m[2mshould display current route path
-[22m[39m[REGISTRY.execute] START: component:AboutPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:AboutPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
-[90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mBasic Error Boundary[2m > [22m[2mshould render safe component initially
-[22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
-[90mstdout[2m | src/showcase/pages/__tests__/home.test.ts[2m > [22m[2mHomePage[2m > [22m[2mStructure[2m > [22m[2mshould have proper section layout
-[22m[39m[REGISTRY.execute] START: component:HomePage parentId: [1mnull[22m
-[REGISTRY.execute] START: component:Counter parentId: [1mnull[22m
-[Counter] Initializing with id: home-counter
-[REGISTRY.execute] RESULT: component:Counter result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-[REGISTRY.execute] RESULT: component:HomePage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
-[90mstdout[2m | src/showcase/__tests__/integration/reactivity-cross-component.test.ts[2m > [22m[2mReactivity Cross-Component Integration[2m > [22m[2mBatch Update Integration[2m > [22m[2mshould update all related displays simultaneously
-[22m[39m[REGISTRY.execute] START: component:ReactivityTestPage parentId: [1mnull[22m
-[Effect] Full name changed to: John Doe
-[REGISTRY.execute] RESULT: component:ReactivityTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-[Effect] Full name changed to: John Doe
 
 [90mstdout[2m | src/showcase/__tests__/integration/context-provider-consumer.test.ts[2m > [22m[2mContext Provider-Consumer Integration[2m > [22m[2mMulti-Context Propagation[2m > [22m[2mshould provide all contexts to nested components
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
@@ -452,19 +407,6 @@
 }
 [REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
- [32mΓ£ô[39m src/showcase/pages/__tests__/home.test.ts[2m > [22mHomePage[2m > [22mRendering[2m > [22mshould render welcome heading[32m 36[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/home.test.ts[2m > [22mHomePage[2m > [22mRendering[2m > [22mshould render description text[32m 6[2mms[22m[39m
- [31m├ù[39m src/showcase/pages/__tests__/home.test.ts[2m > [22mHomePage[2m > [22mRendering[2m > [22mshould render Counter component[32m 9[2mms[22m[39m
-[31m   ΓåÆ expected null to be truthy[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/home.test.ts[2m > [22mHomePage[2m > [22mStructure[2m > [22mshould have proper section layout[32m 5[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/about.test.ts[2m > [22mAboutPage[2m > [22mRendering[2m > [22mshould render about heading[32m 33[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/about.test.ts[2m > [22mAboutPage[2m > [22mRendering[2m > [22mshould render key features list[32m 7[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/about.test.ts[2m > [22mAboutPage[2m > [22mRendering[2m > [22mshould render toggle details button[32m 3[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/about.test.ts[2m > [22mAboutPage[2m > [22mRendering[2m > [22mshould render back to home button[32m 3[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/about.test.ts[2m > [22mAboutPage[2m > [22mToggle Details Behavior[2m > [22mshould hide details by default[32m 4[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/about.test.ts[2m > [22mAboutPage[2m > [22mToggle Details Behavior[2m > [22mshould show details after clicking toggle button[32m 5[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/about.test.ts[2m > [22mAboutPage[2m > [22mToggle Details Behavior[2m > [22mshould toggle button text when clicked[32m 4[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/about.test.ts[2m > [22mAboutPage[2m > [22mRouter Integration[2m > [22mshould display current route path[32m 2[2mms[22m[39m
 [90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mTheme Context[2m > [22m[2mshould switch to light theme when clicked
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
 [useContext] Looking up context: [32mSymbol(Context)[39m
@@ -581,9 +523,31 @@
 [22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
-[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mReactive Attributes[2m > [22m[2mshould change background color when button clicked
-[22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+[90mstdout[2m | src/showcase/pages/__tests__/home.test.ts[2m > [22m[2mHomePage[2m > [22m[2mStructure[2m > [22m[2mshould have proper section layout
+[22m[39m[REGISTRY.execute] START: component:HomePage parentId: [1mnull[22m
+[REGISTRY.execute] START: component:Counter parentId: [1mnull[22m
+[Counter] Initializing with id: home-counter
+[REGISTRY.execute] RESULT: component:Counter result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+[REGISTRY.execute] RESULT: component:HomePage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mRendering[2m > [22m[2mshould render back to home button
+[22m[39m[REGISTRY.execute] START: component:AboutPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:AboutPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+[90mstdout[2m | src/showcase/__tests__/integration/reactivity-cross-component.test.ts[2m > [22m[2mReactivity Cross-Component Integration[2m > [22m[2mBatch Update Integration[2m > [22m[2mshould update all related displays simultaneously
+[22m[39m[REGISTRY.execute] START: component:ReactivityTestPage parentId: [1mnull[22m
+[Effect] Full name changed to: John Doe
+[REGISTRY.execute] RESULT: component:ReactivityTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+[Effect] Full name changed to: John Doe
+
+ [31mΓ¥»[39m src/showcase/pages/__tests__/home.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 57[2mms[22m[39m
+       [32mΓ£ô[39m should render welcome heading[32m 37[2mms[22m[39m
+       [32mΓ£ô[39m should render description text[32m 7[2mms[22m[39m
+[31m       [31m├ù[31m should render Counter component[39m[32m 7[2mms[22m[39m
+       [32mΓ£ô[39m should have proper section layout[32m 4[2mms[22m[39m
+[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mToggle Details Behavior[2m > [22m[2mshould hide details by default
+[22m[39m[REGISTRY.execute] START: component:AboutPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:AboutPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
 [90mstdout[2m | src/showcase/__tests__/integration/reactivity-cross-component.test.ts[2m > [22m[2mReactivity Cross-Component Integration[2m > [22m[2mBatch Update Integration[2m > [22m[2mshould maintain consistency after reset
 [22m[39m[REGISTRY.execute] START: component:ReactivityTestPage parentId: [1mnull[22m
@@ -591,17 +555,18 @@
 [REGISTRY.execute] RESULT: component:ReactivityTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 [Effect] Full name changed to: John Doe
 
- [32mΓ£ô[39m src/showcase/__tests__/integration/reactivity-cross-component.test.ts[2m > [22mReactivity Cross-Component Integration[2m > [22mSignal-Memo Integration[2m > [22mshould update memo when dependent signals change[32m 39[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/__tests__/integration/reactivity-cross-component.test.ts[2m > [22mReactivity Cross-Component Integration[2m > [22mSignal-Memo Integration[2m > [22mshould update multiple dependent memos[32m 14[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/__tests__/integration/reactivity-cross-component.test.ts[2m > [22mReactivity Cross-Component Integration[2m > [22mBatch Update Integration[2m > [22mshould update all related displays simultaneously[32m 11[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/__tests__/integration/reactivity-cross-component.test.ts[2m > [22mReactivity Cross-Component Integration[2m > [22mBatch Update Integration[2m > [22mshould maintain consistency after reset[32m 10[2mms[22m[39m
 [90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mUser Resource[2m > [22m[2mshould cycle back to user 1 after user 10
 [22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
-[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mReactive Attributes[2m > [22m[2mshould toggle disabled state
+ [32mΓ£ô[39m src/showcase/__tests__/integration/reactivity-cross-component.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 76[2mms[22m[39m
+[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mReactive Attributes[2m > [22m[2mshould change background color when button clicked
 [22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mToggle Details Behavior[2m > [22m[2mshould show details after clicking toggle button
+[22m[39m[REGISTRY.execute] START: component:AboutPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:AboutPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
 [90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mTheme Context[2m > [22m[2mshould update primary color
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
@@ -715,10 +680,6 @@
 }
 [REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
-[90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mDependent Resource (Posts)[2m > [22m[2mshould load posts after user loads
-[22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
 [90mstdout[2m | src/showcase/__tests__/integration/context-provider-consumer.test.ts[2m > [22m[2mContext Provider-Consumer Integration[2m > [22m[2mMulti-Context Propagation[2m > [22m[2mshould update all consumers when provider value changes
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
 [useContext] Looking up context: [32mSymbol(Context)[39m
@@ -831,58 +792,35 @@
 }
 [REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
- [31m├ù[39m src/showcase/pages/__tests__/control-flow-test.test.ts[2m > [22mControlFlowTestPage[2m > [22mShow Component[2m > [22mshould display content when showContent is true[32m 35[2mms[22m[39m
-[31m   ΓåÆ props.children is not a function[39m
- [31m├ù[39m src/showcase/pages/__tests__/control-flow-test.test.ts[2m > [22mControlFlowTestPage[2m > [22mShow Component[2m > [22mshould hide content and show fallback when toggled[32m 6[2mms[22m[39m
-[31m   ΓåÆ props.children is not a function[39m
- [31m├ù[39m src/showcase/pages/__tests__/control-flow-test.test.ts[2m > [22mControlFlowTestPage[2m > [22mShow Component[2m > [22mshould show error when error state is active[32m 5[2mms[22m[39m
-[31m   ΓåÆ props.children is not a function[39m
- [31m├ù[39m src/showcase/pages/__tests__/control-flow-test.test.ts[2m > [22mControlFlowTestPage[2m > [22mFor Component (Keyed Lists)[2m > [22mshould render initial items list[32m 4[2mms[22m[39m
-[31m   ΓåÆ props.children is not a function[39m
- [31m├ù[39m src/showcase/pages/__tests__/control-flow-test.test.ts[2m > [22mControlFlowTestPage[2m > [22mFor Component (Keyed Lists)[2m > [22mshould display item prices[32m 6[2mms[22m[39m
-[31m   ΓåÆ props.children is not a function[39m
- [31m├ù[39m src/showcase/pages/__tests__/control-flow-test.test.ts[2m > [22mControlFlowTestPage[2m > [22mFor Component (Keyed Lists)[2m > [22mshould add new item when Add Item clicked[32m 5[2mms[22m[39m
-[31m   ΓåÆ props.children is not a function[39m
- [31m├ù[39m src/showcase/pages/__tests__/control-flow-test.test.ts[2m > [22mControlFlowTestPage[2m > [22mFor Component (Keyed Lists)[2m > [22mshould remove item when Remove clicked[32m 5[2mms[22m[39m
-[31m   ΓåÆ props.children is not a function[39m
- [31m├ù[39m src/showcase/pages/__tests__/control-flow-test.test.ts[2m > [22mControlFlowTestPage[2m > [22mFor Component (Keyed Lists)[2m > [22mshould sort items by price[32m 5[2mms[22m[39m
-[31m   ΓåÆ props.children is not a function[39m
- [31m├ù[39m src/showcase/pages/__tests__/control-flow-test.test.ts[2m > [22mControlFlowTestPage[2m > [22mFor Component (Keyed Lists)[2m > [22mshould calculate total cost[32m 6[2mms[22m[39m
-[31m   ΓåÆ props.children is not a function[39m
- [31m├ù[39m src/showcase/pages/__tests__/control-flow-test.test.ts[2m > [22mControlFlowTestPage[2m > [22mIndex Component[2m > [22mshould render initial colors with indices[32m 6[2mms[22m[39m
-[31m   ΓåÆ props.children is not a function[39m
- [31m├ù[39m src/showcase/pages/__tests__/control-flow-test.test.ts[2m > [22mControlFlowTestPage[2m > [22mIndex Component[2m > [22mshould display index numbers[32m 4[2mms[22m[39m
-[31m   ΓåÆ props.children is not a function[39m
- [31m├ù[39m src/showcase/pages/__tests__/control-flow-test.test.ts[2m > [22mControlFlowTestPage[2m > [22mIndex Component[2m > [22mshould shuffle colors when button clicked[32m 3[2mms[22m[39m
-[31m   ΓåÆ props.children is not a function[39m
-[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mEvent Handlers[2m > [22m[2mshould increment click count
-[22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mToggle Details Behavior[2m > [22m[2mshould toggle button text when clicked
+[22m[39m[REGISTRY.execute] START: component:AboutPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:AboutPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
 [90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mBasic Error Boundary[2m > [22m[2mshould catch error when triggered
 [22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
+[90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mDependent Resource (Posts)[2m > [22m[2mshould load posts after user loads
+[22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mReactive Attributes[2m > [22m[2mshould toggle disabled state
+[22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+[90mstdout[2m | src/showcase/pages/__tests__/about.test.ts[2m > [22m[2mAboutPage[2m > [22m[2mRouter Integration[2m > [22m[2mshould display current route path
+[22m[39m[REGISTRY.execute] START: component:AboutPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:AboutPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+ [32mΓ£ô[39m src/showcase/pages/__tests__/about.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 88[2mms[22m[39m
 [90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mDependent Resource (Posts)[2m > [22m[2mshould refetch posts when user changes
 [22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
- [31m├ù[39m src/showcase/pages/__tests__/resource-test.test.ts[2m > [22mResourceTestPage[2m > [22mUser Resource[2m > [22mshould show loading state initially[32m 51[2mms[22m[39m
-[31m   ΓåÆ expected ' ≡ƒîè Phase 3: Resource Management & AsΓÇª' to contain 'Loading user'[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/resource-test.test.ts[2m > [22mResourceTestPage[2m > [22mUser Resource[2m > [22mshould display user data after loading[32m 11[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/resource-test.test.ts[2m > [22mResourceTestPage[2m > [22mUser Resource[2m > [22mshould refetch when Next User clicked[32m 10[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/resource-test.test.ts[2m > [22mResourceTestPage[2m > [22mUser Resource[2m > [22mshould cycle back to user 1 after user 10[32m 9[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/resource-test.test.ts[2m > [22mResourceTestPage[2m > [22mDependent Resource (Posts)[2m > [22mshould load posts after user loads[32m 13[2mms[22m[39m
-[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mEvent Handlers[2m > [22m[2mshould reset click count
+[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mEvent Handlers[2m > [22m[2mshould increment click count
 [22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
- [31m├ù[39m src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22mJsxTestPage[2m > [22mReactive Attributes[2m > [22mshould render initial background color[32m 56[2mms[22m[39m
-[31m   ΓåÆ expected '' to be truthy[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22mJsxTestPage[2m > [22mReactive Attributes[2m > [22mshould change background color when button clicked[32m 15[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22mJsxTestPage[2m > [22mReactive Attributes[2m > [22mshould toggle disabled state[32m 11[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22mJsxTestPage[2m > [22mEvent Handlers[2m > [22mshould increment click count[32m 9[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22mJsxTestPage[2m > [22mEvent Handlers[2m > [22mshould reset click count[32m 8[2mms[22m[39m
 [90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mTheme Context[2m > [22m[2mshould apply theme to all themed components
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
 [useContext] Looking up context: [32mSymbol(Context)[39m
@@ -994,20 +932,6 @@
   setAnimations: [36m[Function: set][39m
 }
 [REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
- [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts[2m > [22mContextTestPage[2m > [22mTheme Context[2m > [22mshould render with default dark theme[32m 48[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts[2m > [22mContextTestPage[2m > [22mTheme Context[2m > [22mshould switch to light theme when clicked[32m 19[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts[2m > [22mContextTestPage[2m > [22mTheme Context[2m > [22mshould update primary color[32m 19[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/reactivity-test.test.ts[2m > [22mReactivityTestPage[2m > [22mSignal State[2m > [22mshould render initial signal values[32m 42[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/reactivity-test.test.ts[2m > [22mReactivityTestPage[2m > [22mSignal State[2m > [22mshould update firstName when button clicked[32m 18[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/reactivity-test.test.ts[2m > [22mReactivityTestPage[2m > [22mSignal State[2m > [22mshould update lastName when button clicked[32m 11[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/reactivity-test.test.ts[2m > [22mReactivityTestPage[2m > [22mSignal State[2m > [22mshould increment age when button clicked[32m 8[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/reactivity-test.test.ts[2m > [22mReactivityTestPage[2m > [22mComputed Values (Memos)[2m > [22mshould display computed full name[32m 7[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/reactivity-test.test.ts[2m > [22mReactivityTestPage[2m > [22mComputed Values (Memos)[2m > [22mshould update full name when signals change[32m 6[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/reactivity-test.test.ts[2m > [22mReactivityTestPage[2m > [22mComputed Values (Memos)[2m > [22mshould display isAdult computed value[32m 6[2mms[22m[39m
-[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mEvent Handlers[2m > [22m[2mshould capture input value
-[22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
 [90mstdout[2m | src/showcase/__tests__/integration/context-provider-consumer.test.ts[2m > [22m[2mContext Provider-Consumer Integration[2m > [22m[2mIndependent Context Updates[2m > [22m[2mshould update user context without affecting theme
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
@@ -1121,11 +1045,21 @@
 }
 [REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
- [32mΓ£ô[39m src/showcase/__tests__/integration/context-provider-consumer.test.ts[2m > [22mContext Provider-Consumer Integration[2m > [22mMulti-Context Propagation[2m > [22mshould provide all contexts to nested components[32m 67[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/__tests__/integration/context-provider-consumer.test.ts[2m > [22mContext Provider-Consumer Integration[2m > [22mMulti-Context Propagation[2m > [22mshould update all consumers when provider value changes[32m 23[2mms[22m[39m
+[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mEvent Handlers[2m > [22m[2mshould reset click count
+[22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+[90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mBasic Error Boundary[2m > [22m[2mshould display custom error message
+[22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
 [90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mSearch Resource[2m > [22m[2mshould show hint for short queries
 [22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mEvent Handlers[2m > [22m[2mshould capture input value
+[22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
 [90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mUser Context[2m > [22m[2mshould show not logged in state initially
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
@@ -1239,21 +1173,7 @@
 }
 [REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
-[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mEvent Handlers[2m > [22m[2mshould capture key press
-[22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
-[90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mBasic Error Boundary[2m > [22m[2mshould display custom error message
-[22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
- [31m├ù[39m src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22mErrorBoundaryTestPage[2m > [22mBasic Error Boundary[2m > [22mshould render safe component initially[32m 67[2mms[22m[39m
-[31m   ΓåÆ expected ' ≡ƒ¢í∩╕Å Phase 4: Error Boundaries & ErroΓÇª' to contain 'This component is safe'[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22mErrorBoundaryTestPage[2m > [22mBasic Error Boundary[2m > [22mshould catch error when triggered[32m 30[2mms[22m[39m
-[90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mSearch Resource[2m > [22m[2mshould trigger search for valid queries
-[22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
+ [32mΓ£ô[39m src/showcase/pages/__tests__/reactivity-test.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 106[2mms[22m[39m
 [90mstdout[2m | src/showcase/__tests__/integration/context-provider-consumer.test.ts[2m > [22m[2mContext Provider-Consumer Integration[2m > [22m[2mIndependent Context Updates[2m > [22m[2mshould update settings context without affecting others
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
 [useContext] Looking up context: [32mSymbol(Context)[39m
@@ -1366,128 +1286,21 @@
 }
 [REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
- [32mΓ£ô[39m src/showcase/pages/__tests__/reactivity-test.test.ts[2m > [22mReactivityTestPage[2m > [22mBatch Updates[2m > [22mshould update all values simultaneously[32m 6[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/reactivity-test.test.ts[2m > [22mReactivityTestPage[2m > [22mBatch Updates[2m > [22mshould reset all values[32m 6[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/reactivity-test.test.ts[2m > [22mReactivityTestPage[2m > [22mSide Effects[2m > [22mshould log to console when name changes[32m 9[2mms[22m[39m
-[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mReactive Style Objects[2m > [22m[2mshould render with initial font size
+[90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mSearch Resource[2m > [22m[2mshould trigger search for valid queries
+[22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+[90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mBasic Error Boundary[2m > [22m[2mshould reset boundary when reset clicked
+[22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mEvent Handlers[2m > [22m[2mshould capture key press
 [22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
 [90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mSearch Resource[2m > [22m[2mshould display search results
 [22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
-[90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mUser Context[2m > [22m[2mshould login as admin
-[22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  theme: [36m[Function: get][39m,
-  setTheme: [36m[Function: set][39m,
-  primaryColor: [36m[Function: get][39m,
-  setPrimaryColor: [36m[Function: set][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  user: [36m[Function: get][39m,
-  isLoggedIn: [36m[Function: get][39m,
-  login: [36m[Function: login][39m,
-  logout: [36m[Function: logout][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  fontSize: [36m[Function: get][39m,
-  setFontSize: [36m[Function: set][39m,
-  notifications: [36m[Function: get][39m,
-  setNotifications: [36m[Function: set][39m,
-  language: [36m[Function: get][39m,
-  setLanguage: [36m[Function: set][39m,
-  animations: [36m[Function: get][39m,
-  setAnimations: [36m[Function: set][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  theme: [36m[Function: get][39m,
-  setTheme: [36m[Function: set][39m,
-  primaryColor: [36m[Function: get][39m,
-  setPrimaryColor: [36m[Function: set][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  theme: [36m[Function: get][39m,
-  setTheme: [36m[Function: set][39m,
-  primaryColor: [36m[Function: get][39m,
-  setPrimaryColor: [36m[Function: set][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  theme: [36m[Function: get][39m,
-  setTheme: [36m[Function: set][39m,
-  primaryColor: [36m[Function: get][39m,
-  setPrimaryColor: [36m[Function: set][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  user: [36m[Function: get][39m,
-  isLoggedIn: [36m[Function: get][39m,
-  login: [36m[Function: login][39m,
-  logout: [36m[Function: logout][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  user: [36m[Function: get][39m,
-  isLoggedIn: [36m[Function: get][39m,
-  login: [36m[Function: login][39m,
-  logout: [36m[Function: logout][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  fontSize: [36m[Function: get][39m,
-  setFontSize: [36m[Function: set][39m,
-  notifications: [36m[Function: get][39m,
-  setNotifications: [36m[Function: set][39m,
-  language: [36m[Function: get][39m,
-  setLanguage: [36m[Function: set][39m,
-  animations: [36m[Function: get][39m,
-  setAnimations: [36m[Function: set][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  theme: [36m[Function: get][39m,
-  setTheme: [36m[Function: set][39m,
-  primaryColor: [36m[Function: get][39m,
-  setPrimaryColor: [36m[Function: set][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  user: [36m[Function: get][39m,
-  isLoggedIn: [36m[Function: get][39m,
-  login: [36m[Function: login][39m,
-  logout: [36m[Function: logout][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  fontSize: [36m[Function: get][39m,
-  setFontSize: [36m[Function: set][39m,
-  notifications: [36m[Function: get][39m,
-  setNotifications: [36m[Function: set][39m,
-  language: [36m[Function: get][39m,
-  setLanguage: [36m[Function: set][39m,
-  animations: [36m[Function: get][39m,
-  setAnimations: [36m[Function: set][39m
-}
-[REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
 [90mstdout[2m | src/showcase/__tests__/integration/context-provider-consumer.test.ts[2m > [22m[2mContext Provider-Consumer Integration[2m > [22m[2mCross-Context Dependencies[2m > [22m[2mshould access multiple contexts in single component
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
@@ -1601,24 +1414,138 @@
 }
 [REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
-[90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mSearch Resource[2m > [22m[2mshould show error for "error" query
-[22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+[90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mUser Context[2m > [22m[2mshould login as admin
+[22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  theme: [36m[Function: get][39m,
+  setTheme: [36m[Function: set][39m,
+  primaryColor: [36m[Function: get][39m,
+  setPrimaryColor: [36m[Function: set][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  user: [36m[Function: get][39m,
+  isLoggedIn: [36m[Function: get][39m,
+  login: [36m[Function: login][39m,
+  logout: [36m[Function: logout][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  fontSize: [36m[Function: get][39m,
+  setFontSize: [36m[Function: set][39m,
+  notifications: [36m[Function: get][39m,
+  setNotifications: [36m[Function: set][39m,
+  language: [36m[Function: get][39m,
+  setLanguage: [36m[Function: set][39m,
+  animations: [36m[Function: get][39m,
+  setAnimations: [36m[Function: set][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  theme: [36m[Function: get][39m,
+  setTheme: [36m[Function: set][39m,
+  primaryColor: [36m[Function: get][39m,
+  setPrimaryColor: [36m[Function: set][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  theme: [36m[Function: get][39m,
+  setTheme: [36m[Function: set][39m,
+  primaryColor: [36m[Function: get][39m,
+  setPrimaryColor: [36m[Function: set][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  theme: [36m[Function: get][39m,
+  setTheme: [36m[Function: set][39m,
+  primaryColor: [36m[Function: get][39m,
+  setPrimaryColor: [36m[Function: set][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  user: [36m[Function: get][39m,
+  isLoggedIn: [36m[Function: get][39m,
+  login: [36m[Function: login][39m,
+  logout: [36m[Function: logout][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  user: [36m[Function: get][39m,
+  isLoggedIn: [36m[Function: get][39m,
+  login: [36m[Function: login][39m,
+  logout: [36m[Function: logout][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  fontSize: [36m[Function: get][39m,
+  setFontSize: [36m[Function: set][39m,
+  notifications: [36m[Function: get][39m,
+  setNotifications: [36m[Function: set][39m,
+  language: [36m[Function: get][39m,
+  setLanguage: [36m[Function: set][39m,
+  animations: [36m[Function: get][39m,
+  setAnimations: [36m[Function: set][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  theme: [36m[Function: get][39m,
+  setTheme: [36m[Function: set][39m,
+  primaryColor: [36m[Function: get][39m,
+  setPrimaryColor: [36m[Function: set][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  user: [36m[Function: get][39m,
+  isLoggedIn: [36m[Function: get][39m,
+  login: [36m[Function: login][39m,
+  logout: [36m[Function: logout][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  fontSize: [36m[Function: get][39m,
+  setFontSize: [36m[Function: set][39m,
+  notifications: [36m[Function: get][39m,
+  setNotifications: [36m[Function: set][39m,
+  language: [36m[Function: get][39m,
+  setLanguage: [36m[Function: set][39m,
+  animations: [36m[Function: get][39m,
+  setAnimations: [36m[Function: set][39m
+}
+[REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+ [32mΓ£ô[39m src/showcase/__tests__/integration/context-provider-consumer.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 128[2mms[22m[39m
+[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mReactive Style Objects[2m > [22m[2mshould render with initial font size
+[22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+[90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mMultiple Independent Boundaries[2m > [22m[2mshould isolate errors to single section
+[22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
 [90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mReactive Style Objects[2m > [22m[2mshould increase font size
 [22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
-[90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mBasic Error Boundary[2m > [22m[2mshould reset boundary when reset clicked
-[22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
- [32mΓ£ô[39m src/showcase/__tests__/integration/context-provider-consumer.test.ts[2m > [22mContext Provider-Consumer Integration[2m > [22mIndependent Context Updates[2m > [22mshould update user context without affecting theme[32m 15[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/__tests__/integration/context-provider-consumer.test.ts[2m > [22mContext Provider-Consumer Integration[2m > [22mIndependent Context Updates[2m > [22mshould update settings context without affecting others[32m 15[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/__tests__/integration/context-provider-consumer.test.ts[2m > [22mContext Provider-Consumer Integration[2m > [22mCross-Context Dependencies[2m > [22mshould access multiple contexts in single component[32m 10[2mms[22m[39m
-[90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mSearch Resource[2m > [22m[2mshould display in stock status
+[90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mSearch Resource[2m > [22m[2mshould show error for "error" query
 [22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mReactive Style Objects[2m > [22m[2mshould decrease font size
+[22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
 [90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mUser Context[2m > [22m[2mshould login as user
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
@@ -1732,30 +1659,25 @@
 }
 [REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
-[90mstdout[2m | src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22m[2mJsxTestPage[2m > [22m[2mReactive Style Objects[2m > [22m[2mshould decrease font size
-[22m[39m[REGISTRY.execute] START: component:JsxTestPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:JsxTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
-[90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mRefresh Functionality[2m > [22m[2mshould increment refresh count
+[90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mSearch Resource[2m > [22m[2mshould display in stock status
 [22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
-[90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mMultiple Independent Boundaries[2m > [22m[2mshould isolate errors to single section
+ [31mΓ¥»[39m src/showcase/pages/__tests__/jsx-test.test.ts [2m([22m[2m10 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 140[2mms[22m[39m
+[31m       [31m├ù[31m should render initial background color[39m[32m 62[2mms[22m[39m
+       [32mΓ£ô[39m should change background color when button clicked[32m 14[2mms[22m[39m
+       [32mΓ£ô[39m should toggle disabled state[32m 10[2mms[22m[39m
+       [32mΓ£ô[39m should increment click count[32m 9[2mms[22m[39m
+       [32mΓ£ô[39m should reset click count[32m 6[2mms[22m[39m
+       [32mΓ£ô[39m should capture input value[32m 7[2mms[22m[39m
+       [32mΓ£ô[39m should capture key press[32m 12[2mms[22m[39m
+       [32mΓ£ô[39m should render with initial font size[32m 10[2mms[22m[39m
+       [32mΓ£ô[39m should increase font size[32m 4[2mms[22m[39m
+       [32mΓ£ô[39m should decrease font size[32m 4[2mms[22m[39m
+[90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mMultiple Independent Boundaries[2m > [22m[2mshould allow multiple sections to error simultaneously
 [22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
- [32mΓ£ô[39m src/showcase/pages/__tests__/resource-test.test.ts[2m > [22mResourceTestPage[2m > [22mDependent Resource (Posts)[2m > [22mshould refetch posts when user changes[32m 8[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/resource-test.test.ts[2m > [22mResourceTestPage[2m > [22mSearch Resource[2m > [22mshould show hint for short queries[32m 14[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/resource-test.test.ts[2m > [22mResourceTestPage[2m > [22mSearch Resource[2m > [22mshould trigger search for valid queries[32m 7[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/resource-test.test.ts[2m > [22mResourceTestPage[2m > [22mSearch Resource[2m > [22mshould display search results[32m 6[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/resource-test.test.ts[2m > [22mResourceTestPage[2m > [22mSearch Resource[2m > [22mshould show error for "error" query[32m 6[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/resource-test.test.ts[2m > [22mResourceTestPage[2m > [22mSearch Resource[2m > [22mshould display in stock status[32m 4[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/resource-test.test.ts[2m > [22mResourceTestPage[2m > [22mRefresh Functionality[2m > [22mshould increment refresh count[32m 5[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22mJsxTestPage[2m > [22mEvent Handlers[2m > [22mshould capture input value[32m 6[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22mJsxTestPage[2m > [22mEvent Handlers[2m > [22mshould capture key press[32m 9[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22mJsxTestPage[2m > [22mReactive Style Objects[2m > [22mshould render with initial font size[32m 10[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22mJsxTestPage[2m > [22mReactive Style Objects[2m > [22mshould increase font size[32m 8[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/jsx-test.test.ts[2m > [22mJsxTestPage[2m > [22mReactive Style Objects[2m > [22mshould decrease font size[32m 7[2mms[22m[39m
 [90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mUser Context[2m > [22m[2mshould logout
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
 [useContext] Looking up context: [32mSymbol(Context)[39m
@@ -1868,10 +1790,7 @@
 }
 [REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
-[90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mMultiple Independent Boundaries[2m > [22m[2mshould allow multiple sections to error simultaneously
-[22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
+ [32mΓ£ô[39m src/showcase/pages/__tests__/control-flow-test.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 144[2mms[22m[39m
 [90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mSettings Context[2m > [22m[2mshould render default font size
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
 [useContext] Looking up context: [32mSymbol(Context)[39m
@@ -1984,6 +1903,23 @@
 }
 [REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
+[90mstdout[2m | src/showcase/pages/__tests__/resource-test.test.ts[2m > [22m[2mResourceTestPage[2m > [22m[2mRefresh Functionality[2m > [22m[2mshould increment refresh count
+[22m[39m[REGISTRY.execute] START: component:ResourceTestPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:ResourceTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+ [31mΓ¥»[39m src/showcase/pages/__tests__/resource-test.test.ts [2m([22m[2m12 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 155[2mms[22m[39m
+[31m       [31m├ù[31m should show loading state initially[39m[32m 50[2mms[22m[39m
+       [32mΓ£ô[39m should display user data after loading[32m 7[2mms[22m[39m
+       [32mΓ£ô[39m should refetch when Next User clicked[32m 8[2mms[22m[39m
+       [32mΓ£ô[39m should cycle back to user 1 after user 10[32m 10[2mms[22m[39m
+       [32mΓ£ô[39m should load posts after user loads[32m 10[2mms[22m[39m
+       [32mΓ£ô[39m should refetch posts when user changes[32m 9[2mms[22m[39m
+       [32mΓ£ô[39m should show hint for short queries[32m 13[2mms[22m[39m
+       [32mΓ£ô[39m should trigger search for valid queries[32m 8[2mms[22m[39m
+       [32mΓ£ô[39m should display search results[32m 14[2mms[22m[39m
+       [32mΓ£ô[39m should show error for "error" query[32m 5[2mms[22m[39m
+       [32mΓ£ô[39m should display in stock status[32m 9[2mms[22m[39m
+       [32mΓ£ô[39m should increment refresh count[32m 10[2mms[22m[39m
 [90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mNested Boundaries[2m > [22m[2mshould render healthy state initially
 [22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
@@ -2216,123 +2152,11 @@
 }
 [REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
-[90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mSettings Context[2m > [22m[2mshould change language
-[22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  theme: [36m[Function: get][39m,
-  setTheme: [36m[Function: set][39m,
-  primaryColor: [36m[Function: get][39m,
-  setPrimaryColor: [36m[Function: set][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  user: [36m[Function: get][39m,
-  isLoggedIn: [36m[Function: get][39m,
-  login: [36m[Function: login][39m,
-  logout: [36m[Function: logout][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  fontSize: [36m[Function: get][39m,
-  setFontSize: [36m[Function: set][39m,
-  notifications: [36m[Function: get][39m,
-  setNotifications: [36m[Function: set][39m,
-  language: [36m[Function: get][39m,
-  setLanguage: [36m[Function: set][39m,
-  animations: [36m[Function: get][39m,
-  setAnimations: [36m[Function: set][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  theme: [36m[Function: get][39m,
-  setTheme: [36m[Function: set][39m,
-  primaryColor: [36m[Function: get][39m,
-  setPrimaryColor: [36m[Function: set][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  theme: [36m[Function: get][39m,
-  setTheme: [36m[Function: set][39m,
-  primaryColor: [36m[Function: get][39m,
-  setPrimaryColor: [36m[Function: set][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  theme: [36m[Function: get][39m,
-  setTheme: [36m[Function: set][39m,
-  primaryColor: [36m[Function: get][39m,
-  setPrimaryColor: [36m[Function: set][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  user: [36m[Function: get][39m,
-  isLoggedIn: [36m[Function: get][39m,
-  login: [36m[Function: login][39m,
-  logout: [36m[Function: logout][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  user: [36m[Function: get][39m,
-  isLoggedIn: [36m[Function: get][39m,
-  login: [36m[Function: login][39m,
-  logout: [36m[Function: logout][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  fontSize: [36m[Function: get][39m,
-  setFontSize: [36m[Function: set][39m,
-  notifications: [36m[Function: get][39m,
-  setNotifications: [36m[Function: set][39m,
-  language: [36m[Function: get][39m,
-  setLanguage: [36m[Function: set][39m,
-  animations: [36m[Function: get][39m,
-  setAnimations: [36m[Function: set][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  theme: [36m[Function: get][39m,
-  setTheme: [36m[Function: set][39m,
-  primaryColor: [36m[Function: get][39m,
-  setPrimaryColor: [36m[Function: set][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  user: [36m[Function: get][39m,
-  isLoggedIn: [36m[Function: get][39m,
-  login: [36m[Function: login][39m,
-  logout: [36m[Function: logout][39m
-}
-[useContext] Looking up context: [32mSymbol(Context)[39m
-[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
-[useContext] Signal value: {
-  fontSize: [36m[Function: get][39m,
-  setFontSize: [36m[Function: set][39m,
-  notifications: [36m[Function: get][39m,
-  setNotifications: [36m[Function: set][39m,
-  language: [36m[Function: get][39m,
-  setLanguage: [36m[Function: set][39m,
-  animations: [36m[Function: get][39m,
-  setAnimations: [36m[Function: set][39m
-}
-[REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
 [90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mNested Boundaries[2m > [22m[2mshould catch outer error with outer boundary
 [22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
-[90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mDeeply Nested Access[2m > [22m[2mshould access all contexts from nested component
+[90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mSettings Context[2m > [22m[2mshould change language
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
 [useContext] Looking up context: [32mSymbol(Context)[39m
 [useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
@@ -2448,6 +2272,122 @@
 [22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
+[90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mDeeply Nested Access[2m > [22m[2mshould access all contexts from nested component
+[22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  theme: [36m[Function: get][39m,
+  setTheme: [36m[Function: set][39m,
+  primaryColor: [36m[Function: get][39m,
+  setPrimaryColor: [36m[Function: set][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  user: [36m[Function: get][39m,
+  isLoggedIn: [36m[Function: get][39m,
+  login: [36m[Function: login][39m,
+  logout: [36m[Function: logout][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  fontSize: [36m[Function: get][39m,
+  setFontSize: [36m[Function: set][39m,
+  notifications: [36m[Function: get][39m,
+  setNotifications: [36m[Function: set][39m,
+  language: [36m[Function: get][39m,
+  setLanguage: [36m[Function: set][39m,
+  animations: [36m[Function: get][39m,
+  setAnimations: [36m[Function: set][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  theme: [36m[Function: get][39m,
+  setTheme: [36m[Function: set][39m,
+  primaryColor: [36m[Function: get][39m,
+  setPrimaryColor: [36m[Function: set][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  theme: [36m[Function: get][39m,
+  setTheme: [36m[Function: set][39m,
+  primaryColor: [36m[Function: get][39m,
+  setPrimaryColor: [36m[Function: set][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  theme: [36m[Function: get][39m,
+  setTheme: [36m[Function: set][39m,
+  primaryColor: [36m[Function: get][39m,
+  setPrimaryColor: [36m[Function: set][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  user: [36m[Function: get][39m,
+  isLoggedIn: [36m[Function: get][39m,
+  login: [36m[Function: login][39m,
+  logout: [36m[Function: logout][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  user: [36m[Function: get][39m,
+  isLoggedIn: [36m[Function: get][39m,
+  login: [36m[Function: login][39m,
+  logout: [36m[Function: logout][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  fontSize: [36m[Function: get][39m,
+  setFontSize: [36m[Function: set][39m,
+  notifications: [36m[Function: get][39m,
+  setNotifications: [36m[Function: set][39m,
+  language: [36m[Function: get][39m,
+  setLanguage: [36m[Function: set][39m,
+  animations: [36m[Function: get][39m,
+  setAnimations: [36m[Function: set][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  theme: [36m[Function: get][39m,
+  setTheme: [36m[Function: set][39m,
+  primaryColor: [36m[Function: get][39m,
+  setPrimaryColor: [36m[Function: set][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  user: [36m[Function: get][39m,
+  isLoggedIn: [36m[Function: get][39m,
+  login: [36m[Function: login][39m,
+  logout: [36m[Function: logout][39m
+}
+[useContext] Looking up context: [32mSymbol(Context)[39m
+[useContext] Found signal: [ [36m[Function: get][39m, [36m[Function: set][39m ]
+[useContext] Signal value: {
+  fontSize: [36m[Function: get][39m,
+  setFontSize: [36m[Function: set][39m,
+  notifications: [36m[Function: get][39m,
+  setNotifications: [36m[Function: set][39m,
+  language: [36m[Function: get][39m,
+  setLanguage: [36m[Function: set][39m,
+  animations: [36m[Function: get][39m,
+  setAnimations: [36m[Function: set][39m
+}
+[REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
+[90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mError Recovery Pattern[2m > [22m[2mshould track retry attempts
+[22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
+[REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
+
 [90mstdout[2m | src/showcase/pages/__tests__/context-test.test.ts[2m > [22m[2mContextTestPage[2m > [22m[2mDeeply Nested Access[2m > [22m[2mshould display context values in nested component
 [22m[39m[REGISTRY.execute] START: component:ContextTestPage parentId: [1mnull[22m
 [useContext] Looking up context: [32mSymbol(Context)[39m
@@ -2560,298 +2500,14 @@
 }
 [REGISTRY.execute] RESULT: component:ContextTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
- [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts[2m > [22mContextTestPage[2m > [22mTheme Context[2m > [22mshould apply theme to all themed components[32m 14[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts[2m > [22mContextTestPage[2m > [22mUser Context[2m > [22mshould show not logged in state initially[32m 12[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts[2m > [22mContextTestPage[2m > [22mUser Context[2m > [22mshould login as admin[32m 15[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts[2m > [22mContextTestPage[2m > [22mUser Context[2m > [22mshould login as user[32m 10[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts[2m > [22mContextTestPage[2m > [22mUser Context[2m > [22mshould logout[32m 8[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts[2m > [22mContextTestPage[2m > [22mSettings Context[2m > [22mshould render default font size[32m 6[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts[2m > [22mContextTestPage[2m > [22mSettings Context[2m > [22mshould adjust font size with slider[32m 9[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts[2m > [22mContextTestPage[2m > [22mSettings Context[2m > [22mshould toggle notifications[32m 5[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts[2m > [22mContextTestPage[2m > [22mSettings Context[2m > [22mshould change language[32m 5[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts[2m > [22mContextTestPage[2m > [22mDeeply Nested Access[2m > [22mshould access all contexts from nested component[32m 5[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts[2m > [22mContextTestPage[2m > [22mDeeply Nested Access[2m > [22mshould display context values in nested component[32m 6[2mms[22m[39m
-[90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mError Recovery Pattern[2m > [22m[2mshould track retry attempts
-[22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
-[REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
-
 [90mstdout[2m | src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22m[2mErrorBoundaryTestPage[2m > [22m[2mError Recovery Pattern[2m > [22m[2mshould succeed after 3 attempts
 [22m[39m[REGISTRY.execute] START: component:ErrorBoundaryTestPage parentId: [1mnull[22m
 [REGISTRY.execute] RESULT: component:ErrorBoundaryTestPage result: HTMLDivElement {} instanceof HTMLElement: [33mtrue[39m
 
- [32mΓ£ô[39m src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22mErrorBoundaryTestPage[2m > [22mBasic Error Boundary[2m > [22mshould display custom error message[32m 18[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22mErrorBoundaryTestPage[2m > [22mBasic Error Boundary[2m > [22mshould reset boundary when reset clicked[32m 16[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22mErrorBoundaryTestPage[2m > [22mMultiple Independent Boundaries[2m > [22mshould isolate errors to single section[32m 8[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22mErrorBoundaryTestPage[2m > [22mMultiple Independent Boundaries[2m > [22mshould allow multiple sections to error simultaneously[32m 8[2mms[22m[39m
- [31m├ù[39m src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22mErrorBoundaryTestPage[2m > [22mNested Boundaries[2m > [22mshould render healthy state initially[32m 8[2mms[22m[39m
-[31m   ΓåÆ expected ' ≡ƒ¢í∩╕Å Phase 4: Error Boundaries & ErroΓÇª' to contain 'All components healthy'[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22mErrorBoundaryTestPage[2m > [22mNested Boundaries[2m > [22mshould catch inner error with inner boundary[32m 8[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22mErrorBoundaryTestPage[2m > [22mNested Boundaries[2m > [22mshould catch outer error with outer boundary[32m 10[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22mErrorBoundaryTestPage[2m > [22mError Recovery Pattern[2m > [22mshould fail on first attempt[32m 7[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22mErrorBoundaryTestPage[2m > [22mError Recovery Pattern[2m > [22mshould track retry attempts[32m 7[2mms[22m[39m
- [32mΓ£ô[39m src/showcase/pages/__tests__/error-boundary-test.test.ts[2m > [22mErrorBoundaryTestPage[2m > [22mError Recovery Pattern[2m > [22mshould succeed after 3 attempts[32m 8[2mms[22m[39m
+ [32mΓ£ô[39m src/showcase/pages/__tests__/context-test.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 192[2mms[22m[39m
+ [32mΓ£ô[39m src/showcase/pages/__tests__/error-boundary-test.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 193[2mms[22m[39m
 
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 26 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
-
- FAIL  src/showcase/pages/__tests__/control-flow-test.test.ts > ControlFlowTestPage > Show Component > should display content when showContent is true
-TypeError: props.children is not a function
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:132:25
-    130|         };
-    131| 
-    132|         element = props.children(item, indexSignal);
-       |                         ^
-    133| 
-    134|         if (!(element instanceof HTMLElement)) {
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:109:14
- Γ¥» effect ../pulsar.dev/src/registry/core/prototype/wire.ts:96:69
- Γ¥» CoreRegistry.wire ../pulsar.dev/src/registry/core/prototype/wire.ts:142:3
- Γ¥» ForRegistry ../pulsar.dev/src/control-flow/for-registry.ts:35:13
- Γ¥» src/showcase/pages/control-flow-test.psr:123:12
- Γ¥» ../pulsar.dev/src/component.ts:11:12
- Γ¥» src/showcase/pages/__tests__/control-flow-test.test.ts:19:20
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/26]ΓÄ»
-
- FAIL  src/showcase/pages/__tests__/control-flow-test.test.ts > ControlFlowTestPage > Show Component > should hide content and show fallback when toggled
-TypeError: props.children is not a function
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:132:25
-    130|         };
-    131| 
-    132|         element = props.children(item, indexSignal);
-       |                         ^
-    133| 
-    134|         if (!(element instanceof HTMLElement)) {
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:109:14
- Γ¥» effect ../pulsar.dev/src/registry/core/prototype/wire.ts:96:69
- Γ¥» CoreRegistry.wire ../pulsar.dev/src/registry/core/prototype/wire.ts:142:3
- Γ¥» ForRegistry ../pulsar.dev/src/control-flow/for-registry.ts:35:13
- Γ¥» src/showcase/pages/control-flow-test.psr:123:12
- Γ¥» ../pulsar.dev/src/component.ts:11:12
- Γ¥» src/showcase/pages/__tests__/control-flow-test.test.ts:26:20
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/26]ΓÄ»
-
- FAIL  src/showcase/pages/__tests__/control-flow-test.test.ts > ControlFlowTestPage > Show Component > should show error when error state is active
-TypeError: props.children is not a function
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:132:25
-    130|         };
-    131| 
-    132|         element = props.children(item, indexSignal);
-       |                         ^
-    133| 
-    134|         if (!(element instanceof HTMLElement)) {
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:109:14
- Γ¥» effect ../pulsar.dev/src/registry/core/prototype/wire.ts:96:69
- Γ¥» CoreRegistry.wire ../pulsar.dev/src/registry/core/prototype/wire.ts:142:3
- Γ¥» ForRegistry ../pulsar.dev/src/control-flow/for-registry.ts:35:13
- Γ¥» src/showcase/pages/control-flow-test.psr:123:12
- Γ¥» ../pulsar.dev/src/component.ts:11:12
- Γ¥» src/showcase/pages/__tests__/control-flow-test.test.ts:43:20
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[3/26]ΓÄ»
-
- FAIL  src/showcase/pages/__tests__/control-flow-test.test.ts > ControlFlowTestPage > For Component (Keyed Lists) > should render initial items list
-TypeError: props.children is not a function
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:132:25
-    130|         };
-    131| 
-    132|         element = props.children(item, indexSignal);
-       |                         ^
-    133| 
-    134|         if (!(element instanceof HTMLElement)) {
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:109:14
- Γ¥» effect ../pulsar.dev/src/registry/core/prototype/wire.ts:96:69
- Γ¥» CoreRegistry.wire ../pulsar.dev/src/registry/core/prototype/wire.ts:142:3
- Γ¥» ForRegistry ../pulsar.dev/src/control-flow/for-registry.ts:35:13
- Γ¥» src/showcase/pages/control-flow-test.psr:123:12
- Γ¥» ../pulsar.dev/src/component.ts:11:12
- Γ¥» src/showcase/pages/__tests__/control-flow-test.test.ts:61:20
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[4/26]ΓÄ»
-
- FAIL  src/showcase/pages/__tests__/control-flow-test.test.ts > ControlFlowTestPage > For Component (Keyed Lists) > should display item prices
-TypeError: props.children is not a function
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:132:25
-    130|         };
-    131| 
-    132|         element = props.children(item, indexSignal);
-       |                         ^
-    133| 
-    134|         if (!(element instanceof HTMLElement)) {
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:109:14
- Γ¥» effect ../pulsar.dev/src/registry/core/prototype/wire.ts:96:69
- Γ¥» CoreRegistry.wire ../pulsar.dev/src/registry/core/prototype/wire.ts:142:3
- Γ¥» ForRegistry ../pulsar.dev/src/control-flow/for-registry.ts:35:13
- Γ¥» src/showcase/pages/control-flow-test.psr:123:12
- Γ¥» ../pulsar.dev/src/component.ts:11:12
- Γ¥» src/showcase/pages/__tests__/control-flow-test.test.ts:70:20
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[5/26]ΓÄ»
-
- FAIL  src/showcase/pages/__tests__/control-flow-test.test.ts > ControlFlowTestPage > For Component (Keyed Lists) > should add new item when Add Item clicked
-TypeError: props.children is not a function
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:132:25
-    130|         };
-    131| 
-    132|         element = props.children(item, indexSignal);
-       |                         ^
-    133| 
-    134|         if (!(element instanceof HTMLElement)) {
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:109:14
- Γ¥» effect ../pulsar.dev/src/registry/core/prototype/wire.ts:96:69
- Γ¥» CoreRegistry.wire ../pulsar.dev/src/registry/core/prototype/wire.ts:142:3
- Γ¥» ForRegistry ../pulsar.dev/src/control-flow/for-registry.ts:35:13
- Γ¥» src/showcase/pages/control-flow-test.psr:123:12
- Γ¥» ../pulsar.dev/src/component.ts:11:12
- Γ¥» src/showcase/pages/__tests__/control-flow-test.test.ts:79:20
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[6/26]ΓÄ»
-
- FAIL  src/showcase/pages/__tests__/control-flow-test.test.ts > ControlFlowTestPage > For Component (Keyed Lists) > should remove item when Remove clicked
-TypeError: props.children is not a function
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:132:25
-    130|         };
-    131| 
-    132|         element = props.children(item, indexSignal);
-       |                         ^
-    133| 
-    134|         if (!(element instanceof HTMLElement)) {
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:109:14
- Γ¥» effect ../pulsar.dev/src/registry/core/prototype/wire.ts:96:69
- Γ¥» CoreRegistry.wire ../pulsar.dev/src/registry/core/prototype/wire.ts:142:3
- Γ¥» ForRegistry ../pulsar.dev/src/control-flow/for-registry.ts:35:13
- Γ¥» src/showcase/pages/control-flow-test.psr:123:12
- Γ¥» ../pulsar.dev/src/component.ts:11:12
- Γ¥» src/showcase/pages/__tests__/control-flow-test.test.ts:95:20
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[7/26]ΓÄ»
-
- FAIL  src/showcase/pages/__tests__/control-flow-test.test.ts > ControlFlowTestPage > For Component (Keyed Lists) > should sort items by price
-TypeError: props.children is not a function
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:132:25
-    130|         };
-    131| 
-    132|         element = props.children(item, indexSignal);
-       |                         ^
-    133| 
-    134|         if (!(element instanceof HTMLElement)) {
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:109:14
- Γ¥» effect ../pulsar.dev/src/registry/core/prototype/wire.ts:96:69
- Γ¥» CoreRegistry.wire ../pulsar.dev/src/registry/core/prototype/wire.ts:142:3
- Γ¥» ForRegistry ../pulsar.dev/src/control-flow/for-registry.ts:35:13
- Γ¥» src/showcase/pages/control-flow-test.psr:123:12
- Γ¥» ../pulsar.dev/src/component.ts:11:12
- Γ¥» src/showcase/pages/__tests__/control-flow-test.test.ts:111:20
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[8/26]ΓÄ»
-
- FAIL  src/showcase/pages/__tests__/control-flow-test.test.ts > ControlFlowTestPage > For Component (Keyed Lists) > should calculate total cost
-TypeError: props.children is not a function
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:132:25
-    130|         };
-    131| 
-    132|         element = props.children(item, indexSignal);
-       |                         ^
-    133| 
-    134|         if (!(element instanceof HTMLElement)) {
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:109:14
- Γ¥» effect ../pulsar.dev/src/registry/core/prototype/wire.ts:96:69
- Γ¥» CoreRegistry.wire ../pulsar.dev/src/registry/core/prototype/wire.ts:142:3
- Γ¥» ForRegistry ../pulsar.dev/src/control-flow/for-registry.ts:35:13
- Γ¥» src/showcase/pages/control-flow-test.psr:123:12
- Γ¥» ../pulsar.dev/src/component.ts:11:12
- Γ¥» src/showcase/pages/__tests__/control-flow-test.test.ts:133:20
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[9/26]ΓÄ»
-
- FAIL  src/showcase/pages/__tests__/control-flow-test.test.ts > ControlFlowTestPage > Index Component > should render initial colors with indices
-TypeError: props.children is not a function
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:132:25
-    130|         };
-    131| 
-    132|         element = props.children(item, indexSignal);
-       |                         ^
-    133| 
-    134|         if (!(element instanceof HTMLElement)) {
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:109:14
- Γ¥» effect ../pulsar.dev/src/registry/core/prototype/wire.ts:96:69
- Γ¥» CoreRegistry.wire ../pulsar.dev/src/registry/core/prototype/wire.ts:142:3
- Γ¥» ForRegistry ../pulsar.dev/src/control-flow/for-registry.ts:35:13
- Γ¥» src/showcase/pages/control-flow-test.psr:123:12
- Γ¥» ../pulsar.dev/src/component.ts:11:12
- Γ¥» src/showcase/pages/__tests__/control-flow-test.test.ts:143:20
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[10/26]ΓÄ»
-
- FAIL  src/showcase/pages/__tests__/control-flow-test.test.ts > ControlFlowTestPage > Index Component > should display index numbers
-TypeError: props.children is not a function
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:132:25
-    130|         };
-    131| 
-    132|         element = props.children(item, indexSignal);
-       |                         ^
-    133| 
-    134|         if (!(element instanceof HTMLElement)) {
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:109:14
- Γ¥» effect ../pulsar.dev/src/registry/core/prototype/wire.ts:96:69
- Γ¥» CoreRegistry.wire ../pulsar.dev/src/registry/core/prototype/wire.ts:142:3
- Γ¥» ForRegistry ../pulsar.dev/src/control-flow/for-registry.ts:35:13
- Γ¥» src/showcase/pages/control-flow-test.psr:123:12
- Γ¥» ../pulsar.dev/src/component.ts:11:12
- Γ¥» src/showcase/pages/__tests__/control-flow-test.test.ts:153:20
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[11/26]ΓÄ»
-
- FAIL  src/showcase/pages/__tests__/control-flow-test.test.ts > ControlFlowTestPage > Index Component > should shuffle colors when button clicked
-TypeError: props.children is not a function
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:132:25
-    130|         };
-    131| 
-    132|         element = props.children(item, indexSignal);
-       |                         ^
-    133| 
-    134|         if (!(element instanceof HTMLElement)) {
- Γ¥» ../pulsar.dev/src/control-flow/for-registry.ts:109:14
- Γ¥» effect ../pulsar.dev/src/registry/core/prototype/wire.ts:96:69
- Γ¥» CoreRegistry.wire ../pulsar.dev/src/registry/core/prototype/wire.ts:142:3
- Γ¥» ForRegistry ../pulsar.dev/src/control-flow/for-registry.ts:35:13
- Γ¥» src/showcase/pages/control-flow-test.psr:123:12
- Γ¥» ../pulsar.dev/src/component.ts:11:12
- Γ¥» src/showcase/pages/__tests__/control-flow-test.test.ts:163:20
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[12/26]ΓÄ»
-
- FAIL  src/showcase/pages/__tests__/error-boundary-test.test.ts > ErrorBoundaryTestPage > Basic Error Boundary > should render safe component initially
-AssertionError: expected ' ≡ƒ¢í∩╕Å Phase 4: Error Boundaries & ErroΓÇª' to contain 'This component is safe'
-
-Expected: "This component is safe"
-Received: " ≡ƒ¢í∩╕Å Phase 4: Error Boundaries & Error Handling    1∩╕ÅΓâú Basic Error Boundary - Tryer/Catcher  Tryer/Catcher provides error boundaries to catch and handle component errors gracefully.     Trigger Error     Γ¥î Error OccurredInvalid child type: expected Node, got string. Value:        2∩╕ÅΓâú Multiple Independent Boundaries  Each boundary is isolated - errors in one section don't affect others.      Section 1 Toggle Error  Γ¥î Error OccurredInvalid child type: expected Node, got string. Value:      Section 2 Toggle Error  Γ¥î Error OccurredInvalid child type: expected Node, got string. Value:      Section 3 Toggle Error  Γ¥î Error OccurredInvalid child type: expected Node, got string. Value:     ≡ƒÆí Note: Each section has its own boundary. Errors are contained to their section.      3∩╕ÅΓâú Nested Error Boundaries  Inner boundaries catch errors first. Outer boundary only activates if inner doesn't exist.    Toggle Outer Error  Toggle Inner Error   Γ¥î Error OccurredInvalid child type: expected Node, got string. Value:       4∩╕ÅΓâú Error Recovery Pattern  Implement retry logic with error boundaries. Component succeeds after 3 attempts.   Γ¥î Error OccurredAttempt 1: Service temporarily unavailable     Γ£ô Error Boundary Summary   Tryer:Creates an error boundary context Catcher:Renders when errors are caught, provides error and reset function Isolation:Errors don't propagate beyond their boundary Nesting:Inner boundaries catch first, outer as fallback Recovery:reset() function to recover from errors User Experience:Graceful degradation instead of white screen   "
-
- Γ¥» src/showcase/pages/__tests__/error-boundary-test.test.ts:23:37
-     21|       container.appendChild(page);
-     22| 
-     23|       expect(container.textContent).toContain('This component is safe'ΓÇª
-       |                                     ^
-     24|     });
-     25| 
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[13/26]ΓÄ»
-
- FAIL  src/showcase/pages/__tests__/error-boundary-test.test.ts > ErrorBoundaryTestPage > Nested Boundaries > should render healthy state initially
-AssertionError: expected ' ≡ƒ¢í∩╕Å Phase 4: Error Boundaries & ErroΓÇª' to contain 'All components healthy'
-
-Expected: "All components healthy"
-Received: " ≡ƒ¢í∩╕Å Phase 4: Error Boundaries & Error Handling    1∩╕ÅΓâú Basic Error Boundary - Tryer/Catcher  Tryer/Catcher provides error boundaries to catch and handle component errors gracefully.     Trigger Error     Γ¥î Error OccurredInvalid child type: expected Node, got string. Value:        2∩╕ÅΓâú Multiple Independent Boundaries  Each boundary is isolated - errors in one section don't affect others.      Section 1 Toggle Error  Γ¥î Error OccurredInvalid child type: expected Node, got string. Value:      Section 2 Toggle Error  Γ¥î Error OccurredInvalid child type: expected Node, got string. Value:      Section 3 Toggle Error  Γ¥î Error OccurredInvalid child type: expected Node, got string. Value:     ≡ƒÆí Note: Each section has its own boundary. Errors are contained to their section.      3∩╕ÅΓâú Nested Error Boundaries  Inner boundaries catch errors first. Outer boundary only activates if inner doesn't exist.    Toggle Outer Error  Toggle Inner Error   Γ¥î Error OccurredInvalid child type: expected Node, got string. Value:       4∩╕ÅΓâú Error Recovery Pattern  Implement retry logic with error boundaries. Component succeeds after 3 attempts.   Γ¥î Error OccurredAttempt 1: Service temporarily unavailable     Γ£ô Error Boundary Summary   Tryer:Creates an error boundary context Catcher:Renders when errors are caught, provides error and reset function Isolation:Errors don't propagate beyond their boundary Nesting:Inner boundaries catch first, outer as fallback Recovery:reset() function to recover from errors User Experience:Graceful degradation instead of white screen   "
-
- Γ¥» src/showcase/pages/__tests__/error-boundary-test.test.ts:130:37
-    128|       container.appendChild(page);
-    129| 
-    130|       expect(container.textContent).toContain('All components healthy'ΓÇª
-       |                                     ^
-    131|     });
-    132| 
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[14/26]ΓÄ»
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 12 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
 
  FAIL  src/showcase/pages/__tests__/home.test.ts > HomePage > Rendering > should render Counter component
 AssertionError: expected null to be truthy
@@ -2870,7 +2526,7 @@ null
      43|     });
      44|   });
 
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[15/26]ΓÄ»
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/12]ΓÄ»
 
  FAIL  src/showcase/pages/__tests__/jsx-test.test.ts > JsxTestPage > Reactive Attributes > should render initial background color
 AssertionError: expected '' to be truthy
@@ -2889,13 +2545,13 @@ true
      26|     });
      27| 
 
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[16/26]ΓÄ»
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/12]ΓÄ»
 
  FAIL  src/showcase/pages/__tests__/resource-test.test.ts > ResourceTestPage > User Resource > should show loading state initially
-AssertionError: expected ' ≡ƒîè Phase 3: Resource Management & AsΓÇª' to contain 'Loading user'
+AssertionError: expected '≡ƒîè Phase 3: Resource Management & AsyΓÇª' to contain 'Loading user'
 
 Expected: "Loading user"
-Received: " ≡ƒîè Phase 3: Resource Management & Async Data    1∩╕ÅΓâú Basic Resource - User Profile  createResource automatically manages loading, error, and success states for async data.    ΓåÉ Previous User  Next User ΓåÆ  ≡ƒöä Refresh (Count: 0)            2∩╕ÅΓâú Dependent Resource - User Posts  Resources can depend on other signals/resources. Posts automatically refetch when userId changes.          3∩╕ÅΓâú Search Resource - Product Search  Resources update automatically when the source signal changes. Type "error" to trigger error state.              Γ£ô Resource Management Summary   createResource:Automatic async state management with isLoading, data, and error ShowRegistry:Conditional rendering based on resource states Dependent Resources:Manual refetch with createEffect tracking dependencies refetch():Manual refresh capability lazy:Opt-in loading with load() method   "
+Received: "≡ƒîè Phase 3: Resource Management & Async Data 1∩╕ÅΓâú Basic Resource - User Profile createResource automatically manages loading, error, and success states for async data. ΓåÉ Previous User Next User ΓåÆ ≡ƒöä Refresh (Count: 0) 2∩╕ÅΓâú Dependent Resource - User Posts Resources can depend on other signals/resources. Posts automatically refetch when userId changes. 3∩╕ÅΓâú Search Resource - Product Search Resources update automatically when the source signal changes. Type "error" to trigger error state. Γ£ô Resource Management Summary createResource:Automatic async state management with isLoading, data, and errorShowRegistry:Conditional rendering based on resource statesDependent Resources:Manual refetch with createEffect tracking dependenciesrefetch():Manual refresh capabilitylazy:Opt-in loading with load() method"
 
  Γ¥» src/showcase/pages/__tests__/resource-test.test.ts:27:37
      25|       container.appendChild(page);
@@ -2905,7 +2561,7 @@ Received: " ≡ƒîè Phase 3: Resource Management & Async Data    1∩╕ÅΓâ
      28|     });
      29| 
 
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[17/26]ΓÄ»
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[3/12]ΓÄ»
 
  FAIL  src/showcase/__tests__/integration/showcase-navigation.test.ts > Showcase Navigation Integration > Navigation Bar > should render all navigation buttons
 TypeError: (0 , __vite_ssr_import_1__.default) is not a function
@@ -2917,7 +2573,7 @@ TypeError: (0 , __vite_ssr_import_1__.default) is not a function
      22|       container.appendChild(app);
      23| 
 
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[18/26]ΓÄ»
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[4/12]ΓÄ»
 
  FAIL  src/showcase/__tests__/integration/showcase-navigation.test.ts > Showcase Navigation Integration > Navigation Bar > should have navigation buttons with proper styling
 TypeError: (0 , __vite_ssr_import_1__.default) is not a function
@@ -2929,7 +2585,7 @@ TypeError: (0 , __vite_ssr_import_1__.default) is not a function
      36|       container.appendChild(app);
      37| 
 
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[19/26]ΓÄ»
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[5/12]ΓÄ»
 
  FAIL  src/showcase/__tests__/integration/showcase-navigation.test.ts > Showcase Navigation Integration > Route Navigation > should display home page by default
 TypeError: (0 , __vite_ssr_import_1__.default) is not a function
@@ -2941,7 +2597,7 @@ TypeError: (0 , __vite_ssr_import_1__.default) is not a function
      46|       container.appendChild(app);
      47| 
 
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[20/26]ΓÄ»
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[6/12]ΓÄ»
 
  FAIL  src/showcase/__tests__/integration/showcase-navigation.test.ts > Showcase Navigation Integration > Route Navigation > should navigate to reactivity page
 TypeError: (0 , __vite_ssr_import_1__.default) is not a function
@@ -2953,7 +2609,7 @@ TypeError: (0 , __vite_ssr_import_1__.default) is not a function
      53|       container.appendChild(app);
      54| 
 
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[21/26]ΓÄ»
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[7/12]ΓÄ»
 
  FAIL  src/showcase/__tests__/integration/showcase-navigation.test.ts > Showcase Navigation Integration > Route Navigation > should navigate to about page
 TypeError: (0 , __vite_ssr_import_1__.default) is not a function
@@ -2965,7 +2621,7 @@ TypeError: (0 , __vite_ssr_import_1__.default) is not a function
      69|       container.appendChild(app);
      70| 
 
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[22/26]ΓÄ»
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[8/12]ΓÄ»
 
  FAIL  src/showcase/__tests__/integration/showcase-navigation.test.ts > Showcase Navigation Integration > Route Navigation > should update currentPath signal on navigation
 TypeError: (0 , __vite_ssr_import_1__.default) is not a function
@@ -2977,7 +2633,7 @@ TypeError: (0 , __vite_ssr_import_1__.default) is not a function
      85|       container.appendChild(app);
      86| 
 
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[23/26]ΓÄ»
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[9/12]ΓÄ»
 
  FAIL  src/showcase/__tests__/integration/showcase-navigation.test.ts > Showcase Navigation Integration > Page Content Loading > should load control flow page content
 TypeError: (0 , __vite_ssr_import_1__.default) is not a function
@@ -2989,7 +2645,7 @@ TypeError: (0 , __vite_ssr_import_1__.default) is not a function
     103|       container.appendChild(app);
     104| 
 
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[24/26]ΓÄ»
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[10/12]ΓÄ»
 
  FAIL  src/showcase/__tests__/integration/showcase-navigation.test.ts > Showcase Navigation Integration > Page Content Loading > should load context page content
 TypeError: (0 , __vite_ssr_import_1__.default) is not a function
@@ -3001,7 +2657,7 @@ TypeError: (0 , __vite_ssr_import_1__.default) is not a function
     119|       container.appendChild(app);
     120| 
 
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[25/26]ΓÄ»
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[11/12]ΓÄ»
 
  FAIL  src/showcase/__tests__/integration/showcase-navigation.test.ts > Showcase Navigation Integration > Back Navigation > should navigate back from about to home
 TypeError: (0 , __vite_ssr_import_1__.default) is not a function
@@ -3013,11 +2669,11 @@ TypeError: (0 , __vite_ssr_import_1__.default) is not a function
     137|       container.appendChild(app);
     138| 
 
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[26/26]ΓÄ»
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[12/12]ΓÄ»
 
 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Unhandled Errors ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
 
-Vitest caught 14 unhandled errors during the test run.
+Vitest caught 15 unhandled errors during the test run.
 This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
 
 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
@@ -3051,7 +2707,7 @@ Error: done() callback is deprecated, use promise instead
 This error originated in "src/showcase/pages/__tests__/reactivity-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
 
 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
-AssertionError: expected ' ≡ƒÄ¿ Phase 2: JSX & DOM Tests    1∩╕ÅΓâú RΓÇª' to contain '#10b981'
+AssertionError: expected '≡ƒÄ¿ Phase 2: JSX & DOM Tests 1∩╕ÅΓâú ReactΓÇª' to contain '#10b981'
  Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/jsx-test.test.ts:39:39
      37| 
      38|       setTimeout(() => {
@@ -3079,21 +2735,35 @@ AssertionError: expected undefined to be true // Object.is equality
 This error originated in "src/showcase/pages/__tests__/jsx-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
 
 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
-AssertionError: expected ' ≡ƒÄ¿ Phase 2: JSX & DOM Tests    1∩╕ÅΓâú RΓÇª' to contain 'Click Count: 1'
- Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/jsx-test.test.ts:78:39
-     76| 
-     77|       setTimeout(() => {
-     78|         expect(container.textContent).toContain('Click Count: 1');
+AssertionError: expected '≡ƒÄ» Phase 2: Control Flow Primitives 1ΓÇª' to contain 'Content is hidden'
+ Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/control-flow-test.test.ts:36:39
+     34| 
+     35|       setTimeout(() => {
+     36|         expect(container.textContent).toContain('Content is hidden');
        |                                       ^
-     79|         done();
-     80|       }, 50);
+     37|         expect(container.textContent).not.toContain('Content is visiblΓÇª
+     38|         done();
  Γ¥» listOnTimeout node:internal/timers:605:17
  Γ¥» processTimers node:internal/timers:541:7
 
-This error originated in "src/showcase/pages/__tests__/jsx-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+This error originated in "src/showcase/pages/__tests__/control-flow-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
 
 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
-AssertionError: expected ' ≡ƒöî Phase 5: Context API & DependencyΓÇª' to contain 'Theme: light'
+AssertionError: expected '≡ƒÄ» Phase 2: Control Flow Primitives 1ΓÇª' to contain 'Error state is active!'
+ Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/control-flow-test.test.ts:53:39
+     51| 
+     52|       setTimeout(() => {
+     53|         expect(container.textContent).toContain('Error state is activeΓÇª
+       |                                       ^
+     54|         done();
+     55|       }, 50);
+ Γ¥» listOnTimeout node:internal/timers:605:17
+ Γ¥» processTimers node:internal/timers:541:7
+
+This error originated in "src/showcase/pages/__tests__/control-flow-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+AssertionError: expected '≡ƒöî Phase 5: Context API & Dependency ΓÇª' to contain 'Theme: light'
  Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/context-test.test.ts:36:39
      34| 
      35|       setTimeout(() => {
@@ -3107,7 +2777,7 @@ AssertionError: expected ' ≡ƒöî Phase 5: Context API & DependencyΓÇª' to
 This error originated in "src/showcase/pages/__tests__/context-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
 
 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
-AssertionError: expected ' ≡ƒöî Phase 5: Context API & DependencyΓÇª' to contain '#ff0000'
+AssertionError: expected '≡ƒöî Phase 5: Context API & Dependency ΓÇª' to contain '#ff0000'
  Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/context-test.test.ts:50:39
      48| 
      49|       setTimeout(() => {
@@ -3119,6 +2789,20 @@ AssertionError: expected ' ≡ƒöî Phase 5: Context API & DependencyΓÇª' to
  Γ¥» processTimers node:internal/timers:541:7
 
 This error originated in "src/showcase/pages/__tests__/context-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+AssertionError: expected '≡ƒ¢í∩╕Å Phase 4: Error Boundaries & ErrorΓÇª' to contain 'Critical render error!'
+ Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/error-boundary-test.test.ts:38:39
+     36|       setTimeout(() => {
+     37|         expect(container.textContent).toContain('Error Caught');
+     38|         expect(container.textContent).toContain('Critical render errorΓÇª
+       |                                       ^
+     39|         done();
+     40|       }, 50);
+ Γ¥» listOnTimeout node:internal/timers:605:17
+ Γ¥» processTimers node:internal/timers:541:7
+
+This error originated in "src/showcase/pages/__tests__/error-boundary-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
 
 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
 Error: done() callback is deprecated, use promise instead
@@ -3136,49 +2820,7 @@ Error: done() callback is deprecated, use promise instead
 This error originated in "src/showcase/pages/__tests__/context-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
 
 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
-AssertionError: expected ' ≡ƒöî Phase 5: Context API & DependencyΓÇª' to contain 'Welcome, Alice!'
- Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/context-test.test.ts:95:39
-     93| 
-     94|       setTimeout(() => {
-     95|         expect(container.textContent).toContain('Welcome, Alice!');
-       |                                       ^
-     96|         expect(container.textContent).toContain('Role: admin');
-     97|         done();
- Γ¥» listOnTimeout node:internal/timers:605:17
- Γ¥» processTimers node:internal/timers:541:7
-
-This error originated in "src/showcase/pages/__tests__/context-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
-AssertionError: expected ' ≡ƒöî Phase 5: Context API & DependencyΓÇª' to contain 'Welcome, Bob!'
- Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/context-test.test.ts:112:39
-    110| 
-    111|       setTimeout(() => {
-    112|         expect(container.textContent).toContain('Welcome, Bob!');
-       |                                       ^
-    113|         expect(container.textContent).toContain('Role: user');
-    114|         done();
- Γ¥» listOnTimeout node:internal/timers:605:17
- Γ¥» processTimers node:internal/timers:541:7
-
-This error originated in "src/showcase/pages/__tests__/context-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
-AssertionError: expected ' ≡ƒ¢í∩╕Å Phase 4: Error Boundaries & ErroΓÇª' to contain 'Error Caught'
- Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/error-boundary-test.test.ts:37:39
-     35| 
-     36|       setTimeout(() => {
-     37|         expect(container.textContent).toContain('Error Caught');
-       |                                       ^
-     38|         expect(container.textContent).toContain('Critical render errorΓÇª
-     39|         done();
- Γ¥» listOnTimeout node:internal/timers:605:17
- Γ¥» processTimers node:internal/timers:541:7
-
-This error originated in "src/showcase/pages/__tests__/error-boundary-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
-
-ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
-AssertionError: expected ' ≡ƒ¢í∩╕Å Phase 4: Error Boundaries & ErroΓÇª' to contain 'My custom error message'
+AssertionError: expected '≡ƒ¢í∩╕Å Phase 4: Error Boundaries & ErrorΓÇª' to contain 'My custom error message'
  Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/error-boundary-test.test.ts:59:39
      57| 
      58|       setTimeout(() => {
@@ -3192,7 +2834,35 @@ AssertionError: expected ' ≡ƒ¢í∩╕Å Phase 4: Error Boundaries & ErroΓ�
 This error originated in "src/showcase/pages/__tests__/error-boundary-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
 
 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
-AssertionError: expected ' ≡ƒ¢í∩╕Å Phase 4: Error Boundaries & ErroΓÇª' to contain 'Section 1 failed'
+AssertionError: expected '≡ƒöî Phase 5: Context API & Dependency ΓÇª' to contain 'Welcome, Alice!'
+ Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/context-test.test.ts:95:39
+     93| 
+     94|       setTimeout(() => {
+     95|         expect(container.textContent).toContain('Welcome, Alice!');
+       |                                       ^
+     96|         expect(container.textContent).toContain('Role: admin');
+     97|         done();
+ Γ¥» listOnTimeout node:internal/timers:605:17
+ Γ¥» processTimers node:internal/timers:541:7
+
+This error originated in "src/showcase/pages/__tests__/context-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+AssertionError: expected '≡ƒöî Phase 5: Context API & Dependency ΓÇª' to contain 'Welcome, Bob!'
+ Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/context-test.test.ts:112:39
+    110| 
+    111|       setTimeout(() => {
+    112|         expect(container.textContent).toContain('Welcome, Bob!');
+       |                                       ^
+    113|         expect(container.textContent).toContain('Role: user');
+    114|         done();
+ Γ¥» listOnTimeout node:internal/timers:605:17
+ Γ¥» processTimers node:internal/timers:541:7
+
+This error originated in "src/showcase/pages/__tests__/context-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+AssertionError: expected '≡ƒ¢í∩╕Å Phase 4: Error Boundaries & ErrorΓÇª' to contain 'Section 1 failed'
  Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/error-boundary-test.test.ts:99:39
      97| 
      98|       setTimeout(() => {
@@ -3206,7 +2876,7 @@ AssertionError: expected ' ≡ƒ¢í∩╕Å Phase 4: Error Boundaries & ErroΓ�
 This error originated in "src/showcase/pages/__tests__/error-boundary-test.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
 
 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Uncaught Exception ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
-AssertionError: expected ' ≡ƒ¢í∩╕Å Phase 4: Error Boundaries & ErroΓÇª' to contain 'Section 1 failed'
+AssertionError: expected '≡ƒ¢í∩╕Å Phase 4: Error Boundaries & ErrorΓÇª' to contain 'Section 1 failed'
  Γ¥» Timeout._onTimeout src/showcase/pages/__tests__/error-boundary-test.test.ts:118:39
     116| 
     117|       setTimeout(() => {
@@ -3221,10 +2891,10 @@ This error originated in "src/showcase/pages/__tests__/error-boundary-test.test.
 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
 
 
-[2m Test Files [22m [1m[31m6 failed[39m[22m[2m | [22m[1m[32m6 passed[39m[22m[90m (12)[39m
-[2m      Tests [22m [1m[31m26 failed[39m[22m[2m | [22m[1m[32m79 passed[39m[22m[90m (105)[39m
-[2m     Errors [22m [1m[31m14 errors[39m[22m
-[2m   Start at [22m 03:17:58
-[2m   Duration [22m 3.71s[2m (transform 12.75s, setup 497ms, import 17.60s, tests 1.26s, environment 15.11s)[22m
+[2m Test Files [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m8 passed[39m[22m[90m (12)[39m
+[2m      Tests [22m [1m[31m12 failed[39m[22m[2m | [22m[1m[32m93 passed[39m[22m[90m (105)[39m
+[2m     Errors [22m [1m[31m15 errors[39m[22m
+[2m   Start at [22m 03:19:42
+[2m   Duration [22m 3.57s[2m (transform 13.63s, setup 837ms, import 18.61s, tests 1.32s, environment 16.04s)[22m
 
 ΓÇëELIFECYCLEΓÇë Test failed. See above for more details.
