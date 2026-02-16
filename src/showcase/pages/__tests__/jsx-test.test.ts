@@ -3,8 +3,8 @@
  * Tests reactive attributes, event handlers, style objects
  */
 
-import { beforeEach, describe, expect, it } from 'vitest'
-import { JsxTestPage } from '../jsx-test.psr'
+import { beforeEach, describe, expect, it } from 'vitest';
+import { JsxTestPage } from '../jsx-test.psr';
 
 describe('JsxTestPage', () => {
   let container: HTMLElement;
