@@ -60,6 +60,13 @@ component App() {
     setCurrentPath('/error-boundary');
   };
   
+  
+  const goMegaErrorBoundary = () => {
+    navigate('/error-boundary-mega');
+    setCurrentPath('/error-boundary-mega');
+  };
+  
+
   const goContext = () => {
     navigate('/context');
     setCurrentPath('/context');
@@ -112,6 +119,13 @@ component App() {
             style="padding: 10px 20px; font-size: 14px; background: #8b5cf6; border: 2px solid #8b5cf6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
             🔌 Context
           </button>
+          
+          <button 
+            onClick={goMegaErrorBoundary}
+            style="padding: 10px 20px; font-size: 14px; background: #a41e6a; border: 2px solid #3b82f6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+            Mega Error
+          </button>
+
           
           <button 
             onClick={goAbout}
