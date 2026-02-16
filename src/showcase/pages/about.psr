@@ -39,6 +39,7 @@ export component AboutPage() {
           <li>🚀 Optimized build pipeline with Vite</li>
                  <li>🚀 AI IS STOOPID </li>
                  <li>🚀 AI IS STOOPID 2 </li>
+                 <li>🚀 AI IS STOOPID 3 </li>
         </ul>
         
         <button 

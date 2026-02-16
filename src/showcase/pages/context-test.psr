@@ -40,11 +40,7 @@ function ThemeProvider(props) {
   
   const themeValue = { theme, setTheme, primaryColor, setPrimaryColor };
   
-  return (
-    <ThemeContext.Provider value={themeValue}>
-      {props.children}
-    </ThemeContext.Provider>
-  );
+  return ThemeContext.Provider({ value: themeValue, children: () => props.children });
 }
 
 // User provider component
@@ -64,11 +60,7 @@ function UserProvider(props) {
   
   const userValue = { user, isLoggedIn, login, logout };
   
-  return (
-    <UserContext.Provider value={userValue}>
-      {props.children}
-    </UserContext.Provider>
-  );
+  return UserContext.Provider({ value: userValue, children: () => props.children });
 }
 
 // Settings provider component
@@ -76,14 +68,11 @@ function SettingsProvider(props) {
   const [fontSize, setFontSize] = createSignal(16);
   const [notifications, setNotifications] = createSignal(true);
   const [language, setLanguage] = createSignal('en');
+  const [animations, setAnimations] = createSignal(true);
   
-  const settingsValue = { fontSize, setFontSize, notifications, setNotifications, language, setLanguage };
+  const settingsValue = { fontSize, setFontSize, notifications, setNotifications, language, setLanguage, animations, setAnimations };
   
-  return (
-    <SettingsContext.Provider value={settingsValue}>
-      {props.children}
-    </SettingsContext.Provider>
-  );
+  return SettingsContext.Provider({ value: settingsValue, children: () => props.children });
 }
 
 // Consumer component - Theme
@@ -128,9 +117,9 @@ function SettingsDisplay() {
     <div style={`padding: 15px; background: #1a1a1a; border-radius: 4px; font-size: ${ctx.fontSize()}px;`}>
       <p style="margin: 0; color: white; font-weight: bold;">Current Settings</p>
       <p style="margin: 5px 0 0 0; color: #94a3b8;">
-        Font: {ctx.fontSize()}px | 
-        Notifications: {ctx.notifications() ? 'ON' : 'OFF'} | 
-        Language: {ctx.language()}
+        {'Font: '}{ctx.fontSize()}{'px | '}
+        {'Notifications: '}{ctx.notifications() ? 'ON' : 'OFF'}{' | '}
+        {'Language: '}{ctx.language()}
       </p>
     </div>
   );
@@ -160,20 +149,47 @@ function DeeplyNestedComponent() {
 }
 
 export component ContextTestPage() {
+  // Create signals for contexts locally
+  const [theme, setTheme] = createSignal('dark');
+  const [primaryColor, setPrimaryColor] = createSignal('#3b82f6');
+  const themeValue = { theme, setTheme, primaryColor, setPrimaryColor };
+  
+  const [user, setUser] = createSignal({ name: 'Guest', role: 'visitor' });
+  const [isLoggedIn, setIsLoggedIn] = createSignal(false);
+  const login = (name, role) => {
+    setUser({ name, role });
+    setIsLoggedIn(true);
+  };
+  const logout = () => {
+    setUser({ name: 'Guest', role: 'visitor' });
+    setIsLoggedIn(false);
+  };
+  const userValue = { user, isLoggedIn, login, logout };
+  
+  const [fontSize, setFontSize] = createSignal(16);
+  const [notifications, setNotifications] = createSignal(true);
+  const [language, setLanguage] = createSignal('en');
+  const [animations, setAnimations] = createSignal(true);
+  const settingsValue = { fontSize, setFontSize, notifications, setNotifications, language, setLanguage, animations, setAnimations };
+  
+  // Build provider tree with deferred children - no wrappers
+  const content = ThemeContext.Provider({ 
+    value: themeValue,
+    children: () => UserContext.Provider({ 
+      value: userValue,
+      children: () => SettingsContext.Provider({ 
+        value: settingsValue,
+        children: () => ContextDemoContent() 
+      }) 
+    }) 
+  });
+  
   return (
     <div>
       <h2 style="font-size: 32px; margin-bottom: 20px; color: #8b5cf6;">
         🔌 Phase 5: Context API & Dependency Injection
       </h2>
-      
-      {/* Wrap everything in providers */}
-      <ThemeProvider>
-        <UserProvider>
-          <SettingsProvider>
-            <ContextDemoContent />
-          </SettingsProvider>
-        </UserProvider>
-      </ThemeProvider>
+      {content}
     </div>
   );
 }
