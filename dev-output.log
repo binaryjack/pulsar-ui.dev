@@ -10601,3 +10601,8 @@ const UserContext = createContext({
 [2m04:01:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/control-flow.js[22m
 [2m04:01:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/error-boundary.js[22m
 [2m04:01:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/resource.js[22m
+[pulsar] HMR: PSR file changed - E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/control-flow-test.psr
+[pulsar] HMR: Found 1 modules
+[pulsar] HMR: Invalidating module - /src/showcase/pages/control-flow-test.psr
+[pulsar] HMR: PSR file changed, invalidating E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/control-flow-test.psr
+[2m04:05:18[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/showcase/pages/control-flow-test.psr[22m
