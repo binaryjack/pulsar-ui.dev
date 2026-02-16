@@ -10424,3 +10424,13 @@ const ThemeContext = createContext({
 const UserContext = createContext({
 ...
 [pulsar] transform() hook: context-test.psr already transformed, skipping
+[pulsar] HMR: PSR file changed - E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/lab/counter.psr
+[pulsar] HMR: Found 1 modules
+[pulsar] HMR: Invalidating module - /src/lab/counter.psr
+[pulsar] HMR: PSR file changed, invalidating E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/lab/counter.psr
+[2m03:21:31[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/lab/counter.psr[22m
+[pulsar] HMR: PSR file changed - E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/lab/counter.psr
+[pulsar] HMR: Found 1 modules
+[pulsar] HMR: Invalidating module - /src/lab/counter.psr
+[pulsar] HMR: PSR file changed, invalidating E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/lab/counter.psr
+[2m03:21:36[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/lab/counter.psr[22m
