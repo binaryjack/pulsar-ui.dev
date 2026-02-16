@@ -70,9 +70,35 @@ export const WaitingDemo = () => {
     <div>
       {waitingContainer}
       
+      <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; margin-top: 15px;">
+        <div style="color: #10b981; font-weight: bold; margin-bottom: 10px;">
+          📊 Resource Loading Status:
+        </div>
+        <div style="display: grid; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #0a0a0a; border-radius: 4px;">
+            <span style="color: #94a3b8; font-size: 13px;">User Resource:</span>
+            <span style={`color: ${userResource.isLoading ? '#f59e0b' : '#10b981'}; font-weight: bold; font-size: 12px;`}>
+              {userResource.isLoading ? '⏳ Loading...' : '✓ Loaded'}
+            </span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #0a0a0a; border-radius: 4px;">
+            <span style="color: #94a3b8; font-size: 13px;">Posts Resource:</span>
+            <span style={`color: ${postsResource.isLoading ? '#f59e0b' : '#10b981'}; font-weight: bold; font-size: 12px;`}>
+              {postsResource.isLoading ? '⏳ Loading...' : '✓ Loaded'}
+            </span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #0a0a0a; border-radius: 4px;">
+            <span style="color: #94a3b8; font-size: 13px;">Activity Resource:</span>
+            <span style={`color: ${activityResource.isLoading ? '#f59e0b' : '#10b981'}; font-weight: bold; font-size: 12px;`}>
+              {activityResource.isLoading ? '⏳ Loading...' : '✓ Loaded'}
+            </span>
+          </div>
+        </div>
+      </div>
+      
       <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border-left: 3px solid #10b981; margin-top: 15px;">
         <div style="color: #64748b; font-size: 12px;">
-          💡 Waiting coordinates 3 resources - skeleton until ALL loaded.
+          💡 Waiting coordinates 3 resources - skeleton shows until ALL are loaded.
         </div>
       </div>
     </div>

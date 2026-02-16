@@ -28,14 +28,14 @@ export const ShowDemo = ({ showContent, setShowContent, hasError, setHasError }:
       </div>
       
       <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; min-height: 80px;">
-        <ShowRegistry when={showContent()} fallback={<p style="color: #ef4444;">Content is hidden</p>}>
+        <ShowRegistry when={() => showContent()} fallback={<p style="color: #ef4444;">Content is hidden</p>}>
           <div style="color: #10b981;">
             <p style="margin: 0 0 10px 0; font-size: 16px; font-weight: bold;">✓ Content is visible!</p>
             <p style="margin: 0; color: #94a3b8;">This appears when showContent() is true.</p>
           </div>
         </ShowRegistry>
         
-        <ShowRegistry when={hasError()}>
+        <ShowRegistry when={() => hasError()}>
           <div style="margin-top: 15px; padding: 10px; background: #7f1d1d; border-left: 3px solid #ef4444; color: #fca5a5;">
             ⚠️ Error state is active!
           </div>

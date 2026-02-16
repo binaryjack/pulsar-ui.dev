@@ -3,21 +3,38 @@
  * Shows stale-while-revalidate caching
  */
 
-import { createSignal, createResource, ShowRegistry } from '@pulsar-framework/pulsar.dev';
+import { createSignal, createResource, ShowRegistry, createEffect } from '@pulsar-framework/pulsar.dev';
 import { DemoButton } from '../../common/components/demo-button.psr';
 import { fetchUser } from './mock-api.ts';
 
 export const CacheDemo = () => {
   const [fetchCount, setFetchCount] = createSignal(0);
   const [cacheHits, setCacheHits] = createSignal(0);
+  const [lastFetchTime, setLastFetchTime] = createSignal(0);
+  const [timeSinceLastFetch, setTimeSinceLastFetch] = createSignal(0);
   
   const cachedResource = createResource(() => {
     setFetchCount(c => c + 1);
+    setLastFetchTime(Date.now());
     return fetchUser(1);
   }, { staleTime: 5000 });
   
+  // Update timer every 100ms
+  createEffect(() => {
+    const interval = setInterval(() => {
+      if (lastFetchTime() > 0) {
+        setTimeSinceLastFetch(Date.now() - lastFetchTime());
+      }
+    }, 100);
+    
+    return () => clearInterval(interval);
+  });
+  
   const refetchWithCheck = () => {
-    if (cachedResource.data && Date.now() - (cachedResource._lastFetchTime || 0) < 5000) {
+    const now = Date.now();
+    const elapsed = now - lastFetchTime();
+    
+    if (cachedResource.data && elapsed < 5000) {
       setCacheHits(h => h + 1);
     }
     cachedResource.refetch();
@@ -43,7 +60,19 @@ export const CacheDemo = () => {
       
       <ShowRegistry when={() => cachedResource.data}>
         <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border-left: 3px solid #8b5cf6;">
-          <div style="color: #8b5cf6; font-weight: bold; margin-bottom: 10px;">📦 Cached (Fresh 5s)</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div style="color: #8b5cf6; font-weight: bold;">📦 Cached Data</div>
+            <div style={`font-size: 12px; font-weight: bold; color: ${timeSinceLastFetch() < 5000 ? '#10b981' : '#ef4444'};`}>
+              {timeSinceLastFetch() < 5000 
+                ? `Fresh (${((5000 - timeSinceLastFetch()) / 1000).toFixed(1)}s left)` 
+                : 'Stale'}
+            </div>
+          </div>
+          
+          <div style="width: 100%; height: 6px; background: #334155; border-radius: 3px; margin-bottom: 15px; overflow: hidden;">
+            <div style={`height: 100%; background: ${timeSinceLastFetch() < 5000 ? '#10b981' : '#ef4444'}; width: ${Math.max(0, Math.min(100, ((5000 - timeSinceLastFetch()) / 5000) * 100))}%; transition: width 0.1s linear;`}></div>
+          </div>
+          
           <div style="display: flex; gap: 15px; align-items: center;">
             <img 
               src={cachedResource.data?.avatar} 
@@ -56,7 +85,7 @@ export const CacheDemo = () => {
             </div>
           </div>
           <div style="color: #64748b; font-size: 11px; margin-top: 10px;">
-            💡 Refetch within 5s for instant cache hit!
+            💡 Refetch while fresh = instant cache hit. After 5s = stale-while-revalidate.
           </div>
         </div>
       </ShowRegistry>

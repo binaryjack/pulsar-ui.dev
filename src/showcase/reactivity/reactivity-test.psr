@@ -21,9 +21,14 @@ export component ReactivityTestPage() {
   const fullName = createMemo(() => `${firstName()} ${lastName()}`);
   const isAdult = createMemo(() => age() >= 18);
   
+  // Effect run counter for batch demo
+  const [effectRunCount, setEffectRunCount] = createSignal(0);
+  
   // Effects
   createEffect(() => {
-    console.log(`[Effect] Full name changed to: ${fullName()}`);
+    fullName(); // Track fullName changes
+    setEffectRunCount(c => c + 1);
+    console.log(`[Effect] Full name changed to: ${fullName()} (Run #${effectRunCount() + 1})`);
   });
   
   // Batch handlers
@@ -84,7 +89,11 @@ export component ReactivityTestPage() {
         title="4️⃣ Batched Updates" 
         description="Update multiple signals without triggering intermediate effects"
         borderColor="#f59e0b">
-        <BatchDemo updateAll={updateAll} resetAll={resetAll} />
+        <BatchDemo 
+          updateAll={updateAll} 
+          resetAll={resetAll} 
+          effectRunCount={effectRunCount}
+        />
       </DemoSection>
       
       <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; border: 2px solid #10b981;">

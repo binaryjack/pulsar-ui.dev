@@ -3,18 +3,32 @@
  * Demonstrates batched updates
  */
 
+import type { Accessor } from '@pulsar-framework/pulsar.dev';
 import { DemoButton } from '../../common/components/demo-button.psr';
 
 interface BatchDemoProps {
   updateAll: () => void
   resetAll: () => void
+  effectRunCount: Accessor<number>
 }
 
-export const BatchDemo = ({ updateAll, resetAll }: BatchDemoProps) => {
+export const BatchDemo = ({ updateAll, resetAll, effectRunCount }: BatchDemoProps) => {
   return (
     <div>
+      <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; margin-bottom: 15px; border-left: 3px solid #f59e0b;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="color: #94a3b8; font-size: 14px;">
+            Effect Run Count:
+          </div>
+          <div style="color: #f59e0b; font-size: 32px; font-weight: bold;">
+            {effectRunCount()}
+          </div>
+        </div>
+      </div>
+      
       <p style="color: #9ca3af; font-size: 14px; margin-bottom: 15px;">
-        ℹ️ batch() updates multiple signals without triggering intermediate effects
+        ℹ️ Without batch(): 3 signal updates = 3 effect runs<br/>
+        With batch(): 3 signal updates = 1 effect run
       </p>
       <div style="display: flex; gap: 10px;">
         <DemoButton onClick={updateAll} color="#f59e0b">
