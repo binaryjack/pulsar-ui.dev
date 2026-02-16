@@ -24,11 +24,11 @@ export const UserControls = () => {
         </DemoButton>
       ) : (
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-          {users.map(user => (
+          {users.map(userItem => (
             <DemoButton 
-              onClick={() => ctx.login(user.name, user.role)}
+              onClick={() => ctx.login(userItem.name, userItem.role)}
               color="#10b981">
-              Login as {user.name}
+              Login as {userItem.name}
             </DemoButton>
           ))}
         </div>

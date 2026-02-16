@@ -9,11 +9,10 @@ interface DemoSectionProps {
   title: string
   description?: string
   borderColor?: string
-  children: Accessor<JSX.Element>
+  children: JSX.Element | Accessor<JSX.Element>
 }
 
 export const DemoSection = ({ title, description, borderColor = '#3b82f6', children }: DemoSectionProps) => {
-  // Handle children as function (for reactive content)
   const renderChildren = typeof children === 'function' ? children() : children;
   
   return (

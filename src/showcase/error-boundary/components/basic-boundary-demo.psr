@@ -48,15 +48,15 @@ export const BasicBoundaryDemo = ({ throwError, setThrowError, errorMessage, set
               return <SafeComponent />;
             }
           }}
-          <Catcher>
-            {(error, reset) => (
-              <ErrorDisplay 
-                error={error} 
-                onReset={() => { reset(); setThrowError(false); }} 
-              />
-            )}
-          </Catcher>
         </Tryer>
+        <Catcher>
+          {(error, reset) => (
+            <ErrorDisplay 
+              error={error} 
+              onReset={() => { reset(); setThrowError(false); }} 
+            />
+          )}
+        </Catcher>
       </div>
     </div>
   );

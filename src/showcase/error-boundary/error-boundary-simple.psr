@@ -69,9 +69,9 @@ export component ErrorBoundarySimplePage() {
                   );
                 }
               }}
-              
-              <Catcher>
-                {(error, reset) => (
+            </Tryer>
+            <Catcher>
+              {(error, reset) => (
                   <div style="background: linear-gradient(135deg, #7f1d1d, #991b1b); border: 3px solid #ef4444; border-radius: 12px; padding: 30px; text-align: center;">
                     <div style="font-size: 64px; margin-bottom: 20px;">⚠️</div>
                     
@@ -90,8 +90,7 @@ export component ErrorBoundarySimplePage() {
                     </DemoButton>
                   </div>
                 )}
-              </Catcher>
-            </Tryer>
+            </Catcher>
           </div>
         </div>
       </div>

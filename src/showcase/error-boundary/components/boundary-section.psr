@@ -42,16 +42,16 @@ export const BoundarySection = ({ title, hasError, toggleError }: BoundarySectio
             );
           }
         }}
-        <Catcher>
-          {(error, reset) => (
-            <div style="padding: 10px; background: #7f1d1d; border-radius: 4px;">
-              <p style="margin: 0; color: #fca5a5; font-size: 12px;">
-                {error.message}
-              </p>
-            </div>
-          )}
-        </Catcher>
       </Tryer>
+      <Catcher>
+        {(error, reset) => (
+          <div style="padding: 10px; background: #7f1d1d; border-radius: 4px;">
+            <p style="margin: 0; color: #fca5a5; font-size: 12px;">
+              {error.message}
+            </p>
+          </div>
+        )}
+      </Catcher>
     </div>
   );
 };

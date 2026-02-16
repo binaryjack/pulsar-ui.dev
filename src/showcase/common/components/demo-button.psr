@@ -6,7 +6,7 @@
 import type { Accessor } from '@pulsar-framework/pulsar.dev';
 
 interface DemoButtonProps {
-  children: string | Accessor<JSX.Element>
+  children: string | number | Accessor<string | number | JSX.Element>
   onClick: () => void
   color?: string
   disabled?: boolean
@@ -28,7 +28,6 @@ export const DemoButton = ({
   
   const baseStyle = `${sizes[size]} background: ${disabled ? '#4b5563' : color}; border: none; border-radius: 4px; color: white; cursor: ${disabled ? 'not-allowed' : 'pointer'}; font-weight: 500; transition: all 0.2s;`;
   
-  // Handle children as function (for reactive content)
   const renderChildren = typeof children === 'function' ? children() : children;
   
   return (

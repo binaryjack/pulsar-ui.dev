@@ -6,7 +6,7 @@
 import type { Accessor } from '@pulsar-framework/pulsar.dev';
 
 interface CodeBlockProps {
-  children: string | Accessor<JSX.Element>
+  children: string | number | Accessor<string | number | JSX.Element>
   language?: string
 }
 

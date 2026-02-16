@@ -10,10 +10,12 @@ import { DemoButton } from '../../common/components/demo-button.psr';
 interface VisualErrorBoundaryProps {
   title: string
   borderColor?: string
-  children: Accessor<JSX.Element>
+  children: JSX.Element | Accessor<JSX.Element>
 }
 
 export const VisualErrorBoundary = ({ children, title, borderColor = "#06b6d4" }: VisualErrorBoundaryProps) => {
+  const renderChildren = typeof children === 'function' ? children() : children;
+  
   return (
     <div style={{
       background: '#1e293b',
@@ -34,32 +36,32 @@ export const VisualErrorBoundary = ({ children, title, borderColor = "#06b6d4" }
       
       <div style="background: #0f172a; border-radius: 8px; padding: 20px; min-height: 150px; border: 2px dashed #475569;">
         <Tryer>
-          {children()}
-          <Catcher>
-            {(error, reset) => (
-              <div style="background: linear-gradient(135deg, #7f1d1d, #991b1b); border: 3px solid #ef4444; border-radius: 12px; padding: 25px; text-align: center; box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);">
-                <div style="font-size: 48px; margin-bottom: 15px;">⚠️</div>
-                
-                <h2 style="color: #fca5a5; margin-bottom: 15px; font-size: 22px; font-weight: bold;">
-                  🚨 {title.toUpperCase()} - ERROR CAUGHT!
-                </h2>
-                
-                <div style="background: #450a0a; border: 2px solid #fca5a5; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
-                  <p style="color: #fecaca; font-family: 'Courier New', monospace; font-size: 14px; margin: 0; word-break: break-word;">
-                    💥 "{error.message}"
-                  </p>
-                </div>
-                
-                <DemoButton 
-                  onClick={reset}
-                  color="#10b981"
-                  size="lg">
-                  🔄 RESET {title.toUpperCase()}
-                </DemoButton>
-              </div>
-            )}
-          </Catcher>
+          {renderChildren}
         </Tryer>
+        <Catcher>
+          {(error, reset) => (
+            <div style="background: linear-gradient(135deg, #7f1d1d, #991b1b); border: 3px solid #ef4444; border-radius: 12px; padding: 25px; text-align: center; box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);">
+              <div style="font-size: 48px; margin-bottom: 15px;">⚠️</div>
+              
+              <h2 style="color: #fca5a5; margin-bottom: 15px; font-size: 22px; font-weight: bold;">
+                🚨 {title.toUpperCase()} - ERROR CAUGHT!
+              </h2>
+              
+              <div style="background: #450a0a; border: 2px solid #fca5a5; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                <p style="color: #fecaca; font-family: 'Courier New', monospace; font-size: 14px; margin: 0; word-break: break-word;">
+                  💥 "{error.message}"
+                </p>
+              </div>
+              
+              <DemoButton 
+                onClick={reset}
+                color="#10b981"
+                size="lg">
+                🔄 RESET {title.toUpperCase()}
+              </DemoButton>
+            </div>
+          )}
+        </Catcher>
       </div>
       
       <div style={{
