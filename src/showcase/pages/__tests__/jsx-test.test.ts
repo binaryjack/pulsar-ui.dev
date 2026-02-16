@@ -15,15 +15,12 @@ describe('JsxTestPage', () => {
   });
 
   describe('Reactive Attributes', () => {
-    it.skip('should render initial background color', () => {
-      // Skip: jsdom doesn't properly support inline style objects
+    it('should render initial background color', () => {
       const page = JsxTestPage();
       container.appendChild(page);
 
-      const colorDiv = Array.from(container.querySelectorAll('div')).find((div) =>
-        div.textContent?.includes('Background color:')
-      );
-      expect(colorDiv?.style.background).toBeTruthy();
+      // Check that the color value is displayed in text
+      expect(container.textContent).toContain('Background Color: #3b82f6');
     });
 
     it('should change background color when button clicked', (done) => {

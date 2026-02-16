@@ -10434,3 +10434,50 @@ const UserContext = createContext({
 [pulsar] HMR: Invalidating module - /src/lab/counter.psr
 [pulsar] HMR: PSR file changed, invalidating E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/lab/counter.psr
 [2m03:21:36[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/lab/counter.psr[22m
+[pulsar] HMR: PSR file changed - E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/jsx-test.psr
+[pulsar] HMR: Found 1 modules
+[pulsar] HMR: Invalidating module - /src/showcase/pages/jsx-test.psr
+[pulsar] HMR: PSR file changed, invalidating E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/jsx-test.psr
+[2m03:30:30[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/showcase/pages/jsx-test.psr[22m
+[pulsar] HMR: PSR file changed - E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/jsx-test.psr
+[pulsar] HMR: Found 1 modules
+[pulsar] HMR: Invalidating module - /src/showcase/pages/jsx-test.psr
+[pulsar] HMR: PSR file changed, invalidating E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/jsx-test.psr
+[2m03:30:36[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/showcase/pages/jsx-test.psr[22m
+[pulsar] HMR: PSR file changed - E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/jsx-test.psr
+[pulsar] HMR: Found 1 modules
+[pulsar] HMR: Invalidating module - /src/showcase/pages/jsx-test.psr
+[pulsar] HMR: PSR file changed, invalidating E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/jsx-test.psr
+[2m03:30:43[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/showcase/pages/jsx-test.psr[22m
+[pulsar] HMR: PSR file changed - E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/jsx-test.psr
+[pulsar] HMR: Found 1 modules
+[pulsar] HMR: Invalidating module - /src/showcase/pages/jsx-test.psr
+[pulsar] HMR: PSR file changed, invalidating E:/Sources/visual-schema-builder/packages/pulsar-ui.dev/src/showcase/pages/jsx-test.psr
+[2m03:30:45[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/showcase/pages/jsx-test.psr[22m
+[2m03:32:33[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/component.js[22m
+[2m03:32:33[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/jsx-runtime.js[22m
+[2m03:32:33[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/index.js[22m
+[2m03:33:11[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/component.js[22m
+[2m03:33:12[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/jsx-runtime.js[22m
+[2m03:33:12[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/index.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/bootstrap.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/component.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/context.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/index.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/index.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/jsx-runtime.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/error-boundary.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/portal.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/events.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/lifecycle.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/hooks.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/bootstrap.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/di.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/router.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/state.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/component.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/context.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/registry.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/reactivity.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/resource.js[22m
+[2m03:33:15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/control-flow.js[22m

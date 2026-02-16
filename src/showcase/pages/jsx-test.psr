@@ -51,7 +51,7 @@ export component JsxTestPage() {
               marginBottom: '15px',
               transition: 'background 0.3s'
             }}>
-            Background color: {bgColor()}
+            Background Color: {bgColor()}
           </div>
           <div style="display: flex; gap: 10px; margin-bottom: 15px;">
             <button onClick={() => setBgColor('#3b82f6')} style="padding: 10px 20px; background: #3b82f6; border: none; color: white; border-radius: 6px; cursor: pointer;">Blue</button>
