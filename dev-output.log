@@ -10686,3 +10686,4 @@ const UserContext = createContext({
 [2m04:16:14[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/state.js[22m
 [2m04:16:14[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/component.js[22m
 [2m04:16:14[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mE:/Sources/visual-schema-builder/packages/pulsar.dev/dist/context.js[22m
+ ELIFECYCLE  Command failed with exit code 3221225786.
