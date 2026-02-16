@@ -32,7 +32,7 @@ export component Counter({id}) {
   };
   
   return (
-    <div style="background: #1a1a1a; padding: 30px; border-radius: 12px; margin-bottom: 20px;">
+    <div id={id} style="background: #1a1a1a; padding: 30px; border-radius: 12px; margin-bottom: 20px;">
       <h2 style="font-size: 24px; margin-bottom: 20px; color: #f59e0b;">🧪 Test: Basic Signal Reactivity</h2>
       
       <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
