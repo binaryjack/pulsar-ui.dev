@@ -12,6 +12,7 @@ import { JsxTestPage } from './showcase/pages/jsx-test.psr';
 import { ControlFlowTestPage } from './showcase/pages/control-flow-test.psr';
 import { ResourceTestPage } from './showcase/pages/resource-test.psr';
 import { ErrorBoundaryTestPage } from './showcase/pages/error-boundary-test.psr';
+import { ErrorBoundaryFullDemoPage } from './showcase/pages/error-boundary-mega-demo.psr';
 import { ContextTestPage } from './showcase/pages/context-test.psr';
 import { AssignmentTest } from './showcase/pages/assignment-test.psr';
 import { SimpleTest } from './showcase/pages/simple-codegen-test.psr';
@@ -128,6 +129,7 @@ component App() {
           <Route path="/control-flow" component={ControlFlowTestPage} label="Control Flow" />
           <Route path="/resources" component={ResourceTestPage} label="Resources" />
           <Route path="/error-boundary" component={ErrorBoundaryTestPage} label="Error Boundaries" />
+          <Route path="/error-boundary-mega" component={ErrorBoundaryFullDemoPage} label="Error Boundaries MEGA" />
           <Route path="/context" component={ContextTestPage} label="Context API" />
           <Route path="/about" component={AboutPage} label="About" />
         </Router>

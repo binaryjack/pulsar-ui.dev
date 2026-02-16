@@ -1,0 +1,158 @@
+/**
+ * PHASE 4: Error Boundaries & Error Handling  
+ * Testing: Tryer/Catcher error boundary pattern
+ */
+
+import { createSignal, Tryer, Catcher, ShowRegistry } from '@pulsar-framework/pulsar.dev';
+
+// Components that can throw errors
+component SafeComponent() {
+  return (
+    <div style="padding: 15px; background: #10b981; color: white; border-radius: 4px;">
+      ✓ Component is safe and renders successfully
+    </div>
+  );
+}
+
+component ErrorComponent({ message }) {
+  // Ensure message is evaluated as a function if it's a signal/function
+  const errorMsg = typeof message === 'function' ? message() : message;
+  throw new Error(errorMsg || 'Component rendering failed!');
+}
+
+export component ErrorBoundaryTestPage() {
+  // Test 1: Basic error boundary  
+  const [throwError, setThrowError] = createSignal(false);
+  const [errorMessage, setErrorMessage] = createSignal('Critical render error!');
+  
+  const toggleError = () => {
+    console.log('toggleError called, current throwError():', throwError());
+    setThrowError(!throwError());
+    console.log('toggleError set, new throwError():', !throwError());
+  };
+  
+  console.log('ErrorBoundaryTestPage rendering, throwError():', throwError());
+  
+  return (
+    <div style="padding: 20px; background: #0f172a; color: white; min-height: 100vh;">
+      <h1 style="color: #06b6d4; margin-bottom: 30px; text-align: center; font-size: 36px;">
+        🛡️ Error Boundaries Demo
+      </h1>
+      
+      <div style="max-width: 800px; margin: 0 auto;">
+        {/* Control Panel */}
+        <div style="background: #1a1a1a; padding: 30px; border-radius: 12px; margin-bottom: 30px; border: 2px solid #334155;">
+          <h2 style="color: #fbbf24; margin-bottom: 20px; text-align: center; font-size: 24px;">
+            🎮 Control Panel
+          </h2>
+          
+          <div style="text-align: center; margin-bottom: 20px;">
+            <button 
+              onclick={() => {
+                console.log('Button clicked! Current throwError:', throwError());
+                setThrowError(!throwError());
+                console.log('After toggle, throwError:', !throwError());
+              }}
+              style="padding: 15px 30px; background: #ef4444; border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 18px; font-weight: bold; margin-right: 20px; transform: scale(1); transition: transform 0.1s;"
+            >
+              {throwError() ? '🔧 FIX ERROR' : '💥 TRIGGER ERROR'}
+            </button>
+          </div>
+          
+          <div style="text-align: center; padding: 15px; background: #0a0a0a; border: 2px solid #334155; border-radius: 8px; font-size: 16px; font-weight: bold;">
+            Current State: <span style="color: {throwError() ? '#ef4444' : '#10b981'};">
+              {throwError() ? '🔥 ERROR MODE ACTIVE' : '✅ SAFE MODE ACTIVE'}
+            </span>
+          </div>
+        </div>
+        
+        {/* Error Boundary Container */}
+        <div style="background: #1e293b; padding: 30px; border-radius: 12px; border: 3px solid #06b6d4; position: relative;">
+          <h3 style="color: #06b6d4; margin-bottom: 20px; text-align: center; font-size: 20px;">
+            🛡️ ERROR BOUNDARY PROTECTION ZONE
+          </h3>
+          
+          <div style="background: #0f172a; border-radius: 8px; padding: 20px; min-height: 200px; border: 2px dashed #475569;">
+            <Tryer>
+              {() => {
+                console.log('Tryer rendering, throwError():', throwError());
+                if (throwError()) {
+                  return <ErrorComponent message={() => errorMessage()} />;
+                } else {
+                  return (
+                    <div style="text-align: center; padding: 40px;">
+                      <div style="font-size: 48px; margin-bottom: 20px;">✨</div>
+                      <h3 style="color: #10b981; margin-bottom: 15px; font-size: 24px;">
+                        Component Rendering Successfully!
+                      </h3>
+                      <p style="color: #94a3b8; font-size: 16px; margin: 0;">
+                        Everything is working perfectly. No errors detected.
+                      </p>
+                    </div>
+                  );
+                }
+              }}
+              
+              <Catcher>
+                {(error, reset) => (
+                  <div style="background: linear-gradient(135deg, #7f1d1d, #991b1b); border: 3px solid #ef4444; border-radius: 12px; padding: 30px; text-align: center; animation: pulse 2s infinite;">
+                    <div style="font-size: 64px; margin-bottom: 20px;">⚠️</div>
+                    
+                    <h2 style="color: #fca5a5; margin-bottom: 20px; font-size: 28px; font-weight: bold;">
+                      ERROR CAUGHT BY BOUNDARY!
+                    </h2>
+                    
+                    <div style="background: #450a0a; border: 2px solid #fca5a5; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+                      <h4 style="color: #fecaca; margin-bottom: 15px; font-size: 18px;">Error Details:</h4>
+                      <p style="color: #fecaca; font-family: 'Courier New, monospace'; font-size: 16px; margin: 0; word-break: break-word;">
+                        "{error.message}"
+                      </p>
+                    </div>
+                    
+                    <div style="background: #1e293b; border: 2px solid #06b6d4; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+                      <h4 style="color: #06b6d4; margin-bottom: 10px; font-size: 16px;">✅ What Just Happened?</h4>
+                      <p style="color: #94a3b8; margin: 0; font-size: 14px; line-height: 1.6;">
+                        The component threw an error, but instead of crashing the entire app, 
+                        the Error Boundary caught it and displayed this fallback UI. 
+                        The rest of your app continues to work normally!
+                      </p>
+                    </div>
+                    
+                    <button
+                      onclick={() => {
+                        console.log('Reset button clicked');
+                        reset();
+                        setThrowError(false);
+                      }}
+                      style="padding: 15px 30px; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 18px; font-weight: bold; transform: scale(1); transition: transform 0.1s;"
+                    >
+                      🔄 RESET & RECOVER
+                    </button>
+                  </div>
+                )}
+              </Catcher>
+            </Tryer>
+          </div>
+          
+          {/* Boundary Status Indicator */}
+          <div style="position: absolute; top: -15px; right: 20px; background: #06b6d4; color: white; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: bold;">
+            BOUNDARY ACTIVE
+          </div>
+        </div>
+        
+        {/* Instructions */}
+        <div style="background: #1a1a1a; padding: 25px; border-radius: 12px; margin-top: 30px; border-left: 4px solid #fbbf24;">
+          <h3 style="color: #fbbf24; margin-bottom: 15px; font-size: 20px;">
+            📋 Try This Demo:
+          </h3>
+          <ol style="color: #94a3b8; margin: 0; padding-left: 20px; line-height: 1.8; font-size: 16px;">
+            <li><strong style="color: white;">Click "TRIGGER ERROR"</strong> → Watch the error boundary catch the exception</li>
+            <li><strong style="color: white;">See the large error display</strong> → Much more visible than console errors</li>
+            <li><strong style="color: white;">Click "RESET & RECOVER"</strong> → Component returns to normal state</li>
+            <li><strong style="color: white;">Try multiple times</strong> → Error boundary works consistently</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  );
+}
