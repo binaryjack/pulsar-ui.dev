@@ -54,7 +54,7 @@ export async function fetchActivity(userId: number) {
 export async function loadImage(index: number) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(`https://picsum.photos/300/200?random=${index}`);
+      resolve(`https://placehold.co/300x200?text=Image+${index}`);
     }, Math.random() * 500 + 300);
   });
 }

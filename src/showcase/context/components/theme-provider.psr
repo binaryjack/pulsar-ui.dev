@@ -17,10 +17,15 @@ export const ThemeContext = createContext({
 });
 
 export const ThemeProvider = (props: ThemeProviderProps) => {
-  const [theme, setTheme] = createSignal('dark');
+  const [theme, setTheme] = createSignal('light');
   const [primaryColor, setPrimaryColor] = createSignal('#3b82f6');
   
   const themeValue = { theme, setTheme, primaryColor, setPrimaryColor };
   
-  return ThemeContext.Provider({ value: themeValue, children: () => props.children });
+  // SET VALUE SYNCHRONOUSLY before Provider renders
+  // This ensures children can read context immediately
+  ThemeContext.setValue(themeValue);
+  
+  // Pass children directly as HTMLElement, not as function
+  return ThemeContext.Provider({ value: themeValue, children: props.children });
 };

@@ -32,5 +32,8 @@ export const UserProvider = (props: UserProviderProps) => {
   
   const userValue = { user, isLoggedIn, login, logout };
   
-  return UserContext.Provider({ value: userValue, children: () => props.children });
+  // SET VALUE SYNCHRONOUSLY before Provider renders
+  UserContext.setValue(userValue);
+  
+  return UserContext.Provider({ value: userValue, children: props.children });
 };

@@ -29,43 +29,51 @@ export component ContextTestPage() {
       />
       
       <ThemeProvider>
-        <UserProvider>
-          <SettingsProvider>
-            <DemoSection 
-              title="1️⃣ Theme Context" 
-              description="Share theme state across components without prop drilling"
-              borderColor="#8b5cf6">
-              <div style="margin-bottom: 20px;">
-                <ThemeControls />
-              </div>
-              <ThemedBox />
-            </DemoSection>
-            
-            <DemoSection 
-              title="2️⃣ User Context" 
-              description="Manage user authentication state globally"
-              borderColor="#10b981">
-              <div style="margin-bottom: 20px;">
-                <UserControls />
-              </div>
-              <UserProfile />
-            </DemoSection>
-            
-            <DemoSection 
-              title="3️⃣ Multiple Contexts" 
-              description="Components can consume multiple contexts simultaneously"
-              borderColor="#f59e0b">
-              <div style="padding: 15px; background: #0a0a0a; border: 2px dashed #64748b; border-radius: 4px;">
-                <p style="margin: 0 0 10px 0; color: #8b5cf6; font-weight: bold;">
-                  🎯 Deeply Nested Component
-                </p>
-                <p style="margin: 0; color: #94a3b8; font-size: 14px;">
-                  This component can access all contexts without prop drilling
-                </p>
-              </div>
-            </DemoSection>
-          </SettingsProvider>
-        </UserProvider>
+        {() => (
+          <UserProvider>
+            {() => (
+              <SettingsProvider>
+                {() => (
+                  <>
+                    <DemoSection 
+                      title="1️⃣ Theme Context" 
+                      description="Share theme state across components without prop drilling"
+                      borderColor="#8b5cf6">
+                      <div style="margin-bottom: 20px;">
+                        <ThemeControls />
+                      </div>
+                      <ThemedBox />
+                    </DemoSection>
+                    
+                    <DemoSection 
+                      title="2️⃣ User Context" 
+                      description="Manage user authentication state globally"
+                      borderColor="#10b981">
+                      <div style="margin-bottom: 20px;">
+                        <UserControls />
+                      </div>
+                      <UserProfile />
+                    </DemoSection>
+                    
+                    <DemoSection 
+                      title="3️⃣ Multiple Contexts" 
+                      description="Components can consume multiple contexts simultaneously"
+                      borderColor="#f59e0b">
+                      <div style="padding: 15px; background: #0a0a0a; border: 2px dashed #64748b; border-radius: 4px;">
+                        <p style="margin: 0 0 10px 0; color: #8b5cf6; font-weight: bold;">
+                          🎯 Deeply Nested Component
+                        </p>
+                        <p style="margin: 0; color: #94a3b8; font-size: 14px;">
+                          This component can access all contexts without prop drilling
+                        </p>
+                      </div>
+                    </DemoSection>
+                  </>
+                )}
+              </SettingsProvider>
+            )}
+          </UserProvider>
+        )}
       </ThemeProvider>
     </div>
   );

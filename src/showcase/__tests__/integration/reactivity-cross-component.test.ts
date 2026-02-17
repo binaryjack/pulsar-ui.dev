@@ -4,7 +4,7 @@
  */
 
 import { beforeEach, describe, expect, it } from 'vitest';
-import { ReactivityTestPage } from '../../pages/reactivity-test.psr';
+import { ReactivityTestPage } from '../../reactivity/reactivity-test.psr';
 
 describe('Reactivity Cross-Component Integration', () => {
   let container: HTMLElement;

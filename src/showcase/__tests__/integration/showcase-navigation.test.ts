@@ -3,8 +3,8 @@
  * Tests router navigation between showcase pages
  */
 
-import { beforeEach, describe, expect, it } from 'vitest'
-import { HomePage } from '../../pages/home.psr'
+import { beforeEach, describe, expect, it } from 'vitest';
+import { HomePage } from '../../home/home.psr';
 
 describe.skip('Showcase Navigation Integration', () => {
   let container: HTMLElement;

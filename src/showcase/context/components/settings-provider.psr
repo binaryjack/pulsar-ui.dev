@@ -25,5 +25,8 @@ export const SettingsProvider = (props: SettingsProviderProps) => {
   
   const settingsValue = { fontSize, setFontSize, notifications, setNotifications, language, setLanguage };
   
-  return SettingsContext.Provider({ value: settingsValue, children: () => props.children });
+  // SET VALUE SYNCHRONOUSLY before Provider renders
+  SettingsContext.setValue(settingsValue);
+  
+  return SettingsContext.Provider({ value: settingsValue, children: props.children });
 };
