@@ -6,8 +6,42 @@
 import { PageHeader } from '../common/components/page-header.psr';
 import { DemoSection } from '../common/components/demo-section.psr';
 import { CodeBlock } from '../common/components/code-block.psr';
+import { createSignal } from '@pulsar-framework/pulsar.dev';
 
 export component BootstrapTestPage() {
+  const [count1, setCount1] = createSignal(0);
+  const [count2, setCount2] = createSignal(0);
+  const [logs, setLogs] = createSignal<string[]>([]);
+  const [isMounted, setIsMounted] = createSignal(false);
+  const [serviceData, setServiceData] = createSignal<any>(null);
+  const [appStatus, setAppStatus] = createSignal('Not mounted');
+  
+  const addLog = (message: string) => {
+    setLogs([...logs(), `${new Date().toLocaleTimeString()} - ${message}`]);
+  };
+  
+  const simulateMount = () => {
+    setIsMounted(true);
+    addLog('✅ onMount() called');
+  };
+  
+  const simulateUnmount = () => {
+    setIsMounted(false);
+    addLog('🔴 onUnmount() called');
+  };
+  
+  const loadService = () => {
+    setServiceData({ theme: 'dark', apiUrl: 'https://api.example.com' });
+  };
+  
+  const toggleApp = () => {
+    if (appStatus() === 'Mounted ✅') {
+      setAppStatus('Unmounted 🔴');
+    } else {
+      setAppStatus('Mounted ✅');
+    }
+  };
+  
   return (
     <div>
       <PageHeader 
@@ -19,8 +53,24 @@ export component BootstrapTestPage() {
       
       <DemoSection 
         title="1️⃣ Basic Usage" 
-        description="Minimal app initialization"
+        description="Minimal app initialization - Interactive Demo"
         borderColor="#eab308">
+        
+        <div style="margin-bottom: 20px; padding: 20px; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); border-radius: 8px;">
+          <div style="text-align: center; color: white; margin-bottom: 20px;">
+            <h3 style="margin: 0 0 15px 0; font-size: 20px; font-weight: bold;">✨ Live Counter Demo</h3>
+            <div style="font-size: 48px; font-weight: bold; margin: 20px 0;">{count1()}</div>
+            <button 
+              onclick={() => setCount1(count1() + 1)}
+              style="padding: 12px 24px; background: white; color: #f59e0b; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+              Increment Counter
+            </button>
+          </div>
+          <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; color: white; font-size: 13px;">
+            <strong>💡 This demonstrates:</strong> A reactive component mounted with pulse(App). The counter updates instantly without page reload.
+          </div>
+        </div>
+        
         <CodeBlock code={`import { pulse } from '@pulsar-framework/pulsar.dev';
 import App from './app.psr';
 
@@ -31,10 +81,61 @@ pulse(App);
 pulse(App, '#root');`} />
       </DemoSection>
       
+      
       <DemoSection 
         title="2️⃣ Configuration Object" 
-        description="Advanced initialization with lifecycle hooks"
+        description="Advanced initialization with lifecycle hooks - Interactive Demo"
         borderColor="#3b82f6">
+        
+        <div style="margin-bottom: 20px; padding: 20px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 8px;">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <div style={`padding: 30px; background: ${isMounted() ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}; border-radius: 8px; transition: all 0.3s;`}>
+              <div style="font-size: 48px; margin-bottom: 10px;">{isMounted() ? '✅' : '🔴'}</div>
+              <div style="color: white; font-size: 18px; font-weight: bold;">
+                App Status: {isMounted() ? 'Mounted' : 'Not Mounted'}
+              </div>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+            <button 
+              onclick={() => simulateMount()}
+              disabled={isMounted()}
+              style={`padding: 12px 24px; background: ${isMounted() ? '#6b7280' : '#10b981'}; color: white; border: none; border-radius: 6px; cursor: ${isMounted() ? 'not-allowed' : 'pointer'}; font-weight: bold; opacity: ${isMounted() ? '0.5' : '1'};`}>
+              ⚡ Mount App
+            </button>
+            <button 
+              onclick={() => simulateUnmount()}
+              disabled={!isMounted()}
+              style={`padding: 12px 24px; background: ${!isMounted() ? '#6b7280' : '#ef4444'}; color: white; border: none; border-radius: 6px; cursor: ${!isMounted() ? 'not-allowed' : 'pointer'}; font-weight: bold; opacity: ${!isMounted() ? '0.5' : '1'};`}>
+              🔴 Unmount App
+            </button>
+          </div>
+          
+          <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px;">
+            <div style="color: #10b981; font-weight: bold; margin-bottom: 10px; font-size: 14px;">📋 Lifecycle Events Log:</div>
+            <div style="max-height: 150px; overflow-y: auto;">
+              {logs().length === 0 ? (
+                <div style="color: rgba(255,255,255,0.6); font-style: italic; font-size: 13px;">
+                  No events yet. Click "Mount App" to see lifecycle hooks fire.
+                </div>
+              ) : (
+                <div>
+                  {logs().map((log) => (
+                    <div style="color: rgba(255,255,255,0.9); padding: 4px 0; font-family: 'Consolas', monospace; font-size: 12px;">
+                      {log}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+          
+          <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; color: white; font-size: 13px; margin-top: 15px;">
+            <strong>💡 This demonstrates:</strong> The onMount() and onUnmount() lifecycle callbacks fire when your app is mounted/unmounted.
+          </div>
+        </div>
+        
         <CodeBlock code={`pulse(App, {
   root: '#app',
   
@@ -55,8 +156,42 @@ pulse(App, '#root');`} />
       
       <DemoSection 
         title="3️⃣ With Dependency Injection" 
-        description="Integrate IoC container for services"
+        description="Integrate IoC container for services - Interactive Demo"
         borderColor="#8b5cf6">
+        
+        <div style="margin-bottom: 20px; padding: 20px; background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-radius: 8px;">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <div style="font-size: 48px; margin-bottom: 10px;">🔌</div>
+            <div style="color: white; font-size: 18px; font-weight: bold; margin-bottom: 20px;">
+              Dependency Injection Container
+            </div>
+            <button 
+              onclick={() => loadService()}
+              disabled={serviceData() !== null}
+              style={`padding: 12px 24px; background: ${serviceData() ? '#6b7280' : 'white'}; color: ${serviceData() ? 'white' : '#8b5cf6'}; border: none; border-radius: 6px; cursor: ${serviceData() ? 'not-allowed' : 'pointer'}; font-weight: bold; opacity: ${serviceData() ? '0.5' : '1'};`}>
+              {serviceData() ? '✅ Services Loaded' : '⚡ Load Services'}
+            </button>
+          </div>
+          
+          {serviceData() ? (
+            <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; border-left: 4px solid #c084fc;">
+              <div style="color: #c084fc; font-weight: bold; margin-bottom: 10px; font-size: 14px;">📦 Resolved ConfigService:</div>
+              <div style="color: rgba(255,255,255,0.9); font-family: 'Consolas', monospace; font-size: 13px;">
+                <div style="padding: 5px 0;">theme: "{serviceData().theme}"</div>
+                <div style="padding: 5px 0;">apiUrl: "{serviceData().apiUrl}"</div>
+              </div>
+            </div>
+          ) : (
+            <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; text-align: center; color: rgba(255,255,255,0.6); font-style: italic;">
+              Services not loaded yet. Click button above.
+            </div>
+          )}
+          
+          <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; color: white; font-size: 13px; margin-top: 15px;">
+            <strong>💡 This demonstrates:</strong> The ServiceManager resolves dependencies and injects them into your components.
+          </div>
+        </div>
+        
         <CodeBlock code={`import { pulse, ServiceManager } from '@pulsar-framework/pulsar.dev';
 import { ConfigService, ApiService } from './services';
 
@@ -107,8 +242,47 @@ if (import.meta.hot) {
       
       <DemoSection 
         title="5️⃣ Return Value" 
-        description="ApplicationRoot instance for programmatic control"
+        description="ApplicationRoot instance for programmatic control - Interactive Demo"
         borderColor="#f59e0b">
+        
+        <div style="margin-bottom: 20px; padding: 20px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 8px;">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <div style={`padding: 30px; background: ${appStatus() === 'Mounted ✅' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}; border-radius: 8px; transition: all 0.3s;`}>
+              <div style="font-size: 48px; margin-bottom: 10px;">{appStatus() === 'Mounted ✅' ? '⚡' : '🔴'}</div>
+              <div style="color: white; font-size: 24px; font-weight: bold;">{count2()}</div>
+              <div style="color: rgba(255,255,255,0.8); font-size: 14px; margin-top: 10px;">Status: {appStatus()}</div>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;">
+            <button 
+              onclick={() => { toggleApp(); setCount2(0); }}
+              style="padding: 12px 24px; background: white; color: #f59e0b; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+              {appStatus() === 'Mounted ✅' ? 'app.unmount()' : 'app.mount()'}
+            </button>
+            <button 
+              onclick={() => setCount2(count2() + 1)}
+              disabled={appStatus() !== 'Mounted ✅'}
+              style={`padding: 12px 24px; background: ${appStatus() === 'Mounted ✅' ? '#10b981' : '#6b7280'}; color: white; border: none; border-radius: 6px; cursor: ${appStatus() === 'Mounted ✅' ? 'pointer' : 'not-allowed'}; font-weight: bold; opacity: ${appStatus() === 'Mounted ✅' ? '1' : '0.5'};`}>
+              Increment (only when mounted)
+            </button>
+          </div>
+          
+          <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; border-left: 4px solid #fbbf24;">
+            <div style="color: #fbbf24; font-weight: bold; margin-bottom: 10px; font-size: 14px;">📊 ApplicationRoot API:</div>
+            <div style="color: rgba(255,255,255,0.9); font-family: 'Consolas', monospace; font-size: 13px;">
+              <div style="padding: 4px 0;">app.isMounted: <span style="color: #60a5fa;">{appStatus() === 'Mounted ✅' ? 'true' : 'false'}</span></div>
+              <div style="padding: 4px 0;">app.rootElement: <span style="color: #60a5fa;">HTMLDivElement</span></div>
+              <div style="padding: 4px 0;">app.mount(): <span style="color: #10b981;">remounts app</span></div>
+              <div style="padding: 4px 0;">app.unmount(): <span style="color: #ef4444;">unmounts app</span></div>
+            </div>
+          </div>
+          
+          <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; color: white; font-size: 13px; margin-top: 15px;">
+            <strong>💡 This demonstrates:</strong> pulse() returns an ApplicationRoot instance letting you programmatically control your app lifecycle.
+          </div>
+        </div>
+        
         <CodeBlock code={`const app = pulse(App, { root: '#app' });
 
 // Programmatic control

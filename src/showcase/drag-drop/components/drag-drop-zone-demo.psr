@@ -52,7 +52,7 @@ export component DragDropZoneDemo() {
       </div>
       
       <Show when={files().length > 0}>
-        <div style="margin-top: 20px; padding: 20px; background: #0f172a; border: 2px solid #06b6d4; border-radius: 8px;">
+        <div style="margin-top: 20px; padding: 20px; background: #0f172a; border: 2px solid #3a5458; border-radius: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
             <h4 style="margin: 0; color: #06b6d4; font-size: 14px;">
               📎 Uploaded Files ({files().length})
