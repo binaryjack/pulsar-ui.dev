@@ -111,7 +111,7 @@ test('Deep debug - Image gallery', async ({ page }) => {
     await galleryBtn.click();
     console.log('[CLICKED GALLERY BUTTON]');
 
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(5000); // Increased wait time
 
     // Check for images
     const imgCount = await page.locator('img').count();
