@@ -11,7 +11,18 @@ test('Deep debug - Context theme toggle', async ({ page }) => {
     console.log('[PAGE ERROR]:', error.message);
   });
 
-  await page.goto('http://localhost:3004/context');
+  await page.goto('http://localhost:5173/');
+  await page.waitForTimeout(1000);
+
+  // Navigate to Context page
+  await page.getByText('Context API', { exact: true }).click();
+  await page.waitForTimeout(1000);
+
+  // Verify we are on the context page
+  if (!(await page.getByText('Context API & Dependency Injection').isVisible())) {
+    console.log('[TEST] Navigation failed, forcing URL');
+    await page.goto('http://localhost:5173/context');
+  }
   await page.waitForTimeout(2000);
 
   // Evaluate in browser - check context state
@@ -74,7 +85,18 @@ test('Deep debug - Image gallery', async ({ page }) => {
     console.log('[PAGE ERROR]:', error.message);
   });
 
-  await page.goto('http://localhost:3004/resources');
+  await page.goto('http://localhost:5173/');
+  await page.waitForTimeout(1000);
+
+  // Navigate to Resources page
+  await page.getByText('Resources', { exact: true }).click();
+  await page.waitForTimeout(1000);
+
+  // If navigation failed, force URL
+  if (!(await page.getByText('Resources').first().isVisible())) {
+    console.log('[TEST] Navigation failed, forcing URL');
+    await page.goto('http://localhost:5173/resources');
+  }
   await page.waitForTimeout(2000);
 
   console.log('[PAGE LOADED]');

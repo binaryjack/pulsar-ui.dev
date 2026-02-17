@@ -8,7 +8,7 @@ let networkRequestCount = 0;
 export async function fetchUser(id: number) {
   const requestId = ++networkRequestCount;
   console.log(`[Network #${requestId}] Fetching user ${id}`);
-  
+
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
@@ -25,7 +25,7 @@ export async function fetchUser(id: number) {
 export async function fetchPosts(userId: number) {
   const requestId = ++networkRequestCount;
   console.log(`[Network #${requestId}] Fetching posts for user ${userId}`);
-  
+
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve([
@@ -39,7 +39,7 @@ export async function fetchPosts(userId: number) {
 export async function fetchActivity(userId: number) {
   const requestId = ++networkRequestCount;
   console.log(`[Network #${requestId}] Fetching activity for user ${userId}`);
-  
+
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
@@ -53,9 +53,12 @@ export async function fetchActivity(userId: number) {
 
 export async function loadImage(index: number) {
   return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(`https://placehold.co/300x200?text=Image+${index}`);
-    }, Math.random() * 500 + 300);
+    setTimeout(
+      () => {
+        resolve(`https://placehold.co/300x200?text=Image+${index}`);
+      },
+      Math.random() * 500 + 300
+    );
   });
 }
 
