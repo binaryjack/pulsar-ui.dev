@@ -1,0 +1,80 @@
+/**
+ * Kanban Board Demo
+ * Drag tasks between columns
+ */
+
+import { createSignal, For } from '@pulsar-framework/pulsar.dev';
+
+interface ITask {
+  id: number;
+  text: string;
+  column: string;
+}
+
+export component KanbanBoardDemo() {
+  const [tasks, setTasks] = createSignal<ITask[]>([
+    { id: 1, text: 'Design system', column: 'todo' },
+    { id: 2, text: 'API integration', column: 'todo' },
+    { id: 3, text: 'User auth', column: 'inprogress' },
+    { id: 4, text: 'Dashboard UI', column: 'done' },
+  ]);
+  
+  const [draggedTask, setDraggedTask] = createSignal<ITask | null>(null);
+  
+  const columns = [
+    { id: 'todo', title: 'To Do', color: '#64748b' },
+    { id: 'inprogress', title: 'In Progress', color: '#3b82f6' },
+    { id: 'done', title: 'Done', color: '#10b981' },
+  ];
+  
+  const getColumnTasks = (columnId: string) => {
+    return tasks().filter(t => t.column === columnId);
+  };
+  
+  const handleDragStart = (task: ITask) => (e: DragEvent) => {
+    setDraggedTask(task);
+  };
+  
+  const handleDragOver = (e: DragEvent) => {
+    e.preventDefault();
+  };
+  
+  const handleDrop = (columnId: string) => (e: DragEvent) => {
+    e.preventDefault();
+    const task = draggedTask();
+    
+    if (!task || task.column === columnId) return;
+    
+    setTasks(tasks().map(t => 
+      t.id === task.id ? { ...t, column: columnId } : t
+    ));
+    setDraggedTask(null);
+  };
+  
+  return (
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+      <For each={columns}>
+        {(column) => (
+          <div 
+            onDragOver={handleDragOver}
+            onDrop={handleDrop(column.id)}
+            style={`padding: 15px; background: #0a0a0a; border: 2px solid ${column.color}; border-radius: 8px; min-height: 300px;`}>
+            <h3 style={`margin: 0 0 15px 0; color: ${column.color}; font-size: 16px;`}>
+              {column.title}
+            </h3>
+            <For each={getColumnTasks(column.id)}>
+              {(task) => (
+                <div 
+                  draggable="true"
+                  onDragStart={handleDragStart(task)}
+                  style={`padding: 12px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid ${column.color}; border-radius: 6px; cursor: move; color: #e2e8f0;`}>
+                  {task.text}
+                </div>
+              )}
+            </For>
+          </div>
+        )}
+      </For>
+    </div>
+  );
+}

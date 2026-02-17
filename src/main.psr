@@ -5,12 +5,17 @@
  */
 
 import { createSignal, useNavigate, Router, Route } from '@pulsar-framework/pulsar.dev';
+import { SidebarNav } from './components/sidebar-nav.psr';
 import { HomePage } from './showcase/home/home.psr';
 import { AboutPage } from './showcase/about/about.psr';
+import { BootstrapTestPage } from './showcase/bootstrap/bootstrap-test.psr';
+import { DependencyInjectionTestPage } from './showcase/di/di-test.psr';
 import { ReactivityTestPage } from './showcase/reactivity/reactivity-test.psr';
 import { JsxTestPage } from './showcase/jsx/jsx-test.psr';
 import { ControlFlowTestPage } from './showcase/control-flow/control-flow-test.psr';
 import { ResourceTestPage } from './showcase/resource/resource-test.psr';
+import { PortalTestPage } from './showcase/portal/portal-test.psr';
+import { DragDropTestPage } from './showcase/drag-drop/drag-drop-test.psr';
 import { ErrorBoundaryTestPage } from './showcase/error-boundary/error-boundary-test.psr';
 import { ErrorBoundaryMegaPage } from './showcase/error-boundary/error-boundary-mega.psr';
 import { ContextTestPage } from './showcase/context/context-test.psr';
@@ -24,129 +29,47 @@ export interface IAppProps {
 component App() {
   const navigate = useNavigate();
   const [currentPath, setCurrentPath] = createSignal(window.location.pathname);
+  const [sidebarCollapsed, setSidebarCollapsed] = createSignal(false);
   
-  const goHome = () => {
-    navigate('/');
-    setCurrentPath('/');
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    setCurrentPath(path);
   };
   
-  const goAbout = () => {
-    navigate('/about');
-    setCurrentPath('/about');
-  };
-  
-  const goReactivity = () => {
-    navigate('/reactivity');
-    setCurrentPath('/reactivity');
-  };
-  
-  const goJsx = () => {
-    navigate('/jsx');
-    setCurrentPath('/jsx');
-  };
-  
-  const goControlFlow = () => {
-    navigate('/control-flow');
-    setCurrentPath('/control-flow');
-  };
-  
-  const goResources = () => {
-    navigate('/resources');
-    setCurrentPath('/resources');
-  };
-  
-  const goErrorBoundary = () => {
-    navigate('/error-boundary');
-    setCurrentPath('/error-boundary');
-  };
-  
-  
-  const goMegaErrorBoundary = () => {
-    navigate('/error-boundary-mega');
-    setCurrentPath('/error-boundary-mega');
-  };
-  
-
-  const goContext = () => {
-    navigate('/context');
-    setCurrentPath('/context');
+  const handleSidebarToggle = (isCollapsed: boolean) => {
+    setSidebarCollapsed(isCollapsed);
   };
   
   return (
-    <div style="min-height: 100vh; background: #0a0a0a; color: white; font-family: system-ui;">
-      <nav style="background: #1a1a1a; padding: 20px; border-bottom: 2px solid #3b82f6; margin-bottom: 20px;">
-        <div style="max-width: 1200px; margin: 0 auto; display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
-          <h1 style="font-size: 24px; margin: 0; color: #3b82f6; flex: 1; min-width: 200px;">Pulsar Framework</h1>
-          
-          <button 
-            onClick={goHome}
-            style="padding: 10px 20px; font-size: 14px; background: #3b82f6; border: 2px solid #3b82f6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
-            Home
-          </button>
-          
-          <button 
-            onClick={goReactivity}
-            style="padding: 10px 20px; font-size: 14px; background: #10b981; border: 2px solid #10b981; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
-            🧪 Reactivity
-          </button>
-          
-          <button 
-            onClick={goJsx}
-            style="padding: 10px 20px; font-size: 14px; background: #8b5cf6; border: 2px solid #8b5cf6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
-            🎨 JSX
-          </button>
-          
-          <button 
-            onClick={goControlFlow}
-            style="padding: 10px 20px; font-size: 14px; background: #f59e0b; border: 2px solid #f59e0b; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
-            🎯 Control Flow
-          </button>
-          
-          <button 
-            onClick={goResources}
-            style="padding: 10px 20px; font-size: 14px; background: #06b6d4; border: 2px solid #06b6d4; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
-            🌊 Resources
-          </button>
-          
-          <button 
-            onClick={goErrorBoundary}
-            style="padding: 10px 20px; font-size: 14px; background: #ef4444; border: 2px solid #ef4444; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
-            🛡️ Errors
-          </button>
-          
-          <button 
-            onClick={goContext}
-            style="padding: 10px 20px; font-size: 14px; background: #8b5cf6; border: 2px solid #8b5cf6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
-            🔌 Context
-          </button>
-          
-          <button 
-            onClick={goMegaErrorBoundary}
-            style="padding: 10px 20px; font-size: 14px; background: #a41e6a; border: 2px solid #3b82f6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
-            Mega Error
-          </button>
-
-          
-          <button 
-            onClick={goAbout}
-            style="padding: 10px 20px; font-size: 14px; background: #3b82f6; border: 2px solid #3b82f6; color: white; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
-            About
-          </button>
-        </div>
-      </nav>
+    <div style="min-height: 100vh; background: #0a0a0a; color: white; font-family: system-ui; display: flex;">
+      <SidebarNav 
+        currentPath={currentPath()} 
+        onNavigate={handleNavigate}
+        onToggle={handleSidebarToggle} 
+      />
       
-      <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-        <Router>
-          <Route path="/" component={HomePage} default={true} label="Home" />
-          <Route path="/reactivity" component={ReactivityTestPage} label="Reactivity Tests" />
-          <Route path="/jsx" component={JsxTestPage} label="JSX Tests" />
-          <Route path="/control-flow" component={ControlFlowTestPage} label="Control Flow" />
-          <Route path="/resources" component={ResourceTestPage} label="Resources" />
-          <Route path="/error-boundary" component={ErrorBoundaryTestPage} label="Error Boundaries" />
-          <Route path="/error-boundary-mega" component={ErrorBoundaryMegaPage} label="Error Boundaries MEGA" />
-          <Route path="/context" component={ContextTestPage} label="Context API" />
-          <Route path="/about" component={AboutPage} label="About" />
-        </Router>
+      <div style={`flex: 1; margin-left: ${sidebarCollapsed() ? '60px' : '280px'}; transition: margin-left 0.3s;`}>
+        <header style="background: #1a1a1a; padding: 20px 40px; border-bottom: 2px solid #3b82f6; position: sticky; top: 0; z-index: 100;">
+          <h1 style="margin: 0; color: #3b82f6; font-size: 24px;">Pulsar Framework</h1>
+        </header>
+        
+        <main style="padding: 40px; max-width: 1400px; width: 100%;">
+          <Router>
+            <Route path="/" component={HomePage} default={true} label="Home" />
+            <Route path="/bootstrap" component={BootstrapTestPage} label="Bootstrap" />
+            <Route path="/di" component={DependencyInjectionTestPage} label="Dependency Injection" />
+            <Route path="/reactivity" component={ReactivityTestPage} label="Reactivity Tests" />
+            <Route path="/jsx" component={JsxTestPage} label="JSX Tests" />
+            <Route path="/control-flow" component={ControlFlowTestPage} label="Control Flow" />
+            <Route path="/resources" component={ResourceTestPage} label="Resources" />
+            <Route path="/portal" component={PortalTestPage} label="Portals" />
+            <Route path="/drag-drop" component={DragDropTestPage} label="Drag & Drop" />
+            <Route path="/error-boundary" component={ErrorBoundaryTestPage} label="Error Boundaries" />
+            <Route path="/error-boundary-mega" component={ErrorBoundaryMegaPage} label="Error Boundaries MEGA" />
+            <Route path="/context" component={ContextTestPage} label="Context API" />
+            <Route path="/about" component={AboutPage} label="About" />
+          </Router>
+        </main>
       </div>
     </div>
   );

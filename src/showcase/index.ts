@@ -5,13 +5,17 @@
 
 // Main pages
 export { AboutPage } from './about/about.psr';
+export { BootstrapTestPage } from './bootstrap/bootstrap-test.psr';
 export { ContextTestPage } from './context/context-test.psr';
 export { ControlFlowTestPage } from './control-flow/control-flow-test.psr';
+export { DependencyInjectionTestPage } from './di/di-test.psr';
+export { DragDropTestPage } from './drag-drop/drag-drop-test.psr';
 export { ErrorBoundaryMegaPage } from './error-boundary/error-boundary-mega.psr';
 export { ErrorBoundarySimplePage } from './error-boundary/error-boundary-simple.psr';
 export { ErrorBoundaryTestPage } from './error-boundary/error-boundary-test.psr';
 export { HomePage } from './home/home.psr';
 export { JsxTestPage } from './jsx/jsx-test.psr';
+export { PortalTestPage } from './portal/portal-test.psr';
 export { ReactivityTestPage } from './reactivity/reactivity-test.psr';
 export { ResourceTestPage } from './resource/resource-test.psr';
 

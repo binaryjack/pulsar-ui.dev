@@ -1,0 +1,126 @@
+/**
+ * Bootstrap Demo Page
+ * Demonstrates pulse() API for app initialization
+ */
+
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { CodeBlock } from '../common/components/code-block.psr';
+
+export component BootstrapTestPage() {
+  return (
+    <div>
+      <PageHeader 
+        title="App Bootstrap with pulse()"
+        emoji="⚡"
+        color="#eab308"
+        description="Initialize Pulsar applications with pulse() - the main entry point"
+      />
+      
+      <DemoSection 
+        title="1️⃣ Basic Usage" 
+        description="Minimal app initialization"
+        borderColor="#eab308">
+        <CodeBlock code={`import { pulse } from '@pulsar-framework/pulsar.dev';
+import App from './app.psr';
+
+// Mount app to #app element
+pulse(App);
+
+// Or specify custom root
+pulse(App, '#root');`} />
+      </DemoSection>
+      
+      <DemoSection 
+        title="2️⃣ Configuration Object" 
+        description="Advanced initialization with lifecycle hooks"
+        borderColor="#3b82f6">
+        <CodeBlock code={`pulse(App, {
+  root: '#app',
+  
+  onMount: (element: HTMLElement) => {
+    console.log('App mounted!', element);
+  },
+  
+  onUnmount: () => {
+    console.log('App unmounting...');
+  },
+  
+  onError: (error: Error) => {
+    console.error('App error:', error);
+    // Custom error handling
+  }
+});`} />
+      </DemoSection>
+      
+      <DemoSection 
+        title="3️⃣ With Dependency Injection" 
+        description="Integrate IoC container for services"
+        borderColor="#8b5cf6">
+        <CodeBlock code={`import { pulse, ServiceManager } from '@pulsar-framework/pulsar.dev';
+import { ConfigService, ApiService } from './services';
+
+// Setup DI container
+const services = new ServiceManager();
+
+services.register('config', () => new ConfigService(), {
+  lifetime: 'singleton'
+});
+
+services.register('api', (sm) => {
+  const config = sm.resolve('config');
+  return new ApiService(config);
+}, {
+  lifetime: 'singleton',
+  dependencies: ['config']
+});
+
+// Initialize with services
+pulse(App, {
+  root: '#app',
+  services
+});`} />
+      </DemoSection>
+      
+      <DemoSection 
+        title="4️⃣ HMR Support" 
+        description="Hot Module Replacement in development"
+        borderColor="#10b981">
+        <div style="padding: 15px; background: #0f172a; border-left: 4px solid #10b981; border-radius: 4px; margin-bottom: 15px;">
+          <p style="margin: 0 0 10px 0; color: #10b981; font-weight: bold;">
+            ✨ Automatic HMR Injection
+          </p>
+          <p style="margin: 0; color: #94a3b8; font-size: 14px; line-height: 1.6;">
+            The Vite plugin automatically injects HMR handling for pulse() calls in development mode. No manual setup needed!
+          </p>
+        </div>
+        <CodeBlock code={`// main.ts
+pulse(App, { root: '#app' });
+
+// Vite plugin auto-injects:
+if (import.meta.hot) {
+  import.meta.hot.accept('./app.psr', (newModule) => {
+    // Hot reload without full page refresh
+  });
+}`} />
+      </DemoSection>
+      
+      <DemoSection 
+        title="5️⃣ Return Value" 
+        description="ApplicationRoot instance for programmatic control"
+        borderColor="#f59e0b">
+        <CodeBlock code={`const app = pulse(App, { root: '#app' });
+
+// Programmatic control
+app.unmount();  // Unmount application
+app.mount();    // Remount application
+
+// Access root element
+console.log(app.rootElement);
+
+// Check mount status
+console.log(app.isMounted);`} />
+      </DemoSection>
+    </div>
+  );
+}

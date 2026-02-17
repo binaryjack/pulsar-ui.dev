@@ -1,0 +1,53 @@
+/**
+ * Modal Portal Demo
+ * Full-screen modal overlay using Portal
+ */
+
+import { createSignal, Portal, Show } from '@pulsar-framework/pulsar.dev';
+
+export component ModalPortalDemo() {
+  const [isOpen, setIsOpen] = createSignal(false);
+  
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+  
+  return (
+    <div>
+      <button 
+        onClick={openModal}
+        style="padding: 12px 24px; background: #8b5cf6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
+        Open Modal
+      </button>
+      
+      <Show when={isOpen()}>
+        <Portal mount={document.body}>
+          <div 
+            style="position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 10000;"
+            onClick={closeModal}>
+            <div 
+              style="background: #1a1a1a; border: 2px solid #8b5cf6; border-radius: 12px; padding: 30px; max-width: 500px; box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);"
+              onClick={(e: Event) => e.stopPropagation()}>
+              <h3 style="margin: 0 0 15px 0; color: #8b5cf6; font-size: 24px;">
+                🌀 Modal Dialog
+              </h3>
+              <p style="margin: 0 0 20px 0; color: #94a3b8; line-height: 1.6;">
+                This modal is rendered via Portal to document.body, ensuring it appears above all other content with proper z-index layering.
+              </p>
+              <div style="display: flex; gap: 10px;">
+                <button 
+                  onClick={closeModal}
+                  style="flex: 1; padding: 10px; background: #8b5cf6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
+                  Close
+                </button>
+                <button 
+                  style="flex: 1; padding: 10px; background: transparent; color: #8b5cf6; border: 2px solid #8b5cf6; border-radius: 6px; cursor: pointer; font-size: 14px;">
+                  Action
+                </button>
+              </div>
+            </div>
+          </div>
+        </Portal>
+      </Show>
+    </div>
+  );
+}

@@ -1,0 +1,44 @@
+/**
+ * Portal Demo Page
+ * Demonstrates portal rendering outside parent hierarchy
+ */
+
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { BasicPortalDemo } from './components/basic-portal-demo.psr';
+import { ModalPortalDemo } from './components/modal-portal-demo.psr';
+import { TooltipPortalDemo } from './components/tooltip-portal-demo.psr';
+
+export component PortalTestPage() {
+  return (
+    <div>
+      <PageHeader 
+        title="Portal System"
+        emoji="🌀"
+        color="#06b6d4"
+        description="Render components outside parent DOM hierarchy - for modals, tooltips, dropdowns"
+      />
+      
+      <DemoSection 
+        title="1️⃣ Basic Portal" 
+        description="Render content to document.body or custom target"
+        borderColor="#06b6d4">
+        <BasicPortalDemo />
+      </DemoSection>
+      
+      <DemoSection 
+        title="2️⃣ Modal Portal" 
+        description="Full-screen modal overlays using portals"
+        borderColor="#8b5cf6">
+        <ModalPortalDemo />
+      </DemoSection>
+      
+      <DemoSection 
+        title="3️⃣ Tooltip Portal" 
+        description="Position-aware tooltips with PortalSlot pattern"
+        borderColor="#10b981">
+        <TooltipPortalDemo />
+      </DemoSection>
+    </div>
+  );
+}

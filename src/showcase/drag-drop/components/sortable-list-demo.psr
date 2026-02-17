@@ -1,0 +1,73 @@
+/**
+ * Sortable List Demo
+ * Drag to reorder list items
+ */
+
+import { createSignal, For } from '@pulsar-framework/pulsar.dev';
+
+interface ITask {
+  id: number;
+  text: string;
+}
+
+export component SortableListDemo() {
+  const [tasks, setTasks] = createSignal<ITask[]>([
+    { id: 1, text: 'Design UI mockups' },
+    { id: 2, text: 'Implement components' },
+    { id: 3, text: 'Write unit tests' },
+    { id: 4, text: 'Deploy to production' },
+  ]);
+  
+  const [draggedId, setDraggedId] = createSignal<number | null>(null);
+  
+  const handleDragStart = (id: number) => (e: DragEvent) => {
+    setDraggedId(id);
+    if (e.dataTransfer) {
+      e.dataTransfer.effectAllowed = 'move';
+    }
+  };
+  
+  const handleDragOver = (e: DragEvent) => {
+    e.preventDefault();
+    if (e.dataTransfer) {
+      e.dataTransfer.dropEffect = 'move';
+    }
+  };
+  
+  const handleDrop = (targetId: number) => (e: DragEvent) => {
+    e.preventDefault();
+    const sourceId = draggedId();
+    
+    if (sourceId === null || sourceId === targetId) return;
+    
+    const items = [...tasks()];
+    const sourceIndex = items.findIndex(t => t.id === sourceId);
+    const targetIndex = items.findIndex(t => t.id === targetId);
+    
+    const [removed] = items.splice(sourceIndex, 1);
+    items.splice(targetIndex, 0, removed);
+    
+    setTasks(items);
+    setDraggedId(null);
+  };
+  
+  return (
+    <div style="max-width: 400px;">
+      <For each={tasks()}>
+        {(task) => (
+          <div 
+            draggable="true"
+            onDragStart={handleDragStart(task.id)}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop(task.id)}
+            style={`padding: 15px; margin-bottom: 10px; background: ${draggedId() === task.id ? '#1e293b' : '#0f172a'}; border: 2px solid #10b981; border-radius: 8px; cursor: move; transition: all 0.2s;`}>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="color: #64748b; font-size: 18px;">⋮⋮</span>
+              <span style="color: #e2e8f0;">{task.text}</span>
+            </div>
+          </div>
+        )}
+      </For>
+    </div>
+  );
+}

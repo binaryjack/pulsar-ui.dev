@@ -1,0 +1,51 @@
+/**
+ * Service Registration Demo
+ * Interactive service registration example
+ */
+
+import { createSignal, Show, For } from '@pulsar-framework/pulsar.dev';
+
+export component ServiceRegistrationDemo() {
+  const [services, setServices] = createSignal<string[]>([]);
+  
+  const registerService = (name: string) => () => {
+    setServices([...services(), name]);
+  };
+  
+  return (
+    <div>
+      <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button 
+          onClick={registerService('Logger')}
+          style="padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
+          Register Logger
+        </button>
+        <button 
+          onClick={registerService('API Client')}
+          style="padding: 10px 20px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
+          Register API
+        </button>
+        <button 
+          onClick={registerService('Analytics')}
+          style="padding: 10px 20px; background: #8b5cf6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
+          Register Analytics
+        </button>
+      </div>
+      
+      <Show when={services().length > 0}>
+        <div style="padding: 15px; background: #0f172a; border: 2px solid #3b82f6; border-radius: 8px;">
+          <h4 style="margin: 0 0 10px 0; color: #3b82f6; font-size: 14px;">
+            📦 Registered Services
+          </h4>
+          <For each={services()}>
+            {(service) => (
+              <div style="padding: 8px 12px; margin-bottom: 6px; background: #1a1a1a; border-radius: 4px; color: #e2e8f0; font-size: 14px;">
+                ✓ {service}
+              </div>
+            )}
+          </For>
+        </div>
+      </Show>
+    </div>
+  );
+}

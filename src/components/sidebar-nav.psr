@@ -1,0 +1,117 @@
+/**
+ * Sidebar Navigation Component
+ * Collapsible left panel with demo links
+ */
+
+import { createSignal, ShowRegistry, ForRegistry } from '@pulsar-framework/pulsar.dev';
+
+interface INavItem {
+  path: string;
+  label: string;
+  emoji: string;
+  color: string;
+}
+
+interface ISidebarNavProps {
+  currentPath: string;
+  onNavigate: (path: string) => void;
+  onToggle?: (isCollapsed: boolean) => void;
+}
+
+export const SidebarNav = ({ currentPath, onNavigate, onToggle }: ISidebarNavProps) => {
+  const [isCollapsed, setIsCollapsed] = createSignal(false);
+  
+  const toggleSidebar = () => {
+    const newState = !isCollapsed();
+    setIsCollapsed(newState);
+    if (onToggle) {
+      onToggle(newState);
+    }
+  };
+  
+  const navItems: INavItem[] = [
+    { path: '/', label: 'Home', emoji: '🏠', color: '#3b82f6' },
+    { path: '/bootstrap', label: 'Bootstrap', emoji: '⚡', color: '#eab308' },
+    { path: '/di', label: 'Dependency Injection', emoji: '💉', color: '#ec4899' },
+    { path: '/reactivity', label: 'Reactivity', emoji: '🧪', color: '#10b981' },
+    { path: '/jsx', label: 'JSX', emoji: '🎨', color: '#8b5cf6' },
+    { path: '/control-flow', label: 'Control Flow', emoji: '🎯', color: '#f59e0b' },
+    { path: '/resources', label: 'Resources', emoji: '🌊', color: '#06b6d4' },
+    { path: '/portal', label: 'Portals', emoji: '🌀', color: '#06b6d4' },
+    { path: '/drag-drop', label: 'Drag & Drop', emoji: '🎯', color: '#f59e0b' },
+    { path: '/error-boundary', label: 'Error Boundaries', emoji: '🛡️', color: '#ef4444' },
+    { path: '/context', label: 'Context API', emoji: '🔌', color: '#8b5cf6' },
+    { path: '/about', label: 'About', emoji: 'ℹ️', color: '#64748b' },
+  ];
+  
+  const handleNavClick = (path: string) => {
+    onNavigate(path);
+  };
+  
+  const getSidebarStyle = () => {
+    const width = isCollapsed() ? '60px' : '280px';
+    return `position: fixed; left: 0; top: 0; height: 100vh; background: #0a0a0a; border-right: 2px solid #1e293b; transition: width 0.3s; z-index: 1000; width: ${width};`;
+  };
+  
+  const getButtonStyle = (item: INavItem) => {
+    const isActive = currentPath === item.path;
+    const background = isActive ? '#1e293b' : 'transparent';
+    const borderColor = isActive ? item.color : 'transparent';
+    return `width: 100%; padding: 12px; margin-bottom: 6px; background: ${background}; border: 2px solid ${borderColor}; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 12px; transition: all 0.2s;`;
+  };
+  
+  const getLabelStyle = (item: INavItem) => {
+    const isActive = currentPath === item.path;
+    const color = isActive ? item.color : '#94a3b8';
+    const fontWeight = isActive ? 'bold' : 'normal';
+    return `color: ${color}; font-size: 14px; font-weight: ${fontWeight};`;
+  };
+  
+  return (
+    <div style={getSidebarStyle()}>
+      <div style="padding: 20px; border-bottom: 2px solid #1e293b; display: flex; align-items: center; justify-content: space-between;">
+        <ShowRegistry when={() => !isCollapsed()}>
+          <h2 style="margin: 0; color: #3b82f6; font-size: 18px;">
+            Pulsar Demos
+          </h2>
+        </ShowRegistry>
+        <button 
+          onClick={toggleSidebar}
+          style="background: transparent; border: 2px solid #3b82f6; color: #3b82f6; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;">
+          {isCollapsed() ? '▶' : '◀'}
+        </button>
+      </div>
+      
+      <div style="overflow-y: auto; height: calc(100vh - 80px); padding: 10px;">
+        <ForRegistry each={navItems} key={(item) => item.path}>
+          {(item) => (
+            <button 
+              onClick={() => handleNavClick(item.path)}
+              style={getButtonStyle(item)}
+              onMouseEnter={(e: MouseEvent) => {
+                const target = e.currentTarget as HTMLElement;
+                if (currentPath !== item.path) {
+                  target.style.background = '#1a1a1a';
+                  target.style.borderColor = item.color;
+                }
+              }}
+              onMouseLeave={(e: MouseEvent) => {
+                const target = e.currentTarget as HTMLElement;
+                if (currentPath !== item.path) {
+                  target.style.background = 'transparent';
+                  target.style.borderColor = 'transparent';
+                }
+              }}>
+              <span style="font-size: 20px;">{item.emoji}</span>
+              <ShowRegistry when={() => !isCollapsed()}>
+                <span style={getLabelStyle(item)}>
+                  {item.label}
+                </span>
+              </ShowRegistry>
+            </button>
+          )}
+        </ForRegistry>
+      </div>
+    </div>
+  );
+};

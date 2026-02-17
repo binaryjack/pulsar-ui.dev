@@ -1,0 +1,41 @@
+/**
+ * Basic Portal Demo
+ * Shows portal rendering to document.body
+ */
+
+import { createSignal, Portal, Show } from '@pulsar-framework/pulsar.dev';
+
+export component BasicPortalDemo() {
+  const [showPortal, setShowPortal] = createSignal(false);
+  
+  const togglePortal = () => {
+    setShowPortal(!showPortal());
+  };
+  
+  return (
+    <div>
+      <button 
+        onClick={togglePortal}
+        style="padding: 12px 24px; background: #06b6d4; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
+        {showPortal() ? 'Hide Portal' : 'Show Portal'}
+      </button>
+      
+      <div style="margin-top: 20px; padding: 15px; background: #1a1a1a; border: 2px dashed #64748b; border-radius: 4px;">
+        <p style="margin: 0; color: #94a3b8; font-size: 14px;">
+          👆 This is the parent container. Portal content renders outside this hierarchy.
+        </p>
+      </div>
+      
+      <Show when={showPortal()}>
+        <Portal mount={document.body}>
+          <div style="position: fixed; bottom: 20px; right: 20px; padding: 20px; background: linear-gradient(135deg, #06b6d4, #3b82f6); color: white; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); z-index: 9999;">
+            <p style="margin: 0 0 8px 0; font-weight: bold; font-size: 16px;">🌀 Portaled Content</p>
+            <p style="margin: 0; font-size: 14px; opacity: 0.9;">
+              I'm rendered at document.body!
+            </p>
+          </div>
+        </Portal>
+      </Show>
+    </div>
+  );
+}

@@ -1,0 +1,66 @@
+/**
+ * Service Lifetime Demo
+ * Shows difference between singleton, transient, and scoped
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+export component ServiceLifetimeDemo() {
+  const [singletonCount, setSingletonCount] = createSignal(0);
+  const [transientCount, setTransientCount] = createSignal(0);
+  
+  return (
+    <div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
+        <div style="padding: 15px; background: #0f172a; border: 2px solid #8b5cf6; border-radius: 8px;">
+          <h4 style="margin: 0 0 10px 0; color: #8b5cf6; font-size: 14px;">
+            🔵 Singleton
+          </h4>
+          <p style="margin: 0 0 10px 0; color: #94a3b8; font-size: 12px; line-height: 1.4;">
+            One instance for app lifetime
+          </p>
+          <p style="margin: 0; color: #e2e8f0; font-size: 18px; font-weight: bold;">
+            Instance #{singletonCount()}
+          </p>
+        </div>
+        
+        <div style="padding: 15px; background: #0f172a; border: 2px solid #10b981; border-radius: 8px;">
+          <h4 style="margin: 0 0 10px 0; color: #10b981; font-size: 14px;">
+            🟢 Transient
+          </h4>
+          <p style="margin: 0 0 10px 0; color: #94a3b8; font-size: 12px; line-height: 1.4;">
+            New instance every resolve
+          </p>
+          <p style="margin: 0; color: #e2e8f0; font-size: 18px; font-weight: bold;">
+            Instance #{transientCount()}
+          </p>
+        </div>
+        
+        <div style="padding: 15px; background: #0f172a; border: 2px solid #f59e0b; border-radius: 8px;">
+          <h4 style="margin: 0 0 10px 0; color: #f59e0b; font-size: 14px;">
+            🟡 Scoped
+          </h4>
+          <p style="margin: 0 0 10px 0; color: #94a3b8; font-size: 12px; line-height: 1.4;">
+            One instance per scope
+          </p>
+          <p style="margin: 0; color: #e2e8f0; font-size: 18px; font-weight: bold;">
+            Instance #1
+          </p>
+        </div>
+      </div>
+      
+      <div style="display: flex; gap: 10px;">
+        <button 
+          onClick={() => setSingletonCount(singletonCount() + 1)}
+          style="padding: 10px 20px; background: transparent; color: #8b5cf6; border: 2px solid #8b5cf6; border-radius: 6px; cursor: pointer; font-size: 14px;">
+          Resolve Singleton
+        </button>
+        <button 
+          onClick={() => setTransientCount(transientCount() + 1)}
+          style="padding: 10px 20px; background: transparent; color: #10b981; border: 2px solid #10b981; border-radius: 6px; cursor: pointer; font-size: 14px;">
+          Resolve Transient
+        </button>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,44 @@
+/**
+ * Drag & Drop Demo Page
+ * Demonstrates native HTML5 drag and drop with Pulsar reactivity
+ */
+
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { SortableListDemo } from './components/sortable-list-demo.psr';
+import { KanbanBoardDemo } from './components/kanban-board-demo.psr';
+import { DragDropZoneDemo } from './components/drag-drop-zone-demo.psr';
+
+export component DragDropTestPage() {
+  return (
+    <div>
+      <PageHeader 
+        title="Drag & Drop"
+        emoji="🎯"
+        color="#f59e0b"
+        description="Native HTML5 drag-drop with reactive state management"
+      />
+      
+      <DemoSection 
+        title="1️⃣ Sortable List" 
+        description="Reorder items with drag and drop"
+        borderColor="#10b981">
+        <SortableListDemo />
+      </DemoSection>
+      
+      <DemoSection 
+        title="2️⃣ Kanban Board" 
+        description="Drag tasks between columns"
+        borderColor="#8b5cf6">
+        <KanbanBoardDemo />
+      </DemoSection>
+      
+      <DemoSection 
+        title="3️⃣ Drop Zone" 
+        description="File upload with drag-drop interface"
+        borderColor="#06b6d4">
+        <DragDropZoneDemo />
+      </DemoSection>
+    </div>
+  );
+}

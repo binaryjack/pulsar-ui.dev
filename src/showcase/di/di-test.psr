@@ -1,0 +1,145 @@
+/**
+ * Dependency Injection Demo Page
+ * Demonstrates ServiceManager and IoC patterns
+ */
+
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { CodeBlock } from '../common/components/code-block.psr';
+import { ServiceRegistrationDemo } from './components/service-registration-demo.psr';
+import { ServiceLifetimeDemo } from './components/service-lifetime-demo.psr';
+
+export component DependencyInjectionTestPage() {
+  return (
+    <div>
+      <PageHeader 
+        title="Dependency Injection"
+        emoji="💉"
+        color="#ec4899"
+        description="IoC container with service registration, resolution, and lifecycle management"
+      />
+      
+      <DemoSection 
+        title="1️⃣ Service Registration" 
+        description="Register services with factory functions"
+        borderColor="#ec4899">
+        <CodeBlock code={`import { ServiceManager } from '@pulsar-framework/pulsar.dev';
+
+const services = new ServiceManager();
+
+// Register singleton service
+services.register('logger', () => {
+  return {
+    log: (msg: string) => console.log('[LOG]', msg)
+  };
+}, { lifetime: 'singleton' });
+
+// Register with dependencies
+services.register('api', (container) => {
+  const logger = container.resolve('logger');
+  return new ApiService(logger);
+}, {
+  lifetime: 'singleton',
+  dependencies: ['logger']
+});`} />
+      </DemoSection>
+      
+      <DemoSection 
+        title="2️⃣ Service Lifetimes" 
+        description="Singleton, Transient, and Scoped services"
+        borderColor="#8b5cf6">
+        <ServiceLifetimeDemo />
+      </DemoSection>
+      
+      <DemoSection 
+        title="3️⃣ Service Resolution" 
+        description="Retrieve registered services"
+        borderColor="#3b82f6">
+        <CodeBlock code={`// Resolve service
+const logger = services.resolve('logger');
+logger.log('Hello World!');
+
+// Resolve with type safety
+const api = services.resolve<ApiService>('api');
+await api.fetchData();
+
+// Check registration
+if (services.has('logger')) {
+  console.log('Logger is registered');
+}`} />
+      </DemoSection>
+      
+      <DemoSection 
+        title="4️⃣ Hierarchical DI" 
+        description="Nested containers with parent-child relationships"
+        borderColor="#10b981">
+        <CodeBlock code={`// Parent container (global services)
+const appServices = new ServiceManager();
+appServices.register('config', () => globalConfig, {
+  lifetime: 'singleton'
+});
+
+// Child container (scoped services)
+const requestServices = new ServiceManager(appServices);
+requestServices.register('session', () => new Session(), {
+  lifetime: 'scoped'
+});
+
+// Child can access parent services
+const config = requestServices.resolve('config');
+const session = requestServices.resolve('session');`} />
+      </DemoSection>
+      
+      <DemoSection 
+        title="5️⃣ Integration with pulse()" 
+        description="Pass ServiceManager to application bootstrap"
+        borderColor="#f59e0b">
+        <CodeBlock code={`import { pulse, ServiceManager } from '@pulsar-framework/pulsar.dev';
+
+// Setup services
+const services = new ServiceManager();
+
+services.register('analytics', () => new Analytics());
+services.register('api', () => new ApiClient());
+
+// Bootstrap with DI
+pulse(App, {
+  root: '#app',
+  services  // Services available app-wide
+});
+
+// Access in components
+component MyComponent() {
+  const api = inject('api');  // Resolve from container
+  // ...
+}`} />
+      </DemoSection>
+      
+      <DemoSection 
+        title="6️⃣ Circular Dependency Detection" 
+        description="Automatic detection prevents infinite loops"
+        borderColor="#ef4444">
+        <div style="padding: 15px; background: #450a0a; border-left: 4px solid #ef4444; border-radius: 4px; margin-bottom: 15px;">
+          <p style="margin: 0 0 10px 0; color: #ef4444; font-weight: bold;">
+            ⚠️ Circular Dependency Error
+          </p>
+          <p style="margin: 0; color: #fca5a5; font-size: 14px; line-height: 1.6;">
+            ServiceManager tracks resolution chains and throws errors when circular dependencies are detected, preventing infinite loops.
+          </p>
+        </div>
+        <CodeBlock code={`// ❌ This will throw
+services.register('A', (sm) => {
+  const b = sm.resolve('B');  // Needs B
+  return new ServiceA(b);
+});
+
+services.register('B', (sm) => {
+  const a = sm.resolve('A');  // Needs A
+  return new ServiceB(a);
+});
+
+// Error: Circular dependency detected: A -> B -> A`} />
+      </DemoSection>
+    </div>
+  );
+}
