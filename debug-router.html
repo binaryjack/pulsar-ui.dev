@@ -9,43 +9,45 @@
     <script type="module">
       // Wait for page to load
       setTimeout(() => {
-          const output = document.getElementById('debug-output');
-          const debug = [];
+        const output = document.getElementById('debug-output');
+        const debug = [];
 
-          // Check for router
-          const router = document.querySelector('[data-router="active"]');
-          debug.push(`Router found: ${!!router}`);
+        // Check for router
+        const router = document.querySelector('[data-router="active"]');
+        debug.push(`Router found: ${!!router}`);
 
-          if (router) {
-              debug.push(`Router children: ${router.children.length}`);
-              debug.push(`Router HTML: ${router.innerHTML.substring(0, 200)}`);
+        if (router) {
+          debug.push(`Router children: ${router.children.length}`);
+          debug.push(`Router HTML: ${router.innerHTML.substring(0, 200)}`);
 
-              // Check for route definitions
-              const routeDefs = router.querySelectorAll('.route-definition');
-              debug.push(`Route definitions found: ${routeDefs.length}`);
+          // Check for route definitions
+          const routeDefs = router.querySelectorAll('.route-definition');
+          debug.push(`Route definitions found: ${routeDefs.length}`);
 
-              routeDefs.forEach((def, i) => {
-                  debug.push(`  Route ${i}: path="${def.getAttribute('data-path')}" label="${def.getAttribute('data-label')}"`);
-                  debug.push(`  Has __routeConfig: ${!!(def as any).__routeConfig}`);
-              });
+          routeDefs.forEach((def, i) => {
+            debug.push(
+              `  Route ${i}: path="${def.getAttribute('data-path')}" label="${def.getAttribute('data-label')}"`
+            );
+            debug.push(`  Has __routeConfig: ${!!def.__routeConfig}`);
+          });
 
-              // Check outlet
-              const outlet = router.querySelector('.router-outlet');
-              debug.push(`Outlet found: ${!!outlet}`);
-              if (outlet) {
-                  debug.push(`Outlet children: ${outlet.children.length}`);
-                  debug.push(`Outlet HTML: ${outlet.innerHTML.substring(0, 200)}`);
-              }
+          // Check outlet
+          const outlet = router.querySelector('.router-outlet');
+          debug.push(`Outlet found: ${!!outlet}`);
+          if (outlet) {
+            debug.push(`Outlet children: ${outlet.children.length}`);
+            debug.push(`Outlet HTML: ${outlet.innerHTML.substring(0, 200)}`);
           }
+        }
 
-          // Check current path
-          debug.push(`Current path: ${window.location.pathname}`);
+        // Check current path
+        debug.push(`Current path: ${window.location.pathname}`);
 
-          // Check h1
-          const h1 = document.querySelector('h1');
-          debug.push(`H1 text: ${h1?.textContent}`);
+        // Check h1
+        const h1 = document.querySelector('h1');
+        debug.push(`H1 text: ${h1?.textContent}`);
 
-          output.innerHTML = '<pre>' + debug.join('\n') + '</pre>';
+        output.innerHTML = '<pre>' + debug.join('\n') + '</pre>';
       }, 1000);
     </script>
   </body>

@@ -1,47 +1,119 @@
 /**
  * Dependency Injection Demo Component
+ * Demonstrates PROPER ServiceManager usage with pulse() and useService()
  */
 
-import { createSignal } from '@pulsar-framework/pulsar.dev';
+import { createSignal, getCurrentAppRoot } from '@pulsar-framework/pulsar.dev';
 
 export const DIDemo = () => {
-  const [serviceData, setServiceData] = createSignal<any>(null);
+  const [hasServices, setHasServices] = createSignal(false);
+  const [configData, setConfigData] = createSignal<any>(null);
   
-  const handleLoadService = () => {
-    setServiceData({ theme: 'dark', apiUrl: 'https://api.example.com' });
+  // Check if ServiceManager is configured
+  const checkServices = () => {
+    const appRoot = getCurrentAppRoot();
+    const hasSM = !!appRoot?.serviceManager;
+    setHasServices(hasSM);
+    
+    if (hasSM) {
+      // For demo: show what services are registered
+      const services = appRoot!.serviceManager!.getRegisteredServices();
+      console.log('[DIDemo] Registered services:', services);
+      
+      // Try to resolve a hypothetical config service (will fail gracefully)
+      const config = appRoot!.serviceManager!.tryResolve('config');
+      if (config) {
+        setConfigData(config);
+      }
+    }
+  };
+  
+  const getThemeStyles = () => {
+    const theme = configData()?.theme;
+    if (theme === 'dark') {
+      return {
+        background: 'linear-gradient(135deg, #1f2937 0%, #111827 100%)',
+        borderColor: '#4b5563',
+        textColor: '#d1d5db'
+      };
+    }
+    return {
+      background: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)',
+      borderColor: '#c084fc',
+      textColor: 'white'
+    };
   };
   
   return (
-    <div style="margin-bottom: 20px; padding: 20px; background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-radius: 8px;">
+    <div style={`margin-bottom: 20px; padding: 20px; background: ${getThemeStyles().background}; border-radius: 8px; transition: all 0.5s ease;`}>
       <div style="text-align: center; margin-bottom: 20px;">
         <div style="font-size: 48px; margin-bottom: 10px;">🔌</div>
-        <div style="color: white; font-size: 18px; font-weight: bold; margin-bottom: 20px;">
+        <div style={`color: ${getThemeStyles().textColor}; font-size: 18px; font-weight: bold; margin-bottom: 20px; transition: color 0.5s ease;`}>
           Dependency Injection Container
         </div>
         <button 
-          onclick={() => handleLoadService()}
-          disabled={serviceData() !== null}
-          style={`padding: 12px 24px; background: ${serviceData() ? '#6b7280' : 'white'}; color: ${serviceData() ? 'white' : '#8b5cf6'}; border: none; border-radius: 6px; cursor: ${serviceData() ? 'not-allowed' : 'pointer'}; font-weight: bold; opacity: ${serviceData() ? '0.5' : '1'};`}>
-          {serviceData() ? '✅ Services Loaded' : '⚡ Load Services'}
+          onclick={() => checkServices()}
+          style="padding: 12px 24px; background: white; color: #8b5cf6; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+          {hasServices() ? '✅ ServiceManager Active' : '🔍 Check Services'}
         </button>
       </div>
       
-      {serviceData() ? (
-        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; border-left: 4px solid #c084fc;">
-          <div style="color: #c084fc; font-weight: bold; margin-bottom: 10px; font-size: 14px;">📦 Resolved ConfigService:</div>
-          <div style="color: rgba(255,255,255,0.9); font-family: 'Consolas', monospace; font-size: 13px;">
-            <div style="padding: 5px 0;">theme: "{serviceData().theme}"</div>
-            <div style="padding: 5px 0;">apiUrl: "{serviceData().apiUrl}"</div>
+      {hasServices() ? (
+        <div>
+          <div style={`background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; border-left: 4px solid #10b981; margin-bottom: 15px;`}>
+            <div style={`color: #10b981; font-weight: bold; margin-bottom: 10px; font-size: 14px;`}>✅ ServiceManager Configured</div>
+            <div style={`color: ${getThemeStyles().textColor}; font-size: 13px; line-height: 1.6;`}>
+              The ServiceManager was passed to pulse() and is accessible via:
+              <div style="font-family: 'Consolas', monospace; padding: 10px; background: rgba(0,0,0,0.3); margin-top: 10px; border-radius: 4px;">
+                const appRoot = getCurrentAppRoot();<br/>
+                const service = appRoot.serviceManager.resolve('myService');
+              </div>
+              Or use the hook:<br/>
+              <div style="font-family: 'Consolas', monospace; padding: 10px; background: rgba(0,0,0,0.3); margin-top: 10px; border-radius: 4px;">
+                const config = useService&lt;ConfigService&gt;('config');
+              </div>
+            </div>
           </div>
+          
+          {configData() ? (
+            <div style={`background: rgba(0,0,0,0.4); padding: 20px; border-radius: 6px; border: 2px solid ${getThemeStyles().borderColor}; text-align: center; transition: all 0.5s ease;`}>
+              <div style={`font-size: 32px; margin-bottom: 10px;`}>{configData().theme === 'dark' ? '🌙' : '☀️'}</div>
+              <div style={`color: ${getThemeStyles().textColor}; font-size: 16px; font-weight: bold; margin-bottom: 5px;`}>
+                Service Resolved: {configData().theme.toUpperCase()}
+              </div>
+              <div style={`color: ${getThemeStyles().textColor}; font-size: 12px; opacity: 0.8;`}>
+                Theme changed based on resolved service
+              </div>
+            </div>
+          ) : null}
         </div>
       ) : (
-        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; text-align: center; color: rgba(255,255,255,0.6); font-style: italic;">
-          Services not loaded yet. Click button above.
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; border-left: 4px solid #f59e0b;">
+          <div style="color: #f59e0b; font-weight: bold; margin-bottom: 10px; font-size: 14px;">⚠️ No ServiceManager Found</div>
+          <div style="color: rgba(255,255,255,0.8); font-size: 13px; line-height: 1.6;">
+            To enable DI, configure ServiceManager in main.ts:
+            <div style="font-family: 'Consolas', monospace; padding: 10px; background: rgba(0,0,0,0.3); margin-top: 10px; border-radius: 4px;">
+              const services = new ServiceManager();<br/><br/>
+              services.register('config', () => new ConfigService(), &#123;<br/>
+              &nbsp;&nbsp;lifetime: 'singleton'<br/>
+              &#125;);<br/><br/>
+              pulse(App, &#123;<br/>
+              &nbsp;&nbsp;root: '#app',<br/>
+              &nbsp;&nbsp;services  // ← Pass here<br/>
+              &#125;);
+            </div>
+          </div>
         </div>
       )}
       
-      <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; color: white; font-size: 13px; margin-top: 15px;">
-        <strong>💡 This demonstrates:</strong> The ServiceManager resolves dependencies and injects them into your components.
+      <div style={`background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; color: ${getThemeStyles().textColor}; font-size: 13px; margin-top: 15px; transition: color 0.5s ease;`}>
+        <strong>💡 Key Concepts:</strong>
+        <ul style="margin: 10px 0 0 20px; line-height: 1.8;">
+          <li>ServiceManager passed to pulse() is stored in ApplicationRoot</li>
+          <li>Services respect lifecycle: singleton, transient, scoped</li>
+          <li>Access via getCurrentAppRoot().serviceManager or useService() hook</li>
+          <li>All child components can resolve services from the container</li>
+        </ul>
       </div>
     </div>
   );
