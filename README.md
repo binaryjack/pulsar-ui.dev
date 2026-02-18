@@ -48,13 +48,14 @@
 
 ## 🎨 Live Showcase
 
-**Explore 80+ Advanced Examples:** [GitHub Pages Showcase](#) *(Coming Soon)*
+**Explore 80+ Advanced Examples:** [GitHub Pages Showcase](#) _(Coming Soon)_
 
 The showcase demonstrates production-grade patterns from the Pulsar ecosystem:
 
 ### Featured Patterns
 
 #### 1. **Portal/PortalSlot Architecture**
+
 ```typescript
 // Modal with content projection - logic stays local, UI projects globally
 <Modal id="demo" isOpen={isOpen} onClose={closeModal} />
@@ -65,12 +66,14 @@ The showcase demonstrates production-grade patterns from the Pulsar ecosystem:
 ```
 
 **Benefits:**
+
 - UI projected to global DOM (modal, tooltip, dropdown)
 - State and logic remain in component scope
 - Clean separation of concerns
 - No prop drilling
 
 #### 2. **Error Boundaries (Tryer/Catcher)**
+
 ```typescript
 // Graceful error handling with isolated boundaries
 <Tryer>
@@ -82,12 +85,14 @@ The showcase demonstrates production-grade patterns from the Pulsar ecosystem:
 ```
 
 **Features:**
+
 - Independent error boundaries
 - Prevents app-wide crashes
 - Fallback UI for failed sections
 - Error propagation control
 
 #### 3. **Signal-Based Reactivity**
+
 ```typescript
 // Fine-grained updates with automatic dependency tracking
 const [count, setCount] = createSignal(0);
@@ -99,6 +104,7 @@ const double = createMemo(() => count() * 2);
 ```
 
 #### 4. **Resource Caching**
+
 ```typescript
 // Stale-while-revalidate with automatic cache management
 const user = createResource(() => fetchUser(id), {
@@ -112,12 +118,13 @@ const user = createResource(() => fetchUser(id), {
 ```
 
 #### 5. **Dependency Injection**
+
 ```typescript
 // ServiceManager with lifecycle management
 const services = new ServiceManager();
 
 services.register('analytics', () => new Analytics(), {
-  lifetime: 'singleton'  // Single instance app-wide
+  lifetime: 'singleton', // Single instance app-wide
 });
 
 // Use in components
@@ -126,6 +133,7 @@ analytics.track('event');
 ```
 
 #### 6. **Control Flow Primitives**
+
 ```typescript
 // Declarative control flow with proper keying
 <Show when={isLoggedIn()}><Dashboard /></Show>
@@ -136,6 +144,7 @@ analytics.track('event');
 ### Showcase Structure
 
 📁 **src/showcase/**
+
 ```
 ├── reactivity/         # Signal, memo, effect demos
 ├── portal/            # Modal, tooltip portals
