@@ -5,7 +5,7 @@
  * This file should transform correctly if Show components are implemented
  */
 
-import { createSignal, Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
 
 export interface IShowTestProps {
   initialVisible?: boolean;

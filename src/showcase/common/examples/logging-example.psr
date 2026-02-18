@@ -1,0 +1,67 @@
+/**
+ * Example: How to use ConsoleLogViewer with useLogger hook
+ * 
+ * This example shows the correct pattern for logging to both
+ * the browser console AND the UI log viewer component.
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+import { ConsoleLogViewer } from '../components/console-log-viewer.psr';
+import { useLogger } from '../hooks/use-logger.ts';
+
+export component LoggingExample() {
+  const [counter, setCounter] = createSignal(0);
+  
+  // ✅ Create a logger instance with optional prefix
+  const logger = useLogger('[LoggingExample]');
+  
+  const handleClick = () => {
+    const newCount = counter() + 1;
+    setCounter(newCount);
+    
+    // ✅ Log to BOTH console AND UI viewer
+    logger.log(`Button clicked ${newCount} times`);
+    logger.info(`Counter value: ${newCount}`);
+    
+    if (newCount > 5) {
+      logger.warn(`You've clicked ${newCount} times - that's a lot!`);
+    }
+    
+    if (newCount > 10) {
+      logger.error(`Stop clicking! (${newCount} clicks)`);
+    }
+  };
+  
+  return (
+    <div>
+      <div style="margin-bottom: 20px;">
+        <button 
+          onClick={handleClick}
+          style="padding: 12px 24px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer;">
+          Click Me ({counter()})
+        </button>
+      </div>
+      
+      {/* ✅ Pass logger.logs (accessor function) and logger.clear */}
+      <ConsoleLogViewer 
+        logs={logger.logs}
+        onClear={logger.clear}
+        title="Example Logs"
+      />
+    </div>
+  );
+}
+
+/**
+ * Logger API:
+ * - logger.log(message)   - Info/success logs (green)
+ * - logger.info(message)  - Informational (blue)
+ * - logger.warn(message)  - Warnings (yellow)
+ * - logger.error(message) - Errors (red)
+ * - logger.clear()        - Clear all logs
+ * - logger.logs           - Accessor function for log entries
+ * 
+ * All methods automatically:
+ * 1. Add timestamped entry to UI viewer
+ * 2. Log to browser console with prefix
+ */

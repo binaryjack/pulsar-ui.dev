@@ -3,7 +3,7 @@
  * Shows portal rendering to document.body
  */
 
-import { createSignal, Portal, Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, Portal, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
 
 export component BasicPortalDemo() {
   const [showPortal, setShowPortal] = createSignal(false);

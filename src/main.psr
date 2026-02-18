@@ -28,12 +28,10 @@ export interface IAppProps {
 
 component App() {
   const navigate = useNavigate();
-  const [currentPath, setCurrentPath] = createSignal(window.location.pathname);
   const [sidebarCollapsed, setSidebarCollapsed] = createSignal(false);
   
   const handleNavigate = (path: string) => {
     navigate(path);
-    setCurrentPath(path);
   };
   
   const handleSidebarToggle = (isCollapsed: boolean) => {
@@ -43,7 +41,6 @@ component App() {
   return (
     <div style="min-height: 100vh; background: #0a0a0a; color: white; font-family: system-ui; display: flex;">
       <SidebarNav 
-        currentPath={currentPath()} 
         onNavigate={handleNavigate}
         onToggle={handleSidebarToggle} 
       />

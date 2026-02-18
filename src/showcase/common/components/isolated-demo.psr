@@ -1,0 +1,95 @@
+/**
+ * IsolatedDemo Component
+ * Wraps a demo component with its own pulse() instance and ServiceManager
+ * Ensures demos don't interfere with each other
+ * 
+ * @example
+ * ```tsx
+ * <IsolatedDemo 
+ *   component={MyDemoComponent}
+ *   services={(sm) => {
+ *     sm.register('config', () => new Config(), { lifetime: 'singleton' });
+ *   }}
+ *   backgroundColor="linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)"
+ * />
+ * ```
+ */
+
+import { pulse, ServiceManager, createSignal, onCleanup } from '@pulsar-framework/pulsar.dev';
+import type { IApplicationRoot } from '@pulsar-framework/pulsar.dev';
+
+interface IsolatedDemoProps {
+  /** Demo component to mount in isolation */
+  component: () => HTMLElement;
+  /** Optional ServiceManager configuration callback */
+  services?: (serviceManager: ServiceManager) => void;
+  /** Optional background styling */
+  backgroundColor?: string;
+  /** Optional padding */
+  padding?: string;
+}
+
+export const IsolatedDemo = (props: IsolatedDemoProps) => {
+  const [mounted, setMounted] = createSignal(false);
+  const [appRoot, setAppRoot] = createSignal<IApplicationRoot | null>(null);
+  
+  // Create container element
+  const container = document.createElement('div');
+  const rootId = `demo-root-${Math.random().toString(36).substr(2, 9)}`;
+  container.id = rootId;
+  container.style.cssText = `
+    padding: ${props.padding || '20px'};
+    background: ${props.backgroundColor || 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'};
+    border-radius: 8px;
+    margin-bottom: 20px;
+  `;
+  
+  // Mount the demo in isolation
+  const mountDemo = () => {
+    try {
+      // Setup ServiceManager if provided
+      let services: ServiceManager | undefined;
+      if (props.services) {
+        services = new ServiceManager();
+        props.services(services);
+        console.log(`[IsolatedDemo] ServiceManager configured for #${rootId}`);
+      }
+      
+      // Create isolated pulse() instance
+      const app = pulse(props.component, {
+        root: `#${rootId}`,
+        services,
+        onMount: (element: HTMLElement) => {
+          console.log(`[IsolatedDemo] Mounted in #${rootId}`, element);
+          setMounted(true);
+        },
+        onUnmount: () => {
+          console.log(`[IsolatedDemo] Unmounted from #${rootId}`);
+          setMounted(false);
+        },
+        onError: (error: Error) => {
+          console.error(`[IsolatedDemo] Error in #${rootId}:`, error);
+        }
+      });
+      
+      setAppRoot(app);
+      console.log(`[IsolatedDemo] Created isolated app for #${rootId}`);
+    } catch (error) {
+      console.error(`[IsolatedDemo] Failed to mount demo:`, error);
+    }
+  };
+  
+  // Mount on next tick to ensure container is in DOM
+  setTimeout(() => mountDemo(), 0);
+  
+  // Cleanup on unmount
+  onCleanup(() => {
+    const app = appRoot();
+    if (app) {
+      app.unmount();
+      console.log(`[IsolatedDemo] Cleaned up #${rootId}`);
+    }
+  });
+  
+  return container;
+};

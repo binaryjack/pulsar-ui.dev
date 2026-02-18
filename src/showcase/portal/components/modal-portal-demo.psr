@@ -3,7 +3,7 @@
  * Full-screen modal overlay using Portal
  */
 
-import { createSignal, Portal, Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, Portal, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
 
 export component ModalPortalDemo() {
   const [isOpen, setIsOpen] = createSignal(false);

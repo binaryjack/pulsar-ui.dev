@@ -1,0 +1,41 @@
+/**
+ * Config Service Error View
+ * Displays service resolution failure with setup instructions
+ */
+
+export interface ConfigServiceErrorViewProps {
+  error: Error;
+}
+
+export component ConfigServiceErrorView(props: ConfigServiceErrorViewProps) {
+  return (
+    <div>
+      <div style="background: rgba(239, 68, 68, 0.2); padding: 15px; border-radius: 6px; border-left: 4px solid #ef4444; margin-bottom: 15px;">
+        <div style="color: #ef4444; font-weight: bold; margin-bottom: 10px; font-size: 14px;">❌ Service Resolution Failed</div>
+        <div style="color: rgba(255,255,255,0.9); font-size: 13px; line-height: 1.6;">
+          Error: {props.error.message}
+          <div style="font-family: 'Consolas', monospace; padding: 10px; background: rgba(0,0,0,0.3); margin-top: 10px; border-radius: 4px; font-size: 12px;">
+            {props.error.message}
+          </div>
+        </div>
+      </div>
+      
+      <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; border-left: 4px solid #f59e0b;">
+        <div style="color: #f59e0b; font-weight: bold; margin-bottom: 10px; font-size: 14px;">⚠️ Setup Required</div>
+        <div style="color: rgba(255,255,255,0.8); font-size: 13px; line-height: 1.6;">
+          To fix this, configure ServiceManager in main.ts:
+          <div style="font-family: 'Consolas', monospace; padding: 10px; background: rgba(0,0,0,0.3); margin-top: 10px; border-radius: 4px; font-size: 12px;">
+            const services = new ServiceManager();<br/><br/>
+            services.register('config', () =&gt; &#123;<br/>
+            &nbsp;&nbsp;return &#123; theme: 'dark', apiUrl: '/api' &#125;;<br/>
+            &#125;, &#123; lifetime: 'singleton' &#125;);<br/><br/>
+            pulse(App, &#123;<br/>
+            &nbsp;&nbsp;root: '#app',<br/>
+            &nbsp;&nbsp;services  // ← Pass here<br/>
+            &#125;);
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

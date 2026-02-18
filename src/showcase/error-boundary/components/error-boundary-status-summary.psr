@@ -1,0 +1,46 @@
+/**
+ * Error Boundary Status Summary Component
+ * Displays system-wide error boundary metrics
+ */
+
+import type { Accessor } from '@pulsar-framework/pulsar.dev';
+
+export interface ErrorBoundaryStatusSummaryProps {
+  basicError: Accessor<boolean>;
+  section1Error: Accessor<boolean>;
+  section2Error: Accessor<boolean>;
+  section3Error: Accessor<boolean>;
+  nestedOuterError: Accessor<boolean>;
+  nestedInnerError: Accessor<boolean>;
+}
+
+export component ErrorBoundaryStatusSummary(props: ErrorBoundaryStatusSummaryProps) {
+  const errorCount = () => {
+    return [
+      props.basicError(),
+      props.section1Error(),
+      props.section2Error(),
+      props.section3Error(),
+      props.nestedOuterError(),
+      props.nestedInnerError()
+    ].filter(Boolean).length;
+  };
+  
+  const totalBoundaries = 6;
+  const safeComponents = () => totalBoundaries - errorCount();
+  
+  return (
+    <div style="background: #1a1a1a; padding: 25px; border-radius: 12px; border: 2px solid #10b981; margin-top: 30px;">
+      <h3 style="color: #10b981; margin-bottom: 20px; font-size: 20px; text-align: center;">
+        📊 System Status Summary
+      </h3>
+      
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; color: #9ca3af; font-size: 14px;">
+        <div>✅ Boundaries Active: {totalBoundaries}</div>
+        <div>🔥 Current Errors: {errorCount()}</div>
+        <div>🛡️ Boundaries Catching: {errorCount()}</div>
+        <div>✨ Safe Components: {safeComponents()}</div>
+      </div>
+    </div>
+  );
+}

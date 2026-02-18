@@ -3,7 +3,7 @@
  * Shows PortalSlot pattern for targeted rendering
  */
 
-import { createSignal, Portal, PortalSlot, Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, Portal, PortalSlot, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
 
 export component TooltipPortalDemo() {
   const [activeTooltip, setActiveTooltip] = createSignal<string | null>(null);

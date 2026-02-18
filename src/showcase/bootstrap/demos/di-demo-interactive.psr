@@ -1,0 +1,94 @@
+/**
+ * DI Demo Component (Interactive)
+ * User clicks button to demonstrate service resolution
+ */
+
+import { createSignal, useService } from '@pulsar-framework/pulsar.dev';
+import type { IConfigService } from '../types/config-service.types.ts';
+import { ConfigServiceResolvedView } from '../components/config-service-resolved-view.psr';
+import { ConsoleLogViewer } from '../../common/components/console-log-viewer.psr';
+import { useLogger } from '../../common/hooks/use-logger.ts';
+
+export const DIDemoInteractive = () => {
+  const [resolved, setResolved] = createSignal(false);
+  const [config, setConfig] = createSignal<IConfigService | null>(null);
+  const [error, setError] = createSignal<string | null>(null);
+  
+  // Use the logger hook
+  const logger = useLogger('[DIDemoInteractive]');
+  
+  const handleResolve = () => {
+    try {
+      // Resolve service when button clicked
+      const service = useService<IConfigService>('config');
+      setConfig(service);
+      setResolved(true);
+      logger.log(`✅ Service resolved successfully - Theme: ${service.theme}`);
+    } catch (err) {
+      const errorMsg = (err as Error).message;
+      setError(errorMsg);
+      logger.error(`❌ Resolution failed: ${errorMsg}`);
+    }
+  };
+  
+  const getThemeStyles = () => {
+    const theme = config()?.theme;
+    if (theme === 'dark') {
+      return {
+        background: 'linear-gradient(135deg, #1f2937 0%, #111827 100%)',
+        borderColor: '#4b5563',
+        textColor: '#d1d5db'
+      };
+    }
+    return {
+      background: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)',
+      borderColor: '#c084fc',
+      textColor: 'white'
+    };
+  };
+  
+  return (
+    <div style={`transition: all 0.5s ease;`}>
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="font-size: 48px; margin-bottom: 10px;">🔌</div>
+        <div style={`color: ${getThemeStyles().textColor}; font-size: 18px; font-weight: bold; margin-bottom: 20px; transition: color 0.5s ease;`}>
+          Dependency Injection with useService()
+        </div>
+        <button 
+          onclick={() => {
+            if (!resolved()) handleResolve();
+          }}
+          style={`padding: 12px 24px; background: ${resolved() ? '#6b7280' : 'white'}; color: ${resolved() ? 'white' : '#8b5cf6'}; border: none; border-radius: 6px; cursor: ${resolved() ? 'not-allowed' : 'pointer'}; font-weight: bold; opacity: ${resolved() ? '0.6' : '1'};`}>
+          {resolved() ? '✅ Service Resolved' : '⚡ Resolve Service'}
+        </button>
+      </div>
+      
+      {resolved() && config() ? (
+        <ConfigServiceResolvedView config={config()!} />
+      ) : error() ? (
+        <div style="background: rgba(239, 68, 68, 0.2); padding: 15px; border-radius: 6px; border-left: 4px solid #ef4444;">
+          <div style="color: #ef4444; font-weight: bold; margin-bottom: 10px; font-size: 14px;">❌ Resolution Failed</div>
+          <div style="color: rgba(255,255,255,0.9); font-size: 13px;">
+            {error()}
+          </div>
+        </div>
+      ) : (
+        <div style={`background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; color: ${getThemeStyles().textColor}; font-size: 13px; line-height: 1.6;`}>
+          <strong>💡 How it works:</strong>
+          <ul style="margin: 10px 0 0 20px;">
+            <li>This demo runs in an isolated pulse() instance</li>
+            <li>ServiceManager configured with ConfigService</li>
+            <li>Click button to trigger useService() resolution</li>
+            <li>Service properties control UI theme</li>
+          </ul>
+        </div>
+      )}
+      
+      <ConsoleLogViewer 
+        logs={logger.logs} 
+        onClear={logger.clear}
+        title="Service Resolution Logs"
+      />
+    </div>
+  );
+};

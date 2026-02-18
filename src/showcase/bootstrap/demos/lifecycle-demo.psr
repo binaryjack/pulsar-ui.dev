@@ -1,54 +1,52 @@
 /**
  * Lifecycle Hooks Demo Component
+ * Demonstrates REAL onMount() and onCleanup() lifecycle hooks
  */
 
-import { createSignal } from '@pulsar-framework/pulsar.dev';
+import { createSignal, onMount, onCleanup } from '@pulsar-framework/pulsar.dev';
 
 export const LifecycleDemo = () => {
-  const [isMounted, setIsMounted] = createSignal(false);
   const [logs, setLogs] = createSignal<string[]>([]);
+  const [mountCount, setMountCount] = createSignal(0);
   
-  const handleMount = () => {
-    const newLog = `${new Date().toLocaleTimeString()} - ✅ onMount() called`;
-    setLogs([...logs(), newLog]);
-    setIsMounted(true);
+  // REAL onMount hook - fires when component mounts
+  onMount(() => {
+    const log = `${new Date().toLocaleTimeString()} - ✅ onMount() called (#${mountCount() + 1})`;
+    setLogs([...logs(), log]);
+    setMountCount(mountCount() + 1);
+    console.log('[LifecycleDemo]', log);
+  });
+  
+  // REAL onCleanup hook - fires when component unmounts
+  onCleanup(() => {
+    const log = `${new Date().toLocaleTimeString()} - 🔴 onCleanup() will be called on unmount`;
+    console.log('[LifecycleDemo]', log);
+  });
+  
+  const addManualLog = () => {
+    const log = `${new Date().toLocaleTimeString()} - 📝 Manual log added`;
+    setLogs([...logs(), log]);
   };
-  
-  const handleUnmount = () => {
-    const newLog = `${new Date().toLocaleTimeString()} - 🔴 onUnmount() called`;
-    setLogs([...logs(), newLog]);
-    setIsMounted(false);
-  };
-  
-  const mountButtonStyle = () => `padding: 12px 24px; background: ${isMounted() ? '#6b7280' : '#10b981'}; color: white; border: none; border-radius: 6px; cursor: ${isMounted() ? 'not-allowed' : 'pointer'}; font-weight: bold; opacity: ${isMounted() ? '0.5' : '1'};`;
-  
-  const unmountButtonStyle = () => `padding: 12px 24px; background: ${!isMounted() ? '#6b7280' : '#ef4444'}; color: white; border: none; border-radius: 6px; cursor: ${!isMounted() ? 'not-allowed' : 'pointer'}; font-weight: bold; opacity: ${!isMounted() ? '0.5' : '1'};`;
   
   return (
     <div style="margin-bottom: 20px; padding: 20px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 8px;">
       <div style="text-align: center; margin-bottom: 20px;">
-        <div style={`padding: 30px; background: ${isMounted() ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}; border-radius: 8px; transition: all 0.3s;`}>
-          <div style="font-size: 48px; margin-bottom: 10px;">{isMounted() ? '✅' : '🔴'}</div>
+        <div style="padding: 30px; background: rgba(16, 185, 129, 0.3); border-radius: 8px; transition: all 0.3s;">
+          <div style="font-size: 48px; margin-bottom: 10px;">✅</div>
           <div style="color: white; font-size: 18px; font-weight: bold;">
-            App Status: {isMounted() ? 'Mounted' : 'Not Mounted'}
+            Component Mounted (onMount fired {mountCount()} {mountCount() === 1 ? 'time' : 'times'})
+          </div>
+          <div style="color: rgba(255,255,255,0.8); font-size: 14px; margin-top: 10px;">
+            REAL onMount() and onCleanup() hooks are active
           </div>
         </div>
       </div>
       
       <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
         <button 
-          onclick={() => {
-            if (!isMounted()) handleMount();
-          }}
-          style={mountButtonStyle()}>
-          ⚡ Mount App
-        </button>
-        <button 
-          onclick={() => {
-            if (isMounted()) handleUnmount();
-          }}
-          style={unmountButtonStyle()}>
-          🔴 Unmount App
+          onclick={() => addManualLog()}
+          style="padding: 12px 24px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+          Add Log Entry
         </button>
       </div>
       
@@ -57,7 +55,7 @@ export const LifecycleDemo = () => {
         <div style="max-height: 150px; overflow-y: auto;">
           {logs().length === 0 ? (
             <div style="color: rgba(255,255,255,0.6); font-style: italic; font-size: 13px;">
-              No events yet. Click "Mount App" to see lifecycle hooks fire.
+              onMount() fires automatically when this component mounts. Check console for onCleanup().
             </div>
           ) : (
             <div>
@@ -72,7 +70,7 @@ export const LifecycleDemo = () => {
       </div>
       
       <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; color: white; font-size: 13px; margin-top: 15px;">
-        <strong>💡 This demonstrates:</strong> The onMount() and onUnmount() lifecycle callbacks fire when your app is mounted/unmounted.
+        <strong>💡 This demonstrates:</strong> REAL onMount() fires when component mounts. onCleanup() fires when you navigate away (check console).
       </div>
     </div>
   );

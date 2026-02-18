@@ -3,7 +3,7 @@
  * Drag to reorder list items
  */
 
-import { createSignal, For } from '@pulsar-framework/pulsar.dev';
+import { createSignal, ForRegistry as For } from '@pulsar-framework/pulsar.dev';
 
 interface ITask {
   id: number;

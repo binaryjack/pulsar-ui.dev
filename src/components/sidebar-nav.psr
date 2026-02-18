@@ -3,7 +3,7 @@
  * Collapsible left panel with demo links
  */
 
-import { createSignal, ShowRegistry, ForRegistry } from '@pulsar-framework/pulsar.dev';
+import { createSignal, ShowRegistry as Show, ForRegistry as For, useLocation } from '@pulsar-framework/pulsar.dev';
 
 interface INavItem {
   path: string;
@@ -13,12 +13,12 @@ interface INavItem {
 }
 
 interface ISidebarNavProps {
-  currentPath: string;
   onNavigate: (path: string) => void;
   onToggle?: (isCollapsed: boolean) => void;
 }
 
-export const SidebarNav = ({ currentPath, onNavigate, onToggle }: ISidebarNavProps) => {
+export const SidebarNav = ({ onNavigate, onToggle }: ISidebarNavProps) => {
+  const location = useLocation();
   const [isCollapsed, setIsCollapsed] = createSignal(false);
   
   const toggleSidebar = () => {
@@ -48,69 +48,54 @@ export const SidebarNav = ({ currentPath, onNavigate, onToggle }: ISidebarNavPro
     onNavigate(path);
   };
   
-  const getSidebarStyle = () => {
-    const width = isCollapsed() ? '60px' : '280px';
-    return `position: fixed; left: 0; top: 0; height: 100vh; background: #0a0a0a; border-right: 2px solid #1e293b; transition: width 0.3s; z-index: 1000; width: ${width};`;
-  };
-  
-  const getButtonStyle = (item: INavItem) => {
-    const isActive = currentPath === item.path;
-    const background = isActive ? '#1e293b' : 'transparent';
-    const borderColor = isActive ? item.color : 'transparent';
-    return `width: 100%; padding: 12px; margin-bottom: 6px; background: ${background}; border: 2px solid ${borderColor}; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 12px; transition: all 0.2s;`;
-  };
-  
-  const getLabelStyle = (item: INavItem) => {
-    const isActive = currentPath === item.path;
-    const color = isActive ? item.color : '#94a3b8';
-    const fontWeight = isActive ? 'bold' : 'normal';
-    return `color: ${color}; font-size: 14px; font-weight: ${fontWeight};`;
-  };
-  
   return (
-    <div style={getSidebarStyle()}>
-      <div style="padding: 20px; border-bottom: 2px solid #1e293b; display: flex; align-items: center; justify-content: space-between;">
-        <ShowRegistry when={() => !isCollapsed()}>
-          <h2 style="margin: 0; color: #3b82f6; font-size: 18px;">
+    <div style={() => `position: fixed; left: 0; top: 0; height: 100vh; background: #0a0a0a; border-right: 2px solid #1e293b; transition: width 0.3s ease-in-out; z-index: 1000; width: ${isCollapsed() ? '60px' : '280px'}; overflow: hidden;`}>
+      <div style="padding: 20px; border-bottom: 2px solid #1e293b; display: flex; align-items: center; justify-content: space-between; min-height: 60px;">
+        <div style={() => `overflow: hidden; transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out; opacity: ${isCollapsed() ? '0' : '1'}; width: ${isCollapsed() ? '0' : 'auto'};`}>
+          <h2 style="margin: 0; color: #3b82f6; font-size: 18px; white-space: nowrap;">
             Pulsar Demos
           </h2>
-        </ShowRegistry>
+        </div>
         <button 
           onClick={toggleSidebar}
-          style="background: transparent; border: 2px solid #3b82f6; color: #3b82f6; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px;">
+          style="background: transparent; border: 2px solid #3b82f6; color: #3b82f6; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px; flex-shrink: 0;">
           {isCollapsed() ? '▶' : '◀'}
         </button>
       </div>
       
       <div style="overflow-y: auto; height: calc(100vh - 80px); padding: 10px;">
-        <ForRegistry each={navItems} key={(item) => item.path}>
-          {(item) => (
-            <button 
-              onClick={() => handleNavClick(item.path)}
-              style={getButtonStyle(item)}
-              onMouseEnter={(e: MouseEvent) => {
-                const target = e.currentTarget as HTMLElement;
-                if (currentPath !== item.path) {
-                  target.style.background = '#1a1a1a';
-                  target.style.borderColor = item.color;
-                }
-              }}
-              onMouseLeave={(e: MouseEvent) => {
-                const target = e.currentTarget as HTMLElement;
-                if (currentPath !== item.path) {
-                  target.style.background = 'transparent';
-                  target.style.borderColor = 'transparent';
-                }
-              }}>
-              <span style="font-size: 20px;">{item.emoji}</span>
-              <ShowRegistry when={() => !isCollapsed()}>
-                <span style={getLabelStyle(item)}>
-                  {item.label}
-                </span>
-              </ShowRegistry>
-            </button>
-          )}
-        </ForRegistry>
+        <For each={navItems}>
+          {(item) => {
+            const isActive = () => location.pathname === item.path;
+            
+            return (
+              <button 
+                onClick={() => handleNavClick(item.path)}
+                style={() => `width: 100%; padding: 12px; margin-bottom: 6px; background: ${isActive() ? '#1e293b' : 'transparent'}; border: 2px solid ${isActive() ? item.color : 'transparent'}; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 12px; transition: all 0.2s;`}
+                onMouseEnter={(e: MouseEvent) => {
+                  const target = e.currentTarget as HTMLElement;
+                  if (!isActive()) {
+                    target.style.background = '#1a1a1a';
+                    target.style.borderColor = item.color;
+                  }
+                }}
+                onMouseLeave={(e: MouseEvent) => {
+                  const target = e.currentTarget as HTMLElement;
+                  if (!isActive()) {
+                    target.style.background = 'transparent';
+                    target.style.borderColor = 'transparent';
+                  }
+                }}>
+                <span style="font-size: 20px; flex-shrink: 0;">{item.emoji}</span>
+                <div style={() => `overflow: hidden; transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out; opacity: ${isCollapsed() ? '0' : '1'}; width: ${isCollapsed() ? '0' : 'auto'};`}>
+                  <span style={() => `color: ${isActive() ? item.color : '#94a3b8'}; font-size: 14px; font-weight: ${isActive() ? 'bold' : 'normal'}; white-space: nowrap;`}>
+                    {item.label}
+                  </span>
+                </div>
+              </button>
+            );
+          }}
+        </For>
       </div>
     </div>
   );

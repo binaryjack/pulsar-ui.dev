@@ -6,10 +6,17 @@
 import { PageHeader } from '../common/components/page-header.psr';
 import { DemoSection } from '../common/components/demo-section.psr';
 import { CodeBlock } from '../common/components/code-block.psr';
+import { IsolatedDemo } from '../common/components/isolated-demo.psr';
 import { BasicDemo } from './demos/basic-demo.psr';
 import { LifecycleDemo } from './demos/lifecycle-demo.psr';
-import { DIDemo } from './demos/di-demo.psr';
+import { DIDemoInteractive } from './demos/di-demo-interactive.psr';
 import { ReturnValueDemo } from './demos/return-value-demo.psr';
+
+// ConfigService for isolated DI demo
+class ConfigService {
+  theme = 'dark';
+  apiUrl = 'https://api.example.com';
+}
 
 export component BootstrapTestPage() {
   return (
@@ -23,9 +30,12 @@ export component BootstrapTestPage() {
       
       <DemoSection 
         title="1️⃣ Basic Usage" 
-        description="Minimal app initialization - Interactive Demo"
+        description="Minimal app initialization - Interactive Demo with Isolated pulse()"
         borderColor="#eab308">
-        <BasicDemo />
+        <IsolatedDemo
+          component={BasicDemo}
+          backgroundColor="linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)"
+        />
         <CodeBlock code={`import { pulse } from '@pulsar-framework/pulsar.dev';
 import App from './app.psr';
 
@@ -61,9 +71,17 @@ pulse(App, '#root');`} />
       
       <DemoSection 
         title="3️⃣ With Dependency Injection" 
-        description="Integrate IoC container for services - Interactive Demo"
+        description="Integrate IoC container for services - Interactive Demo with Isolated pulse()"
         borderColor="#8b5cf6">
-        <DIDemo />
+        <IsolatedDemo
+          component={DIDemoInteractive}
+          services={(sm) => {
+            sm.registerClass('config', ConfigService, {
+              lifetime: 'singleton'
+            });
+          }}
+          backgroundColor="linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)"
+        />
         <CodeBlock code={`import { pulse, ServiceManager } from '@pulsar-framework/pulsar.dev';
 import { ConfigService, ApiService } from './services';
 

@@ -3,7 +3,7 @@
  * File upload interface with drag-drop
  */
 
-import { createSignal, Show, For } from '@pulsar-framework/pulsar.dev';
+import { createSignal, ShowRegistry as Show, ForRegistry as For } from '@pulsar-framework/pulsar.dev';
 
 export component DragDropZoneDemo() {
   const [isDragging, setIsDragging] = createSignal(false);

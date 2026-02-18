@@ -1,66 +1,135 @@
 /**
  * Service Lifetime Demo
- * Shows difference between singleton, transient, and scoped
+ * Shows REAL difference between singleton, transient, and scoped using actual ServiceManager
  */
 
-import { createSignal } from '@pulsar-framework/pulsar.dev';
+import { createSignal, useService, getCurrentAppRoot } from '@pulsar-framework/pulsar.dev';
+import { SingletonService, TransientService, ScopedService } from '../services/demo-services.ts';
+import type { ISingletonService, ITransientService, IScopedService } from '../services/demo-services.ts';
+import { LifetimeCard } from './lifetime-card.psr';
+import { ConsoleLogViewer } from '../../common/components/console-log-viewer.psr';
+import { useLogger } from '../../common/hooks/use-logger.ts';
 
 export component ServiceLifetimeDemo() {
-  const [singletonCount, setSingletonCount] = createSignal(0);
-  const [transientCount, setTransientCount] = createSignal(0);
+  const [singletonId, setSingletonId] = createSignal<number | null>(null);
+  const [transientId, setTransientId] = createSignal<number | null>(null);
+  const [scopedId, setScopedId] = createSignal<number | null>(null);
+  const [resolveCount, setResolveCount] = createSignal(0);
+  
+  // Use the logger hook
+  const logger = useLogger('[ServiceLifetimeDemo]');
+  
+  // Register services on mount
+  const appRoot = getCurrentAppRoot();
+  if (appRoot?.serviceManager) {
+    const sm = appRoot.serviceManager;
+    
+    // Register singleton (only once)
+    if (!sm.isRegistered('singleton-demo')) {
+      sm.registerClass('singleton-demo', SingletonService, { lifetime: 'singleton' });
+    }
+    
+    // Register transient (new instance each time)
+    if (!sm.isRegistered('transient-demo')) {
+      sm.registerClass('transient-demo', TransientService, { lifetime: 'transient' });
+    }
+    
+    // Register scoped (one per scope)
+    if (!sm.isRegistered('scoped-demo')) {
+      sm.registerClass('scoped-demo', ScopedService, { lifetime: 'scoped' });
+    }
+  }
+  
+  const resolveSingleton = () => {
+    try {
+      const service = useService<ISingletonService>('singleton-demo');
+      setSingletonId(service.instanceId);
+      setResolveCount(resolveCount() + 1);
+      logger.log(`🔵 Resolved Singleton - Instance ID: ${service.instanceId}`);
+    } catch (error) {
+      logger.error(`❌ Failed to resolve singleton: ${error}`);
+    }
+  };
+  
+  const resolveTransient = () => {
+    try {
+      const service = useService<ITransientService>('transient-demo');
+      setTransientId(service.instanceId);
+      setResolveCount(resolveCount() + 1);
+      logger.log(`🟢 Resolved Transient - Instance ID: ${service.instanceId} (NEW)`);
+    } catch (error) {
+      logger.error(`❌ Failed to resolve transient: ${error}`);
+    }
+  };
+  
+  const resolveScoped = () => {
+    try {
+      const service = useService<IScopedService>('scoped-demo');
+      setScopedId(service.instanceId);
+      setResolveCount(resolveCount() + 1);
+      logger.log(`🟡 Resolved Scoped - Instance ID: ${service.instanceId}`);
+    } catch (error) {
+      logger.error(`❌ Failed to resolve scoped: ${error}`);
+    }
+  };
   
   return (
     <div>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
-        <div style="padding: 15px; background: #0f172a; border: 2px solid #8b5cf6; border-radius: 8px;">
-          <h4 style="margin: 0 0 10px 0; color: #8b5cf6; font-size: 14px;">
-            🔵 Singleton
-          </h4>
-          <p style="margin: 0 0 10px 0; color: #94a3b8; font-size: 12px; line-height: 1.4;">
-            One instance for app lifetime
-          </p>
-          <p style="margin: 0; color: #e2e8f0; font-size: 18px; font-weight: bold;">
-            Instance #{singletonCount()}
-          </p>
-        </div>
+        <LifetimeCard 
+          title="Singleton"
+          emoji="🔵"
+          color="#8b5cf6"
+          description="One instance for app lifetime"
+          instanceId={singletonId}
+        />
         
-        <div style="padding: 15px; background: #0f172a; border: 2px solid #10b981; border-radius: 8px;">
-          <h4 style="margin: 0 0 10px 0; color: #10b981; font-size: 14px;">
-            🟢 Transient
-          </h4>
-          <p style="margin: 0 0 10px 0; color: #94a3b8; font-size: 12px; line-height: 1.4;">
-            New instance every resolve
-          </p>
-          <p style="margin: 0; color: #e2e8f0; font-size: 18px; font-weight: bold;">
-            Instance #{transientCount()}
-          </p>
-        </div>
+        <LifetimeCard 
+          title="Transient"
+          emoji="🟢"
+          color="#10b981"
+          description="New instance every resolve"
+          instanceId={transientId}
+        />
         
-        <div style="padding: 15px; background: #0f172a; border: 2px solid #f59e0b; border-radius: 8px;">
-          <h4 style="margin: 0 0 10px 0; color: #f59e0b; font-size: 14px;">
-            🟡 Scoped
-          </h4>
-          <p style="margin: 0 0 10px 0; color: #94a3b8; font-size: 12px; line-height: 1.4;">
-            One instance per scope
-          </p>
-          <p style="margin: 0; color: #e2e8f0; font-size: 18px; font-weight: bold;">
-            Instance #1
-          </p>
-        </div>
+        <LifetimeCard 
+          title="Scoped"
+          emoji="🟡"
+          color="#f59e0b"
+          description="One instance per scope"
+          instanceId={scopedId}
+        />
       </div>
       
-      <div style="display: flex; gap: 10px;">
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
         <button 
-          onClick={() => setSingletonCount(singletonCount() + 1)}
+          onClick={resolveSingleton}
           style="padding: 10px 20px; background: transparent; color: #8b5cf6; border: 2px solid #8b5cf6; border-radius: 6px; cursor: pointer; font-size: 14px;">
           Resolve Singleton
         </button>
         <button 
-          onClick={() => setTransientCount(transientCount() + 1)}
+          onClick={resolveTransient}
           style="padding: 10px 20px; background: transparent; color: #10b981; border: 2px solid #10b981; border-radius: 6px; cursor: pointer; font-size: 14px;">
           Resolve Transient
         </button>
+        <button 
+          onClick={resolveScoped}
+          style="padding: 10px 20px; background: transparent; color: #f59e0b; border: 2px solid #f59e0b; border-radius: 6px; cursor: pointer; font-size: 14px;">
+          Resolve Scoped
+        </button>
       </div>
+      
+      <div style="padding: 12px; background: rgba(16, 185, 129, 0.2); border-left: 3px solid #10b981; border-radius: 4px;">
+        <p style="margin: 0; color: #10b981; font-size: 13px;">
+          💡 Click buttons to resolve services. Singleton always returns same instance, Transient creates new each time.
+        </p>
+      </div>
+      
+      <ConsoleLogViewer 
+        logs={logs} 
+        onClear={clearLogs}
+        title="Lifetime Resolution Logs"
+      />
     </div>
   );
 }

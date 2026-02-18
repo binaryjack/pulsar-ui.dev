@@ -1,0 +1,76 @@
+/**
+ * Error Boundary Master Control Panel Component
+ * Centralized controls for triggering/resetting error boundaries
+ */
+
+import type { Accessor, Setter } from '@pulsar-framework/pulsar.dev';
+import { ControlButtonGroup } from './control-button-group.psr';
+
+export interface ErrorBoundaryControlPanelProps {
+  basicError: Accessor<boolean>;
+  setBasicError: Setter<boolean>;
+  section1Error: Accessor<boolean>;
+  setSection1Error: Setter<boolean>;
+  section2Error: Accessor<boolean>;
+  setSection2Error: Setter<boolean>;
+  section3Error: Accessor<boolean>;
+  setSection3Error: Setter<boolean>;
+  nestedOuterError: Accessor<boolean>;
+  setNestedOuterError: Setter<boolean>;
+  nestedInnerError: Accessor<boolean>;
+  setNestedInnerError: Setter<boolean>;
+}
+
+export component ErrorBoundaryControlPanel(props: ErrorBoundaryControlPanelProps) {
+  return (
+    <div style="background: linear-gradient(135deg, #1a1a1a, #2d2d2d); padding: 30px; border-radius: 16px; margin-bottom: 40px; border: 3px solid #fbbf24; box-shadow: 0 8px 32px rgba(251, 191, 36, 0.1);">
+      <h2 style="color: #fbbf24; margin-bottom: 25px; text-align: center; font-size: 28px;">
+        🎮 MASTER CONTROL PANEL
+      </h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px;">
+        <ControlButtonGroup 
+          label="BASIC BOUNDARY"
+          isError={props.basicError()}
+          onTrigger={() => props.setBasicError(!props.basicError())}
+          color="#06b6d4"
+        />
+        
+        <ControlButtonGroup 
+          label="SECTION 1"
+          isError={props.section1Error()}
+          onTrigger={() => props.setSection1Error(!props.section1Error())}
+          color="#8b5cf6"
+        />
+        
+        <ControlButtonGroup 
+          label="SECTION 2"
+          isError={props.section2Error()}
+          onTrigger={() => props.setSection2Error(!props.section2Error())}
+          color="#ec4899"
+        />
+        
+        <ControlButtonGroup 
+          label="SECTION 3"
+          isError={props.section3Error()}
+          onTrigger={() => props.setSection3Error(!props.section3Error())}
+          color="#f59e0b"
+        />
+        
+        <ControlButtonGroup 
+          label="NESTED OUTER"
+          isError={props.nestedOuterError()}
+          onTrigger={() => props.setNestedOuterError(!props.nestedOuterError())}
+          color="#10b981"
+        />
+        
+        <ControlButtonGroup 
+          label="NESTED INNER"
+          isError={props.nestedInnerError()}
+          onTrigger={() => props.setNestedInnerError(!props.nestedInnerError())}
+          color="#ef4444"
+        />
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,145 @@
+/**
+ * Service Resolution Demo
+ * REAL service resolution using actual ServiceManager API
+ */
+
+import { createSignal, getCurrentAppRoot } from '@pulsar-framework/pulsar.dev';
+import { DemoService } from '../services/demo-services.ts';
+import type { IDemoService } from '../services/demo-services.ts';
+import { ServiceButton } from './service-button.psr';
+import { ResolutionResult } from './resolution-result.psr';
+import { ConsoleLogViewer } from '../../common/components/console-log-viewer.psr';
+import { useLogger } from '../../common/hooks/use-logger.ts';
+
+export component ServiceResolutionDemo() {
+  const [resolvedData, setResolvedData] = createSignal<string | null>(null);
+  const [errorMessage, setErrorMessage] = createSignal<string | null>(null);
+  
+  // Use the logger hook - automatically logs to console AND updates UI
+  const logger = useLogger('[ServiceResolutionDemo]');
+  
+  const checkAndResolve = (identifier: string, displayName: string) => () => {
+    const appRoot = getCurrentAppRoot();
+    if (!appRoot?.serviceManager) {
+      setErrorMessage('ServiceManager not available');
+      return;
+    }
+    
+    const sm = appRoot.serviceManager;
+    setErrorMessage(null);
+    
+    // REAL isRegistered() check
+    if (sm.isRegistered(identifier)) {
+      // REAL resolve()
+      try {
+        const service = sm.resolve(identifier);
+        logger.log(`✅ Resolved ${displayName} successfully`);
+        
+        if (service && typeof service === 'object') {
+          const data = JSON.stringify(service, null, 2);
+          setResolvedData(`✅ Resolved ${displayName}:\n${data}`);
+        } else {
+          setResolvedData(`✅ Resolved ${displayName}: ${service}`);
+        }
+      } catch (error: any) {
+        logger.error(`❌ Error resolving ${displayName}: ${error.message}`);
+        setErrorMessage(`❌ Error resolving ${displayName}: ${error.message}`);
+        setResolvedData(null);
+      }
+    } else {
+      logger.warn(`⚠️ Service '${identifier}' is not registered`);
+      setErrorMessage(`⚠️ Service '${identifier}' is not registered in ServiceManager`);
+      setResolvedData(null);
+    }
+  };
+  
+  const tryResolveWithFallback = () => {
+    const appRoot = getCurrentAppRoot();
+    if (!appRoot?.serviceManager) {
+      setErrorMessage('ServiceManager not available');
+      return;
+    }
+    
+    const sm = appRoot.serviceManager;
+    setErrorMessage(null);
+    
+    // REAL tryResolve() - returns undefined instead of throwing
+    const service = sm.tryResolve('non-existent-service');
+    
+    if (service === undefined) {
+      addLog('log', '✅ tryResolve() returned undefined (no error thrown)');
+      logger.log('✅ tryResolve() returned undefined (no error thrown)');
+      setResolvedData('✅ tryResolve() returned undefined (no error thrown)');
+    } else {
+      logger.warn(`Unexpected: got ${service}`);
+      setResolvedData(`Unexpected: got ${service}`);
+    }
+  };
+  
+  const registerTestService = () => {
+    const appRoot = getCurrentAppRoot();
+    if (!appRoot?.serviceManager) {
+      setErrorMessage('ServiceManager not available');
+      return;
+    }
+    
+    const sm = appRoot.serviceManager;
+    
+    if (!sm.isRegistered('resolution-test-service')) {
+      sm.register('resolution-test-service', () => {
+        const instance = Object.create(DemoService.prototype);
+        DemoService.call(instance, 'ResolutionTest', Date.now());
+        return instance as IDemoService;
+      }, { lifetime: 'singleton' });
+      logger.log('📦 Test service registered successfully');
+      setResolvedData('📦 Test service registered! Now try resolving it.');
+      setErrorMessage(null);
+    } else {
+      logger.warn(('Test service already registered');
+    }
+  };
+  
+  return (
+    <div>
+      <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+        <ServiceButton 
+          onClick={registerTestService}
+          color="#10b981">
+          1. Register Test Service
+        </ServiceButton>
+        <ServiceButton 
+          onClick={checkAndResolve('resolution-test-service', 'Test Service')}
+          color="#3b82f6">
+          2. Resolve Test Service
+        </ServiceButton>
+        <ServiceButton 
+          onClick={checkAndResolve('non-existent', 'Non-Existent')}
+          color="#ef4444">
+          3. Try Non-Existent
+        </ServiceButton>
+        <ServiceButton 
+          onClick={tryResolveWithFallback}
+          color="#f59e0b">
+          4. tryResolve() Demo
+        </ServiceButton>
+      </div>
+      
+      <ResolutionResult resolvedData={resolvedData} errorMessage={errorMessage} />
+      
+      <div style="margin-top: 20px; padding: 15px; background: #1e293b; border-left: 4px solid #3b82f6; border-radius: 4px;">
+        <p style="margin: 0; color: #94a3b8; font-size: 14px; line-height: 1.6;">
+          💡 <strong style="color: #60a5fa;">API Methods:</strong><br/>
+          • <code style="color: #3b82f6;">isRegistered(id)</code> - Check if service exists<br/>
+          • <code style="color: #3b82f6;">resolve(id)</code> - Get service (throws if not found)<br/>
+          • <code style="color: #3b82f6;">tryResolve(id)</code> - Get service (returns undefined if not found)
+        </p>
+      </div>
+      
+      <ConsoleLogViewer 
+        logs={logs} 
+        onClear={clearLogs}
+        title="Reger.logs} 
+        onClear={logger.clear
+    </div>
+  );
+}

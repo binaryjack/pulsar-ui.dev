@@ -1,0 +1,26 @@
+/**
+ * Service Button Component
+ * Reusable button for service registration and resolution actions
+ */
+
+export interface ServiceButtonProps {
+  onClick: () => void;
+  color: string;
+  children: any;
+}
+
+export component ServiceButton(props: ServiceButtonProps) {
+  return (
+    <button 
+      onClick={props.onClick}
+      style={`padding: 10px 20px; background: ${props.color}; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; transition: opacity 0.2s;`}
+      onMouseOver={(e: MouseEvent) => {
+        (e.target as HTMLElement).style.opacity = '0.8';
+      }}
+      onMouseOut={(e: MouseEvent) => {
+        (e.target as HTMLElement).style.opacity = '1';
+      }}>
+      {props.children}
+    </button>
+  );
+}

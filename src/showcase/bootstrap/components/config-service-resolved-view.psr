@@ -1,0 +1,69 @@
+/**
+ * Config Service Resolved View
+ * Displays successful service resolution with theme-aware UI
+ */
+
+import type { IConfigService } from '../types/config-service.types.ts';
+
+export interface ConfigServiceResolvedViewProps {
+  config: IConfigService;
+}
+
+const getThemeStyles = (theme: string) => {
+  if (theme === 'dark') {
+    return {
+      background: 'linear-gradient(135deg, #1f2937 0%, #111827 100%)',
+      borderColor: '#4b5563',
+      textColor: '#d1d5db'
+    };
+  }
+  return {
+    background: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)',
+    borderColor: '#c084fc',
+    textColor: 'white'
+  };
+};
+
+export component ConfigServiceResolvedView(props: ConfigServiceResolvedViewProps) {
+  const styles = getThemeStyles(props.config.theme);
+  
+  return (
+    <div>
+      <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; border-left: 4px solid #10b981; margin-bottom: 15px;">
+        <div style="color: #10b981; font-weight: bold; margin-bottom: 10px; font-size: 14px;">✅ Service Resolved Successfully</div>
+        <div style={`color: ${styles.textColor}; font-size: 13px; line-height: 1.6;`}>
+          Component code:
+          <div style="font-family: 'Consolas', monospace; padding: 10px; background: rgba(0,0,0,0.3); margin-top: 10px; border-radius: 4px;">
+            const config = useService&lt;IConfigService&gt;('config');<br/><br/>
+            // ✅ Service is available!<br/>
+            console.log(config.theme); // "{props.config.theme}"<br/>
+            console.log(config.apiUrl); // "{props.config.apiUrl}"
+          </div>
+        </div>
+      </div>
+      
+      <div style={`background: rgba(0,0,0,0.4); padding: 20px; border-radius: 6px; border: 2px solid ${styles.borderColor}; text-align: center; transition: all 0.5s ease; margin-bottom: 15px;`}>
+        <div style="font-size: 32px; margin-bottom: 10px;">{props.config.theme === 'dark' ? '🌙' : '☀️'}</div>
+        <div style={`color: ${styles.textColor}; font-size: 16px; font-weight: bold; margin-bottom: 5px;`}>
+          Theme: {props.config.theme.toUpperCase()}
+        </div>
+        <div style={`color: ${styles.textColor}; font-size: 14px; margin-top: 10px; opacity: 0.9;`}>
+          API Endpoint: {props.config.apiUrl}
+        </div>
+        <div style={`color: ${styles.textColor}; font-size: 12px; opacity: 0.7; margin-top: 10px;`}>
+          This UI adapts based on the resolved ConfigService
+        </div>
+      </div>
+      
+      <div style="background: rgba(16, 185, 129, 0.2); padding: 15px; border-radius: 6px; border-left: 4px solid #10b981;">
+        <div style="color: #10b981; font-weight: bold; margin-bottom: 8px; font-size: 13px;">📊 Resolved Service Instance:</div>
+        <div style={`color: ${styles.textColor}; font-family: 'Consolas', monospace; font-size: 12px;`}>
+          <div style="padding: 3px 0;">typeof config: "object"</div>
+          <div style="padding: 3px 0;">config.theme: "{props.config.theme}"</div>
+          <div style="padding: 3px 0;">config.apiUrl: "{props.config.apiUrl}"</div>
+          <div style="padding: 3px 0; opacity: 0.7;">// Singleton - same instance everywhere</div>
+        </div>
+      </div>
+    </div>
+  );
+}

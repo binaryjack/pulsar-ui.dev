@@ -1,0 +1,30 @@
+/**
+ * Lifetime Card Component
+ * Displays a single service lifetime with its instance ID
+ */
+
+import type { Accessor } from '@pulsar-framework/pulsar.dev';
+
+export interface LifetimeCardProps {
+  title: string;
+  emoji: string;
+  color: string;
+  description: string;
+  instanceId: Accessor<number | null>;
+}
+
+export component LifetimeCard(props: LifetimeCardProps) {
+  return (
+    <div style={`padding: 15px; background: #0f172a; border: 2px solid ${props.color}; border-radius: 8px;`}>
+      <h4 style={`margin: 0 0 10px 0; color: ${props.color}; font-size: 14px;`}>
+        {props.emoji} {props.title}
+      </h4>
+      <p style="margin: 0 0 10px 0; color: #94a3b8; font-size: 12px; line-height: 1.4;">
+        {props.description}
+      </p>
+      <p style="margin: 0; color: #e2e8f0; font-size: 18px; font-weight: bold;">
+        {props.instanceId() !== null ? `#${props.instanceId()}` : 'Not resolved'}
+      </p>
+    </div>
+  );
+}

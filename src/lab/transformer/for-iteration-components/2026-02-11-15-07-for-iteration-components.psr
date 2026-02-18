@@ -5,7 +5,7 @@
  * This file should transform correctly if For iteration components are implemented
  */
 
-import { createSignal, For, createComputed, batch } from '@pulsar-framework/pulsar.dev';
+import { createSignal, ForRegistry as For, createComputed, batch } from '@pulsar-framework/pulsar.dev';
 
 export interface IUser {
   id: number;

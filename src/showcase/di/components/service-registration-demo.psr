@@ -1,51 +1,85 @@
 /**
  * Service Registration Demo
- * Interactive service registration example
+ * REAL service registration using actual ServiceManager
  */
 
-import { createSignal, Show, For } from '@pulsar-framework/pulsar.dev';
+import { createSignal, getCurrentAppRoot } from '@pulsar-framework/pulsar.dev';
+import { LoggerService, ApiClientService, AnalyticsService } from '../services/demo-services.ts';
+import { RegisteredServicesList } from './registered-services-list.psr';
+import { ServiceButton } from './service-button.psr';
+import { ConsoleLogViewer } from '../../common/components/console-log-viewer.psr';
+import { useLogger } from '../../common/hooks/use-logger.ts';
 
 export component ServiceRegistrationDemo() {
   const [services, setServices] = createSignal<string[]>([]);
   
-  const registerService = (name: string) => () => {
-    setServices([...services(), name]);
+  // Use the logger hook
+  const logger = useLogger('[ServiceRegistrationDemo]');
+  
+  const updateServicesList = () => {
+    const appRoot = getCurrentAppRoot();
+    if (appRoot?.serviceManager) {
+      const sm = appRoot.serviceManager;
+      const registered: string[] = [];
+      
+      // Check which services are registered
+      if (sm.isRegistered('logger-demo')) registered.push('Logger');
+      if (sm.isRegistered('api-demo')) registered.push('API Client');
+      if (sm.isRegistered('analytics-demo')) registered.push('Analytics');
+      
+      setServices(registered);
+    }
+  };
+  
+  const registerService = (name: string, serviceClass: any, identifier: string) => () => {
+    const appRoot = getCurrentAppRoot();
+    if (appRoot?.serviceManager) {
+      const sm = appRoot.serviceManager;
+      
+      // REAL service registration
+      if (!sm.isRegistered(identifier)) {
+        sm.registerClass(identifier, serviceClass, { lifetime: 'singleton' });
+        logger.log(`✅ Registered ${name} service (${identifier})`);
+        updateServicesList();
+      } else {
+        logger.warn(`⚠️ ${name} already registered`);
+      }
+    }
   };
   
   return (
     <div>
-      <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-        <button 
-          onClick={registerService('Logger')}
-          style="padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
+      <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+        <ServiceButton 
+          onClick={registerService('Logger', LoggerService, 'logger-demo')}
+          color="#3b82f6">
           Register Logger
-        </button>
-        <button 
-          onClick={registerService('API Client')}
-          style="padding: 10px 20px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
+        </ServiceButton>
+        <ServiceButton 
+          onClick={registerService('API Client', ApiClientService, 'api-demo')}
+          color="#10b981">
           Register API
-        </button>
-        <button 
-          onClick={registerService('Analytics')}
-          style="padding: 10px 20px; background: #8b5cf6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
+        </ServiceButton>
+        <ServiceButton 
+          onClick={registerService('Analytics', AnalyticsService, 'analytics-demo')}
+          color="#8b5cf6">
           Register Analytics
-        </button>
+        </ServiceButton>
       </div>
       
-      <Show when={services().length > 0}>
-        <div style="padding: 15px; background: #0f172a; border: 2px solid #3b82f6; border-radius: 8px;">
-          <h4 style="margin: 0 0 10px 0; color: #3b82f6; font-size: 14px;">
-            📦 Registered Services
-          </h4>
-          <For each={services()}>
-            {(service) => (
-              <div style="padding: 8px 12px; margin-bottom: 6px; background: #1a1a1a; border-radius: 4px; color: #e2e8f0; font-size: 14px;">
-                ✓ {service}
-              </div>
-            )}
-          </For>
-        </div>
-      </Show>
+      <RegisteredServicesList services={services} />
+      
+      <div style="padding: 12px; background: rgba(16, 185, 129, 0.2); border-left: 3px solid #10b981; border-radius: 4px;">
+        <p style="margin: 0; color: #10b981; font-size: 13px;">
+          💡 Click to register REAL services in ServiceManager. Services can then be resolved using resolve() or useService().
+        </p>
+      </div>
+      
+      <ConsoleLogViewer 
+        logs={logger.logs} 
+        onClear={logger.clear}
+        title="Registration Logs"
+      />
     </div>
   );
 }

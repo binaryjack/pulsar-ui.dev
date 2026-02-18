@@ -1,0 +1,133 @@
+/**
+ * ConsoleLogViewer Component
+ * Generic reusable console log display for demos
+ */
+
+import { ShowRegistry as Show, ForRegistry as For } from '@pulsar-framework/pulsar.dev';
+
+export type LogEntry = {
+  timestamp: string;
+  level: 'log' | 'info' | 'warn' | 'error';
+  message: string;
+};
+
+type ConsoleLogViewerProps = {
+  logs: () => LogEntry[];  // Accessor function, not full Signal tuple
+  onClear: () => void;
+  title?: string;
+  maxHeight?: string;
+};
+
+export component ConsoleLogViewer(props: ConsoleLogViewerProps) {
+  const { logs, onClear, title = 'Console Output', maxHeight = '300px' } = props;
+  
+  const getLevelColor = (level: string) => {
+    switch (level) {
+      case 'error': return '#ef4444';
+      case 'warn': return '#f59e0b';
+      case 'info': return '#3b82f6';
+      default: return '#10b981';
+    }
+  };
+  
+  const getLevelIcon = (level: string) => {
+    switch (level) {
+      case 'error': return '❌';
+      case 'warn': return '⚠️';
+      case 'info': return 'ℹ️';
+      default: return '✓';
+    }
+  };
+  
+  return (
+    <div style={`
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 8px;
+      background: #0f172a;
+      overflow: hidden;
+      margin-top: 20px;
+    `}>
+      <div style={`
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        background: rgba(148, 163, 184, 0.1);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      `}>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 16px;">📋</span>
+          <span style="font-weight: 600; color: #e2e8f0; font-size: 14px;">{title}</span>
+          <span style="color: #64748b; font-size: 12px;">({logs().length})</span>
+        </div>
+        <button 
+          onClick={onClear}
+          style={`
+            padding: 6px 12px;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 4px;
+            color: #fca5a5;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+          `}
+          onMouseOver={(e) => {
+            e.currentTarget.style.background = 'rgba(239, 68, 68, 0.3)';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)';
+          }}
+        >
+          Clear Logs
+        </button>
+      </div>
+      
+      <div style={`
+        padding: 12px;
+        max-height: ${maxHeight};
+        overflow-y: auto;
+        font-family: 'Consolas', 'Monaco', monospace;
+        font-size: 12px;
+        line-height: 1.5;
+      `}>
+        <Show when={() => logs().length === 0}>
+          <div style="color: #64748b; font-style: italic; text-align: center; padding: 20px;">
+            No logs yet. Interact with the demo to see console output.
+          </div>
+        </Show>
+        
+        <Show when={() => logs().length > 0}>
+          <For each={logs()}>
+            {(log: LogEntry) => (
+              <div style={`
+                display: flex;
+                gap: 8px;
+                padding: 8px;
+                border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+                transition: background 0.2s;
+              `}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background = 'rgba(148, 163, 184, 0.05)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background = 'transparent';
+              }}
+              >
+                <span style={`color: ${getLevelColor(log.level)}; min-width: 20px;`}>
+                  {getLevelIcon(log.level)}
+                </span>
+                <span style="color: #64748b; min-width: 70px;">
+                  {log.timestamp}
+                </span>
+                <span style={`color: ${getLevelColor(log.level)}; flex: 1; word-break: break-word;`}>
+                  {log.message}
+                </span>
+              </div>
+            )}
+          </For>
+        </Show>
+      </div>
+    </div>
+  );
+}

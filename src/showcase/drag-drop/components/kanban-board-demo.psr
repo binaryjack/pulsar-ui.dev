@@ -3,7 +3,7 @@
  * Drag tasks between columns
  */
 
-import { createSignal, For } from '@pulsar-framework/pulsar.dev';
+import { createSignal, ForRegistry as For } from '@pulsar-framework/pulsar.dev';
 
 interface ITask {
   id: number;
@@ -62,7 +62,7 @@ export component KanbanBoardDemo() {
             <h3 style={`margin: 0 0 15px 0; color: ${column.color}; font-size: 16px;`}>
               {column.title}
             </h3>
-            <For each={getColumnTasks(column.id)}>
+            <For each={() => getColumnTasks(column.id)}>
               {(task) => (
                 <div 
                   draggable="true"

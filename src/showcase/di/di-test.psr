@@ -8,6 +8,7 @@ import { DemoSection } from '../common/components/demo-section.psr';
 import { CodeBlock } from '../common/components/code-block.psr';
 import { ServiceRegistrationDemo } from './components/service-registration-demo.psr';
 import { ServiceLifetimeDemo } from './components/service-lifetime-demo.psr';
+import { ServiceResolutionDemo } from './components/service-resolution-demo.psr';
 
 export component DependencyInjectionTestPage() {
   return (
@@ -23,25 +24,7 @@ export component DependencyInjectionTestPage() {
         title="1️⃣ Service Registration" 
         description="Register services with factory functions"
         borderColor="#ec4899">
-        <CodeBlock code={`import { ServiceManager } from '@pulsar-framework/pulsar.dev';
-
-const services = new ServiceManager();
-
-// Register singleton service
-services.register('logger', () => {
-  return {
-    log: (msg: string) => console.log('[LOG]', msg)
-  };
-}, { lifetime: 'singleton' });
-
-// Register with dependencies
-services.register('api', (container) => {
-  const logger = container.resolve('logger');
-  return new ApiService(logger);
-}, {
-  lifetime: 'singleton',
-  dependencies: ['logger']
-});`} />
+        <ServiceRegistrationDemo />
       </DemoSection>
       
       <DemoSection 
@@ -55,18 +38,7 @@ services.register('api', (container) => {
         title="3️⃣ Service Resolution" 
         description="Retrieve registered services"
         borderColor="#3b82f6">
-        <CodeBlock code={`// Resolve service
-const logger = services.resolve('logger');
-logger.log('Hello World!');
-
-// Resolve with type safety
-const api = services.resolve<ApiService>('api');
-await api.fetchData();
-
-// Check registration
-if (services.has('logger')) {
-  console.log('Logger is registered');
-}`} />
+        <ServiceResolutionDemo />
       </DemoSection>
       
       <DemoSection 
