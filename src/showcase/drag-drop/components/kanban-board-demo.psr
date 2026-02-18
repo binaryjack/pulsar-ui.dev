@@ -62,7 +62,7 @@ export component KanbanBoardDemo() {
             <h3 style={`margin: 0 0 15px 0; color: ${column.color}; font-size: 16px;`}>
               {column.title}
             </h3>
-            <For each={() => getColumnTasks(column.id)}>
+            <For each={() => getColumnTasks(column.id)} key={(task) => task.id}>
               {(task) => (
                 <div 
                   draggable="true"

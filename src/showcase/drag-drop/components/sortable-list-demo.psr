@@ -53,7 +53,7 @@ export component SortableListDemo() {
   
   return (
     <div style="max-width: 400px;">
-      <For each={tasks()}>
+      <For each={tasks()} key={(task) => task.id}>
         {(task) => (
           <div 
             draggable="true"
