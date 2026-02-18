@@ -1,0 +1,58 @@
+/**
+ * Modal Component with PortalSlots
+ * Agnostic modal container that allows components to project content
+ * while keeping logic in their own scope
+ */
+
+import { createSignal, PortalSlot, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+
+interface IModalProps {
+  /** Unique modal ID for portal targeting */
+  id: string;
+  /** Whether modal is open */
+  isOpen: () => boolean;
+  /** Close handler */
+  onClose: () => void;
+  /** Optional custom z-index */
+  zIndex?: number;
+}
+
+export component Modal(props: IModalProps) {
+  const { id, isOpen, onClose, zIndex = 10000 } = props;
+
+  const handleBackdropClick = (e: MouseEvent) => {
+    // Only close if clicking the backdrop itself
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  return (
+    <Show when={isOpen()}>
+      <div 
+        onClick={handleBackdropClick}
+        style={`position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: ${zIndex}; padding: 20px;`}>
+        
+        <div 
+          style="background: #1a1a1a; border: 2px solid #8b5cf6; border-radius: 12px; max-width: 600px; width: 100%; max-height: 90vh; overflow: auto; box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3); display: flex; flex-direction: column;"
+          onClick={(e: Event) => e.stopPropagation()}>
+          
+          {/* Header Slot */}
+          <div style="padding: 20px 30px; border-bottom: 1px solid #2a2a2a;">
+            <PortalSlot id={id} name="header" />
+          </div>
+          
+          {/* Body Slot */}
+          <div style="padding: 30px; flex: 1; overflow-y: auto;">
+            <PortalSlot id={id} name="body" />
+          </div>
+          
+          {/* Footer Slot */}
+          <div style="padding: 20px 30px; border-top: 1px solid #2a2a2a; display: flex; gap: 10px; justify-content: flex-end;">
+            <PortalSlot id={id} name="footer" />
+          </div>
+        </div>
+      </div>
+    </Show>
+  );
+}

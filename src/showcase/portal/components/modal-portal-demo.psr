@@ -1,51 +1,80 @@
 /**
  * Modal Portal Demo
- * Full-screen modal overlay using Portal
+ * Using Modal component with Portal slots for better architecture
+ * Content stays in component scope, only UI is projected
  */
 
 import { createSignal, Portal, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { Modal } from '../../common/components/modal.psr';
 
 export component ModalPortalDemo() {
   const [isOpen, setIsOpen] = createSignal(false);
+  const [actionCount, setActionCount] = createSignal(0);
   
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
+  
+  const handleAction = () => {
+    setActionCount(actionCount() + 1);
+    alert(`Action clicked ${actionCount() + 1} times! (State preserved in component scope)`);
+  };
   
   return (
     <div>
       <button 
         onClick={openModal}
         style="padding: 12px 24px; background: #8b5cf6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
-        Open Modal
+        Open Modal (PortalSlot Architecture)
       </button>
       
+      <p style="margin-top: 10px; color: #64748b; font-size: 13px;">
+        Action count: {actionCount()} (maintained in component scope)
+      </p>
+      
+      {/* Only render Modal and Portal content when open */}
       <Show when={isOpen()}>
-        <Portal mount={document.body}>
-          <div 
-            style="position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 10000;"
-            onClick={closeModal}>
-            <div 
-              style="background: #1a1a1a; border: 2px solid #8b5cf6; border-radius: 12px; padding: 30px; max-width: 500px; box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);"
-              onClick={(e: Event) => e.stopPropagation()}>
-              <h3 style="margin: 0 0 15px 0; color: #8b5cf6; font-size: 24px;">
-                🌀 Modal Dialog
-              </h3>
-              <p style="margin: 0 0 20px 0; color: #94a3b8; line-height: 1.6;">
-                This modal is rendered via Portal to document.body, ensuring it appears above all other content with proper z-index layering.
+        {/* Modal container with PortalSlots */}
+        <Modal id="demo-modal" isOpen={isOpen} onClose={closeModal} />
+        
+        {/* Content projected into modal slots while staying in component scope */}
+        <Portal id="demo-modal" target="header">
+          <h3 style="margin: 0; color: #8b5cf6; font-size: 24px;">
+            🌀 Modal Dialog
+          </h3>
+        </Portal>
+        
+        <Portal id="demo-modal" target="body">
+          <div>
+            <p style="margin: 0 0 15px 0; color: #94a3b8; line-height: 1.6;">
+              This modal uses <strong style="color: #8b5cf6;">PortalSlot architecture</strong> - 
+              the Modal component provides slots (header/body/footer), and this component 
+              projects content into those slots using Portal with id/target pattern.
+            </p>
+            <p style="margin: 0 0 15px 0; color: #94a3b8; line-height: 1.6;">
+              <strong style="color: #10b981;">Key advantage:</strong> Component logic (like the 
+              action counter) stays in the component scope. Only the UI is projected into the modal.
+            </p>
+            <div style="padding: 15px; background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3b82f6; border-radius: 4px;">
+              <p style="margin: 0; color: #60a5fa; font-size: 14px;">
+                💡 <strong>Architecture Pattern:</strong><br/>
+                Modal provides PortalSlots → Components use Portal to project content → 
+                Logic remains local, UI is global
               </p>
-              <div style="display: flex; gap: 10px;">
-                <button 
-                  onClick={closeModal}
-                  style="flex: 1; padding: 10px; background: #8b5cf6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
-                  Close
-                </button>
-                <button 
-                  style="flex: 1; padding: 10px; background: transparent; color: #8b5cf6; border: 2px solid #8b5cf6; border-radius: 6px; cursor: pointer; font-size: 14px;">
-                  Action
-                </button>
-              </div>
             </div>
           </div>
+        </Portal>
+        
+        <Portal id="demo-modal" target="footer">
+          <button 
+            onClick={closeModal}
+            style="padding: 10px 20px; background: transparent; color: #94a3b8; border: 2px solid #94a3b8; border-radius: 6px; cursor: pointer; font-size: 14px;">
+            Cancel
+          </button>
+          <button 
+            onClick={handleAction}
+            style="padding: 10px 20px; background: #8b5cf6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
+            Action ({actionCount()})
+          </button>
         </Portal>
       </Show>
     </div>
