@@ -46,6 +46,117 @@
 
 ---
 
+## 🎨 Live Showcase
+
+**Explore 80+ Advanced Examples:** [GitHub Pages Showcase](#) *(Coming Soon)*
+
+The showcase demonstrates production-grade patterns from the Pulsar ecosystem:
+
+### Featured Patterns
+
+#### 1. **Portal/PortalSlot Architecture**
+```typescript
+// Modal with content projection - logic stays local, UI projects globally
+<Modal id="demo" isOpen={isOpen} onClose={closeModal} />
+<Portal id="demo" target="body">
+  <input value={localData()} onInput={updateLocalData} />
+  {/* Component scope preserved, UI rendered in portal */}
+</Portal>
+```
+
+**Benefits:**
+- UI projected to global DOM (modal, tooltip, dropdown)
+- State and logic remain in component scope
+- Clean separation of concerns
+- No prop drilling
+
+#### 2. **Error Boundaries (Tryer/Catcher)**
+```typescript
+// Graceful error handling with isolated boundaries
+<Tryer>
+  <ComponentThatMightFail />
+  <Catcher>
+    {(error) => <ErrorDisplay error={error} />}
+  </Catcher>
+</Tryer>
+```
+
+**Features:**
+- Independent error boundaries
+- Prevents app-wide crashes
+- Fallback UI for failed sections
+- Error propagation control
+
+#### 3. **Signal-Based Reactivity**
+```typescript
+// Fine-grained updates with automatic dependency tracking
+const [count, setCount] = createSignal(0);
+const double = createMemo(() => count() * 2);
+
+// Only subscribed DOM nodes update - no virtual DOM diffing
+<div>{count()}</div>  {/* Updates when count changes */}
+<div>{double()}</div> {/* Updates when count changes */}
+```
+
+#### 4. **Resource Caching**
+```typescript
+// Stale-while-revalidate with automatic cache management
+const user = createResource(() => fetchUser(id), {
+  staleTime: 5000 // Fresh for 5 seconds
+});
+
+// Instant cache hits, background revalidation
+<Show when={user.data}>
+  {(u) => <Profile user={u} />}
+</Show>
+```
+
+#### 5. **Dependency Injection**
+```typescript
+// ServiceManager with lifecycle management
+const services = new ServiceManager();
+
+services.register('analytics', () => new Analytics(), {
+  lifetime: 'singleton'  // Single instance app-wide
+});
+
+// Use in components
+const analytics = inject('analytics');
+analytics.track('event');
+```
+
+#### 6. **Control Flow Primitives**
+```typescript
+// Declarative control flow with proper keying
+<Show when={isLoggedIn()}><Dashboard /></Show>
+<For each={items()}>{(item) => <Item {...item} />}</For>
+<Index each={colors()}>{(color, i) => <Color value={color()} />}</Index>
+```
+
+### Showcase Structure
+
+📁 **src/showcase/**
+```
+├── reactivity/         # Signal, memo, effect demos
+├── portal/            # Modal, tooltip portals
+├── error-boundary/    # Tryer/Catcher patterns
+├── resource/          # Data fetching, caching
+├── di/                # Dependency injection
+├── control-flow/      # Show, For, Index
+└── components/        # Component composition
+```
+
+🔗 **View Source:** [packages/pulsar-ui.dev/src/showcase](./src/showcase)
+
+### Run Showcase Locally
+
+```bash
+pnpm showcase:dev  # Development server
+pnpm showcase:build # Build for production
+```
+
+---
+
 ## Installation
 
 ```bash
