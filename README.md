@@ -7,10 +7,10 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.1.0-blue" alt="Version 0.1.0"/>
+  <img src="https://img.shields.io/badge/version-0.7.0--alpha-blue" alt="Version 0.7.0-alpha"/>
   <img src="https://img.shields.io/badge/TypeScript-5.0+-blue" alt="TypeScript 5.0+"/>
   <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License"/>
-  <img src="https://img.shields.io/badge/Pulsar-0.3.0--alpha-blueviolet" alt="Pulsar 0.3.0-alpha"/>
+  <img src="https://img.shields.io/badge/Pulsar-0.7.0--alpha-blueviolet" alt="Pulsar 0.7.0-alpha"/>
 </p>
 
 <p align="center">
@@ -55,6 +55,7 @@ pnpm add @pulsar/ui
 ### Dependencies
 
 The component library requires:
+
 - `pulsar` - The Pulsar framework
 - `@pulsar/design-tokens` - Design system tokens
 - `tailwindcss` - Utility-first CSS framework
@@ -68,46 +69,46 @@ The component library requires:
 All components use a fluent builder pattern for configuration:
 
 ```typescript
-import { ComponentConfig, Button } from '@pulsar/ui'
+import { ComponentConfig, Button } from '@pulsar/ui';
 
 // Create a configuration
-const config = new ComponentConfig('primary')  // Start with color
-  .variant('solid')                             // Set variant
-  .size('lg')                                   // Set size
-  .rounded('md')                                // Border radius
-  .shadow('lg')                                 // Shadow
-  .fullWidth()                                  // Full width
-  .build()                                      // Build final config
+const config = new ComponentConfig('primary') // Start with color
+  .variant('solid') // Set variant
+  .size('lg') // Set size
+  .rounded('md') // Border radius
+  .shadow('lg') // Shadow
+  .fullWidth() // Full width
+  .build(); // Build final config
 
 // Use configuration with component
 const myButton = Button({
   config,
   label: 'Click Me',
-  onclick: () => console.log('Clicked!')
-})
+  onclick: () => console.log('Clicked!'),
+});
 ```
 
 ### Simple Usage
 
 ```typescript
-import { PrimaryButton, Input, Badge } from '@pulsar/ui'
+import { PrimaryButton, Input, Badge } from '@pulsar/ui';
 
 // Use factory variants for quick setup
-const saveButton = PrimaryButton({ 
+const saveButton = PrimaryButton({
   label: 'Save Changes',
-  onclick: () => saveFn()
-})
+  onclick: () => saveFn(),
+});
 
 const emailInput = Input({
   type: 'email',
   placeholder: 'your@email.com',
-  required: true
-})
+  required: true,
+});
 
 const statusBadge = Badge({
   label: 'Active',
-  color: 'success'
-})
+  color: 'success',
+});
 ```
 
 ---
@@ -140,22 +141,22 @@ const statusBadge = Badge({
 ### ComponentConfig Builder API
 
 ```typescript
-new ComponentConfig(color)      // 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'neutral'
-  .variant(value)                // 'solid' | 'outline' | 'ghost' | 'soft'
-  .size(value)                   // 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-  .rounded(value)                // 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
-  .shadow(value)                 // 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
-  .border(boolean)               // Enable/disable border
-  .disabled(boolean)             // Disabled state
-  .loading(boolean)              // Loading state
-  .fullWidth(boolean)            // Full width
-  .transition(boolean)           // Enable transitions
-  .transitionDuration(value)     // 'fast' | 'normal' | 'slow'
-  .hover(boolean)                // Enable hover effects
-  .focus(boolean)                // Enable focus effects
-  .active(boolean)               // Enable active effects
-  .className(string)             // Additional CSS classes
-  .build()                       // Returns IComponentConfig
+new ComponentConfig(color) // 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'neutral'
+  .variant(value) // 'solid' | 'outline' | 'ghost' | 'soft'
+  .size(value) // 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  .rounded(value) // 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
+  .shadow(value) // 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+  .border(boolean) // Enable/disable border
+  .disabled(boolean) // Disabled state
+  .loading(boolean) // Loading state
+  .fullWidth(boolean) // Full width
+  .transition(boolean) // Enable transitions
+  .transitionDuration(value) // 'fast' | 'normal' | 'slow'
+  .hover(boolean) // Enable hover effects
+  .focus(boolean) // Enable focus effects
+  .active(boolean) // Enable active effects
+  .className(string) // Additional CSS classes
+  .build(); // Returns IComponentConfig
 ```
 
 ---
@@ -163,6 +164,7 @@ new ComponentConfig(color)      // 'primary' | 'secondary' | 'success' | 'warnin
 ## Roadmap
 
 ### ✅ v0.1.0 - Foundation (Current)
+
 - ✅ Atoms: Button, Input, Checkbox, Radio, Toggle, Textarea, Spinner, Skeleton, Typography
 - ✅ Molecules: Badge, Button Group, Label, Radio Group
 - ✅ Organisms: Card
@@ -172,6 +174,7 @@ new ComponentConfig(color)      // 'primary' | 'secondary' | 'success' | 'warnin
 - ✅ TailwindCSS integration
 
 ### 🚧 v0.2.0 - Enhanced Components (Q2 2026)
+
 - 🔄 **Select** - Dropdown select with search and multi-select
 - 🔄 **Modal** - Dialog and modal components
 - 🔄 **Dropdown** - Menu dropdown with keyboard navigation
@@ -182,6 +185,7 @@ new ComponentConfig(color)      // 'primary' | 'secondary' | 'success' | 'warnin
 - 🔄 **Popover** - Popover content containers
 
 ### 🎯 v0.3.0 - Advanced Components (Q3 2026)
+
 - 📋 **Table** - Data table with sorting, filtering, pagination
 - 📊 **Chart** - Basic chart components (bar, line, pie)
 - 📅 **Date Picker** - Calendar date selection
@@ -192,6 +196,7 @@ new ComponentConfig(color)      // 'primary' | 'secondary' | 'success' | 'warnin
 - 📝 **Rich Text Editor** - WYSIWYG editor
 
 ### 🌟 v1.0.0 - Production Ready (Q4 2026)
+
 - 🎨 **Theming System** - Custom theme creation and switching
 - 📱 **Responsive Utilities** - Mobile-first responsive components
 - 🌙 **Dark Mode** - Complete dark mode support
@@ -207,14 +212,14 @@ new ComponentConfig(color)      // 'primary' | 'secondary' | 'success' | 'warnin
 
 Part of the Pulsar framework ecosystem:
 
-| Package | Description | Repository |
-|---------|-------------|------------|
-| **pulsar.dev** | Main reactive framework | [GitHub](https://github.com/binaryjack/pulsar.dev) |
-| **@pulsar/ui** | Component library (this package) | [GitHub](https://github.com/binaryjack/pulsar-ui.dev) |
-| **@pulsar/design-tokens** | Design tokens & brand assets | [GitHub](https://github.com/binaryjack/pulsar-design-system) |
-| **@pulsar/transformer** | JSX transformer | [GitHub](https://github.com/binaryjack/pulsar-transformer) |
-| **@pulsar/vite-plugin** | Vite integration | [GitHub](https://github.com/binaryjack/pulsar-vite-plugin) |
-| **pulsar-demo** | Example applications | [GitHub](https://github.com/binaryjack/pulsar-demo) |
+| Package                   | Description                      | Repository                                                   |
+| ------------------------- | -------------------------------- | ------------------------------------------------------------ |
+| **pulsar.dev**            | Main reactive framework          | [GitHub](https://github.com/binaryjack/pulsar.dev)           |
+| **@pulsar/ui**            | Component library (this package) | [GitHub](https://github.com/binaryjack/pulsar-ui.dev)        |
+| **@pulsar/design-tokens** | Design tokens & brand assets     | [GitHub](https://github.com/binaryjack/pulsar-design-system) |
+| **@pulsar/transformer**   | JSX transformer                  | [GitHub](https://github.com/binaryjack/pulsar-transformer)   |
+| **@pulsar/vite-plugin**   | Vite integration                 | [GitHub](https://github.com/binaryjack/pulsar-vite-plugin)   |
+| **pulsar-demo**           | Example applications             | [GitHub](https://github.com/binaryjack/pulsar-demo)          |
 
 ---
 
@@ -270,6 +275,7 @@ See [LICENSE](./LICENSE) for full details.
 Built with ⚡ by [Tadeo Piana](https://www.linkedin.com/in/tadeopiana/) and contributors.
 
 Design inspiration from:
+
 - [Radix UI](https://www.radix-ui.com/) - Accessible component primitives
 - [shadcn/ui](https://ui.shadcn.com/) - Beautiful component design
 - [Headless UI](https://headlessui.com/) - Unstyled accessible components

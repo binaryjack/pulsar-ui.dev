@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  base: '/pulsar-ui.dev/',
   plugins: [
     pulsar({
       debug: true, // Re-enable to see if plugin is being called
