@@ -126,8 +126,8 @@ export component ServiceLifetimeDemo() {
       </div>
       
       <ConsoleLogViewer 
-        logs={logs} 
-        onClear={clearLogs}
+        logs={logger.logs} 
+        onClear={logger.clear}
         title="Lifetime Resolution Logs"
       />
     </div>

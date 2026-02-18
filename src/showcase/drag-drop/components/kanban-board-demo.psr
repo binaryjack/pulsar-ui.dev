@@ -53,7 +53,7 @@ export component KanbanBoardDemo() {
   
   return (
     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-      <For each={columns}>
+      <For each={() => columns}>
         {(column) => (
           <div 
             onDragOver={handleDragOver}
