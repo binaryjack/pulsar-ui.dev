@@ -135,11 +135,11 @@ export component ServiceResolutionDemo() {
         </p>
       </div>
       
-      <ConsoleLogger.logs} 
+      <ConsoleLogViewer 
+        logs={logger.logs} 
         onClear={logger.clear}
         title="Resolution Logs"
       />
-        onClear={logger.clear
     </div>
   );
 }

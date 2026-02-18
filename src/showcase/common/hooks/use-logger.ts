@@ -3,7 +3,13 @@
  * Provides logging functions that both update UI and browser console
  */
 
-import { createSignal } from '@pulsar-framework/pulsar.dev';
+import { createSignal } from '@pulsar-framework/pulsar.dev'
+
+type LogEntry = {
+  timestamp: string;
+  level: 'log' | 'info' | 'warn' | 'error';
+  message: string;
+};
 
 export interface ILogger {
   log: (message: string) => void;
