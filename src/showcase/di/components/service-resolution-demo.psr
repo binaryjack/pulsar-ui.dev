@@ -67,7 +67,6 @@ export component ServiceResolutionDemo() {
     const service = sm.tryResolve('non-existent-service');
     
     if (service === undefined) {
-      addLog('log', '✅ tryResolve() returned undefined (no error thrown)');
       logger.log('✅ tryResolve() returned undefined (no error thrown)');
       setResolvedData('✅ tryResolve() returned undefined (no error thrown)');
     } else {
@@ -95,7 +94,8 @@ export component ServiceResolutionDemo() {
       setResolvedData('📦 Test service registered! Now try resolving it.');
       setErrorMessage(null);
     } else {
-      logger.warn(('Test service already registered');
+      logger.warn('⚠️ Test service already registered');
+      setErrorMessage('Test service already registered');
     }
   };
   
@@ -135,10 +135,10 @@ export component ServiceResolutionDemo() {
         </p>
       </div>
       
-      <ConsoleLogViewer 
-        logs={logs} 
-        onClear={clearLogs}
-        title="Reger.logs} 
+      <ConsoleLogger.logs} 
+        onClear={logger.clear}
+        title="Resolution Logs"
+      />
         onClear={logger.clear
     </div>
   );
