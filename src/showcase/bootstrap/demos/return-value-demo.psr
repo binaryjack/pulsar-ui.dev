@@ -36,8 +36,9 @@ export const ReturnValueDemo = () => {
           {isMounted() ? 'app.unmount()' : 'app.mount()'}
         </button>
         <button 
-          onclick={() => handleIncrement()}
-          disabled={!isMounted()}
+          onclick={() => {
+            if (isMounted()) handleIncrement();
+          }}
           style={`padding: 12px 24px; background: ${isMounted() ? '#10b981' : '#6b7280'}; color: white; border: none; border-radius: 6px; cursor: ${isMounted() ? 'pointer' : 'not-allowed'}; font-weight: bold; opacity: ${isMounted() ? '1' : '0.5'};`}>
           Increment (only when mounted)
         </button>
