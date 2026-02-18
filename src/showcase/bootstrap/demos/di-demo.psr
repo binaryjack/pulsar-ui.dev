@@ -1,0 +1,48 @@
+/**
+ * Dependency Injection Demo Component
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+export const DIDemo = () => {
+  const [serviceData, setServiceData] = createSignal<any>(null);
+  
+  const handleLoadService = () => {
+    setServiceData({ theme: 'dark', apiUrl: 'https://api.example.com' });
+  };
+  
+  return (
+    <div style="margin-bottom: 20px; padding: 20px; background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-radius: 8px;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="font-size: 48px; margin-bottom: 10px;">🔌</div>
+        <div style="color: white; font-size: 18px; font-weight: bold; margin-bottom: 20px;">
+          Dependency Injection Container
+        </div>
+        <button 
+          onclick={() => handleLoadService()}
+          disabled={serviceData() !== null}
+          style={`padding: 12px 24px; background: ${serviceData() ? '#6b7280' : 'white'}; color: ${serviceData() ? 'white' : '#8b5cf6'}; border: none; border-radius: 6px; cursor: ${serviceData() ? 'not-allowed' : 'pointer'}; font-weight: bold; opacity: ${serviceData() ? '0.5' : '1'};`}>
+          {serviceData() ? '✅ Services Loaded' : '⚡ Load Services'}
+        </button>
+      </div>
+      
+      {serviceData() ? (
+        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; border-left: 4px solid #c084fc;">
+          <div style="color: #c084fc; font-weight: bold; margin-bottom: 10px; font-size: 14px;">📦 Resolved ConfigService:</div>
+          <div style="color: rgba(255,255,255,0.9); font-family: 'Consolas', monospace; font-size: 13px;">
+            <div style="padding: 5px 0;">theme: "{serviceData().theme}"</div>
+            <div style="padding: 5px 0;">apiUrl: "{serviceData().apiUrl}"</div>
+          </div>
+        </div>
+      ) : (
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; text-align: center; color: rgba(255,255,255,0.6); font-style: italic;">
+          Services not loaded yet. Click button above.
+        </div>
+      )}
+      
+      <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; color: white; font-size: 13px; margin-top: 15px;">
+        <strong>💡 This demonstrates:</strong> The ServiceManager resolves dependencies and injects them into your components.
+      </div>
+    </div>
+  );
+};

@@ -1,0 +1,26 @@
+/**
+ * Basic Usage Demo Component
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+export const BasicDemo = () => {
+  const [count, setCount] = createSignal(0);
+  
+  return (
+    <div style="margin-bottom: 20px; padding: 20px; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); border-radius: 8px;">
+      <div style="text-align: center; color: white; margin-bottom: 20px;">
+        <h3 style="margin: 0 0 15px 0; font-size: 20px; font-weight: bold;">✨ Live Counter Demo</h3>
+        <div style="font-size: 48px; font-weight: bold; margin: 20px 0;">{count()}</div>
+        <button 
+          onclick={() => setCount(count() + 1)}
+          style="padding: 12px 24px; background: white; color: #f59e0b; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          Increment Counter
+        </button>
+      </div>
+      <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; color: white; font-size: 13px;">
+        <strong>💡 This demonstrates:</strong> A reactive component mounted with pulse(App). The counter updates instantly without page reload.
+      </div>
+    </div>
+  );
+};
