@@ -78,24 +78,11 @@ export const SidebarNav = ({ onNavigate, onToggle }: ISidebarNavProps) => {
               <button
                 onClick={() => handleNavClick(item)}
                 className="nav-item"
-                style={() => `
-                  background: ${isActive() ? 'var(--color-surface-hover)' : 'transparent'};
-                  border-color: ${isActive() ? item.color : 'transparent'};
-                  --nav-accent: ${item.color};
-                `}>
+                style={() => `background: ${isActive() ? 'var(--color-surface-hover)' : 'transparent'}; border-color: ${isActive() ? item.color : 'transparent'}; --nav-accent: ${item.color};`}>
                 <span className="nav-item__emoji">{item.emoji}</span>
                 <span
                   className="nav-item__label"
-                  style={() => `
-                    color: ${isActive() ? item.color : 'var(--color-text-muted)'};
-                    font-weight: ${isActive() ? '600' : '400'};
-                    opacity: ${isCollapsed() ? '0' : '1'};
-                    max-width: ${isCollapsed() ? '0' : '180px'};
-                    overflow: hidden;
-                    white-space: nowrap;
-                    display: inline-block;
-                    transition: opacity 0.2s, max-width 0.3s;
-                  `}>
+                  style={() => `color: ${isActive() ? item.color : 'var(--color-text-muted)'}; font-weight: ${isActive() ? '600' : '400'}; opacity: ${isCollapsed() ? '0' : '1'}; max-width: ${isCollapsed() ? '0' : '180px'}; overflow: hidden; white-space: nowrap; display: inline-block; transition: opacity 0.2s, max-width 0.3s;`}>
                   {item.label}
                 </span>
               </button>

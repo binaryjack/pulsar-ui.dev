@@ -21,14 +21,16 @@ export const DemoButton = ({
   size = 'md'
 }: DemoButtonProps) => {
   const renderChildren = typeof children === 'function' ? children() : children;
-  const sizeClass = size !== 'md' ? ` demo-btn--${size}` : '';
+
+  const padding = size === 'sm' ? '6px 12px' : size === 'lg' ? '14px 28px' : '10px 20px';
+  const fontSize = size === 'sm' ? '12px' : size === 'lg' ? '18px' : '14px';
+  const bg = disabled ? '#374151' : color;
 
   return (
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`demo-btn${sizeClass}${disabled ? ' demo-btn--disabled' : ''}`}
-      style={`--btn-color: ${disabled ? '#4b5563' : color};`}>
+      style={`padding: ${padding}; font-size: ${fontSize}; background: ${bg}; border: none; border-radius: 6px; color: white; cursor: ${disabled ? 'not-allowed' : 'pointer'}; font-weight: 500; font-family: inherit; transition: opacity 0.15s, transform 0.15s; opacity: ${disabled ? '0.5' : '1'};`}>
       {renderChildren}
     </button>
   );

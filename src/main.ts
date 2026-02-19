@@ -3,6 +3,7 @@
 /**
  * Entry point - MAIN PSR APP
  */
+import './styles.css';
 import { pulse, ServiceManager } from '@pulsar-framework/pulsar.dev'
 import App from './main.psr'
 
