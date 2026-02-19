@@ -3,7 +3,7 @@
  * Shows stale-while-revalidate caching
  */
 
-import { createSignal, createResource, ShowRegistry, onCleanup } from '@pulsar-framework/pulsar.dev';
+import { createSignal, createResource, ShowRegistry, onCleanup, createEffect } from '@pulsar-framework/pulsar.dev';
 import { DemoButton } from '../../common/components/demo-button.psr';
 import { fetchUser } from './mock-api.ts';
 
@@ -13,25 +13,57 @@ export const CacheDemo = () => {
   const [lastFetchTime, setLastFetchTime] = createSignal(0);
   const [timeSinceLastFetch, setTimeSinceLastFetch] = createSignal(0);
   
+  // Store interval ID so we can manage lifecycle
+  let currentInterval: NodeJS.Timeout | null = null;
+  
   const cachedResource = createResource(() => {
     setFetchCount(c => c + 1);
     setLastFetchTime(Date.now());
     return fetchUser(1);
   }, { staleTime: 5000 });
   
-  // Single interval for timer updates
-  // Reading signals inside setInterval callback doesn't create reactive dependencies
-  const interval = setInterval(() => {
-    const lastFetch = lastFetchTime();
-    if (lastFetch > 0) {
-      setTimeSinceLastFetch(Date.now() - lastFetch);
+  // Recreate interval whenever lastFetchTime changes (on each refetch)
+  createEffect(() => {
+    const fetchTime = lastFetchTime(); // Track dependency
+    
+    // Clear previous interval
+    if (currentInterval) {
+      clearInterval(currentInterval);
     }
-  }, 100);
+    
+    // Only create interval if we have a fetch time
+    if (fetchTime > 0) {
+      currentInterval = setInterval(() => {
+        setTimeSinceLastFetch(Date.now() - fetchTime);
+      }, 100);
+    }
+    
+    // Cleanup on re-run
+    return () => {
+      if (currentInterval) {
+        clearInterval(currentInterval);
+      }
+    };
+  });
   
-  onCleanup(() => clearInterval(interval));
+  // Component cleanup
+  onCleanup(() => {
+    if (currentInterval) {
+      clearInterval(currentInterval);
+    }
+  });
   
+  // Debounce rapid clicks (max 1 refetch per 100ms)
+  let lastRefetchTime = 0;
   const refetchWithCheck = () => {
     const now = Date.now();
+    
+    // Debounce: prevent clicks faster than 100ms
+    if (now - lastRefetchTime < 100) {
+      return;
+    }
+    lastRefetchTime = now;
+    
     const elapsed = now - lastFetchTime();
     
     if (cachedResource.data && elapsed < 5000) {
