@@ -3,7 +3,7 @@
  * Shows stale-while-revalidate caching
  */
 
-import { createSignal, createResource, ShowRegistry, onCleanup, onMount } from '@pulsar-framework/pulsar.dev';
+import { createSignal, createResource, ShowRegistry, onCleanup } from '@pulsar-framework/pulsar.dev';
 import { DemoButton } from '../../common/components/demo-button.psr';
 import { fetchUser } from './mock-api.ts';
 
@@ -13,58 +13,44 @@ export const CacheDemo = () => {
   const [lastFetchTime, setLastFetchTime] = createSignal(0);
   const [isRefetching, setIsRefetching] = createSignal(false);
   const [isFresh, setIsFresh] = createSignal(true);
-  
+
+  // DOM refs - assigned via ref callbacks after element creation
+  let statusTextRef: HTMLElement | null = null;
+  let progressBarRef: HTMLElement | null = null;
+
   // Debounce token management (plain vars - no reactivity needed)
   let debounceTimeout: NodeJS.Timeout | null = null;
-  let timerInterval: NodeJS.Timeout | null = null;
-  
+
   const cachedResource = createResource(() => {
     setFetchCount(c => c + 1);
     setLastFetchTime(Date.now());
     return fetchUser(1);
   }, { staleTime: 5000 });
-  
-  // After mount: start interval with direct DOM reads/writes
-  // Using getElementById avoids ref callbacks (not supported by transformer)
-  // Reading signal inside setInterval is NOT tracked (no reactive context) -> no wire
-  onMount(() => {
-    timerInterval = setInterval(() => {
-      const fetchTime = lastFetchTime(); // plain read, not tracked
-      if (fetchTime === 0) return;
-      
-      const elapsed = Date.now() - fetchTime;
-      const timeLeft = Math.max(0, 5000 - elapsed);
-      const fresh = timeLeft > 0;
-      const timeLeftSeconds = (timeLeft / 1000).toFixed(1);
-      const progressPct = Math.max(0, Math.min(100, (timeLeft / 5000) * 100));
-      
-      // Direct DOM manipulation - completely outside reactive system
-      const statusEl = document.getElementById('cache-status-text') as HTMLElement | null;
-      const progressEl = document.getElementById('cache-progress-bar') as HTMLElement | null;
-      
-      if (statusEl) {
-        statusEl.style.color = fresh ? '#10b981' : '#ef4444';
-        statusEl.textContent = fresh ? `Fresh (${timeLeftSeconds}s left)` : 'Stale';
-      }
-      
-      if (progressEl) {
-        progressEl.style.background = fresh ? '#10b981' : '#ef4444';
-        progressEl.style.width = `${progressPct}%`;
-      }
-      
-      // Only update signal when crossing fresh/stale threshold (2 updates max per fetch)
-      if (fresh !== isFresh()) {
-        setIsFresh(fresh);
-      }
-    }, 100);
-  });
-  
-  // Cleanup timer and debounce on unmount
-  onCleanup(() => {
-    if (timerInterval) {
-      clearInterval(timerInterval);
-      timerInterval = null;
+
+  // Interval reads signals outside reactive context (no wire tracking) -> no infinite loop
+  // Refs are set via microtask before first interval tick (100ms)
+  const timerInterval = setInterval(() => {
+    const fetchTime = lastFetchTime();
+    if (fetchTime === 0 || !statusTextRef || !progressBarRef) return;
+
+    const elapsed = Date.now() - fetchTime;
+    const timeLeft = Math.max(0, 5000 - elapsed);
+    const fresh = timeLeft > 0;
+    const timeLeftSeconds = (timeLeft / 1000).toFixed(1);
+    const progressPct = Math.max(0, Math.min(100, (timeLeft / 5000) * 100));
+
+    statusTextRef.style.color = fresh ? '#10b981' : '#ef4444';
+    statusTextRef.textContent = fresh ? `Fresh (${timeLeftSeconds}s left)` : 'Stale';
+    progressBarRef.style.background = fresh ? '#10b981' : '#ef4444';
+    progressBarRef.style.width = `${progressPct}%`;
+
+    if (fresh !== isFresh()) {
+      setIsFresh(fresh);
     }
+  }, 100);
+
+  onCleanup(() => {
+    clearInterval(timerInterval);
     if (debounceTimeout) {
       clearTimeout(debounceTimeout);
       debounceTimeout = null;
@@ -120,7 +106,7 @@ export const CacheDemo = () => {
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
             <div style="color: #8b5cf6; font-weight: bold;">📦 Cached Data</div>
             <div 
-              id="cache-status-text"
+              ref={(el) => { statusTextRef = el as HTMLElement; }}
               style="font-size: 12px; font-weight: bold; color: #94a3b8;"
             >
               Waiting for data...
@@ -129,7 +115,7 @@ export const CacheDemo = () => {
           
           <div style="width: 100%; height: 6px; background: #334155; border-radius: 3px; margin-bottom: 15px; overflow: hidden;">
             <div 
-              id="cache-progress-bar"
+              ref={(el) => { progressBarRef = el as HTMLElement; }}
               style="height: 100%; background: #10b981; width: 0%; transition: width 0.1s linear;"
             ></div>
           </div>
