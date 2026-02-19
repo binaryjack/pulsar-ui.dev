@@ -12,9 +12,11 @@ export const CacheDemo = () => {
   const [cacheHits, setCacheHits] = createSignal(0);
   const [lastFetchTime, setLastFetchTime] = createSignal(0);
   const [timeSinceLastFetch, setTimeSinceLastFetch] = createSignal(0);
+  const [isRefetching, setIsRefetching] = createSignal(false);
   
-  // Store interval ID so we can manage lifecycle
+  // Interval and debounce token management
   let currentInterval: NodeJS.Timeout | null = null;
+  let debounceTimeout: NodeJS.Timeout | null = null;
   
   const cachedResource = createResource(() => {
     setFetchCount(c => c + 1);
@@ -29,6 +31,7 @@ export const CacheDemo = () => {
     // Clear previous interval
     if (currentInterval) {
       clearInterval(currentInterval);
+      currentInterval = null;
     }
     
     // Only create interval if we have a fetch time
@@ -42,6 +45,7 @@ export const CacheDemo = () => {
     return () => {
       if (currentInterval) {
         clearInterval(currentInterval);
+        currentInterval = null;
       }
     };
   });
@@ -50,32 +54,54 @@ export const CacheDemo = () => {
   onCleanup(() => {
     if (currentInterval) {
       clearInterval(currentInterval);
+      currentInterval = null;
+    }
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
+      debounceTimeout = null;
     }
   });
   
-  // Debounce rapid clicks (max 1 refetch per 100ms)
-  let lastRefetchTime = 0;
+  // Debounced refetch with cancellation token
   const refetchWithCheck = () => {
-    const now = Date.now();
+    // Cancel any pending debounced call
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
+      debounceTimeout = null;
+    }
     
-    // Debounce: prevent clicks faster than 100ms
-    if (now - lastRefetchTime < 100) {
+    // Ignore if already refetching
+    if (isRefetching()) {
       return;
     }
-    lastRefetchTime = now;
     
-    const elapsed = now - lastFetchTime();
-    
-    if (cachedResource.data && elapsed < 5000) {
-      setCacheHits(h => h + 1);
-    }
-    cachedResource.refetch();
+    // Debounce: schedule refetch after 150ms
+    debounceTimeout = setTimeout(async () => {
+      setIsRefetching(true);
+      
+      const now = Date.now();
+      const elapsed = now - lastFetchTime();
+      
+      if (cachedResource.data && elapsed < 5000) {
+        setCacheHits(h => h + 1);
+      }
+      
+      await cachedResource.refetch();
+      
+      setIsRefetching(false);
+      debounceTimeout = null;
+    }, 150);
   };
   
   return (
     <div>
-      <DemoButton onClick={refetchWithCheck} color="#8b5cf6" style="margin-bottom: 15px;">
-        🔄 Refetch Data
+      <DemoButton 
+        onClick={refetchWithCheck} 
+        color="#8b5cf6" 
+        style="margin-bottom: 15px;"
+        disabled={isRefetching()}
+      >
+        {isRefetching() ? '⏳ Refetching...' : '🔄 Refetch Data'}
       </DemoButton>
       
       <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px;">
