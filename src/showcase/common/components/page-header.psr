@@ -11,21 +11,18 @@ interface PageHeaderProps {
 }
 
 export const PageHeader = ({ title, emoji, color = '#10b981', description }: PageHeaderProps) => {
-  // Handle props as functions (for reactive content)
   const renderTitle = typeof title === 'function' ? title() : title;
   const renderEmoji = typeof emoji === 'function' ? emoji() : emoji;
   const renderColor = typeof color === 'function' ? color() : color;
   const renderDescription = typeof description === 'function' ? description() : description;
-  
+
   return (
-    <div style={`padding: 20px; background: #0f172a; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid ${renderColor};`}>
-      <h2 style={`font-size: 32px; margin-bottom: ${renderDescription ? '15px' : '0'}; color: ${renderColor};`}>
+    <div className="page-header" style={`--section-accent: ${renderColor};`}>
+      <h2 className="page-header__title">
         {renderEmoji ? `${renderEmoji} ` : ''}{renderTitle}
       </h2>
       {renderDescription ? (
-        <p style="color: #94a3b8; font-size: 18px; line-height: 1.6; margin: 0;">
-          {renderDescription}
-        </p>
+        <p className="page-header__subtitle">{renderDescription}</p>
       ) : null}
     </div>
   );

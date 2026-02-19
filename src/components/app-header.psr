@@ -1,0 +1,39 @@
+/**
+ * App Header
+ * Sticky top bar with branding, theme toggle.
+ * Module-level theme signal so any component can read it.
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+
+export const [_appTheme, _setAppTheme] = createSignal<'dark' | 'light'>(
+  (document.documentElement.getAttribute('data-theme') as 'dark' | 'light') ?? 'dark'
+);
+
+export const AppHeader = () => {
+  const toggleTheme = () => {
+    const next = _appTheme() === 'dark' ? 'light' : 'dark';
+    _setAppTheme(next);
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('__pulsar_theme__', next); } catch { /* noop */ }
+  };
+
+  return (
+    <header className="app-header">
+      <div className="app-header__brand">
+        <h1 className="app-header__logo">⚡ Pulsar</h1>
+        <span className="app-header__badge">v2</span>
+        <span className="app-header__subtitle">Framework Showcase</span>
+      </div>
+
+      <div className="app-header__actions">
+        <button
+          className="theme-toggle"
+          onClick={toggleTheme}
+          title="Toggle light / dark mode">
+          {() => _appTheme() === 'dark' ? '☀️' : '🌙'}
+        </button>
+      </div>
+    </header>
+  );
+};

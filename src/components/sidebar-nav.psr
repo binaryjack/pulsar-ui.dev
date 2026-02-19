@@ -22,25 +22,20 @@ export const SidebarNav = ({ onNavigate, onToggle }: ISidebarNavProps) => {
   const [isCollapsed, setIsCollapsed] = createSignal(false);
 
   const navItems: INavItem[] = [
-    { id: 0,  path: '/',               label: 'Home',               emoji: '🏠', color: '#3b82f6' },
-    { id: 1,  path: '/bootstrap',      label: 'Bootstrap',          emoji: '⚡', color: '#eab308' },
-    { id: 2,  path: '/di',             label: 'Dependency Injection',emoji: '💉', color: '#ec4899' },
-    { id: 3,  path: '/reactivity',     label: 'Reactivity',         emoji: '🧪', color: '#10b981' },
-    { id: 4,  path: '/jsx',            label: 'JSX',                emoji: '🎨', color: '#8b5cf6' },
-    { id: 5,  path: '/control-flow',   label: 'Control Flow',       emoji: '🎯', color: '#f59e0b' },
-    { id: 6,  path: '/resources',      label: 'Resources',          emoji: '🌊', color: '#06b6d4' },
-    { id: 7,  path: '/portal',         label: 'Portals',            emoji: '🌀', color: '#06b6d4' },
-    { id: 8,  path: '/drag-drop',      label: 'Drag & Drop',        emoji: '🎯', color: '#f59e0b' },
-    { id: 9,  path: '/error-boundary', label: 'Error Boundaries',   emoji: '🛡️', color: '#ef4444' },
-    { id: 10, path: '/context',        label: 'Context API',        emoji: '🔌', color: '#8b5cf6' },
-    { id: 11, path: '/about',          label: 'About',              emoji: 'ℹ️', color: '#64748b' },
+    { id: 0,  path: '/',               label: 'Home',                emoji: '🏠', color: '#3b82f6' },
+    { id: 1,  path: '/bootstrap',      label: 'Bootstrap',           emoji: '⚡', color: '#eab308' },
+    { id: 2,  path: '/di',             label: 'Dependency Injection', emoji: '💉', color: '#ec4899' },
+    { id: 3,  path: '/reactivity',     label: 'Reactivity',          emoji: '🧪', color: '#10b981' },
+    { id: 4,  path: '/jsx',            label: 'JSX',                 emoji: '🎨', color: '#8b5cf6' },
+    { id: 5,  path: '/control-flow',   label: 'Control Flow',        emoji: '🎯', color: '#f59e0b' },
+    { id: 6,  path: '/resources',      label: 'Resources',           emoji: '🌊', color: '#06b6d4' },
+    { id: 7,  path: '/portal',         label: 'Portals',             emoji: '🌀', color: '#06b6d4' },
+    { id: 8,  path: '/drag-drop',      label: 'Drag & Drop',         emoji: '🎯', color: '#f59e0b' },
+    { id: 9,  path: '/error-boundary', label: 'Error Boundaries',    emoji: '🛡️', color: '#ef4444' },
+    { id: 10, path: '/context',        label: 'Context API',         emoji: '🔌', color: '#8b5cf6' },
+    { id: 11, path: '/about',          label: 'About',               emoji: 'ℹ️', color: '#64748b' },
   ];
 
-  // Seed selectedId on hard refresh. Strategy (in priority order):
-  // 1. LS key: contains the already-stripped path ('/di') written by navigate()
-  // 2. Suffix-match window.location.pathname: handles deployed base prefixes
-  //    e.g. '/pulsar-ui.dev/bootstrap' → endsWith('/bootstrap') → matches
-  // 3. Root: pathname ends with '/' → Home (id 0)
   const _lsPath = (() => { try { return localStorage.getItem('__pulsar_path__'); } catch { return null; } })();
   const _rawPath = window.location.pathname;
   const seedId =
@@ -61,54 +56,30 @@ export const SidebarNav = ({ onNavigate, onToggle }: ISidebarNavProps) => {
   };
 
   return (
-    <div style={() => `position: fixed; left: 0; top: 0; height: 100vh; background: #0a0a0a; border-right: 2px solid #1e293b; transition: width 0.3s ease-in-out; z-index: 1000; width: ${isCollapsed() ? '60px' : '280px'}; overflow: hidden;`}>
-      <div style="padding: 20px; border-bottom: 2px solid #1e293b; display: flex; align-items: center; justify-content: space-between; min-height: 60px;">
-        <div style={() => `overflow: hidden; transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out; opacity: ${isCollapsed() ? '0' : '1'}; width: ${isCollapsed() ? '0' : 'auto'};`}>
-          <h2 style="margin: 0; color: #3b82f6; font-size: 18px; white-space: nowrap;">
-            Pulsar Demos
-          </h2>
-        </div>
-        <button
-          onClick={toggleSidebar}
-          style="background: transparent; border: 2px solid #3b82f6; color: #3b82f6; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 16px; flex-shrink: 0;">
-          {isCollapsed() ? '▶' : '◀'}
+    <nav className={() => `sidebar ${isCollapsed() ? 'sidebar--collapsed' : 'sidebar--expanded'}`}>
+      <div className="sidebar__header">
+        <h2 className="sidebar__title">Pulsar Demos</h2>
+        <button className="sidebar__toggle" onClick={toggleSidebar} title="Toggle sidebar">
+          {() => isCollapsed() ? '▶' : '◀'}
         </button>
       </div>
 
-      <div style="overflow-y: auto; height: calc(100vh - 80px); padding: 10px;">
+      <div className="sidebar__nav">
         <For each={navItems}>
           {(item) => {
-            const isSelected = () => item.id === selectedId();
-
+            const isActive = () => item.id === selectedId();
             return (
               <button
                 onClick={() => handleNavClick(item)}
-                style={() => `width: 100%; padding: 12px; margin-bottom: 6px; background: ${isSelected() ? '#1e293b' : 'transparent'}; border: 2px solid ${isSelected() ? item.color : 'transparent'}; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 12px; transition: all 0.2s;`}
-                onMouseEnter={(e: MouseEvent) => {
-                  const target = e.currentTarget as HTMLElement;
-                  if (!isSelected()) {
-                    target.style.background = '#1a1a1a';
-                    target.style.borderColor = item.color;
-                  }
-                }}
-                onMouseLeave={(e: MouseEvent) => {
-                  const target = e.currentTarget as HTMLElement;
-                  if (!isSelected()) {
-                    target.style.background = 'transparent';
-                    target.style.borderColor = 'transparent';
-                  }
-                }}>
-                <span style="font-size: 20px; flex-shrink: 0;">{item.emoji}</span>
-                <div style={() => `overflow: hidden; transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out; opacity: ${isCollapsed() ? '0' : '1'}; width: ${isCollapsed() ? '0' : 'auto'};`}>
-                  <span style={() => `color: ${isSelected() ? item.color : '#94a3b8'}; font-size: 14px; font-weight: ${isSelected() ? 'bold' : 'normal'}; white-space: nowrap;`}>
-                    {item.label}
-                  </span>
-                </div>
+                className={() => `nav-item ${isActive() ? 'nav-item--active' : ''}`}
+                style={() => isActive() ? `--nav-accent: ${item.color};` : ''}>
+                <span className="nav-item__emoji">{item.emoji}</span>
+                <span className="nav-item__label">{item.label}</span>
               </button>
             );
           }}
         </For>
       </div>
-    </div>
+    </nav>
   );
 };

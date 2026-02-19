@@ -13,28 +13,22 @@ interface DemoButtonProps {
   size?: 'sm' | 'md' | 'lg'
 }
 
-export const DemoButton = ({ 
-  children, 
-  onClick, 
-  color = '#3b82f6', 
+export const DemoButton = ({
+  children,
+  onClick,
+  color = '#3b82f6',
   disabled = false,
   size = 'md'
 }: DemoButtonProps) => {
-  const sizes = {
-    sm: 'padding: 6px 12px; font-size: 12px;',
-    md: 'padding: 10px 20px; font-size: 14px;',
-    lg: 'padding: 14px 28px; font-size: 18px;'
-  };
-  
-  const baseStyle = `${sizes[size]} background: ${disabled ? '#4b5563' : color}; border: none; border-radius: 4px; color: white; cursor: ${disabled ? 'not-allowed' : 'pointer'}; font-weight: 500; transition: all 0.2s;`;
-  
   const renderChildren = typeof children === 'function' ? children() : children;
-  
+  const sizeClass = size !== 'md' ? ` demo-btn--${size}` : '';
+
   return (
-    <button 
-      onclick={onClick}
+    <button
+      onClick={onClick}
       disabled={disabled}
-      style={baseStyle}>
+      className={`demo-btn${sizeClass}${disabled ? ' demo-btn--disabled' : ''}`}
+      style={`--btn-color: ${disabled ? '#4b5563' : color};`}>
       {renderChildren}
     </button>
   );

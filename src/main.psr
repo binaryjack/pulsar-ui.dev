@@ -6,6 +6,8 @@
 
 import { createSignal, useNavigate, Router, Route } from '@pulsar-framework/pulsar.dev';
 import { SidebarNav } from './components/sidebar-nav.psr';
+import { AppHeader } from './components/app-header.psr';
+import { AppFooter } from './components/app-footer.psr';
 import { HomePage } from './showcase/home/home.psr';
 import { AboutPage } from './showcase/about/about.psr';
 import { BootstrapTestPage } from './showcase/bootstrap/bootstrap-test.psr';
@@ -29,28 +31,26 @@ export interface IAppProps {
 component App() {
   const navigate = useNavigate();
   const [sidebarCollapsed, setSidebarCollapsed] = createSignal(false);
-  
+
   const handleNavigate = (path: string) => {
     navigate(path);
   };
-  
+
   const handleSidebarToggle = (isCollapsed: boolean) => {
     setSidebarCollapsed(isCollapsed);
   };
-  
+
   return (
-    <div style="min-height: 100vh; background: #0a0a0a; color: white; font-family: system-ui; display: flex;">
-      <SidebarNav 
+    <div className="app-shell">
+      <SidebarNav
         onNavigate={handleNavigate}
-        onToggle={handleSidebarToggle} 
+        onToggle={handleSidebarToggle}
       />
-      
-      <div style={`flex: 1; margin-left: ${sidebarCollapsed() ? '60px' : '280px'}; transition: margin-left 0.3s;`}>
-        <header style="background: #1a1a1a; padding: 20px 40px; border-bottom: 2px solid #3b82f6; position: sticky; top: 0; z-index: 100;">
-          <h1 style="margin: 0; color: #3b82f6; font-size: 24px;">Pulsar Framework</h1>
-        </header>
-        
-        <main style="padding: 40px; max-width: 1400px; width: 100%;">
+
+      <div className={() => `app-content ${sidebarCollapsed() ? 'app-content--collapsed' : 'app-content--expanded'}`}>
+        <AppHeader />
+
+        <main className="app-main">
           <Router base={import.meta.env.BASE_URL}>
             <Route path="/" component={HomePage} default={true} label="Home" />
             <Route path="/bootstrap" component={BootstrapTestPage} label="Bootstrap" />
@@ -67,6 +67,8 @@ component App() {
             <Route path="/about" component={AboutPage} label="About" />
           </Router>
         </main>
+
+        <AppFooter />
       </div>
     </div>
   );

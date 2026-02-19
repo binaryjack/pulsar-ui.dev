@@ -1,23 +1,24 @@
 /**
  * Code Block Component
- * Displays code or debug info with monospace font
+ * Displays code or debug info with monospace font.
+ * Accepts content via `code` prop OR JSX children.
  */
 
 import type { Accessor } from '@pulsar-framework/pulsar.dev';
 
 interface CodeBlockProps {
-  children: string | number | Accessor<string | number | JSX.Element>
+  code?: string | number | Accessor<string | number>
+  children?: string | number | Accessor<string | number | JSX.Element>
   language?: string
 }
 
-export const CodeBlock = ({ children, language = 'text' }: CodeBlockProps) => {
-  const renderChildren = typeof children === 'function' ? children() : children;
-  
+export const CodeBlock = ({ code, children, language = 'text' }: CodeBlockProps) => {
+  const raw = code ?? children;
+  const content = typeof raw === 'function' ? raw() : raw;
+
   return (
-    <div style="background: #0f172a; padding: 15px; border-radius: 4px; font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; color: #64748b; overflow-x: auto;">
-      <pre style="margin: 0; white-space: pre-wrap; word-break: break-word;">
-        {renderChildren}
-      </pre>
+    <div className="code-block">
+      <pre>{content}</pre>
     </div>
   );
 };

@@ -6,6 +6,10 @@
 import { pulse, ServiceManager } from '@pulsar-framework/pulsar.dev';
 import App from './main.psr';
 
+// Apply dark theme by default (persisted in localStorage)
+const _savedTheme = (() => { try { return localStorage.getItem('__pulsar_theme__'); } catch { return null; } })();
+document.documentElement.setAttribute('data-theme', _savedTheme ?? 'dark');
+
 // Define a simple ConfigService for demo purposes
 class ConfigService {
   theme = 'dark';

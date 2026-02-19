@@ -14,18 +14,14 @@ interface DemoSectionProps {
 
 export const DemoSection = ({ title, description, borderColor = '#3b82f6', children }: DemoSectionProps) => {
   const renderChildren = typeof children === 'function' ? children() : children;
-  
+
   return (
-    <section style={`background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid ${borderColor};`}>
-      <h3 style={`font-size: 24px; margin-bottom: 15px; color: ${borderColor};`}>
-        {title}
-      </h3>
+    <section className="demo-section" style={`--section-accent: ${borderColor};`}>
+      <h3 className="demo-section__title">{title}</h3>
       {description ? (
-        <p style="color: #94a3b8; margin-bottom: 15px; line-height: 1.6;">
-          {description}
-        </p>
+        <p className="demo-section__description">{description}</p>
       ) : null}
-      <div style="background: #0a0a0a; padding: 15px; border-radius: 4px;">
+      <div className="demo-section__content">
         {renderChildren}
       </div>
     </section>
