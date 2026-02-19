@@ -3,7 +3,7 @@
  * Shows stale-while-revalidate caching
  */
 
-import { createSignal, createResource, ShowRegistry, createEffect } from '@pulsar-framework/pulsar.dev';
+import { createSignal, createResource, ShowRegistry, onCleanup, untrack } from '@pulsar-framework/pulsar.dev';
 import { DemoButton } from '../../common/components/demo-button.psr';
 import { fetchUser } from './mock-api.ts';
 
@@ -19,16 +19,15 @@ export const CacheDemo = () => {
     return fetchUser(1);
   }, { staleTime: 5000 });
   
-  // Update timer every 100ms
-  createEffect(() => {
-    const interval = setInterval(() => {
-      if (lastFetchTime() > 0) {
-        setTimeSinceLastFetch(Date.now() - lastFetchTime());
-      }
-    }, 100);
-    
-    return () => clearInterval(interval);
-  });
+  // Single interval for timer updates - runs once
+  const interval = setInterval(() => {
+    const lastFetch = untrack(lastFetchTime);
+    if (lastFetch > 0) {
+      setTimeSinceLastFetch(Date.now() - lastFetch);
+    }
+  }, 100);
+  
+  onCleanup(() => clearInterval(interval));
   
   const refetchWithCheck = () => {
     const now = Date.now();
