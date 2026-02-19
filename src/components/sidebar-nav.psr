@@ -36,9 +36,17 @@ export const SidebarNav = ({ onNavigate, onToggle }: ISidebarNavProps) => {
     { id: 11, path: '/about',          label: 'About',              emoji: 'ℹ️', color: '#64748b' },
   ];
 
-  // Seed selectedId from localStorage so active highlight persists on hard refresh.
-  const savedPath = (() => { try { return localStorage.getItem('__pulsar_path__'); } catch { return null; } })();
-  const seedId = navItems.find(i => i.path === (savedPath ?? '/'))?.id ?? 0;
+  // Seed selectedId on hard refresh. Strategy (in priority order):
+  // 1. LS key: contains the already-stripped path ('/di') written by navigate()
+  // 2. Suffix-match window.location.pathname: handles deployed base prefixes
+  //    e.g. '/pulsar-ui.dev/bootstrap' → endsWith('/bootstrap') → matches
+  // 3. Root: pathname ends with '/' → Home (id 0)
+  const _lsPath = (() => { try { return localStorage.getItem('__pulsar_path__'); } catch { return null; } })();
+  const _rawPath = window.location.pathname;
+  const seedId =
+    navItems.find(i => i.path === _lsPath)?.id ??
+    navItems.find(i => i.path !== '/' && _rawPath.endsWith(i.path))?.id ??
+    0;
   const [selectedId, setSelectedId] = createSignal<number>(seedId);
 
   const handleNavClick = (item: INavItem) => {
