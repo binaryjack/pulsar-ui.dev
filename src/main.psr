@@ -51,7 +51,7 @@ component App() {
         </header>
         
         <main style="padding: 40px; max-width: 1400px; width: 100%;">
-          <Router>
+          <Router base={import.meta.env.BASE_URL}>
             <Route path="/" component={HomePage} default={true} label="Home" />
             <Route path="/bootstrap" component={BootstrapTestPage} label="Bootstrap" />
             <Route path="/di" component={DependencyInjectionTestPage} label="Dependency Injection" />
