@@ -3,13 +3,11 @@
  * Demonstrates basic error boundary with toggle
  */
 
-import { Tryer, ShowRegistry } from '@pulsar-framework/pulsar.dev';
 import type { Accessor, Setter } from '@pulsar-framework/pulsar.dev';
 import { DemoButton } from '../../common/components/demo-button.psr';
 import { StatusIndicator } from '../../common/components/status-indicator.psr';
 import { SafeComponent } from './safe-component.psr';
 import { ErrorComponent } from './error-component.psr';
-import { ErrorDisplay } from './error-display.psr';
 
 interface BasicBoundaryDemoProps {
   throwError: Accessor<boolean>
@@ -40,20 +38,16 @@ export const BasicBoundaryDemo = ({ throwError, setThrowError, errorMessage, set
       </div>
       
       <div style="min-height: 80px; border: 2px dashed #334155; border-radius: 4px; padding: 15px;">
-        <Tryer fallback={(error, reset) => (
-            <ErrorDisplay 
-              error={error} 
-              onReset={() => { reset(); setThrowError(false); }} 
-            />
-          )}>
-          {function() {
-            if (throwError()) {
-              return <ErrorComponent message={errorMessage} />;
-            } else {
-              return <SafeComponent />;
-            }
-          }}
-        </Tryer>
+        <boundary fallback={
+          <div style="padding: 15px; background: #7f1d1d; border-left: 4px solid #ef4444; border-radius: 4px;">
+            <p style="color: #fca5a5; margin: 0 0 12px 0; font-weight: bold;">⚠️ Boundary caught a render error.</p>
+            <DemoButton onClick={() => setThrowError(false)} color="#ef4444" size="sm">
+              Reset Boundary
+            </DemoButton>
+          </div>
+        }>
+          {throwError() ? <ErrorComponent message={errorMessage} /> : <SafeComponent />}
+        </boundary>
       </div>
     </div>
   );

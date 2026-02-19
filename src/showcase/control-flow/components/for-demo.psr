@@ -4,7 +4,6 @@
  */
 
 import type { Accessor } from '@pulsar-framework/pulsar.dev';
-import { ForRegistry } from '@pulsar-framework/pulsar.dev';
 import { DemoButton } from '../../common/components/demo-button.psr';
 
 interface CartItem {
@@ -33,30 +32,28 @@ export const ForDemo = ({ items, addItem, removeItem, sortByPrice }: ForDemoProp
       </div>
       
       <div style="display: grid; gap: 10px;">
-        <ForRegistry 
-          each={items()} 
-          key={(item) => item.id} 
-          fallback={<p style="color: #64748b;">No items in cart</p>}>
-          {(item) => (
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #1a1a1a; border-radius: 4px; border: 1px solid #334155;">
-              <div>
-                <span style="font-weight: bold; color: white; margin-right: 10px;">
-                  {item.name}
-                </span>
-                <span style="color: #10b981; font-size: 18px;">
-                  ${item.price.toFixed(2)}
-                </span>
-              </div>
-              
-              <DemoButton 
-                onClick={() => removeItem(item.id)}
-                color="#ef4444"
-                size="sm">
-                Remove
-              </DemoButton>
+        {items().length === 0 && (
+          <p style="color: #64748b;">No items in cart</p>
+        )}
+        {items().map((item) => (
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #1a1a1a; border-radius: 4px; border: 1px solid #334155;">
+            <div>
+              <span style="font-weight: bold; color: white; margin-right: 10px;">
+                {item.name}
+              </span>
+              <span style="color: #10b981; font-size: 18px;">
+                ${item.price.toFixed(2)}
+              </span>
             </div>
-          )}
-        </ForRegistry>
+
+            <DemoButton
+              onClick={() => removeItem(item.id)}
+              color="#ef4444"
+              size="sm">
+              Remove
+            </DemoButton>
+          </div>
+        ))}
       </div>
       
       <div style="margin-top: 15px; padding: 10px; background: #1a1a1a; border-radius: 4px;">

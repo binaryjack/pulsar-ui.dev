@@ -3,7 +3,6 @@
  * Reusable section for independent boundaries demo
  */
 
-import { Tryer } from '@pulsar-framework/pulsar.dev';
 import type { Accessor } from '@pulsar-framework/pulsar.dev';
 import { DemoButton } from '../../common/components/demo-button.psr';
 import { StatusIndicator } from '../../common/components/status-indicator.psr';
@@ -30,25 +29,19 @@ export const BoundarySection = ({ title, hasError, toggleError }: BoundarySectio
         </DemoButton>
         <StatusIndicator status={hasError() ? 'error' : 'ok'} />
       </div>
-      <Tryer fallback={(error, _reset) => (
-          <div style="padding: 10px; background: #7f1d1d; border-radius: 4px;">
-            <p style="margin: 0; color: #fca5a5; font-size: 12px;">
-              {error.message}
-            </p>
+      <boundary fallback={
+        <div style="padding: 10px; background: #7f1d1d; border-radius: 4px;">
+          <p style="margin: 0; color: #fca5a5; font-size: 12px;">
+            Render error in {title}
+          </p>
+        </div>
+      }>
+        {hasError() ? <ErrorComponent message={`${title} failed`} /> : (
+          <div style="padding: 10px; background: #10b981; color: white; border-radius: 4px; text-align: center;">
+            ✓ OK
           </div>
-        )}>
-        {function() {
-          if (hasError()) {
-            return <ErrorComponent message={`${title} failed`} />;
-          } else {
-            return (
-              <div style="padding: 10px; background: #10b981; color: white; border-radius: 4px; text-align: center;">
-                ✓ OK
-              </div>
-            );
-          }
-        }}
-      </Tryer>
+        )}
+      </boundary>
     </div>
   );
 };
