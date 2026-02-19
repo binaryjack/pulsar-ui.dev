@@ -34,7 +34,10 @@
 }
 
 .active-press {
-    @apply active:scale-98 transition-transform duration-100;
+    transition: transform 100ms;
+}
+.active-press:active {
+    transform: scale(0.98);
 }
 
 /* ==========================================
