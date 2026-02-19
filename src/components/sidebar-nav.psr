@@ -56,9 +56,15 @@ export const SidebarNav = ({ onNavigate, onToggle }: ISidebarNavProps) => {
   };
 
   return (
-    <nav className={() => `sidebar ${isCollapsed() ? 'sidebar--collapsed' : 'sidebar--expanded'}`}>
+    <nav
+      className="sidebar"
+      style={() => `position: fixed; left: 0; top: 0; height: 100vh; z-index: 1000; overflow: hidden; display: flex; flex-direction: column; width: ${isCollapsed() ? '68px' : '280px'}; transition: width 0.3s ease-in-out; background: var(--color-surface); border-right: 1px solid var(--color-border);`}>
       <div className="sidebar__header">
-        <h2 className="sidebar__title">Pulsar Demos</h2>
+        <h2
+          className="sidebar__title"
+          style={() => `opacity: ${isCollapsed() ? '0' : '1'}; max-width: ${isCollapsed() ? '0' : '180px'};`}>
+          Pulsar Demos
+        </h2>
         <button className="sidebar__toggle" onClick={toggleSidebar} title="Toggle sidebar">
           {() => isCollapsed() ? '▶' : '◀'}
         </button>
@@ -71,10 +77,27 @@ export const SidebarNav = ({ onNavigate, onToggle }: ISidebarNavProps) => {
             return (
               <button
                 onClick={() => handleNavClick(item)}
-                className={() => `nav-item ${isActive() ? 'nav-item--active' : ''}`}
-                style={() => isActive() ? `--nav-accent: ${item.color};` : ''}>
+                className="nav-item"
+                style={() => `
+                  background: ${isActive() ? 'var(--color-surface-hover)' : 'transparent'};
+                  border-color: ${isActive() ? item.color : 'transparent'};
+                  --nav-accent: ${item.color};
+                `}>
                 <span className="nav-item__emoji">{item.emoji}</span>
-                <span className="nav-item__label">{item.label}</span>
+                <span
+                  className="nav-item__label"
+                  style={() => `
+                    color: ${isActive() ? item.color : 'var(--color-text-muted)'};
+                    font-weight: ${isActive() ? '600' : '400'};
+                    opacity: ${isCollapsed() ? '0' : '1'};
+                    max-width: ${isCollapsed() ? '0' : '180px'};
+                    overflow: hidden;
+                    white-space: nowrap;
+                    display: inline-block;
+                    transition: opacity 0.2s, max-width 0.3s;
+                  `}>
+                  {item.label}
+                </span>
               </button>
             );
           }}

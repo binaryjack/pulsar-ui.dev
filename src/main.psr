@@ -47,7 +47,9 @@ component App() {
         onToggle={handleSidebarToggle}
       />
 
-      <div className={() => `app-content ${sidebarCollapsed() ? 'app-content--collapsed' : 'app-content--expanded'}`}>
+      <div
+        className="app-content"
+        style={() => `margin-left: ${sidebarCollapsed() ? '68px' : '280px'}; transition: margin-left 0.3s ease-in-out;`}>
         <AppHeader />
 
         <main className="app-main">

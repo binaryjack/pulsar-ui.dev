@@ -15,14 +15,11 @@
 
 .app-content {
   flex: 1;
-  transition: margin-left var(--transition-base);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  /* margin-left handled by inline reactive style */
 }
-
-.app-content--expanded  { margin-left: 280px; }
-.app-content--collapsed { margin-left: 68px; }
 
 /* ── App Header ──────────────────────────────────────────── */
 .app-header {
@@ -135,22 +132,10 @@
 }
 
 /* ── Sidebar ─────────────────────────────────────────────── */
+/* Layout (position/width) handled by inline reactive style */
 .sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100vh;
-  background: var(--color-surface);
-  border-right: 1px solid var(--color-border);
-  transition: width var(--transition-base);
-  z-index: var(--z-fixed);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  /* appearance only */
 }
-
-.sidebar--expanded  { width: 280px; }
-.sidebar--collapsed { width: 68px; }
 
 .sidebar__header {
   padding: 0 var(--spacing-sm) 0 var(--spacing-md);
@@ -161,6 +146,7 @@
   height: var(--header-height);
   flex-shrink: 0;
   gap: var(--spacing-xs);
+  min-height: var(--header-height);
 }
 
 .sidebar__title {
@@ -168,14 +154,10 @@
   color: var(--color-primary-500);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
-  white-space: nowrap;
+  /* opacity/max-width handled by inline reactive style */
   overflow: hidden;
   transition: opacity var(--transition-fast), max-width var(--transition-base);
-  line-height: var(--header-height);
 }
-
-.sidebar--expanded  .sidebar__title { opacity: 1; max-width: 200px; }
-.sidebar--collapsed .sidebar__title { opacity: 0; max-width: 0; }
 
 .sidebar__toggle {
   background: transparent;
@@ -243,13 +225,8 @@
 }
 
 .nav-item__label {
-  overflow: hidden;
-  white-space: nowrap;
-  transition: opacity var(--transition-fast), max-width var(--transition-base);
+  /* visibility handled by inline reactive style */
 }
-
-.sidebar--expanded  .nav-item__label { opacity: 1; max-width: 200px; }
-.sidebar--collapsed .nav-item__label { opacity: 0; max-width: 0; }
 
 /* ── Page Header ─────────────────────────────────────────── */
 .page-header {
