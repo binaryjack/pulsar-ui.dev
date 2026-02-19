@@ -3,7 +3,7 @@
  * Shows stale-while-revalidate caching
  */
 
-import { createSignal, createResource, ShowRegistry, onCleanup, createEffect } from '@pulsar-framework/pulsar.dev';
+import { createSignal, createResource, ShowRegistry, onCleanup, onMount } from '@pulsar-framework/pulsar.dev';
 import { DemoButton } from '../../common/components/demo-button.psr';
 import { fetchUser } from './mock-api.ts';
 
@@ -14,13 +14,9 @@ export const CacheDemo = () => {
   const [isRefetching, setIsRefetching] = createSignal(false);
   const [isFresh, setIsFresh] = createSignal(true);
   
-  // Refs for direct DOM manipulation (avoid reactive loops)
-  let statusTextRef: HTMLDivElement | null = null;
-  let progressBarRef: HTMLDivElement | null = null;
-  
-  // Debounce token management
+  // Debounce token management (plain vars - no reactivity needed)
   let debounceTimeout: NodeJS.Timeout | null = null;
-  let animationFrameId: number | null = null;
+  let timerInterval: NodeJS.Timeout | null = null;
   
   const cachedResource = createResource(() => {
     setFetchCount(c => c + 1);
@@ -28,72 +24,46 @@ export const CacheDemo = () => {
     return fetchUser(1);
   }, { staleTime: 5000 });
   
-  // Update timer with direct DOM manipulation (no reactive signals)
-  const updateTimer = (fetchTime: number) => {
-    const update = () => {
+  // After mount: start interval with direct DOM reads/writes
+  // Using getElementById avoids ref callbacks (not supported by transformer)
+  // Reading signal inside setInterval is NOT tracked (no reactive context) -> no wire
+  onMount(() => {
+    timerInterval = setInterval(() => {
+      const fetchTime = lastFetchTime(); // plain read, not tracked
+      if (fetchTime === 0) return;
+      
       const elapsed = Date.now() - fetchTime;
       const timeLeft = Math.max(0, 5000 - elapsed);
+      const fresh = timeLeft > 0;
       const timeLeftSeconds = (timeLeft / 1000).toFixed(1);
       const progressPct = Math.max(0, Math.min(100, (timeLeft / 5000) * 100));
-      const fresh = timeLeft > 0;
       
-      // Direct DOM updates (bypass reactive system)
-      if (statusTextRef) {
-        const color = fresh ? '#10b981' : '#ef4444';
-        const text = fresh ? `Fresh (${timeLeftSeconds}s left)` : 'Stale';
-        statusTextRef.style.color = color;
-        statusTextRef.textContent = text;
+      // Direct DOM manipulation - completely outside reactive system
+      const statusEl = document.getElementById('cache-status-text') as HTMLElement | null;
+      const progressEl = document.getElementById('cache-progress-bar') as HTMLElement | null;
+      
+      if (statusEl) {
+        statusEl.style.color = fresh ? '#10b981' : '#ef4444';
+        statusEl.textContent = fresh ? `Fresh (${timeLeftSeconds}s left)` : 'Stale';
       }
       
-      if (progressBarRef) {
-        const bgColor = fresh ? '#10b981' : '#ef4444';
-        progressBarRef.style.background = bgColor;
-        progressBarRef.style.width = `${progressPct}%`;
+      if (progressEl) {
+        progressEl.style.background = fresh ? '#10b981' : '#ef4444';
+        progressEl.style.width = `${progressPct}%`;
       }
       
-      // Update signal state only when crossing threshold (reduce reactive updates)
+      // Only update signal when crossing fresh/stale threshold (2 updates max per fetch)
       if (fresh !== isFresh()) {
         setIsFresh(fresh);
       }
-      
-      // Continue animation loop
-      if (timeLeft > 0 || elapsed < 6000) {
-        animationFrameId = requestAnimationFrame(() => update());
-      }
-    };
-    
-    update();
-  };
-  
-  // React to fetch time changes
-  createEffect(() => {
-    const fetchTime = lastFetchTime();
-    
-    // Cancel previous animation loop
-    if (animationFrameId !== null) {
-      cancelAnimationFrame(animationFrameId);
-      animationFrameId = null;
-    }
-    
-    // Start new animation loop if we have a fetch time
-    if (fetchTime > 0) {
-      updateTimer(fetchTime);
-    }
-    
-    // Cleanup on re-run
-    return () => {
-      if (animationFrameId !== null) {
-        cancelAnimationFrame(animationFrameId);
-        animationFrameId = null;
-      }
-    };
+    }, 100);
   });
   
-  // Component cleanup
+  // Cleanup timer and debounce on unmount
   onCleanup(() => {
-    if (animationFrameId !== null) {
-      cancelAnimationFrame(animationFrameId);
-      animationFrameId = null;
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
     }
     if (debounceTimeout) {
       clearTimeout(debounceTimeout);
@@ -103,30 +73,20 @@ export const CacheDemo = () => {
   
   // Debounced refetch with cancellation token
   const refetchWithCheck = () => {
-    // Cancel any pending debounced call
     if (debounceTimeout) {
       clearTimeout(debounceTimeout);
       debounceTimeout = null;
     }
     
-    // Ignore if already refetching
-    if (isRefetching()) {
-      return;
-    }
+    if (isRefetching()) return;
     
-    // Debounce: schedule refetch after 150ms
     debounceTimeout = setTimeout(async () => {
       setIsRefetching(true);
-      
-      const now = Date.now();
-      const elapsed = now - lastFetchTime();
-      
+      const elapsed = Date.now() - lastFetchTime();
       if (cachedResource.data && elapsed < 5000) {
         setCacheHits(h => h + 1);
       }
-      
       await cachedResource.refetch();
-      
       setIsRefetching(false);
       debounceTimeout = null;
     }, 150);
@@ -160,17 +120,17 @@ export const CacheDemo = () => {
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
             <div style="color: #8b5cf6; font-weight: bold;">📦 Cached Data</div>
             <div 
-              ref={(el) => { statusTextRef = el; }}
-              style="font-size: 12px; font-weight: bold; color: #10b981;"
+              id="cache-status-text"
+              style="font-size: 12px; font-weight: bold; color: #94a3b8;"
             >
-              Fresh (5.0s left)
+              Waiting for data...
             </div>
           </div>
           
           <div style="width: 100%; height: 6px; background: #334155; border-radius: 3px; margin-bottom: 15px; overflow: hidden;">
             <div 
-              ref={(el) => { progressBarRef = el; }}
-              style="height: 100%; background: #10b981; width: 100%; transition: width 0.1s linear;"
+              id="cache-progress-bar"
+              style="height: 100%; background: #10b981; width: 0%; transition: width 0.1s linear;"
             ></div>
           </div>
           
