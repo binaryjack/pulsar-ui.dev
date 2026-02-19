@@ -44,7 +44,7 @@ export const LifecycleDemo = () => {
       
       <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
         <button 
-          onclick={() => addManualLog()}
+          onClick={() => addManualLog()}
           style="padding: 12px 24px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
           Add Log Entry
         </button>

@@ -10,7 +10,7 @@ export const ThemedBox = () => {
   const ctx = useContext(ThemeContext);
   
   return (
-    <div style={`padding: 15px; background: ${ctx.theme() === 'dark' ? '#1a1a1a' : '#f1f5f9'}; color: ${ctx.theme() === 'dark' ? 'white' : 'black'}; border: 2px solid ${ctx.primaryColor()}; border-radius: 4px;`}>
+    <div style={() => `padding: 15px; background: ${ctx.theme() === 'dark' ? '#1a1a1a' : '#f1f5f9'}; color: ${ctx.theme() === 'dark' ? 'white' : 'black'}; border: 2px solid ${ctx.primaryColor()}; border-radius: 4px; transition: all 0.3s;`}>
       <p style="margin: 0; font-weight: bold;">Themed Component</p>
       <p style="margin: 5px 0 0 0; font-size: 12px; opacity: 0.8;">
         Theme: {ctx.theme()} | Color: {ctx.primaryColor()}

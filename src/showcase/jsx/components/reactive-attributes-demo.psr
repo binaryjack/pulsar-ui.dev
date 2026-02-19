@@ -46,14 +46,17 @@ export const ReactiveAttributesDemo = ({ bgColor, setBgColor, isDisabled, setIsD
       <div style="display: flex; gap: 10px; align-items: center;">
         <button 
           disabled={isDisabled()}
-          style={{
+          style={() => ({
             padding: '10px 20px',
             background: isDisabled() ? '#4b5563' : '#8b5cf6',
             border: 'none',
             color: 'white',
             borderRadius: '6px',
-            cursor: isDisabled() ? 'not-allowed' : 'pointer'
-          }}>
+            cursor: isDisabled() ? 'not-allowed' : 'pointer',
+            opacity: isDisabled() ? '0.45' : '1',
+            pointerEvents: isDisabled() ? 'none' : 'auto',
+            transition: 'all 0.2s'
+          })}>
           {isDisabled() ? 'Disabled Button' : 'Enabled Button'}
         </button>
         

@@ -1,0 +1,113 @@
+/**
+ * Circular Dependency Demo
+ * Shows how ServiceManager detects and throws on circular deps
+ */
+
+import { createSignal } from '@pulsar-framework/pulsar.dev';
+import { ServiceManager } from '@pulsar-framework/pulsar.dev';
+
+type Status = 'idle' | 'error' | 'success';
+
+export component CircularDependencyDemo() {
+  const [status, setStatus] = createSignal<Status>('idle');
+  const [message, setMessage] = createSignal('');
+
+  const triggerCircular = () => {
+    const sm = new ServiceManager();
+
+    sm.register('A', (container) => {
+      const b = container.resolve('B');
+      return { name: 'ServiceA', dep: b };
+    });
+
+    sm.register('B', (container) => {
+      const a = container.resolve('A');
+      return { name: 'ServiceB', dep: a };
+    });
+
+    try {
+      sm.resolve('A');
+      setStatus('success');
+      setMessage('Resolved (unexpected — should have thrown)');
+    } catch (err: unknown) {
+      setStatus('error');
+      setMessage(err instanceof Error ? err.message : String(err));
+    }
+  };
+
+  const triggerValid = () => {
+    const sm = new ServiceManager();
+
+    sm.register('database', () => ({ type: 'postgres', connected: true }), { lifetime: 'singleton' });
+    sm.register('userRepo', (container) => {
+      const db = container.resolve('database');
+      return { findUser: (id: string) => ({ id, db: db.type }) };
+    });
+    sm.register('authService', (container) => {
+      const repo = container.resolve('userRepo');
+      return { login: (id: string) => repo.findUser(id) };
+    });
+
+    try {
+      const auth = sm.resolve('authService');
+      const result = auth.login('usr_1');
+      setStatus('success');
+      setMessage(`✅ Resolved cleanly — authService → userRepo → database (${result.db})`);
+    } catch (err: unknown) {
+      setStatus('error');
+      setMessage(err instanceof Error ? err.message : String(err));
+    }
+  };
+
+  const reset = () => {
+    setStatus('idle');
+    setMessage('');
+  };
+
+  const statusColors: Record<Status, string> = {
+    idle: '#475569',
+    error: '#ef4444',
+    success: '#10b981'
+  };
+
+  const statusBg: Record<Status, string> = {
+    idle: 'rgba(71, 85, 105, 0.15)',
+    error: 'rgba(239, 68, 68, 0.12)',
+    success: 'rgba(16, 185, 129, 0.12)'
+  };
+
+  return (
+    <div>
+      <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+        <button
+          onClick={triggerCircular}
+          style="padding: 9px 18px; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+          💥 Trigger Circular
+        </button>
+        <button
+          onClick={triggerValid}
+          style="padding: 9px 18px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+          ✅ Valid Resolution
+        </button>
+        <button
+          onClick={reset}
+          style="padding: 9px 18px; background: #334155; color: white; border: 1px solid #475569; border-radius: 6px; cursor: pointer; font-weight: bold;">
+          ↺ Reset
+        </button>
+      </div>
+
+      <div style={() => `padding: 14px 18px; border-radius: 8px; border: 1px solid ${statusColors[status()]}; background: ${statusBg[status()]}; min-height: 52px; transition: all 0.25s;`}>
+        {status() === 'idle' && (
+          <p style="margin: 0; color: #94a3b8; font-size: 14px;">
+            Click a button above to see the result.
+          </p>
+        )}
+        {status() !== 'idle' && (
+          <p style={() => `margin: 0; color: ${statusColors[status()]}; font-size: 14px; line-height: 1.6; font-family: monospace;`}>
+            {message()}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}

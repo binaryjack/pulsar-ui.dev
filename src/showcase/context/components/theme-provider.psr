@@ -5,27 +5,21 @@
 
 import { createSignal, createContext } from '@pulsar-framework/pulsar.dev';
 
-interface ThemeProviderProps {
-  children: JSX.Element
-}
+// Module-level signals so useContext() returns reactive values
+// regardless of JSX evaluation order (children render before Provider body).
+const [_theme, _setTheme] = createSignal('light');
+const [_primaryColor, _setPrimaryColor] = createSignal('#3b82f6');
 
 export const ThemeContext = createContext({
-  theme: () => 'light',
-  setTheme: () => {},
-  primaryColor: () => '#3b82f6',
-  setPrimaryColor: () => {}
+  theme: _theme,
+  setTheme: _setTheme,
+  primaryColor: _primaryColor,
+  setPrimaryColor: _setPrimaryColor
 });
 
-export const ThemeProvider = (props: ThemeProviderProps) => {
-  const [theme, setTheme] = createSignal('light');
-  const [primaryColor, setPrimaryColor] = createSignal('#3b82f6');
-  
-  const themeValue = { theme, setTheme, primaryColor, setPrimaryColor };
-  
-  // SET VALUE SYNCHRONOUSLY before Provider renders
-  // This ensures children can read context immediately
-  ThemeContext.setValue(themeValue);
-  
-  // Pass children directly as HTMLElement, not as function
-  return ThemeContext.Provider({ value: themeValue, children: props.children });
+export const ThemeProvider = (props: { children: JSX.Element }) => {
+  return ThemeContext.Provider({
+    value: { theme: _theme, setTheme: _setTheme, primaryColor: _primaryColor, setPrimaryColor: _setPrimaryColor },
+    children: props.children
+  });
 };

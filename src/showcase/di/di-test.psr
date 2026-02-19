@@ -9,6 +9,8 @@ import { CodeBlock } from '../common/components/code-block.psr';
 import { ServiceRegistrationDemo } from './components/service-registration-demo.psr';
 import { ServiceLifetimeDemo } from './components/service-lifetime-demo.psr';
 import { ServiceResolutionDemo } from './components/service-resolution-demo.psr';
+import { HierarchicalDiDemo } from './components/hierarchical-di-demo.psr';
+import { CircularDependencyDemo } from './components/circular-dependency-demo.psr';
 
 export component DependencyInjectionTestPage() {
   return (
@@ -45,6 +47,7 @@ export component DependencyInjectionTestPage() {
         title="4️⃣ Hierarchical DI" 
         description="Nested containers with parent-child relationships"
         borderColor="#10b981">
+        <HierarchicalDiDemo />
         <CodeBlock code={`// Parent container (global services)
 const appServices = new ServiceManager();
 appServices.register('config', () => globalConfig, {
@@ -91,6 +94,7 @@ component MyComponent() {
         title="6️⃣ Circular Dependency Detection" 
         description="Automatic detection prevents infinite loops"
         borderColor="#ef4444">
+        <CircularDependencyDemo />
         <div style="padding: 15px; background: #450a0a; border-left: 4px solid #ef4444; border-radius: 4px; margin-bottom: 15px;">
           <p style="margin: 0 0 10px 0; color: #ef4444; font-weight: bold;">
             ⚠️ Circular Dependency Error

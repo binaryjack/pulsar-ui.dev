@@ -5,35 +5,30 @@
 
 import { createSignal, createContext } from '@pulsar-framework/pulsar.dev';
 
-interface UserProviderProps {
-  children: JSX.Element
-}
+// Module-level signals — available before Provider body executes.
+const [_user, _setUser] = createSignal({ name: 'Guest', role: 'visitor' });
+const [_isLoggedIn, _setIsLoggedIn] = createSignal(false);
+
+const _login = (name: string, role: string) => {
+  _setUser({ name, role });
+  _setIsLoggedIn(true);
+};
+
+const _logout = () => {
+  _setUser({ name: 'Guest', role: 'visitor' });
+  _setIsLoggedIn(false);
+};
 
 export const UserContext = createContext({
-  user: () => ({ name: 'Guest', role: 'visitor' }),
-  isLoggedIn: () => false,
-  login: () => {},
-  logout: () => {}
+  user: _user,
+  isLoggedIn: _isLoggedIn,
+  login: _login,
+  logout: _logout
 });
 
-export const UserProvider = (props: UserProviderProps) => {
-  const [user, setUser] = createSignal({ name: 'Guest', role: 'visitor' });
-  const [isLoggedIn, setIsLoggedIn] = createSignal(false);
-  
-  const login = (name, role) => {
-    setUser({ name, role });
-    setIsLoggedIn(true);
-  };
-  
-  const logout = () => {
-    setUser({ name: 'Guest', role: 'visitor' });
-    setIsLoggedIn(false);
-  };
-  
-  const userValue = { user, isLoggedIn, login, logout };
-  
-  // SET VALUE SYNCHRONOUSLY before Provider renders
-  UserContext.setValue(userValue);
-  
-  return UserContext.Provider({ value: userValue, children: props.children });
+export const UserProvider = (props: { children: JSX.Element }) => {
+  return UserContext.Provider({
+    value: { user: _user, isLoggedIn: _isLoggedIn, login: _login, logout: _logout },
+    children: props.children
+  });
 };

@@ -4,7 +4,6 @@
  */
 
 import { useContext } from '@pulsar-framework/pulsar.dev';
-import { DemoButton } from '../../common/components/demo-button.psr';
 import { ThemeContext } from './theme-provider.psr';
 
 export const ThemeControls = () => {
@@ -22,16 +21,16 @@ export const ThemeControls = () => {
       <div style="margin-bottom: 15px;">
         <h4 style="margin: 0 0 10px 0; color: white;">Theme Mode:</h4>
         <div style="display: flex; gap: 10px;">
-          <DemoButton 
+          <button
             onClick={() => ctx.setTheme('light')}
-            color={ctx.theme() === 'light' ? '#10b981' : '#6b7280'}>
-            Light
-          </DemoButton>
-          <DemoButton 
+            style={() => `padding: 8px 16px; background: ${ctx.theme() === 'light' ? '#10b981' : '#334155'}; color: white; border: 2px solid ${ctx.theme() === 'light' ? '#10b981' : '#475569'}; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s;`}>
+            ☀️ Light
+          </button>
+          <button
             onClick={() => ctx.setTheme('dark')}
-            color={ctx.theme() === 'dark' ? '#10b981' : '#6b7280'}>
-            Dark
-          </DemoButton>
+            style={() => `padding: 8px 16px; background: ${ctx.theme() === 'dark' ? '#10b981' : '#334155'}; color: white; border: 2px solid ${ctx.theme() === 'dark' ? '#10b981' : '#475569'}; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s;`}>
+            🌙 Dark
+          </button>
         </div>
       </div>
       
@@ -39,11 +38,11 @@ export const ThemeControls = () => {
         <h4 style="margin: 0 0 10px 0; color: white;">Primary Color:</h4>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
           {colors.map(color => (
-            <DemoButton 
+            <button
               onClick={() => ctx.setPrimaryColor(color.value)}
-              color={color.value}>
+              style={() => `padding: 8px 16px; background: ${ctx.primaryColor() === color.value ? color.value : '#334155'}; color: white; border: 2px solid ${color.value}; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s; opacity: ${ctx.primaryColor() === color.value ? '1' : '0.6'};`}>
               {color.name}
-            </DemoButton>
+            </button>
           ))}
         </div>
       </div>
