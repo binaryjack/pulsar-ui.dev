@@ -4,7 +4,7 @@
  */
 
 import type { Accessor } from '@pulsar-framework/pulsar.dev';
-import { Tryer, Catcher } from '@pulsar-framework/pulsar.dev';
+import { Tryer } from '@pulsar-framework/pulsar.dev';
 import { DemoButton } from '../../common/components/demo-button.psr';
 
 interface VisualErrorBoundaryProps {
@@ -14,8 +14,6 @@ interface VisualErrorBoundaryProps {
 }
 
 export const VisualErrorBoundary = ({ children, title, borderColor = "#06b6d4" }: VisualErrorBoundaryProps) => {
-  const renderChildren = typeof children === 'function' ? children() : children;
-  
   return (
     <div style={{
       background: '#1e293b',
@@ -35,11 +33,7 @@ export const VisualErrorBoundary = ({ children, title, borderColor = "#06b6d4" }
       </h3>
       
       <div style="background: #0f172a; border-radius: 8px; padding: 20px; min-height: 150px; border: 2px dashed #475569;">
-        <Tryer>
-          {renderChildren}
-        </Tryer>
-        <Catcher>
-          {(error, reset) => (
+        <Tryer fallback={(error, reset) => (
             <div style="background: linear-gradient(135deg, #7f1d1d, #991b1b); border: 3px solid #ef4444; border-radius: 12px; padding: 25px; text-align: center; box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);">
               <div style="font-size: 48px; margin-bottom: 15px;">⚠️</div>
               
@@ -60,8 +54,9 @@ export const VisualErrorBoundary = ({ children, title, borderColor = "#06b6d4" }
                 🔄 RESET {title.toUpperCase()}
               </DemoButton>
             </div>
-          )}
-        </Catcher>
+          )}>
+          {children}
+        </Tryer>
       </div>
       
       <div style={{

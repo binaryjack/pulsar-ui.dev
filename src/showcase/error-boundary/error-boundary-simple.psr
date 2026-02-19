@@ -3,7 +3,7 @@
  * Simplified version with minimal UI
  */
 
-import { createSignal, Tryer, Catcher } from '@pulsar-framework/pulsar.dev';
+import { createSignal, Tryer } from '@pulsar-framework/pulsar.dev';
 import { DemoButton } from '../common/components/demo-button.psr';
 import { SafeComponent, ErrorComponent, ErrorDisplay } from './components';
 
@@ -51,7 +51,25 @@ export component ErrorBoundarySimplePage() {
           </h3>
           
           <div style="background: #0f172a; border-radius: 8px; padding: 20px; min-height: 200px; border: 2px dashed #475569;">
-            <Tryer>
+            <Tryer fallback={(error, reset) => (
+                  <div style="background: linear-gradient(135deg, #7f1d1d, #991b1b); border: 3px solid #ef4444; border-radius: 12px; padding: 30px; text-align: center;">
+                    <div style="font-size: 64px; margin-bottom: 20px;">⚠️</div>
+                    
+                    <h2 style="color: #fca5a5; margin-bottom: 20px; font-size: 28px; font-weight: bold;">
+                      🚨 ERROR CAUGHT BY BOUNDARY!
+                    </h2>
+                    
+                    <ErrorDisplay error={error} />
+                    
+                    <DemoButton 
+                      onClick={reset}
+                      color="#10b981"
+                      size="lg"
+                      style="margin-top: 20px;">
+                      🔄 RESET COMPONENT
+                    </DemoButton>
+                  </div>
+                )}>
               {() => {
                 if (throwError()) {
                   return <ErrorComponent message={() => errorMessage()} />;
@@ -70,27 +88,6 @@ export component ErrorBoundarySimplePage() {
                 }
               }}
             </Tryer>
-            <Catcher>
-              {(error, reset) => (
-                  <div style="background: linear-gradient(135deg, #7f1d1d, #991b1b); border: 3px solid #ef4444; border-radius: 12px; padding: 30px; text-align: center;">
-                    <div style="font-size: 64px; margin-bottom: 20px;">⚠️</div>
-                    
-                    <h2 style="color: #fca5a5; margin-bottom: 20px; font-size: 28px; font-weight: bold;">
-                      🚨 ERROR CAUGHT BY BOUNDARY!
-                    </h2>
-                    
-                    <ErrorDisplay error={error} />
-                    
-                    <DemoButton 
-                      onClick={reset}
-                      color="#10b981"
-                      size="lg"
-                      style="margin-top: 20px;">
-                      🔄 RESET COMPONENT
-                    </DemoButton>
-                  </div>
-                )}
-            </Catcher>
           </div>
         </div>
       </div>

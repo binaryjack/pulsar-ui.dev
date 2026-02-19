@@ -3,7 +3,7 @@
  * Demonstrates basic error boundary with toggle
  */
 
-import { Tryer, Catcher, ShowRegistry } from '@pulsar-framework/pulsar.dev';
+import { Tryer, ShowRegistry } from '@pulsar-framework/pulsar.dev';
 import type { Accessor, Setter } from '@pulsar-framework/pulsar.dev';
 import { DemoButton } from '../../common/components/demo-button.psr';
 import { StatusIndicator } from '../../common/components/status-indicator.psr';
@@ -40,7 +40,12 @@ export const BasicBoundaryDemo = ({ throwError, setThrowError, errorMessage, set
       </div>
       
       <div style="min-height: 80px; border: 2px dashed #334155; border-radius: 4px; padding: 15px;">
-        <Tryer>
+        <Tryer fallback={(error, reset) => (
+            <ErrorDisplay 
+              error={error} 
+              onReset={() => { reset(); setThrowError(false); }} 
+            />
+          )}>
           {function() {
             if (throwError()) {
               return <ErrorComponent message={errorMessage} />;
@@ -49,14 +54,6 @@ export const BasicBoundaryDemo = ({ throwError, setThrowError, errorMessage, set
             }
           }}
         </Tryer>
-        <Catcher>
-          {(error, reset) => (
-            <ErrorDisplay 
-              error={error} 
-              onReset={() => { reset(); setThrowError(false); }} 
-            />
-          )}
-        </Catcher>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@
  * Reusable section for independent boundaries demo
  */
 
-import { Tryer, Catcher } from '@pulsar-framework/pulsar.dev';
+import { Tryer } from '@pulsar-framework/pulsar.dev';
 import type { Accessor } from '@pulsar-framework/pulsar.dev';
 import { DemoButton } from '../../common/components/demo-button.psr';
 import { StatusIndicator } from '../../common/components/status-indicator.psr';
@@ -30,7 +30,13 @@ export const BoundarySection = ({ title, hasError, toggleError }: BoundarySectio
         </DemoButton>
         <StatusIndicator status={hasError() ? 'error' : 'ok'} />
       </div>
-      <Tryer>
+      <Tryer fallback={(error, _reset) => (
+          <div style="padding: 10px; background: #7f1d1d; border-radius: 4px;">
+            <p style="margin: 0; color: #fca5a5; font-size: 12px;">
+              {error.message}
+            </p>
+          </div>
+        )}>
         {function() {
           if (hasError()) {
             return <ErrorComponent message={`${title} failed`} />;
@@ -43,15 +49,6 @@ export const BoundarySection = ({ title, hasError, toggleError }: BoundarySectio
           }
         }}
       </Tryer>
-      <Catcher>
-        {(error, reset) => (
-          <div style="padding: 10px; background: #7f1d1d; border-radius: 4px;">
-            <p style="margin: 0; color: #fca5a5; font-size: 12px;">
-              {error.message}
-            </p>
-          </div>
-        )}
-      </Catcher>
     </div>
   );
 };
