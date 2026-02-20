@@ -37,6 +37,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
+      - name: Build transformer
+        run: pnpm --filter @pulsar-framework/transformer run build
+
+      - name: Build pulsar.dev
+        run: pnpm --filter @pulsar-framework/pulsar.dev run build
+
+      - name: Build vite-plugin
+        run: pnpm --filter @pulsar-framework/vite-plugin run build
+
       - name: Build pulsar-ui.dev
         run: pnpm --filter @pulsar-framework/ui showcase:build
         working-directory: ./
