@@ -1,6 +1,10 @@
 /**
  * Settings Provider Component
  * Provides app settings context
+ *
+ * IMPORTANT: signals must be at module level — in PSR/JSX children evaluate
+ * before the parent component body runs, so component-local signals would not
+ * be visible to children via useContext().
  */
 
 import { createSignal, createContext } from '@pulsar-framework/pulsar.dev';
@@ -9,24 +13,23 @@ interface SettingsProviderProps {
   children: JSX.Element
 }
 
+// Module-level signals — available before SettingsProvider body executes.
+const [_fontSize, _setFontSize] = createSignal(16);
+const [_notifications, _setNotifications] = createSignal(true);
+const [_language, _setLanguage] = createSignal('en');
+
 export const SettingsContext = createContext({
-  fontSize: () => 16,
-  setFontSize: () => {},
-  notifications: () => true,
-  setNotifications: () => {},
-  language: () => 'en',
-  setLanguage: () => {}
+  fontSize: _fontSize,
+  setFontSize: _setFontSize,
+  notifications: _notifications,
+  setNotifications: _setNotifications,
+  language: _language,
+  setLanguage: _setLanguage
 });
 
 export const SettingsProvider = (props: SettingsProviderProps) => {
-  const [fontSize, setFontSize] = createSignal(16);
-  const [notifications, setNotifications] = createSignal(true);
-  const [language, setLanguage] = createSignal('en');
-  
-  const settingsValue = { fontSize, setFontSize, notifications, setNotifications, language, setLanguage };
-  
-  // SET VALUE SYNCHRONOUSLY before Provider renders
-  SettingsContext.setValue(settingsValue);
-  
-  return SettingsContext.Provider({ value: settingsValue, children: props.children });
+  return SettingsContext.Provider({
+    value: { fontSize: _fontSize, setFontSize: _setFontSize, notifications: _notifications, setNotifications: _setNotifications, language: _language, setLanguage: _setLanguage },
+    children: props.children
+  });
 };
