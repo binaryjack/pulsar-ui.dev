@@ -1,0 +1,62 @@
+/**
+ * P1-06 — Suspend Control Demo
+ * Exercises: suspendWaiting, resolveWaiting — imperative Waiting API
+ *
+ * The Waiting container is captured so both resolve and suspend can be
+ * triggered via external buttons, independent of resource state.
+ */
+
+import { Waiting, suspendWaiting, resolveWaiting } from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+export const SuspendControlDemo = () => {
+  const loadingFallback = (
+    <div style="text-align: center; padding: 30px; color: #f59e0b;">
+      <div style="font-size: 32px; margin-bottom: 8px;">⏳</div>
+      <div style="font-size: 12px; color: #94a3b8;">data-waiting attribute present — loading state active</div>
+    </div>
+  );
+
+  const content = (
+    <div style="text-align: center; padding: 30px; color: #34d399;">
+      <div style="font-size: 32px; margin-bottom: 8px;">✅</div>
+      <div style="font-size: 14px; font-weight: 600;">Content resolved!</div>
+      <div style="font-size: 12px; color: #64748b; margin-top: 4px;">
+        Call suspendWaiting() to return to loading state
+      </div>
+    </div>
+  );
+
+  // Capture Waiting's HTMLElement for imperative control
+  const waitingEl = (
+    <Waiting default={loadingFallback}>
+      {content}
+    </Waiting>
+  );
+
+  return (
+    <div style="padding: 20px; background: #1e293b; border-radius: 8px;">
+
+      {/* Waiting display */}
+      <div style="margin-bottom: 20px; background: #0f172a; border-radius: 6px; border: 1px solid #334155; min-height: 110px; overflow: hidden;">
+        {waitingEl}
+      </div>
+
+      {/* Controls */}
+      <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+        <DemoButton onClick={() => resolveWaiting(waitingEl as HTMLElement)} color="#10b981">
+          resolveWaiting()
+        </DemoButton>
+        <DemoButton onClick={() => suspendWaiting(waitingEl as HTMLElement)} color="#f59e0b">
+          suspendWaiting()
+        </DemoButton>
+      </div>
+
+      {/* State legend */}
+      <div style="padding: 10px 12px; background: #0f172a; border-radius: 4px; font-size: 11px; color: #64748b; font-family: monospace; line-height: 1.6;">
+        <div>resolveWaiting(el) — removes default, appends children, removes data-waiting attr</div>
+        <div>suspendWaiting(el) — removes children, re-appends default, sets data-waiting attr</div>
+      </div>
+    </div>
+  );
+};

@@ -1,0 +1,97 @@
+/**
+ * P1-07 — Retry Counter Demo
+ * Exercises: resetTryer() across multiple cycles
+ *
+ * Each cycle: arm error → resetTryer → recover → resetTryer.
+ * Component staying functional after N resets is the observable
+ * proof that there is no state leak per reset cycle.
+ */
+
+import { Tryer, resetTryer, createSignal } from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+const throwCycleError = (): never => { throw new Error('cycle error'); };
+
+export const RetryCounterDemo = () => {
+  const [shouldThrow, setShouldThrow] = createSignal(false);
+  const [cycleCount, setCycleCount] = createSignal(0);
+  const [log, setLog] = createSignal<Array<{ cycle: number; ok: boolean }>>([]);
+
+  const boundary = (
+    <Tryer
+      fallback={error => (
+        <div style="padding: 10px; background: #450a0a; border-radius: 4px; color: #fca5a5; font-size: 12px; text-align: center;">
+          ⚠ {error.message}
+        </div>
+      )}>
+      {() => shouldThrow() ? throwCycleError() : (
+        <div style="padding: 10px; color: #34d399; font-size: 12px; text-align: center;">
+          ✓ recovered — cycle {cycleCount()}
+        </div>
+      )}
+    </Tryer>
+  );
+
+  const runCycle = () => {
+    const n = cycleCount() + 1;
+    // arm: throw → boundary shows fallback
+    setShouldThrow(true);
+    resetTryer(boundary as HTMLElement);
+    // recover: clear throw → boundary shows content
+    setShouldThrow(false);
+    resetTryer(boundary as HTMLElement);
+    setCycleCount(n);
+    setLog(prev => [...prev, { cycle: n, ok: true }]);
+  };
+
+  const run5 = () => {
+    for (let i = 0; i < 5; i++) runCycle();
+  };
+
+  const handleReset = () => {
+    setShouldThrow(false);
+    setCycleCount(0);
+    setLog([]);
+    resetTryer(boundary as HTMLElement);
+  };
+
+  return (
+    <div style="padding: 20px; background: #1e293b; border-radius: 8px;">
+
+      {/* Boundary display */}
+      <div style="margin-bottom: 20px; padding: 12px; background: #0f172a; border-radius: 6px; border: 1px solid #334155;">
+        {boundary}
+      </div>
+
+      {/* Controls */}
+      <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+        <DemoButton onClick={runCycle} color="#06b6d4">
+          Run 1 cycle (#{cycleCount() + 1})
+        </DemoButton>
+        <DemoButton onClick={run5} color="#8b5cf6">
+          Run 5 cycles
+        </DemoButton>
+        <DemoButton onClick={handleReset} color="#475569">
+          Reset
+        </DemoButton>
+      </div>
+
+      {/* Cycle log */}
+      {log().length > 0 ? (
+        <div style="padding: 10px 12px; background: #0f172a; border-radius: 4px;">
+          <div style="color: #64748b; font-size: 10px; text-transform: uppercase; margin-bottom: 8px;">
+            Each badge = 1 full arm→throw→recover cycle
+          </div>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            {log().map(s => (
+              <span style={`padding: 3px 8px; background: ${s.ok ? '#064e3b' : '#450a0a'}; border-radius: 4px; font-family: monospace; font-size: 11px; color: ${s.ok ? '#34d399' : '#fca5a5'};`}>
+                #{s.cycle} {s.ok ? '✓' : '✗'}
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+};
+;

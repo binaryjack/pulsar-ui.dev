@@ -1,0 +1,88 @@
+/**
+ * P1-07 — Cleanup Demo
+ * Exercises: cleanupTryer() — intentional no-op verification
+ *
+ * $REGISTRY.wire self-disposes on element removal (via MutationObserver /
+ * $WATCHER). Tryer calls onCleanup(() => cleanupTryer(container)) internally
+ * but cleanupTryer is an intentional no-op; real cleanup is automatic.
+ *
+ * This demo:
+ *   - Toggles Tryer mount/unmount to observe automatic disposal
+ *   - Calls cleanupTryer() manually to confirm it has no side effects
+ */
+
+import { Tryer, cleanupTryer, createSignal } from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+export const CleanupDemo = () => {
+  const [mounted, setMounted] = createSignal(true);
+  const [log, setLog] = createSignal<string[]>([
+    '[init] CleanupDemo mounted — Tryer active',
+  ]);
+
+  const addLog = (msg: string) =>
+    setLog(prev => [...prev.slice(-9), `[${new Date().toLocaleTimeString()}] ${msg}`]);
+
+  const handleToggle = () => {
+    const next = !mounted();
+    setMounted(next);
+    addLog(
+      next
+        ? '[mount] Tryer attached — onCleanup registered internally'
+        : '[unmount] Tryer removed — $REGISTRY.wire auto-disposed'
+    );
+  };
+
+  const handleManualCleanup = () => {
+    const fakeEl = document.createElement('div');
+    cleanupTryer(fakeEl);
+    addLog('cleanupTryer(el) called → intentional no-op (no side effects)');
+  };
+
+  return (
+    <div style="padding: 20px; background: #1e293b; border-radius: 8px;">
+
+      {/* Tryer mount area */}
+      <div style="margin-bottom: 20px; padding: 16px; background: #0f172a; border-radius: 6px; border: 1px solid #334155; min-height: 80px;">
+        {mounted() ? (
+          <Tryer fallback={error => (
+            <div style="color: #fca5a5; font-size: 12px;">⚠ {error.message}</div>
+          )}>
+            {() => (
+              <div style="color: #34d399; font-size: 13px; text-align: center; padding: 10px;">
+                ✓ Tryer mounted — onCleanup(() =&gt; cleanupTryer()) registered internally
+              </div>
+            )}
+          </Tryer>
+        ) : (
+          <div style="color: #64748b; font-size: 12px; text-align: center; padding: 10px;">
+            (Tryer unmounted — $REGISTRY.wire auto-disposed on element removal)
+          </div>
+        )}
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+        {mounted() ? (
+          <DemoButton onClick={handleToggle} color="#ef4444">
+            Unmount Tryer
+          </DemoButton>
+        ) : (
+          <DemoButton onClick={handleToggle} color="#10b981">
+            Mount Tryer
+          </DemoButton>
+        )}
+        <DemoButton onClick={handleManualCleanup} color="#64748b">
+          cleanupTryer() — no-op
+        </DemoButton>
+      </div>
+
+      {/* Event log */}
+      <div style="padding: 10px 12px; background: #0f172a; border-radius: 4px; max-height: 180px; overflow: auto;">
+        <div style="color: #475569; font-size: 10px; text-transform: uppercase; margin-bottom: 6px;">Event log</div>
+        {log().map(line => (
+          <div style="font-family: monospace; font-size: 11px; color: #94a3b8; padding: 1px 0;">{line}</div>
+        ))}
+      </div>
+    </div>
+  );
+};

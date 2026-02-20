@@ -1,0 +1,93 @@
+/**
+ * P1-06 — Error Resource Demo
+ * Exercises: getErrors, isAnyError
+ *
+ * Two lazy resources: one succeeds, one always rejects.
+ * Pressing "Fetch" triggers refetchAll — the bad resource's error
+ * surfaces via isAnyError() and getErrors().
+ */
+
+import {
+  createResource,
+  createSignal,
+  getErrors,
+  isAnyError,
+  refetchAll,
+} from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+const fetchGood = () =>
+  new Promise<{ value: string }>(resolve =>
+    setTimeout(() => resolve({ value: 'response OK' }), 800)
+  );
+
+const fetchBad = () =>
+  new Promise<never>((_, reject) =>
+    setTimeout(() => reject(new Error('Simulated network failure')), 600)
+  );
+
+export const ErrorResourceDemo = () => {
+  const [fetchCount, setFetchCount] = createSignal(0);
+
+  const good = createResource(fetchGood, { lazy: true });
+  const bad  = createResource(fetchBad,  { lazy: true });
+  const resources = [good, bad];
+
+  const stateColor = (r: typeof good) => {
+    if (r.isLoading) return '#f59e0b';
+    if (r.isError)   return '#ef4444';
+    if (r.isSuccess) return '#10b981';
+    return '#475569';
+  };
+
+  const stateLabel = (r: typeof good) => {
+    if (r.isLoading) return 'loading…';
+    if (r.isError)   return '✗ error';
+    if (r.isSuccess) return `✓ ${r.data?.value ?? 'done'}`;
+    return 'idle';
+  };
+
+  const handleFetch = () => {
+    setFetchCount(n => n + 1);
+    refetchAll(resources);
+  };
+
+  return (
+    <div style="padding: 20px; background: #1e293b; border-radius: 8px;">
+
+      {/* Resource status row */}
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+        <div style={`padding: 14px; background: #0f172a; border-radius: 6px; border-left: 3px solid ${stateColor(good)};`}>
+          <div style="color: #94a3b8; font-size: 11px; margin-bottom: 4px;">good resource</div>
+          <div style={`font-size: 13px; font-weight: 600; color: ${stateColor(good)};`}>
+            {stateLabel(good)}
+          </div>
+        </div>
+        <div style={`padding: 14px; background: #0f172a; border-radius: 6px; border-left: 3px solid ${stateColor(bad)};`}>
+          <div style="color: #94a3b8; font-size: 11px; margin-bottom: 4px;">bad resource (always fails)</div>
+          <div style={`font-size: 13px; font-weight: 600; color: ${stateColor(bad)};`}>
+            {stateLabel(bad)}
+          </div>
+        </div>
+      </div>
+
+      {/* getErrors panel — shown reactively when isAnyError() is true */}
+      {isAnyError(resources) ? (
+        <div style="margin-bottom: 20px; padding: 12px; background: #450a0a; border-radius: 6px; border: 1px solid #991b1b;">
+          <div style="color: #fca5a5; font-size: 12px; font-weight: 600; margin-bottom: 8px;">
+            isAnyError → true · getErrors() → {getErrors(resources).length} error(s)
+          </div>
+          {getErrors(resources).map((e, i) => (
+            <div style="font-family: monospace; font-size: 11px; color: #fda4af; padding: 2px 0;">
+              [{i}] {e.message}
+            </div>
+          ))}
+        </div>
+      ) : null}
+
+      <DemoButton onClick={handleFetch} color="#ef4444">
+        ▶ Fetch (run #{fetchCount() + 1})
+      </DemoButton>
+    </div>
+  );
+};

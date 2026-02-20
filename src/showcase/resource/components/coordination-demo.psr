@@ -1,0 +1,136 @@
+/**
+ * P1-06 — Suspense Coordination Demo
+ * Exercises: waitForAll, isAnyLoading, isAllSuccess, isAnyError
+ *
+ * Shows 3 resources loading at different speeds.
+ * Status badges are derived from the coordination helpers.
+ * "Wait for all" button resolves via waitForAll().
+ */
+
+import {
+  createResource,
+  createSignal,
+  createEffect,
+  waitForAll,
+  refetchAll,
+  isAnyLoading,
+  isAllSuccess,
+  isAnyError,
+} from '@pulsar-framework/pulsar.dev';
+import { fetchUser, fetchPosts, fetchActivity } from './mock-api.ts';
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+export const CoordinationDemo = () => {
+  const [active, setActive] = createSignal(false);
+  const [waitLog, setWaitLog] = createSignal<string[]>([]);
+  const [allDone, setAllDone] = createSignal(false);
+
+  // Lazy resources — do not auto-fetch; refetchAll() triggers loading
+  const userResource = createResource(() => fetchUser(1), { lazy: true });
+  const postsResource = createResource(() => fetchPosts(1), { lazy: true });
+  const activityResource = createResource(() => fetchActivity(1), { lazy: true });
+
+  const resources = [userResource, postsResource, activityResource];
+
+  // Mirror coordination helpers into signals so JSX can read them reactively.
+  // createEffect tracks r.isLoading / r.isSuccess / r.isError (signal getters)
+  // and re-fires whenever any resource state transitions.
+  const [anyLoading, setAnyLoading] = createSignal(false);
+  const [allSuccess, setAllSuccessState] = createSignal(false);
+  const [anyError, setAnyErrorState] = createSignal(false);
+
+  createEffect(() => {
+    setAnyLoading(isAnyLoading(resources));
+    setAllSuccessState(isAllSuccess(resources));
+    setAnyErrorState(isAnyError(resources));
+  });
+
+  const handleStart = async () => {
+    setActive(true);
+    setAllDone(false);
+    setWaitLog(['⏳ waitForAll() called — awaiting all 3 resources...']);
+    refetchAll(resources);
+    await waitForAll(resources);
+    setAllDone(true);
+    setWaitLog(prev => [...prev, '✅ waitForAll() resolved — all resources complete']);
+  };
+
+  const handleReset = () => {
+    setActive(false);
+    setAllDone(false);
+    setWaitLog([]);
+  };
+
+  const statusColor = (loading: boolean, error: boolean, success: boolean) => {
+    if (loading) return '#f59e0b';
+    if (error) return '#ef4444';
+    if (success) return '#10b981';
+    return '#475569';
+  };
+
+  const statusLabel = (r: typeof userResource) => {
+    if (r.isLoading) return 'loading…';
+    if (r.isError) return '✗ error';
+    if (r.isSuccess) return '✓ done';
+    return 'idle';
+  };
+
+  return (
+    <div style="padding: 20px; background: #1e293b; border-radius: 8px;">
+
+      {/* Resource status grid */}
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;">
+        {[
+          { label: 'User (1 s)', r: userResource },
+          { label: 'Posts (0.8 s)', r: postsResource },
+          { label: 'Activity (0.6 s)', r: activityResource },
+        ].map(({ label, r }) => (
+          <div style={`padding: 14px; background: #0f172a; border-radius: 6px; border-left: 3px solid ${statusColor(r.isLoading, r.isError, r.isSuccess)};`}>
+            <div style="color: #94a3b8; font-size: 11px; margin-bottom: 4px;">{label}</div>
+            <div style={`font-size: 13px; font-weight: 600; color: ${statusColor(r.isLoading, r.isError, r.isSuccess)};`}>
+              {statusLabel(r)}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Combined status badges */}
+      {active() ? (
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">
+          <span style={`padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 600; background: ${anyLoading() ? '#92400e' : '#1e293b'}; color: ${anyLoading() ? '#fbbf24' : '#475569'}; border: 1px solid currentColor;`}>
+            isAnyLoading {anyLoading() ? '→ true' : '→ false'}
+          </span>
+          <span style={`padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 600; background: ${allSuccess() ? '#064e3b' : '#1e293b'}; color: ${allSuccess() ? '#34d399' : '#475569'}; border: 1px solid currentColor;`}>
+            isAllSuccess {allSuccess() ? '→ true' : '→ false'}
+          </span>
+          <span style={`padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 600; background: ${anyError() ? '#450a0a' : '#1e293b'}; color: ${anyError() ? '#fca5a5' : '#475569'}; border: 1px solid currentColor;`}>
+            isAnyError {anyError() ? '→ true' : '→ false'}
+          </span>
+        </div>
+      ) : null}
+
+      {/* waitForAll log */}
+      {waitLog().length > 0 ? (
+        <div style="margin-bottom: 20px; padding: 12px; background: #0f172a; border-radius: 6px; font-family: monospace; font-size: 12px;">
+          {waitLog().map(line => (
+            <div style={`color: ${line.startsWith('✅') ? '#34d399' : '#94a3b8'}; margin-bottom: 4px;`}>{line}</div>
+          ))}
+          {allDone() ? (
+            <div style="color: #34d399; margin-top: 8px; font-weight: 600;">
+              → isAllSuccess: {String(allSuccess())} · isAnyLoading: {String(anyLoading())}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+
+      <div style="display: flex; gap: 10px;">
+        <DemoButton onClick={handleStart} color="#06b6d4" disabled={active()}>
+          ▶ Start + waitForAll()
+        </DemoButton>
+        <DemoButton onClick={handleReset} color="#475569">
+          ↺ Reset
+        </DemoButton>
+      </div>
+    </div>
+  );
+};

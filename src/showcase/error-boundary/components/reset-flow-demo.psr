@@ -1,0 +1,107 @@
+/**
+ * P1-07 — Reset Flow Demo
+ * Exercises: resetTryer() — imperative external reset
+ *
+ * Demonstrates two reset paths:
+ *   1. Inline `reset` closure passed as 2nd arg to fallback prop
+ *   2. External `resetTryer(boundary)` called from outside the boundary
+ *
+ * The child throws initially. "External reset" fixes shouldThrow then
+ * calls resetTryer(boundary) so the wire re-evaluates safely.
+ * "Throw again" re-arms the error and re-evaluates via resetTryer.
+ */
+
+import {
+  Tryer,
+  resetTryer,
+  createSignal,
+} from '@pulsar-framework/pulsar.dev';
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+const throwRenderError = (): never => { throw new Error('Deliberate render error!'); };
+
+export const ResetFlowDemo = () => {
+  const [shouldThrow, setShouldThrow] = createSignal(true);
+  const [resetCount, setResetCount] = createSignal(0);
+  const [resetLog, setResetLog] = createSignal<string[]>([]);
+
+  const addLog = (msg: string) =>
+    setResetLog(prev => [...prev, `reset #${resetCount() + 1}: ${msg}`]);
+
+  // Capture boundary element for external resetTryer() call
+  const boundary = (
+    <Tryer
+      fallback={(error, inlineReset) => (
+        <div style="padding: 16px; background: #450a0a; border: 2px solid #ef4444; border-radius: 8px;">
+          <div style="color: #fca5a5; font-size: 13px; font-weight: 600; margin-bottom: 12px;">
+            ⚠ {error.message}
+          </div>
+          <DemoButton
+            onClick={() => {
+              addLog('inline reset() closure');
+              setResetCount(n => n + 1);
+              setShouldThrow(false);
+              inlineReset();
+            }}
+            color="#10b981"
+            size="sm">
+            ↺ Inline reset() — from fallback arg
+          </DemoButton>
+        </div>
+      )}>
+      {() =>
+        shouldThrow()
+          ? throwRenderError()
+          : (
+            <div style="padding: 16px; background: #064e3b; border: 2px solid #10b981; border-radius: 8px; color: #34d399; text-align: center;">
+              ✅ Recovered — component rendered safely
+            </div>
+          )
+      }
+    </Tryer>
+  );
+
+  const handleExternalReset = () => {
+    addLog('external resetTryer(boundary)');
+    setResetCount(n => n + 1);
+    setShouldThrow(false);
+    resetTryer(boundary as HTMLElement);
+  };
+
+  const handleThrowAgain = () => {
+    setShouldThrow(true);
+    resetTryer(boundary as HTMLElement); // re-evaluate wire → throws
+  };
+
+  return (
+    <div style="padding: 20px; background: #1e293b; border-radius: 8px;">
+
+      {/* Boundary */}
+      <div style="margin-bottom: 20px;">
+        {boundary}
+      </div>
+
+      {/* External controls */}
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;">
+        <DemoButton onClick={handleExternalReset} color="#06b6d4">
+          resetTryer(boundary) — external
+        </DemoButton>
+        <DemoButton onClick={handleThrowAgain} color="#ef4444">
+          Throw again
+        </DemoButton>
+      </div>
+
+      {/* Reset log */}
+      {resetLog().length > 0 ? (
+        <div style="padding: 10px 12px; background: #0f172a; border-radius: 4px;">
+          <div style="color: #475569; font-size: 10px; text-transform: uppercase; margin-bottom: 6px;">Reset history</div>
+          {resetLog().map(entry => (
+            <div style="font-family: monospace; font-size: 11px; color: #94a3b8; padding: 1px 0;">
+              {entry}
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+};

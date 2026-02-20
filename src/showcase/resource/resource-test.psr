@@ -11,6 +11,10 @@ import { DeduplicationDemo } from './components/deduplication-demo.psr';
 import { CacheDemo } from './components/cache-demo.psr';
 import { WaitingDemo } from './components/waiting-demo.psr';
 import { ImageGalleryDemo } from './components/image-gallery-demo.psr';
+import { CoordinationDemo } from './components/coordination-demo.psr';
+import { ErrorResourceDemo } from './components/error-resource-demo.psr';
+import { SuspendControlDemo } from './components/suspend-control-demo.psr';
+import { RefetchClearDemo } from './components/refetch-clear-demo.psr';
 import { resetNetworkCount } from './components/mock-api.ts';
 
 export component ResourceTestPage() {
@@ -18,6 +22,10 @@ export component ResourceTestPage() {
   const [showCacheDemo, setShowCacheDemo] = createSignal(false);
   const [showWaitingDemo, setShowWaitingDemo] = createSignal(false);
   const [showImagesDemo, setShowImagesDemo] = createSignal(false);
+  const [showCoordinationDemo, setShowCoordinationDemo] = createSignal(false);
+  const [showErrorResourceDemo, setShowErrorResourceDemo] = createSignal(false);
+  const [showSuspendDemo, setShowSuspendDemo] = createSignal(false);
+  const [showRefetchClearDemo, setShowRefetchClearDemo] = createSignal(false);
   
   createEffect(() => {
     if (showDedupeDemo() || showCacheDemo() || showWaitingDemo()) {
@@ -105,6 +113,62 @@ export component ResourceTestPage() {
         {showImagesDemo() ? <ImageGalleryDemo /> : null}
       </DemoSection>
       
+      <DemoSection
+        title="5️⃣ Multi-Resource Coordination"
+        description="waitForAll, isAnyLoading, isAllSuccess, isAnyError — coordinate 3 parallel resources."
+        borderColor="#06b6d4">
+        <div style="margin-bottom: 15px;">
+          <DemoButton
+            onClick={() => setShowCoordinationDemo(!showCoordinationDemo())}
+            color="#06b6d4">
+            {showCoordinationDemo() ? '🔄 Reset' : '▶ Run Demo'}
+          </DemoButton>
+        </div>
+        {showCoordinationDemo() ? <CoordinationDemo /> : null}
+      </DemoSection>
+
+      <DemoSection
+        title="6️⃣ Error Resource Handling"
+        description="getErrors, isAnyError — surface errors from a resource that always rejects."
+        borderColor="#ef4444">
+        <div style="margin-bottom: 15px;">
+          <DemoButton
+            onClick={() => setShowErrorResourceDemo(!showErrorResourceDemo())}
+            color="#ef4444">
+            {showErrorResourceDemo() ? '🔄 Reset' : '▶ Run Demo'}
+          </DemoButton>
+        </div>
+        {showErrorResourceDemo() ? <ErrorResourceDemo /> : null}
+      </DemoSection>
+
+      <DemoSection
+        title="7️⃣ Imperative Waiting Control"
+        description="suspendWaiting, resolveWaiting — toggle loading/content state on demand."
+        borderColor="#f59e0b">
+        <div style="margin-bottom: 15px;">
+          <DemoButton
+            onClick={() => setShowSuspendDemo(!showSuspendDemo())}
+            color="#f59e0b">
+            {showSuspendDemo() ? '🔄 Reset' : '▶ Run Demo'}
+          </DemoButton>
+        </div>
+        {showSuspendDemo() ? <SuspendControlDemo /> : null}
+      </DemoSection>
+
+      <DemoSection
+        title="8️⃣ Bulk Refetch & Clear"
+        description="refetchAll, clearAll — batch operations across multiple resources."
+        borderColor="#8b5cf6">
+        <div style="margin-bottom: 15px;">
+          <DemoButton
+            onClick={() => setShowRefetchClearDemo(!showRefetchClearDemo())}
+            color="#8b5cf6">
+            {showRefetchClearDemo() ? '🔄 Reset' : '▶ Run Demo'}
+          </DemoButton>
+        </div>
+        {showRefetchClearDemo() ? <RefetchClearDemo /> : null}
+      </DemoSection>
+
       <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981;">
         <h3 style="font-size: 20px; margin-bottom: 10px; color: #10b981;">
           ✓ Why Use Resources vs Manual Fetch?

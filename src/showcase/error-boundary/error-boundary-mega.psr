@@ -6,10 +6,14 @@
 import { createSignal } from '@pulsar-framework/pulsar.dev';
 import { PageHeader } from '../common/components/page-header.psr';
 import { DemoSection } from '../common/components/demo-section.psr';
+import { DemoButton } from '../common/components/demo-button.psr';
 import { VisualErrorBoundary } from './components/visual-boundary-wrapper.psr';
 import { SafeComponent, ErrorComponent } from './components';
 import { ErrorBoundaryControlPanel } from './components/error-boundary-control-panel.psr';
 import { ErrorBoundaryStatusSummary } from './components/error-boundary-status-summary.psr';
+import { ResetFlowDemo } from './components/reset-flow-demo.psr';
+import { CleanupDemo } from './components/cleanup-demo.psr';
+import { RetryCounterDemo } from './components/retry-counter-demo.psr';
 
 export component ErrorBoundaryMegaPage() {
   // Individual error states for each section
@@ -20,6 +24,10 @@ export component ErrorBoundaryMegaPage() {
   const [nestedOuterError, setNestedOuterError] = createSignal(false);
   const [nestedInnerError, setNestedInnerError] = createSignal(false);
   
+  const [showResetFlowDemo, setShowResetFlowDemo] = createSignal(false);
+  const [showCleanupDemo, setShowCleanupDemo] = createSignal(false);
+  const [showRetryCounterDemo, setShowRetryCounterDemo] = createSignal(false);
+
   return (
     <div style="padding: 20px; background: linear-gradient(135deg, #0f172a, #1e293b); min-height: 100vh;">
       <PageHeader 
@@ -112,6 +120,51 @@ export component ErrorBoundaryMegaPage() {
           </VisualErrorBoundary>
         </DemoSection>
         
+        {/* P1-07: External Reset Flow */}
+        <DemoSection
+          title="🔄 External resetTryer() API"
+          description="resetTryer(boundary) — imperatively reset a Tryer from outside the fallback."
+          borderColor="#06b6d4">
+          <div style="margin-bottom: 15px;">
+            <DemoButton
+              onClick={() => setShowResetFlowDemo(!showResetFlowDemo())}
+              color="#06b6d4">
+              {showResetFlowDemo() ? '🔄 Reset' : '▶ Run Demo'}
+            </DemoButton>
+          </div>
+          {showResetFlowDemo() ? <ResetFlowDemo /> : null}
+        </DemoSection>
+
+        {/* P1-07: Cleanup no-op */}
+        <DemoSection
+          title="🧹 cleanupTryer() Lifecycle"
+          description="cleanupTryer() is an intentional no-op — $REGISTRY.wire self-disposes on removal."
+          borderColor="#8b5cf6">
+          <div style="margin-bottom: 15px;">
+            <DemoButton
+              onClick={() => setShowCleanupDemo(!showCleanupDemo())}
+              color="#8b5cf6">
+              {showCleanupDemo() ? '🔄 Reset' : '▶ Run Demo'}
+            </DemoButton>
+          </div>
+          {showCleanupDemo() ? <CleanupDemo /> : null}
+        </DemoSection>
+
+        {/* P1-07: Retry counter with signal leak detection */}
+        <DemoSection
+          title="🔢 Reset Cycles + Signal Stability"
+          description="resetTryer() N times — $REGISTRY.getStats().signals stays stable (no leak)."
+          borderColor="#f59e0b">
+          <div style="margin-bottom: 15px;">
+            <DemoButton
+              onClick={() => setShowRetryCounterDemo(!showRetryCounterDemo())}
+              color="#f59e0b">
+              {showRetryCounterDemo() ? '🔄 Reset' : '▶ Run Demo'}
+            </DemoButton>
+          </div>
+          {showRetryCounterDemo() ? <RetryCounterDemo /> : null}
+        </DemoSection>
+
         {/* Status Summary */}
         <ErrorBoundaryStatusSummary 
           basicError={basicError}

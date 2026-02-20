@@ -1,0 +1,99 @@
+/**
+ * P1-06 — Refetch & Clear Demo
+ * Exercises: refetchAll, clearAll — bulk resource operations
+ *
+ * Two lazy resources are controlled via refetchAll (parallel fetch)
+ * and clearAll (reset both to idle). Request counts and state
+ * transitions are displayed reactively.
+ */
+
+import {
+  createResource,
+  createSignal,
+  refetchAll,
+  clearAll,
+} from '@pulsar-framework/pulsar.dev';
+import { fetchUser, fetchPosts } from './mock-api.ts';
+import { DemoButton } from '../../common/components/demo-button.psr';
+
+export const RefetchClearDemo = () => {
+  const [refetchCount, setRefetchCount] = createSignal(0);
+  const [clearLog, setClearLog] = createSignal<string[]>([]);
+
+  const r1 = createResource(() => fetchUser(1),   { lazy: true });
+  const r2 = createResource(() => fetchPosts(1),  { lazy: true });
+  const resources = [r1, r2];
+
+  const stateLabel = (r: typeof r1) => {
+    if (r.isLoading) return 'loading…';
+    if (r.isSuccess) return '✓ success';
+    if (r.isError)   return '✗ error';
+    return 'idle';
+  };
+
+  const stateColor = (r: typeof r1) => {
+    if (r.isLoading) return '#f59e0b';
+    if (r.isSuccess) return '#10b981';
+    if (r.isError)   return '#ef4444';
+    return '#475569';
+  };
+
+  const handleRefetch = () => {
+    setRefetchCount(n => n + 1);
+    refetchAll(resources);
+  };
+
+  const handleClear = () => {
+    clearAll(resources);
+    const t = new Date().toLocaleTimeString();
+    setClearLog(prev => [...prev, `[${t}] clearAll() — both resources reset to idle`]);
+  };
+
+  return (
+    <div style="padding: 20px; background: #1e293b; border-radius: 8px;">
+
+      {/* Resource status grid */}
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+        {[
+          { label: 'user resource (r1)', r: r1 },
+          { label: 'posts resource (r2)', r: r2 },
+        ].map(({ label, r }) => (
+          <div style={`padding: 14px; background: #0f172a; border-radius: 6px; border-left: 3px solid ${stateColor(r)};`}>
+            <div style="color: #94a3b8; font-size: 11px; margin-bottom: 4px;">{label}</div>
+            <div style={`font-size: 13px; font-weight: 600; color: ${stateColor(r)};`}>
+              {stateLabel(r)}
+            </div>
+            <div style="font-size: 10px; color: #475569; margin-top: 4px; font-family: monospace;">
+              state: "{r.state}"
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* refetchAll call count */}
+      {refetchCount() > 0 ? (
+        <div style="margin-bottom: 14px; padding: 8px 12px; background: #1e3a5f; border-radius: 4px; font-size: 12px; color: #7dd3fc; font-family: monospace;">
+          refetchAll() called {refetchCount()} time(s) — fetches run in parallel
+        </div>
+      ) : null}
+
+      {/* clearAll log */}
+      {clearLog().length > 0 ? (
+        <div style="margin-bottom: 14px; padding: 8px 12px; background: #0f172a; border-radius: 4px;">
+          {clearLog().map(line => (
+            <div style="font-family: monospace; font-size: 11px; color: #94a3b8;">{line}</div>
+          ))}
+        </div>
+      ) : null}
+
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <DemoButton onClick={handleRefetch} color="#06b6d4">
+          refetchAll() (#{refetchCount() + 1})
+        </DemoButton>
+        <DemoButton onClick={handleClear} color="#ef4444">
+          clearAll()
+        </DemoButton>
+      </div>
+    </div>
+  );
+};
