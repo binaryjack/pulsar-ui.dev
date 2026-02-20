@@ -3,7 +3,7 @@
  * Demonstrates REAL onMount() and onCleanup() lifecycle hooks
  */
 
-import { createSignal, onMount, onCleanup } from '@pulsar-framework/pulsar.dev';
+import { createSignal, onMount, onCleanup, ShowRegistry as Show, ForRegistry as For } from '@pulsar-framework/pulsar.dev';
 
 export const LifecycleDemo = () => {
   const [logs, setLogs] = createSignal<string[]>([]);
@@ -34,7 +34,7 @@ export const LifecycleDemo = () => {
         <div style="padding: 30px; background: rgba(16, 185, 129, 0.3); border-radius: 8px; transition: all 0.3s;">
           <div style="font-size: 48px; margin-bottom: 10px;">✅</div>
           <div style="color: white; font-size: 18px; font-weight: bold;">
-            Component Mounted (onMount fired {mountCount()} {mountCount() === 1 ? 'time' : 'times'})
+            {() => 'Component Mounted (onMount fired ' + mountCount() + (mountCount() === 1 ? ' time' : ' times') + ')'}
           </div>
           <div style="color: rgba(255,255,255,0.8); font-size: 14px; margin-top: 10px;">
             REAL onMount() and onCleanup() hooks are active
@@ -53,19 +53,18 @@ export const LifecycleDemo = () => {
       <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px;">
         <div style="color: #10b981; font-weight: bold; margin-bottom: 10px; font-size: 14px;">📋 Lifecycle Events Log:</div>
         <div style="max-height: 150px; overflow-y: auto;">
-          {logs().length === 0 ? (
+          <Show when={() => logs().length === 0}>
             <div style="color: rgba(255,255,255,0.6); font-style: italic; font-size: 13px;">
               onMount() fires automatically when this component mounts. Check console for onCleanup().
             </div>
-          ) : (
-            <div>
-              {logs().map((log) => (
-                <div style="color: rgba(255,255,255,0.9); padding: 4px 0; font-family: 'Consolas', monospace; font-size: 12px;">
-                  {log}
-                </div>
-              ))}
-            </div>
-          )}
+          </Show>
+          <For each={logs}>
+            {(log: string) => (
+              <div style="color: rgba(255,255,255,0.9); padding: 4px 0; font-family: 'Consolas', monospace; font-size: 12px;">
+                {log}
+              </div>
+            )}
+          </For>
         </div>
       </div>
       
