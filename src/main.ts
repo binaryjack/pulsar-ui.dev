@@ -3,12 +3,18 @@
 /**
  * Entry point - MAIN PSR APP
  */
+import { pulse, ServiceManager } from '@pulsar-framework/pulsar.dev';
+import App from './main.psr';
 import './styles.css';
-import { pulse, ServiceManager } from '@pulsar-framework/pulsar.dev'
-import App from './main.psr'
 
 // Apply persisted theme before paint (html has data-theme="dark" as default)
-const _saved = (() => { try { return localStorage.getItem('__pulsar_theme__'); } catch { return null; } })();
+const _saved = (() => {
+  try {
+    return localStorage.getItem('__pulsar_theme__');
+  } catch {
+    return null;
+  }
+})();
 if (_saved && _saved !== document.documentElement.getAttribute('data-theme')) {
   document.documentElement.setAttribute('data-theme', _saved);
 }
