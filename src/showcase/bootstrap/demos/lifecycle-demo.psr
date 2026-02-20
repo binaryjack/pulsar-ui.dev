@@ -3,7 +3,7 @@
  * Demonstrates REAL onMount() and onCleanup() lifecycle hooks
  */
 
-import { createSignal, onMount, onCleanup, ShowRegistry as Show, ForRegistry as For } from '@pulsar-framework/pulsar.dev';
+import { createSignal, onMount, onCleanup } from '@pulsar-framework/pulsar.dev';
 
 export const LifecycleDemo = () => {
   const [logs, setLogs] = createSignal<string[]>([]);
@@ -53,18 +53,16 @@ export const LifecycleDemo = () => {
       <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px;">
         <div style="color: #10b981; font-weight: bold; margin-bottom: 10px; font-size: 14px;">📋 Lifecycle Events Log:</div>
         <div style="max-height: 150px; overflow-y: auto;">
-          <Show when={() => logs().length === 0}>
+          {logs().length === 0 ? (
             <div style="color: rgba(255,255,255,0.6); font-style: italic; font-size: 13px;">
               onMount() fires automatically when this component mounts. Check console for onCleanup().
             </div>
-          </Show>
-          <For each={logs}>
-            {(log: string) => (
-              <div style="color: rgba(255,255,255,0.9); padding: 4px 0; font-family: 'Consolas', monospace; font-size: 12px;">
-                {log}
-              </div>
-            )}
-          </For>
+          ) : null}
+          {logs().map((log: string) => (
+            <div style="color: rgba(255,255,255,0.9); padding: 4px 0; font-family: 'Consolas', monospace; font-size: 12px;">
+              {log}
+            </div>
+          ))}
         </div>
       </div>
       

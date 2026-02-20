@@ -3,7 +3,7 @@
  * Shows PortalSlot pattern for targeted rendering
  */
 
-import { createSignal, Portal, PortalSlot, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, Portal, PortalSlot } from '@pulsar-framework/pulsar.dev';
 
 export component TooltipPortalDemo() {
   const [activeTooltip, setActiveTooltip] = createSignal<string | null>(null);
@@ -36,21 +36,21 @@ export component TooltipPortalDemo() {
         <PortalSlot id="tooltip" name="container" />
       </div>
       
-      <Show when={activeTooltip() === 'button1'}>
+      {activeTooltip() === 'button1' ? (
         <Portal id="tooltip" target="container">
           <div style="padding: 10px 15px; background: #10b981; color: white; border-radius: 6px; margin-top: 10px; font-size: 14px;">
             💡 First button tooltip
           </div>
         </Portal>
-      </Show>
+      ) : null}
       
-      <Show when={activeTooltip() === 'button2'}>
+      {activeTooltip() === 'button2' ? (
         <Portal id="tooltip" target="container">
           <div style="padding: 10px 15px; background: #f59e0b; color: white; border-radius: 6px; margin-top: 10px; font-size: 14px;">
             💡 Second button tooltip
           </div>
         </Portal>
-      </Show>
+      ) : null}
     </div>
   );
 }

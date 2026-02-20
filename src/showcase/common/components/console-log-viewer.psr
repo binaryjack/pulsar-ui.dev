@@ -3,7 +3,7 @@
  * Generic reusable console log display for demos
  */
 
-import { ShowRegistry as Show, ForRegistry as For } from '@pulsar-framework/pulsar.dev';
+
 
 export type LogEntry = {
   timestamp: string;
@@ -91,15 +91,15 @@ export component ConsoleLogViewer(props: ConsoleLogViewerProps) {
         font-size: 12px;
         line-height: 1.5;
       `}>
-        <Show when={() => logs().length === 0}>
+        {logs().length === 0 ? (
           <div style="color: #64748b; font-style: italic; text-align: center; padding: 20px;">
             No logs yet. Interact with the demo to see console output.
           </div>
-        </Show>
+        ) : null}
         
-        <Show when={() => logs().length > 0}>
-          <For each={logs()}>
-            {(log: LogEntry) => (
+        {logs().length > 0 ? (
+          <div>
+            {logs().map((log: LogEntry) => (
               <div style={`
                 display: flex;
                 gap: 8px;
@@ -124,9 +124,9 @@ export component ConsoleLogViewer(props: ConsoleLogViewerProps) {
                   {log.message}
                 </span>
               </div>
-            )}
-          </For>
-        </Show>
+            ))}
+          </div>
+        ) : null}
       </div>
     </div>
   );

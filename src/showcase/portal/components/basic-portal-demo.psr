@@ -3,7 +3,7 @@
  * Shows portal rendering to document.body
  */
 
-import { createSignal, Portal, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, Portal } from '@pulsar-framework/pulsar.dev';
 
 export component BasicPortalDemo() {
   const [showPortal, setShowPortal] = createSignal(false);
@@ -26,7 +26,7 @@ export component BasicPortalDemo() {
         </p>
       </div>
       
-      <Show when={showPortal()}>
+      {showPortal() ? (
         <Portal mount={document.body}>
           <div style="position: fixed; bottom: 20px; right: 20px; padding: 20px; background: linear-gradient(135deg, #06b6d4, #3b82f6); color: white; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); z-index: 9999;">
             <p style="margin: 0 0 8px 0; font-weight: bold; font-size: 16px;">🌀 Portaled Content</p>
@@ -35,7 +35,7 @@ export component BasicPortalDemo() {
             </p>
           </div>
         </Portal>
-      </Show>
+      ) : null}
     </div>
   );
 }

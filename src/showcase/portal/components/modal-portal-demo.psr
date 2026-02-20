@@ -4,7 +4,7 @@
  * Content stays in component scope, only UI is projected
  */
 
-import { createSignal, Portal, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, Portal } from '@pulsar-framework/pulsar.dev';
 import { Modal } from '../../common/components/modal.psr';
 
 export component ModalPortalDemo() {
@@ -32,51 +32,53 @@ export component ModalPortalDemo() {
       </p>
       
       {/* Only render Modal and Portal content when open */}
-      <Show when={isOpen()}>
-        {/* Modal container with PortalSlots */}
-        <Modal id="demo-modal" isOpen={isOpen} onClose={closeModal} />
-        
-        {/* Content projected into modal slots while staying in component scope */}
-        <Portal id="demo-modal" target="header">
-          <h3 style="margin: 0; color: #8b5cf6; font-size: 24px;">
-            🌀 Modal Dialog
-          </h3>
-        </Portal>
-        
-        <Portal id="demo-modal" target="body">
-          <div>
-            <p style="margin: 0 0 15px 0; color: #94a3b8; line-height: 1.6;">
-              This modal uses <strong style="color: #8b5cf6;">PortalSlot architecture</strong> - 
-              the Modal component provides slots (header/body/footer), and this component 
-              projects content into those slots using Portal with id/target pattern.
-            </p>
-            <p style="margin: 0 0 15px 0; color: #94a3b8; line-height: 1.6;">
-              <strong style="color: #10b981;">Key advantage:</strong> Component logic (like the 
-              action counter) stays in the component scope. Only the UI is projected into the modal.
-            </p>
-            <div style="padding: 15px; background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3b82f6; border-radius: 4px;">
-              <p style="margin: 0; color: #60a5fa; font-size: 14px;">
-                💡 <strong>Architecture Pattern:</strong><br/>
-                Modal provides PortalSlots → Components use Portal to project content → 
-                Logic remains local, UI is global
+      {isOpen() ? (
+        <div>
+          {/* Modal container with PortalSlots */}
+          <Modal id="demo-modal" isOpen={isOpen} onClose={closeModal} />
+          
+          {/* Content projected into modal slots while staying in component scope */}
+          <Portal id="demo-modal" target="header">
+            <h3 style="margin: 0; color: #8b5cf6; font-size: 24px;">
+              🌀 Modal Dialog
+            </h3>
+          </Portal>
+          
+          <Portal id="demo-modal" target="body">
+            <div>
+              <p style="margin: 0 0 15px 0; color: #94a3b8; line-height: 1.6;">
+                This modal uses <strong style="color: #8b5cf6;">PortalSlot architecture</strong> - 
+                the Modal component provides slots (header/body/footer), and this component 
+                projects content into those slots using Portal with id/target pattern.
               </p>
+              <p style="margin: 0 0 15px 0; color: #94a3b8; line-height: 1.6;">
+                <strong style="color: #10b981;">Key advantage:</strong> Component logic (like the 
+                action counter) stays in the component scope. Only the UI is projected into the modal.
+              </p>
+              <div style="padding: 15px; background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3b82f6; border-radius: 4px;">
+                <p style="margin: 0; color: #60a5fa; font-size: 14px;">
+                  💡 <strong>Architecture Pattern:</strong><br/>
+                  Modal provides PortalSlots → Components use Portal to project content → 
+                  Logic remains local, UI is global
+                </p>
+              </div>
             </div>
-          </div>
-        </Portal>
-        
-        <Portal id="demo-modal" target="footer">
-          <button 
-            onClick={closeModal}
-            style="padding: 10px 20px; background: transparent; color: #94a3b8; border: 2px solid #94a3b8; border-radius: 6px; cursor: pointer; font-size: 14px;">
-            Cancel
-          </button>
-          <button 
-            onClick={handleAction}
-            style="padding: 10px 20px; background: #8b5cf6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
-            Action ({actionCount()})
-          </button>
-        </Portal>
-      </Show>
+          </Portal>
+          
+          <Portal id="demo-modal" target="footer">
+            <button 
+              onClick={closeModal}
+              style="padding: 10px 20px; background: transparent; color: #94a3b8; border: 2px solid #94a3b8; border-radius: 6px; cursor: pointer; font-size: 14px;">
+              Cancel
+            </button>
+            <button 
+              onClick={handleAction}
+              style="padding: 10px 20px; background: #8b5cf6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
+              Action ({actionCount()})
+            </button>
+          </Portal>
+        </div>
+      ) : null}
     </div>
   );
 }

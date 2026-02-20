@@ -3,7 +3,7 @@
  * Displays user data from resource
  */
 
-import { ShowRegistry } from '@pulsar-framework/pulsar.dev';
+
 
 interface UserData {
   avatar: string
@@ -28,11 +28,11 @@ export const UserCard = ({ resource, label }: UserCardProps) => {
         {label}
       </div>
       
-      <ShowRegistry when={() => resource.isLoading}>
+      {resource.isLoading ? (
         <div style="text-align: center; padding: 20px; color: #64748b;">⏳</div>
-      </ShowRegistry>
+      ) : null}
       
-      <ShowRegistry when={() => !resource.isLoading && resource.data}>
+      {!resource.isLoading && resource.data ? (
         <div style="text-align: center;">
           <img 
             src={resource.data?.avatar} 
@@ -46,7 +46,7 @@ export const UserCard = ({ resource, label }: UserCardProps) => {
             Request #{resource.data?.requestId}
           </div>
         </div>
-      </ShowRegistry>
+      ) : null}
     </div>
   );
 };

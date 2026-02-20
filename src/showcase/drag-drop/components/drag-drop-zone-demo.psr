@@ -3,7 +3,7 @@
  * File upload interface with drag-drop
  */
 
-import { createSignal, ShowRegistry as Show, ForRegistry as For } from '@pulsar-framework/pulsar.dev';
+import { createSignal } from '@pulsar-framework/pulsar.dev';
 
 export component DragDropZoneDemo() {
   const [isDragging, setIsDragging] = createSignal(false);
@@ -51,7 +51,7 @@ export component DragDropZoneDemo() {
         </p>
       </div>
       
-      <Show when={files().length > 0}>
+      {files().length > 0 ? (
         <div style="margin-top: 20px; padding: 20px; background: #0f172a; border: 2px solid #3a5458; border-radius: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
             <h4 style="margin: 0; color: #06b6d4; font-size: 14px;">
@@ -63,15 +63,13 @@ export component DragDropZoneDemo() {
               Clear All
             </button>
           </div>
-          <For each={files()}>
-            {(file) => (
-              <div style="padding: 8px 12px; margin-bottom: 6px; background: #1a1a1a; border-radius: 4px; color: #e2e8f0; font-size: 14px;">
-                📄 {file}
-              </div>
-            )}
-          </For>
+          {files().map((file) => (
+            <div style="padding: 8px 12px; margin-bottom: 6px; background: #1a1a1a; border-radius: 4px; color: #e2e8f0; font-size: 14px;">
+              📄 {file}
+            </div>
+          ))}
         </div>
-      </Show>
+      ) : null}
     </div>
   );
 }

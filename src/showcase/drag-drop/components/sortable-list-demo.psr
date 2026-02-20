@@ -3,7 +3,7 @@
  * Drag to reorder list items
  */
 
-import { createSignal, ForRegistry as For } from '@pulsar-framework/pulsar.dev';
+import { createSignal } from '@pulsar-framework/pulsar.dev';
 
 interface ITask {
   id: number;
@@ -53,8 +53,7 @@ export component SortableListDemo() {
   
   return (
     <div style="max-width: 400px;">
-      <For each={tasks()} key={(task) => task.id}>
-        {(task) => (
+      {tasks().map((task) => (
           <div 
             draggable="true"
             onDragStart={handleDragStart(task.id)}
@@ -66,8 +65,7 @@ export component SortableListDemo() {
               <span style="color: #e2e8f0;">{task.text}</span>
             </div>
           </div>
-        )}
-      </For>
+        ))}
     </div>
   );
 }

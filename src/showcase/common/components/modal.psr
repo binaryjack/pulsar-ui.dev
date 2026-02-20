@@ -4,7 +4,7 @@
  * while keeping logic in their own scope
  */
 
-import { createSignal, PortalSlot, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, PortalSlot } from '@pulsar-framework/pulsar.dev';
 
 interface IModalProps {
   /** Unique modal ID for portal targeting */
@@ -28,7 +28,7 @@ export component Modal(props: IModalProps) {
   };
 
   return (
-    <Show when={isOpen()}>
+    isOpen() ? (
       <div 
         onClick={handleBackdropClick}
         style={`position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: ${zIndex}; padding: 20px;`}>
@@ -53,6 +53,6 @@ export component Modal(props: IModalProps) {
           </div>
         </div>
       </div>
-    </Show>
+    ) : null
   );
 }

@@ -3,7 +3,7 @@
  * Shows stale-while-revalidate caching
  */
 
-import { createSignal, createResource, ShowRegistry, onCleanup } from '@pulsar-framework/pulsar.dev';
+import { createSignal, createResource, onCleanup } from '@pulsar-framework/pulsar.dev';
 import { DemoButton } from '../../common/components/demo-button.psr';
 import { fetchUser } from './mock-api.ts';
 
@@ -101,7 +101,7 @@ export const CacheDemo = () => {
         </div>
       </div>
       
-      <ShowRegistry when={() => cachedResource.data}>
+      {cachedResource.data ? (
         <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border-left: 3px solid #8b5cf6;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
             <div style="color: #8b5cf6; font-weight: bold;">📦 Cached Data</div>
@@ -135,7 +135,7 @@ export const CacheDemo = () => {
             💡 Refetch while fresh = instant cache hit. After 5s = stale-while-revalidate.
           </div>
         </div>
-      </ShowRegistry>
+      ) : null}
     </div>
   );
 };

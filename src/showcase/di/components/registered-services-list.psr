@@ -4,7 +4,6 @@
  */
 
 import type { Accessor } from '@pulsar-framework/pulsar.dev';
-import { ShowRegistry as Show, ForRegistry as For } from '@pulsar-framework/pulsar.dev';
 
 export interface RegisteredServicesListProps {
   services: Accessor<string[]>;
@@ -12,21 +11,19 @@ export interface RegisteredServicesListProps {
 
 export component RegisteredServicesList(props: RegisteredServicesListProps) {
   return (
-    <Show when={props.services().length > 0}>
+    props.services().length > 0 ? (
       <div style="padding: 15px; background: #0f172a; border: 2px solid #3b82f6; border-radius: 8px; margin-bottom: 15px;">
         <h4 style="margin: 0 0 10px 0; color: #3b82f6; font-size: 14px;">
           📦 Registered Services ({props.services().length})
         </h4>
         <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-          <For each={props.services()}>
-            {(service) => (
-              <span style="padding: 6px 12px; background: #1e293b; border: 1px solid #3b82f6; border-radius: 4px; color: #60a5fa; font-size: 12px;">
-                {service}
-              </span>
-            )}
-          </For>
+          {props.services().map((service) => (
+            <span style="padding: 6px 12px; background: #1e293b; border: 1px solid #3b82f6; border-radius: 4px; color: #60a5fa; font-size: 12px;">
+              {service}
+            </span>
+          ))}
         </div>
       </div>
-    </Show>
+    ) : null
   );
 }
