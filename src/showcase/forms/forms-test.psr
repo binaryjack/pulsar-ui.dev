@@ -1,0 +1,86 @@
+/**
+ * P1-01 Forms Showcase
+ * createForm + f schema + field binding + validation + submit lifecycle
+ */
+
+import { createSignal, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { DemoButton } from '../common/components/demo-button.psr';
+import { BasicFormDemo } from './components/basic-form-demo.psr';
+import { ValidationDemo } from './components/validation-demo.psr';
+import { FieldStateDemo } from './components/field-state-demo.psr';
+import { SubmissionDemo } from './components/submission-demo.psr';
+
+export component FormsTestPage() {
+  const [showBasic, setShowBasic] = createSignal(false);
+  const [showValidation, setShowValidation] = createSignal(false);
+  const [showFieldState, setShowFieldState] = createSignal(false);
+  const [showSubmission, setShowSubmission] = createSignal(false);
+
+  return (
+    <div>
+      <PageHeader
+        title="Forms: createForm + Schema Validation"
+        emoji="📋"
+        description="P1-01 · formular.dev integration · f.object schema · field lifecycle"
+      />
+
+      <DemoSection
+        title="1️⃣ Basic Form + Schema"
+        description="createForm with f.object schema, defaultValues, and manual field binding via form.parse()"
+        borderColor="#6366f1"
+      >
+        <DemoButton
+          label={showBasic() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowBasic((v) => !v)}
+        />
+        <Show when={showBasic()}>
+          <BasicFormDemo />
+        </Show>
+      </DemoSection>
+
+      <DemoSection
+        title="2️⃣ Validation + Error Display"
+        description="Zod-backed validators. Errors surface after first interaction per field. isValid badge updates live."
+        borderColor="#ef4444"
+      >
+        <DemoButton
+          label={showValidation() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowValidation((v) => !v)}
+        />
+        <Show when={showValidation()}>
+          <ValidationDemo />
+        </Show>
+      </DemoSection>
+
+      <DemoSection
+        title="3️⃣ Field State Badges"
+        description="isDirty / isValid / isFocus read from form.getField(name) after each input event."
+        borderColor="#f59e0b"
+      >
+        <DemoButton
+          label={showFieldState() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowFieldState((v) => !v)}
+        />
+        <Show when={showFieldState()}>
+          <FieldStateDemo />
+        </Show>
+      </DemoSection>
+
+      <DemoSection
+        title="4️⃣ Submit Lifecycle"
+        description="form.submit() → validateForm → onSubmit async → onSuccess / onError callbacks."
+        borderColor="#10b981"
+      >
+        <DemoButton
+          label={showSubmission() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowSubmission((v) => !v)}
+        />
+        <Show when={showSubmission()}>
+          <SubmissionDemo />
+        </Show>
+      </DemoSection>
+    </div>
+  );
+}
