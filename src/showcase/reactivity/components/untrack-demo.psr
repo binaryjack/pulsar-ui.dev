@@ -1,93 +1,65 @@
 /**
  * untrack Demo
- * ⚠️ B-01 BLOCKER: `untrack` is not exported from @pulsar-framework/pulsar.dev
+ * Demonstrates untrack(fn) — reads a signal without creating a reactive subscription.
  *
- * This component renders a blocker notice when the primitive is absent.
- * Once `untrack(fn)` is added to packages/pulsar.dev/src/reactivity/ and exported
- * from the main index.ts, replace the stub below with the real demo.
+ * Effect A: subscribes to both `tracked` and `other` — re-runs when either changes.
+ * Effect B: subscribes only to `tracked`; reads `other` inside untrack() — does NOT
+ *           re-run when `other` changes.
  *
- * INTENDED DEMO (post-fix):
- *   createEffect(() => {
- *     const a = trackedSignal();          // ← tracked: effect re-runs on change
- *     const b = untrack(() => other());   // ← NOT tracked: reading other() here
- *                                         //   does NOT subscribe this effect to other
- *   });
- *   Side-by-side subscription counter proves untrack version does NOT re-run
- *   when `other` changes.
+ * Proof: increment `other` only → Effect A counter rises, Effect B counter stays put.
  */
 
-import { createSignal, createEffect } from '@pulsar-framework/pulsar.dev';
+import { createSignal, createEffect, untrack } from '@pulsar-framework/pulsar.dev';
 
 export component UntrackDemo() {
-  // Demonstrate the subscription difference manually (poor-man's untrack via closure capture)
   const [tracked, setTracked] = createSignal(0);
-  const [untracked, setUntracked] = createSignal(0);
-  const [trackedRuns, setTrackedRuns] = createSignal(0);
-  const [untrackedRuns, setUntrackedRuns] = createSignal(0);
+  const [other, setOther] = createSignal(0);
+  const [effectARuns, setEffectARuns] = createSignal(0);
+  const [effectBRuns, setEffectBRuns] = createSignal(0);
 
-  // Effect 1: tracks both signals (no untrack available)
+  // Effect A: reads both signals — subscribes to both
   createEffect(() => {
-    tracked(); // subscription
-    setTrackedRuns((n) => n + 1);
+    const _t = tracked();
+    const _o = other(); // ← tracked subscription
+    setEffectARuns((n) => n + 1);
   });
 
-  // Effect 2: only tracks `tracked`, reads `untracked` via snapshot (manual workaround)
-  // ⚠️ defining the function outside the effect does NOT prevent subscription:
-  // the signal read still happens inside the active effect's execution context.
-  const snapshotUntracked = () => untracked();
+  // Effect B: reads `other` inside untrack — no subscription to `other`
   createEffect(() => {
-    tracked(); // subscription
-    const _ = snapshotUntracked(); // ⚠️ still tracked: call stack is inside the active effect
-    setUntrackedRuns((n) => n + 1);
+    const _t = tracked();                    // ← tracked subscription
+    const _o = untrack(() => other());       // ← NOT subscribed
+    setEffectBRuns((n) => n + 1);
   });
 
   return (
     <div class="demo-card">
       <h3 class="demo-title">6️⃣ untrack — Subscription-Free Read</h3>
 
-      <div
-        style="background: #422006; border: 1px solid #92400e; border-radius: 6px; padding: 12px; margin-bottom: 14px;"
-      >
-        <strong style="color: #fbbf24;">⚠️ B-01 BLOCKER</strong>
-        <p style="color: #fde68a; font-size: 13px; margin-top: 6px; margin-bottom: 0;">
-          <code>untrack(fn)</code> is not yet exported from <code>@pulsar-framework/pulsar.dev</code>.
-          This demo uses a manual read-outside-effect workaround to illustrate the concept until the
-          primitive is implemented.
-        </p>
-        <p style="color: #fde68a; font-size: 12px; margin-top: 6px; margin-bottom: 0;">
-          Fix: add <code>untrack</code> to <code>packages/pulsar.dev/src/reactivity/</code> and
-          export from <code>index.ts</code>.
-        </p>
-      </div>
-
       <p class="demo-desc">
-        <strong>Concept:</strong> <code>untrack(fn)</code> reads a signal without creating a subscription.
-        An effect that calls <code>untrack(() ={'>'} other())</code> does <em>not</em> re-run when
-        <code>other</code> changes. The counters below <strong>cannot</strong> demonstrate this yet —
-        both effects still subscribe to all signals until <code>untrack</code> is implemented.
+        <code>untrack(fn)</code> temporarily clears the active tracking context so that any
+        signals read inside <code>fn</code> do <em>not</em> register a subscription.
+        Increment <strong>other</strong> only — Effect A re-runs, Effect B does not.
       </p>
 
       <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
         <button class="submit-btn" onClick={() => setTracked((n) => n + 1)}>
           ++ tracked ({tracked()})
         </button>
-        <button class="submit-btn" onClick={() => setUntracked((n) => n + 1)} style="background: #374151;">
-          ++ untracked ({untracked()})
+        <button class="submit-btn" onClick={() => setOther((n) => n + 1)} style="background: #374151;">
+          ++ other ({other()})
         </button>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
         <div class="state-panel" style="text-align: center;">
           <p style="color: #94a3b8; font-size: 12px;">Effect A runs<br />(tracks both)</p>
-          <p style="color: #f59e0b; font-size: 32px; font-weight: bold;">{trackedRuns()}</p>
-          <p style="color: #4b5563; font-size: 10px;">increments on tracked OR untracked</p>
+          <p style="color: #f59e0b; font-size: 32px; font-weight: bold;">{effectARuns()}</p>
+          <p style="color: #4b5563; font-size: 10px;">increments on <em>either</em> signal</p>
         </div>
         <div class="state-panel" style="text-align: center;">
-          <p style="color: #94a3b8; font-size: 12px;">Effect B runs<br />(workaround — same as A)</p>
-          <p style="color: #34d399; font-size: 32px; font-weight: bold;">{untrackedRuns()}</p>
-          <p style="color: #4b5563; font-size: 10px;">
-            ⚠️ increments on <em>both</em> — <code>snapshotUntracked()</code> still subscribes to <code>untracked</code>
-          </p>
+          <p style="color: #94a3b8; font-size: 12px;">Effect B runs<br />(untrack on other)</p>
+          <p style="color: #34d399; font-size: 32px; font-weight: bold;">{effectBRuns()}</p>
+          <p style="color: #4b5563; font-size: 10px;">only increments when <code>tracked</code> changes</p>
         </div>
       </div>
     </div>

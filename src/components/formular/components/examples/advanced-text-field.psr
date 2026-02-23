@@ -10,6 +10,7 @@
  * - All with just ONE hook call!
  */
 
+import { ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
 import { useField } from '../../hooks/use-field';
 import { useFormContext } from '../form-context';
 
@@ -169,7 +170,7 @@ export const AdvancedTextField = ({
       </div>
 
       {/* Validation errors */}
-      {showErrors && hasErrors() && (
+      <Show when={() => showErrors && hasErrors()}>
         <div className="validation-errors mt-2">
           {errors().map((error, index) => (
             <p key={error.message || `error-${index}`} className="text-red-600 text-sm">
@@ -177,10 +178,10 @@ export const AdvancedTextField = ({
             </p>
           ))}
         </div>
-      )}
+      </Show>
 
       {/* Validation guides */}
-      {showGuides && guides().length > 0 && (
+      <Show when={() => showGuides && guides().length > 0}>
         <div className="validation-guides mt-2">
           {guides().map((guide, index) => (
             <p key={guide.message || `guide-${index}`} className="text-blue-600 text-sm">
@@ -188,7 +189,7 @@ export const AdvancedTextField = ({
             </p>
           ))}
         </div>
-      )}
+      </Show>
 
       {/* Debug info (optional - remove in production) */}
       {import.meta.env.DEV && (

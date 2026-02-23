@@ -6,7 +6,8 @@
 import type { Accessor } from '@pulsar-framework/pulsar.dev';
 
 interface DemoButtonProps {
-  children: string | number | Accessor<string | number | JSX.Element>
+  children?: string | number | Accessor<string | number | JSX.Element>
+  label?: string | number | Accessor<string | number>
   onClick: () => void
   color?: string
   disabled?: boolean
@@ -15,12 +16,16 @@ interface DemoButtonProps {
 
 export const DemoButton = ({
   children,
+  label,
   onClick,
   color = '#3b82f6',
   disabled = false,
   size = 'md'
 }: DemoButtonProps) => {
-  const renderChildren = typeof children === 'function' ? children() : children;
+  const raw = children ?? label;
+  // Keep as a getter so the transformer can wrap {getLabel()} → () => getLabel()
+  // giving Pulsar a reactive subscription when `label` is a signal-derived arrow fn.
+  const getLabel = typeof raw === 'function' ? raw : () => raw;
 
   const padding = size === 'sm' ? '6px 12px' : size === 'lg' ? '14px 28px' : '10px 20px';
   const fontSize = size === 'sm' ? '12px' : size === 'lg' ? '18px' : '14px';
@@ -31,7 +36,7 @@ export const DemoButton = ({
       onClick={onClick}
       disabled={disabled}
       style={`padding: ${padding}; font-size: ${fontSize}; background: ${bg}; border: none; border-radius: 6px; color: white; cursor: ${disabled ? 'not-allowed' : 'pointer'}; font-weight: 500; font-family: inherit; transition: opacity 0.15s, transform 0.15s; opacity: ${disabled ? '0.5' : '1'};`}>
-      {renderChildren}
+      {getLabel()}
     </button>
   );
 };

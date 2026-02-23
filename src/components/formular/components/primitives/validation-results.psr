@@ -12,6 +12,7 @@
  * ```
  */
 
+import { ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
 import { useField } from '../../hooks/use-field';
 import type { IFieldError } from '../../types';
 import { useFormContext } from '../form-context';
@@ -48,7 +49,7 @@ export const FieldValidation = ({
 
   return (
     <div className="field-validation-container">
-      {showErrors && hasErrors() && !isFocused() && (
+      <Show when={() => showErrors && hasErrors() && !isFocused()}>
         <div className={errorsClassName}>
           {errors().map((error: IFieldError) => (
             <p key={error.code} className="text-red-600 text-sm">
@@ -56,8 +57,8 @@ export const FieldValidation = ({
             </p>
           ))}
         </div>
-      )}
-      {isFocused() && showGuides && (
+      </Show>
+      <Show when={() => showGuides && isFocused()}>
         <div className={guidesClassName}>
           {guides().map((guide) => (
             <p key={guide.code} className="text-blue-600 text-sm">
@@ -65,7 +66,7 @@ export const FieldValidation = ({
             </p>
           ))}
         </div>
-      )}
+      </Show>
     </div>
   ) as HTMLElement;
 };

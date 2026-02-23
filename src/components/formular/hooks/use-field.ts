@@ -38,7 +38,7 @@
  */
 
 import type { IFieldGuide } from '@pulsar-framework/formular.dev';
-import { createEffect, useSync } from '@pulsar-framework/pulsar.dev';
+import { useSync } from '@pulsar-framework/pulsar.dev';
 import type { IFieldError, IValidationResult } from '../types';
 
 export interface IUseFieldResult {
@@ -112,99 +112,64 @@ export function useField(field: any): IUseFieldResult {
   }
 
   const input = field.input;
-  const descriptor = field.descriptor;
 
-  // ==================== SYNC VALUE ====================
-  const value = useSync<any>(
-    (notify) => {
-      return createEffect(() => {
-        input?._value?.get();
-        notify();
-      });
-    },
-    () => input?._value?.get()
-  );
+  // ==================== SINGLE REACTIVE BRIDGE ====================
+  // One notifier registered with formular's notificationManager for:
+  //   - 'onUiUpdate'          → fires after validation + focus/blur changes
+  //   - 'onValidationChange'  → fires after validation results are stored
+  // Both go through the notifiers Map (not observers channel).
+  // observers.subscribe() is NOT triggered by standard field lifecycle.
+  //
+  // Key shape: `${event.target}.${event.action}` — must be unique per field.
+  const _notifierKey = `pulsar-sync-${input?.id ?? 'unknown'}`;
 
-  // ==================== SYNC VALIDATION RESULTS ====================
-  const validationResults = useSync<IValidationResult[]>(
-    (notify) => {
-      return createEffect(() => {
-        (input as any)?._validationResults?.get();
-        notify();
-      });
-    },
-    () => (input as any)?._validationResults?.get() || []
-  );
-
-  // ==================== SYNC FIELD STATE FLAGS ====================
-  // Note: isValid has a signal (_isValid), but isDirty, isPristine, isFocus are plain properties
-  // We sync them using formular's channel-based notification system
-
-  const isValid = useSync<boolean>(
-    (notify) => {
-      return createEffect(() => {
-        input?._isValid?.get();
-        notify();
-      });
-    },
-    () => input?._isValid?.get() ?? true
-  );
-
-  // For non-signal properties (isDirty, isPristine, isFocus), we subscribe to formular's
-  // channel-based notification system. Each field has a channel = String(field.input.id)
-  // When formular updates field state, it triggers observers.trigger(channel)
-  const fieldStateSnapshot = useSync<{
+  const fieldSnapshot = useSync<{
+    value: any;
+    validationResults: IValidationResult[];
+    isValid: boolean;
     isDirty: boolean;
     isPristine: boolean;
     isFocus: boolean;
+    isRequired: boolean;
   }>(
     (notify) => {
-      const observers = input?.notificationManager?.observers;
-      const channel = input?.id ? String(input.id) : null;
+      if (!input?.notificationManager) return () => {};
 
-      if (!observers || !channel) {
-        return () => {}; // No cleanup if no observers
-      }
-
-      // Subscribe to this field's channel - formular triggers this when state changes
-      const callback = () => {
-        notify(); // Notify Pulsar's reactivity system
+      const notifier = {
+        event: {
+          fieldName: input.name ?? '',
+          emitterName: _notifierKey,
+          types: ['onUiUpdate', 'onValidationChange'] as any[],
+          action: 'sync',
+          target: _notifierKey,
+          toFlags: () => `${_notifierKey}.sync`,
+        },
+        method: () => notify(),
       };
 
-      observers.subscribe(channel, callback, false); // false = strong reference
-
-      // Cleanup: unsubscribe when component unmounts
-      return () => {
-        observers.unSubscribe(channel, callback, false);
-      };
+      input.notificationManager.accept(notifier);
+      return () => input.notificationManager.dismiss(notifier);
     },
     () => ({
+      value: input?._value?.get(),
+      validationResults: (input as any)?._validationResults?.get() || [],
+      isValid: input?._isValid?.get() ?? true,
       isDirty: input?.isDirty ?? false,
       isPristine: input?.isPristine ?? true,
       isFocus: input?.isFocus ?? false,
+      isRequired: input?.validationOptions?.required?.value ?? false,
     })
   );
 
-  const isDirty = () => fieldStateSnapshot().isDirty;
-  const isPristine = () => fieldStateSnapshot().isPristine;
-  const isFocused = () => fieldStateSnapshot().isFocus;
-
-  // ==================== SYNC FIELD PROPERTIES ====================
-  const isRequired = useSync<boolean>(
-    (notify) => {
-      return createEffect(() => {
-        input?.validationOptions?.required?.value;
-        notify();
-      });
-    },
-    () => input?.validationOptions?.required?.value ?? false
-  );
-
-  // Note: disabled is a plain property on input, not a signal
-  // We can derive it from fieldStateSnapshot or check directly
-  const isDisabled = () => {
-    return input?.disabled ?? false;
-  };
+  // Derive individual reactive getters from the single snapshot signal
+  const value = () => fieldSnapshot().value;
+  const validationResults = () => fieldSnapshot().validationResults;
+  const isValid = () => fieldSnapshot().isValid;
+  const isDirty = () => fieldSnapshot().isDirty;
+  const isPristine = () => fieldSnapshot().isPristine;
+  const isFocused = () => fieldSnapshot().isFocus;
+  const isRequired = () => fieldSnapshot().isRequired;
+  const isDisabled = () => input?.disabled ?? false;
 
   // ==================== DERIVED VALIDATION FUNCTIONS ====================
   const hasErrors = () => {
@@ -256,8 +221,14 @@ export function useField(field: any): IUseFieldResult {
   const type = () => input?.type ?? 'text';
 
   // ==================== FIELD ACTIONS ====================
+  // Go through formular's valueManager so isPristine/isDirty update
+  // and the 'onUiUpdate' notifier fires → Pulsar snapshot re-reads state.
   const setValue = (newValue: any) => {
-    input?._value?.set(newValue);
+    if (input?.valueManager?.setValue) {
+      input.valueManager.setValue(field, newValue);
+    } else {
+      input?._value?.set(newValue);
+    }
   };
 
   const focus = () => {

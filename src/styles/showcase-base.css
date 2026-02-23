@@ -80,6 +80,24 @@ select {
     font: inherit;
 }
 
+/* Form field inputs: explicitly set theme-aware colors.
+ * Inputs inherit `color` from body which in dark mode is --color-neutral-50
+ * (near-white), making text invisible against the browser-default white
+ * background. Pin both to design-system tokens so they switch with the theme. */
+.form-field input,
+.form-field textarea,
+.form-field select {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border-color: var(--color-neutral-300);
+}
+
+[data-theme="dark"] .form-field input,
+[data-theme="dark"] .form-field textarea,
+[data-theme="dark"] .form-field select {
+    border-color: var(--color-neutral-600);
+}
+
 /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
     html:focus-within {

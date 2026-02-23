@@ -45,7 +45,7 @@ export component RetryDemo() {
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
         <div class="state-panel">
           <strong style="color: #f87171;">Failing request (404 → retry)</strong>
-          <p style="font-size: 12px; color: #6b7280; margin-bottom: 8px;">Attempt counter: {attempt()}</p>
+          <p style="font-size: 12px; color: #697690; margin-bottom: 8px;">Attempt counter: {attempt()}</p>
           <button
             class="submit-btn"
             onClick={() => { setAttempt(0); setTrigger(true); failingResult.execute().catch(() => {}); }}
