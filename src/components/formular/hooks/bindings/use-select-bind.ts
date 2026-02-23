@@ -20,11 +20,11 @@ import type { ISelectBindProps } from './field-bindings.type';
 export function useSelectBind(field: IUseFieldResult): ISelectBindProps {
   return {
     name: field.name(),
-    value: String(field.value() ?? ''),
-    disabled: field.isDisabled(),
-    required: field.isRequired(),
-    'aria-invalid': field.hasErrors(),
-    'aria-required': field.isRequired(),
+    value: () => String(field.value() ?? ''),
+    disabled: field.isDisabled,
+    required: field.isRequired,
+    'aria-invalid': field.hasErrors,
+    'aria-required': field.isRequired,
     onChange: (value: string) => field.setValue(value),
     onFocus: field.focus,
     onBlur: field.blur,

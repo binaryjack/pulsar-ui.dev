@@ -38,7 +38,7 @@
  */
 
 import type { IFieldGuide } from '@pulsar-framework/formular.dev';
-import { useSync } from '@pulsar-framework/pulsar.dev';
+import { createSignal, useSync } from '@pulsar-framework/pulsar.dev';
 import type { IFieldError, IValidationResult } from '../types';
 
 export interface IUseFieldResult {
@@ -171,6 +171,13 @@ export function useField(field: any): IUseFieldResult {
   const isRequired = () => fieldSnapshot().isRequired;
   const isDisabled = () => input?.disabled ?? false;
 
+  // ==================== TOUCHED TRACKING ====================
+  // "Touched" = field was focused and then blurred at least once.
+  // This is orthogonal to isDirty (user can focus+blur without changing value).
+  // We track it locally because formular does not expose an isTouched flag.
+  let _wasEverFocused = false;
+  const [_isTouched, _setIsTouched] = createSignal(false);
+
   // ==================== DERIVED VALIDATION FUNCTIONS ====================
   const hasErrors = () => {
     const results = validationResults();
@@ -208,12 +215,9 @@ export function useField(field: any): IUseFieldResult {
   };
 
   // ==================== DERIVED STATE FUNCTIONS ====================
-  // "Touched" means the field has been focused and then blurred at least once
-  // We derive this from isDirty state (if dirty, user must have touched it)
-  const isTouched = () => {
-    // If field is dirty, it's been touched
-    return isDirty();
-  };
+  // "Touched" = has been focused then blurred; OR if the field is dirty
+  // (if dirty, user must have interacted with it).
+  const isTouched = () => _isTouched() || isDirty();
 
   // ==================== FIELD METADATA ====================
   const label = () => input?.label ?? field.name ?? '';
@@ -232,10 +236,13 @@ export function useField(field: any): IUseFieldResult {
   };
 
   const focus = () => {
+    _wasEverFocused = true;
     field?.focus?.();
   };
 
   const blur = () => {
+    // Mark as touched when the field is blurred after having been focused
+    if (_wasEverFocused) _setIsTouched(true);
     field?.blur?.();
   };
 
@@ -244,15 +251,9 @@ export function useField(field: any): IUseFieldResult {
   };
 
   const touch = () => {
-    // Mark field as touched by making it dirty if it isn't already
-    // In formular, "touched" is implicit from user interaction
-    // We can simulate it by ensuring the field has been interacted with
-    if (!isDirty() && !isFocused()) {
-      // Focus and blur to mark as touched
-      focus();
-      // Use setTimeout to allow focus to register before blur
-      setTimeout(() => blur(), 0);
-    }
+    // Directly mark as touched without requiring a real focus/blur cycle.
+    _wasEverFocused = true;
+    _setIsTouched(true);
   };
 
   return {

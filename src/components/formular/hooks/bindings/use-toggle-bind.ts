@@ -19,11 +19,11 @@ import type { IToggleBindProps } from './field-bindings.type';
 export function useToggleBind(field: IUseFieldResult): IToggleBindProps {
   return {
     name: field.name(),
-    checked: Boolean(field.value()),
-    disabled: field.isDisabled(),
-    required: field.isRequired(),
-    'aria-invalid': field.hasErrors(),
-    'aria-required': field.isRequired(),
+    checked: () => Boolean(field.value()),
+    disabled: field.isDisabled,
+    required: field.isRequired,
+    'aria-invalid': field.hasErrors,
+    'aria-required': field.isRequired,
     onChange: (checked: boolean) => field.setValue(checked),
     onFocus: field.focus,
     onBlur: field.blur,

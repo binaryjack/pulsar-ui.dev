@@ -19,11 +19,11 @@ import type { ICheckboxBindProps } from './field-bindings.type';
 export function useCheckboxBind(field: IUseFieldResult): ICheckboxBindProps {
   return {
     name: field.name(),
-    checked: Boolean(field.value()),
-    disabled: field.isDisabled(),
-    required: field.isRequired(),
-    'aria-invalid': field.hasErrors(),
-    'aria-required': field.isRequired(),
+    checked: () => Boolean(field.value()),
+    disabled: field.isDisabled,
+    required: field.isRequired,
+    'aria-invalid': field.hasErrors,
+    'aria-required': field.isRequired,
     onChange: (e: Event & { target: HTMLInputElement }) => field.setValue(e.target.checked),
     onFocus: field.focus,
     onBlur: field.blur,

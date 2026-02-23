@@ -9,6 +9,7 @@
  * ```
  */
 
+import { onCleanup } from '@pulsar-framework/pulsar.dev';
 import type { IFieldComponentProps } from '../../types';
 import { devLog } from '../../utils/dev-logger';
 import { useFormContext } from '../form-context';
@@ -38,18 +39,24 @@ export const FInputField = ({
   // Get registration attributes from formular.dev
   const registerAttrs = field.register();
 
+  // Use AbortController to remove all listeners when the component unmounts.
+  // Without this, each re-mount (Show toggle, SPA navigation, etc.) stacks
+  // additional handlers on the same element.
+  const ac = new AbortController();
+  onCleanup(() => ac.abort());
+
   // Bind ref function to attach event listeners manually
   const boundRef = (element: HTMLInputElement | null) => {
     if (element) {
       // Attach event handlers manually (Pulsar doesn't auto-convert JSX events to addEventListener)
       if (registerAttrs.onChange) {
-        element.addEventListener('input', registerAttrs.onChange as EventListener);
+        element.addEventListener('input', registerAttrs.onChange as EventListener, { signal: ac.signal });
       }
       if (registerAttrs.onBlur) {
-        element.addEventListener('blur', registerAttrs.onBlur as EventListener);
+        element.addEventListener('blur', registerAttrs.onBlur as EventListener, { signal: ac.signal });
       }
       if (registerAttrs.onFocus) {
-        element.addEventListener('focus', registerAttrs.onFocus as EventListener);
+        element.addEventListener('focus', registerAttrs.onFocus as EventListener, { signal: ac.signal });
       }
     }
 

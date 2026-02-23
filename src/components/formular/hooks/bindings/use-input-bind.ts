@@ -19,11 +19,11 @@ import type { IInputBindProps } from './field-bindings.type';
 export function useInputBind(field: IUseFieldResult): IInputBindProps {
   return {
     name: field.name(),
-    value: field.value() ?? '',
-    disabled: field.isDisabled(),
-    required: field.isRequired(),
-    'aria-invalid': field.hasErrors(),
-    'aria-required': field.isRequired(),
+    value: () => field.value() ?? '',
+    disabled: field.isDisabled,
+    required: field.isRequired,
+    'aria-invalid': field.hasErrors,
+    'aria-required': field.isRequired,
     onInput: (e: Event & { target: HTMLInputElement }) => field.setValue(e.target.value),
     onFocus: field.focus,
     onBlur: field.blur,

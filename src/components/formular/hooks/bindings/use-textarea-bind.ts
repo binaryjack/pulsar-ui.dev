@@ -19,11 +19,11 @@ import type { ITextareaBindProps } from './field-bindings.type';
 export function useTextareaBind(field: IUseFieldResult): ITextareaBindProps {
   return {
     name: field.name(),
-    value: String(field.value() ?? ''),
-    disabled: field.isDisabled(),
-    required: field.isRequired(),
-    'aria-invalid': field.hasErrors(),
-    'aria-required': field.isRequired(),
+    value: () => String(field.value() ?? ''),
+    disabled: field.isDisabled,
+    required: field.isRequired,
+    'aria-invalid': field.hasErrors,
+    'aria-required': field.isRequired,
     onInput: (e: Event & { target: HTMLTextAreaElement }) => field.setValue(e.target.value),
     onFocus: field.focus,
     onBlur: field.blur,

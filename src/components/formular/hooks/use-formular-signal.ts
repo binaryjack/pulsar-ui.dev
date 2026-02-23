@@ -6,30 +6,24 @@
  * and trigger re-renders when the signal values change.
  */
 
-import { createEffect, createSignal } from '@pulsar-framework/pulsar.dev';
+import { createSignal } from '@pulsar-framework/pulsar.dev';
 
 /**
  * Subscribe a Pulsar signal to a formular.dev signal
  *
- * @param formularSignal - The formular.dev signal getter to subscribe to
- * @returns A Pulsar signal that updates when the formular signal changes
+ * @deprecated Pulsar's createEffect uses a separate reactive graph and cannot
+ * track formular.dev signals. Use useField() from formular/hooks instead.
+ * This function returns a one-shot snapshot that never updates.
  *
- * @example
- * ```tsx
- * const [validationResults] = useFormularSignal(() => input._validationResults.get());
- * // Now validationResults() is a Pulsar signal that tracks formular.dev's state
- * ```
+ * @param formularSignalGetter - The formular.dev signal getter to subscribe to
+ * @returns A Pulsar signal that holds the initial value only — DOES NOT update
  */
 export function useFormularSignal<T>(formularSignalGetter: () => T): [() => T, (value: T) => void] {
-  // Create a Pulsar signal to mirror the formular signal
+  console.warn(
+    '[useFormularSignal] DEPRECATED: Pulsar createEffect cannot observe formular.dev signals. ' +
+      'The returned signal will hold the initial value only and never update. ' +
+      'Use useField() from @pulsar-framework/pulsar-ui.dev instead.'
+  );
   const [pulsarValue, setPulsarValue] = createSignal<T>(formularSignalGetter());
-
-  // Use formular.dev's createEffect to track the signal
-  // When it changes, update the Pulsar signal
-  createEffect(() => {
-    const newValue = formularSignalGetter();
-    setPulsarValue(newValue);
-  });
-
   return [pulsarValue, setPulsarValue];
 }
