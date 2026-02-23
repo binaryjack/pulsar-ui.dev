@@ -2,9 +2,9 @@
  * Modal components exports
  */
 
-export { ErrorMessage } from './ErrorMessage';
-export { FormModale } from './FormModale';
-export { FormValidationResults } from './FormValidationResults';
-export { GuideMessage } from './GuideMessage';
-export { useModale } from './useModale';
-export { ValidationResults } from './ValidationResults';
+export { ErrorMessage } from './error-message';
+export { FormModale } from './form-modale';
+export { FormValidationResults } from './form-validation-results';
+export { GuideMessage } from './guide-message';
+export { useModale } from './use-modale';
+export { ValidationResults } from './validation-results';

@@ -1,0 +1,104 @@
+/**
+ * Hydration Script Demo
+ * createHydrationScript → serialized JSON blob
+ * serializeData / deserializeData round-trip
+ * extractHydrationState — parse blob back to original object
+ */
+
+import {
+  createSignal,
+  createHydrationScript,
+  serializeData,
+  deserializeData,
+  extractHydrationState,
+  ShowRegistry as Show,
+} from '@pulsar-framework/pulsar.dev';
+
+const SAMPLE_STATE = {
+  user: { id: 42, name: 'Tadeo', roles: ['admin', 'dev'] },
+  theme: 'dark',
+  count: 7,
+};
+
+export component HydrationScriptDemo() {
+  const [script, setScript] = createSignal<string | null>(null);
+  const [serialized, setSerialized] = createSignal<string | null>(null);
+  const [roundTrip, setRoundTrip] = createSignal<unknown | null>(null);
+  const [roundTripMatch, setRoundTripMatch] = createSignal<boolean | null>(null);
+  const [extracted, setExtracted] = createSignal<unknown | null>(null);
+
+  const runScript = () => {
+    const s = createHydrationScript(SAMPLE_STATE);
+    setScript(s);
+  };
+
+  const runRoundTrip = () => {
+    const s = serializeData(SAMPLE_STATE);
+    setSerialized(s);
+    const restored = deserializeData<typeof SAMPLE_STATE>(s);
+    setRoundTrip(restored);
+    setRoundTripMatch(JSON.stringify(restored) === JSON.stringify(SAMPLE_STATE));
+  };
+
+  const runExtract = () => {
+    // Inject a hydration script into document.head and extract it back
+    const tag = document.createElement('script');
+    tag.id = '__PULSAR_SSR_STATE__';
+    tag.type = 'application/json';
+    tag.textContent = serializeData(SAMPLE_STATE);
+    document.head.appendChild(tag);
+    const out = extractHydrationState<typeof SAMPLE_STATE>();
+    setExtracted(out);
+    tag.remove();
+  };
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">3️⃣ Hydration Script Round-Trip</h3>
+      <p class="demo-desc">
+        <code>createHydrationScript(state)</code> → serialized <code>{'<script>'}</code> tag blob.
+        <code>serializeData / deserializeData</code> round-trip verifies equality.
+        <code>extractHydrationState()</code> reads the blob back from DOM.
+      </p>
+
+      <div class="state-panel" style="margin-bottom: 12px;">
+        <strong style="color: #94a3b8; font-size: 12px;">Input state</strong>
+        <pre class="result-pre" style="font-size: 11px;">{JSON.stringify(SAMPLE_STATE, null, 2)}</pre>
+      </div>
+
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
+        <button class="submit-btn" onClick={runScript}>createHydrationScript</button>
+        <button class="submit-btn" onClick={runRoundTrip}>serialize → deserialize</button>
+        <button class="submit-btn" onClick={runExtract}>extractHydrationState</button>
+      </div>
+
+      <Show when={script()}>
+        <div class="state-panel" style="margin-bottom: 8px;">
+          <strong style="color: #60a5fa; font-size: 12px;">createHydrationScript output</strong>
+          <pre class="result-pre" style="font-size: 10px; max-height: 100px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;">
+            {script()}
+          </pre>
+        </div>
+      </Show>
+
+      <Show when={serialized()}>
+        <div class="state-panel" style="margin-bottom: 8px;">
+          <strong style="color: #f59e0b; font-size: 12px;">serializeData → deserializeData</strong>
+          <pre class="result-pre" style="font-size: 11px; max-height: 80px; overflow-y: auto;">{serialized()}</pre>
+          <Show when={roundTripMatch() !== null}>
+            <p class={roundTripMatch() ? 'status-ok' : 'status-fail'} style="margin-top: 6px;">
+              {roundTripMatch() ? '✅ Round-trip: equality confirmed' : '❌ Round-trip: mismatch'}
+            </p>
+          </Show>
+        </div>
+      </Show>
+
+      <Show when={extracted()}>
+        <div class="state-panel">
+          <strong style="color: #34d399; font-size: 12px;">extractHydrationState output</strong>
+          <pre class="result-pre" style="font-size: 11px;">{JSON.stringify(extracted(), null, 2)}</pre>
+        </div>
+      </Show>
+    </div>
+  );
+}

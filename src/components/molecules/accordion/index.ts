@@ -2,7 +2,7 @@
  * Accordion component exports
  */
 
-export { Accordion } from './';
-export { AccordionItem } from './';
-export type { IAccordionProps } from './accordion.type';
+export { AccordionItem } from './accordion-item.psr';
 export type { IAccordionItemProps } from './accordion-item.type';
+export { Accordion } from './accordion.psr';
+export type { IAccordionProps } from './accordion.type';

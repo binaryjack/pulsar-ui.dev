@@ -3,8 +3,8 @@ import {
   IFieldSetProps,
 } from '../../types/field-component.type';
 import { useFormContext } from '../form-context';
-import { ValidationResults } from '../modal/ValidationResults';
-import { FToggleField } from '../primitives/FToggleField';
+import { ValidationResults } from '../modal/validation-results';
+import { FToggleField } from '../primitives/f-toggle-field';
 
 /**
  * ToggleField - Integrated toggle switch component

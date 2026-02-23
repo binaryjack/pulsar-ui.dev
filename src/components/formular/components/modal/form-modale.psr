@@ -6,7 +6,7 @@
 import { createSignal } from '@pulsar-framework/pulsar.dev/reactivity';
 import { Button } from '@pulsar-framework/ui';
 import { ModaleCommands, ModaleStyle } from '../../types';
-import { useModale } from './useModale';
+import { useModale } from './use-modale';
 
 /**
  * FormModale component

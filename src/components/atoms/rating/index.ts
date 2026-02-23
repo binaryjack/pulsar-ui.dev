@@ -2,5 +2,5 @@
  * Rating component exports
  */
 
-export { Rating } from './';
+export { Rating } from './rating.psr';
 export type { IRatingProps } from './rating.type';

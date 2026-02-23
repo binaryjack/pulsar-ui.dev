@@ -3,13 +3,16 @@
  * Refactored with modular components
  */
 
-import { createSignal, createEffect, createMemo, batch } from '@pulsar-framework/pulsar.dev';
+import { createSignal, createEffect, createMemo, batch, useSync } from '@pulsar-framework/pulsar.dev';
 import { PageHeader } from '../common/components/page-header.psr';
 import { DemoSection } from '../common/components/demo-section.psr';
 import { SignalDemo } from './components/signal-demo.psr';
 import { MemoDemo } from './components/memo-demo.psr';
 import { EffectDemo } from './components/effect-demo.psr';
 import { BatchDemo } from './components/batch-demo.psr';
+import { RenderEffectDemo } from './components/render-effect-demo.psr';
+import { UntrackDemo } from './components/untrack-demo.psr';
+import { UseSyncDemo } from './components/use-sync-demo.psr';
 import { ConsoleLogViewer } from '../common/components/console-log-viewer.psr';
 import type { LogEntry } from '../common/components/console-log-viewer.psr';
 
@@ -138,9 +141,30 @@ export component ReactivityTestPage() {
           <li style="margin-bottom: 8px;">✅ Multiple signals working</li>
           <li style="margin-bottom: 8px;">✅ Memos (computed values)</li>
           <li style="margin-bottom: 8px;">✅ Effects (side effects)</li>
-          <li style="margin-bottom: 8px;">✅ Batch updates</li>
+              <li style="margin-bottom: 8px;">✅ Batch updates</li>
         </ul>
       </section>
+
+      <DemoSection
+        title="5️⃣ useSync — External Store Bridge"
+        description="useSync(subscribe, getSnapshot) — bridges non-Pulsar reactive stores into the Pulsar reactive graph."
+        borderColor="#6366f1">
+        <UseSyncDemo />
+      </DemoSection>
+
+      <DemoSection
+        title="6️⃣ untrack — Subscription-Free Read"
+        description="untrack(fn) reads a signal without subscribing. ⚠️ B-01: primitive not yet exported — stub demo."
+        borderColor="#f59e0b">
+        <UntrackDemo />
+      </DemoSection>
+
+      <DemoSection
+        title="7️⃣ createRenderEffect — Sync Before Paint"
+        description="createRenderEffect fires synchronously before paint. ⚠️ B-01: primitive not yet implemented — stub demo."
+        borderColor="#ef4444">
+        <RenderEffectDemo />
+      </DemoSection>
     </div>
   );
 }

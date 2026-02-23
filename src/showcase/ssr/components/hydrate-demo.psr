@@ -1,0 +1,142 @@
+/**
+ * Hydrate Demo
+ * SSR output → innerHTML injection → hydrate() call in sandboxed <div>
+ *
+ * B-07 NOTE: hydrate() is partially implemented — it logs a warning and falls back to
+ * a mount-based approach. This demo documents that behaviour and verifies the call
+ * path executes without throwing errors.
+ * Ref: packages/pulsar.dev/src/ssr/hydrate.ts
+ */
+
+import { createSignal, renderToString, hydrate, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+
+const StaticCounter = () => {
+  return {
+    type: 'div',
+    props: {
+      'data-hydrate-root': 'true',
+      children: [
+        { type: 'p', props: { 'data-testid': 'ssr-label', children: ['Server-rendered count: 0'] } },
+        { type: 'button', props: { 'data-testid': 'ssr-btn', children: ['Increment (post-hydrate)'] } },
+      ],
+    },
+  };
+};
+
+export component HydrateDemo() {
+  const [ssrHtml, setSsrHtml] = createSignal<string | null>(null);
+  const [hydrated, setHydrated] = createSignal(false);
+  const [hydrationLog, setHydrationLog] = createSignal<string[]>([]);
+  const [sandboxRef, setSandboxRef] = createSignal<HTMLDivElement | null>(null);
+
+  const log = (msg: string) => {
+    const ts = new Date().toLocaleTimeString('en-US', { hour12: false });
+    setHydrationLog((prev) => [`[${ts}] ${msg}`, ...prev].slice(0, 10));
+  };
+
+  const stepRender = () => {
+    try {
+      const result = renderToString(StaticCounter, { serializeState: false });
+      const html = (result as any)?.html ?? JSON.stringify(result);
+      setSsrHtml(html);
+      log('✅ renderToString complete');
+
+      const sandbox = sandboxRef();
+      if (sandbox) {
+        sandbox.innerHTML = typeof html === 'string' ? html : String(html);
+        log('✅ injected as innerHTML into sandbox div');
+      }
+    } catch (e) {
+      log(`❌ renderToString error: ${e}`);
+    }
+  };
+
+  const stepHydrate = () => {
+    const sandbox = sandboxRef();
+    if (!sandbox) {
+      log('❌ sandbox ref not ready');
+      return;
+    }
+
+    // Intercept console.warn to capture the B-07 partial-implementation message
+    const originalWarn = console.warn;
+    const collected: string[] = [];
+    console.warn = (...args: unknown[]) => {
+      collected.push(args.map(String).join(' '));
+      originalWarn(...args);
+    };
+
+    try {
+      hydrate(StaticCounter, sandbox);
+      setHydrated(true);
+      if (collected.length > 0) {
+        log(`⚠️ hydrate() warning: ${collected[0]}`);
+      } else {
+        log('✅ hydrate() completed without warnings');
+      }
+    } catch (e) {
+      log(`❌ hydrate() threw: ${e}`);
+    } finally {
+      console.warn = originalWarn;
+    }
+  };
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">4️⃣ SSR → hydrate() Lifecycle</h3>
+
+      <div
+        style="background: #172554; border: 1px solid #1e40af; border-radius: 6px; padding: 10px; margin-bottom: 14px;"
+      >
+        <strong style="color: #93c5fd; font-size: 12px;">B-07 Status</strong>
+        <p style="color: #bfdbfe; font-size: 12px; margin-top: 4px; margin-bottom: 0;">
+          <code>hydrate()</code> is partially implemented — it logs a warning and has a TODO for full
+          DOM reconciliation. This demo exercises the call path, captures the warning, and verifies
+          no exception is thrown. Track: <code>packages/pulsar.dev/src/ssr/hydrate.ts</code>.
+        </p>
+      </div>
+
+      <p class="demo-desc">
+        Step 1: <code>renderToString</code> → inject into sandbox <code>{'<div>'}</code>.
+        Step 2: call <code>hydrate(component, target)</code> → verify no throw + capture warnings.
+      </p>
+
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <button class="submit-btn" onClick={stepRender} disabled={ssrHtml() !== null}>
+          1️⃣ renderToString + inject
+        </button>
+        <button class="submit-btn" onClick={stepHydrate} disabled={!ssrHtml() || hydrated()}>
+          2️⃣ hydrate()
+        </button>
+        <button
+          class="submit-btn"
+          onClick={() => {
+            setSsrHtml(null);
+            setHydrated(false);
+            setHydrationLog([]);
+            const sandbox = sandboxRef();
+            if (sandbox) sandbox.innerHTML = '';
+          }}
+          style="background: #374151;"
+        >
+          ↺ Reset
+        </button>
+      </div>
+
+      <div
+        ref={(el: HTMLDivElement) => setSandboxRef(el)}
+        style="min-height: 60px; background: #0f172a; border: 1px dashed #334155; border-radius: 6px; padding: 12px; margin-bottom: 12px;"
+      >
+        <p style="color: #4b5563; font-size: 12px; font-style: italic;">
+          Sandbox div — SSR HTML injected here
+        </p>
+      </div>
+
+      <Show when={hydrationLog().length > 0}>
+        <pre class="result-pre" style="font-size: 11px; max-height: 140px; overflow-y: auto;">
+          {hydrationLog().join('\n')}
+        </pre>
+      </Show>
+    </div>
+  );
+}

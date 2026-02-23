@@ -9,24 +9,24 @@
  * Each outputs a SINGLE DOM element (input/textarea/select) + skeleton fallback
  */
 
-export { FCheckboxField } from './FCheckboxField';
-export { FInputField } from './FInputField';
-export { FRadioButton } from './FRadioButton';
-export { FSelectField } from './FSelectField';
-export { FTextareaField } from './FTextareaField';
-export { FToggleField } from './FToggleField';
+export { FCheckboxField } from './f-checkbox-field';
+export { FInputField } from './f-input-field';
+export { FRadioButton } from './f-radio-button';
+export { FSelectField } from './f-select-field';
+export { FTextareaField } from './f-textarea-field';
+export { FToggleField } from './f-toggle-field';
 
 /**
  * Utility components for field composition
  */
-export { FieldValidation } from './ValidationResults';
-export type { IFieldValidationProps } from './ValidationResults';
+export { FieldValidation } from './validation-results';
+export type { IFieldValidationProps } from './validation-results';
 
-export { HelperText } from './HelperText';
-export type { IHelperTextProps } from './HelperText';
+export { HelperText } from './helper-text';
+export type { IHelperTextProps } from './helper-text';
 
-export { FieldLabel } from './FieldLabel';
-export type { IFieldLabelProps } from './FieldLabel';
+export { FieldLabel } from './field-label';
+export type { IFieldLabelProps } from './field-label';
 
 // Note: Non-prefixed names (CheckboxField, InputField, etc.) are exported from ./integrated
 // to avoid naming conflicts. Use F-prefixed components directly for primitive bindings.

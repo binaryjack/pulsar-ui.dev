@@ -21,8 +21,12 @@ import { DragDropTestPage } from './showcase/drag-drop/drag-drop-test.psr';
 import { ErrorBoundaryTestPage } from './showcase/error-boundary/error-boundary-test.psr';
 import { ErrorBoundaryMegaPage } from './showcase/error-boundary/error-boundary-mega.psr';
 import { ContextTestPage } from './showcase/context/context-test.psr';
+import { FormsTestPage } from './showcase/forms/forms-test.psr';
+import { HttpTestPage } from './showcase/http/http-test.psr';
 import { AssignmentTest } from './showcase/tests/assignment-test.psr';
 import { SimpleTest } from './showcase/tests/simple-codegen-test.psr';
+import { RoutingTestPage } from './showcase/routing/routing-test.psr';
+import { SSRTestPage } from './showcase/ssr/ssr-test.psr';
 
 export interface IAppProps {
   id?: string;
@@ -66,6 +70,10 @@ component App() {
             <Route path="/error-boundary" component={ErrorBoundaryTestPage} label="Error Boundaries" />
             <Route path="/error-boundary-mega" component={ErrorBoundaryMegaPage} label="Error Boundaries MEGA" />
             <Route path="/context" component={ContextTestPage} label="Context API" />
+            <Route path="/forms" component={FormsTestPage} label="Forms" />
+            <Route path="/http" component={HttpTestPage} label="HTTP Client" />
+            <Route path="/routing" component={RoutingTestPage} label="Router" />
+            <Route path="/ssr" component={SSRTestPage} label="SSR" />
             <Route path="/about" component={AboutPage} label="About" />
           </Router>
         </main>

@@ -5,17 +5,17 @@
  */
 
 // New FieldSet wrappers (Field suffix)
-export { CheckboxField } from './CheckboxField';
-export { InputField } from './InputField';
-export { RadioGroupField } from './RadioGroupField';
-export { SelectField } from './SelectField';
-export { TextareaField } from './TextareaField';
-export { ToggleField } from './ToggleField';
+export { CheckboxField } from './checkbox-field';
+export { InputField } from './input-field';
+export { RadioGroupField } from './radio-group-field';
+export { SelectField } from './select-field';
+export { TextareaField } from './textarea-field';
+export { ToggleField } from './toggle-field';
 
 // Deprecated: Old naming conventions (remove in next major version)
-export { Checkbox } from './Checkbox';
-export { RadioGroup } from './RadioGroup';
-export { SelectInput } from './SelectInput';
-export { TextareaInput } from './TextareaInput';
-export { TextField } from './TextField';
-export { Toggle } from './Toggle';
+export { Checkbox } from './checkbox';
+export { RadioGroup } from './radio-group';
+export { SelectInput } from './select-input';
+export { TextField } from './text-field';
+export { TextareaInput } from './textarea-input';
+export { Toggle } from './toggle';

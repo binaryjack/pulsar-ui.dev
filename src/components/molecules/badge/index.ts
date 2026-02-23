@@ -2,6 +2,5 @@
  * Badge component exports
  */
 
-export { Badge } from './'
-export type { IBadgeProps } from './badge.type'
-
+export { Badge } from './badge.psr';
+export type { IBadgeProps } from './badge.type';

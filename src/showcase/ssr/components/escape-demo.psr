@@ -1,0 +1,80 @@
+/**
+ * Escape Demo
+ * escapeHtml / escapeAttribute — XSS field verification
+ * Input containing <script> tags → confirm output is escaped
+ */
+
+import { createSignal, escapeHtml, escapeAttribute, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+
+const XSS_PAYLOAD = '<script>alert("XSS")</script>';
+const ATTR_PAYLOAD = '" onmouseover="alert(1)"';
+const UNICODE_PAYLOAD = 'Hello & "world" \'test\' <value>';
+
+interface IEscapeCase { label: string; input: string; fn: (s: string) => string }
+
+const cases: IEscapeCase[] = [
+  { label: 'escapeHtml — XSS script tag', input: XSS_PAYLOAD, fn: escapeHtml },
+  { label: 'escapeAttribute — attribute injection', input: ATTR_PAYLOAD, fn: escapeAttribute },
+  { label: 'escapeHtml — HTML entities', input: UNICODE_PAYLOAD, fn: escapeHtml },
+];
+
+export component EscapeDemo() {
+  const [custom, setCustom] = createSignal('');
+  const escapedCustom = () => (custom() ? escapeHtml(custom()) : null);
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">2️⃣ escapeHtml / escapeAttribute — XSS Guard</h3>
+      <p class="demo-desc">
+        Every user-controlled value passed to <code>renderToString</code> is sanitised via
+        <code>escapeHtml</code> (text nodes) and <code>escapeAttribute</code> (attribute values).
+        The table below proves the output is inert.
+      </p>
+
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 12px; font-family: monospace;">
+          <thead>
+            <tr style="color: #6b7280; text-align: left;">
+              <th style="padding: 6px 8px; border-bottom: 1px solid #374151;">Function</th>
+              <th style="padding: 6px 8px; border-bottom: 1px solid #374151;">Input (raw)</th>
+              <th style="padding: 6px 8px; border-bottom: 1px solid #374151;">Output (escaped)</th>
+              <th style="padding: 6px 8px; border-bottom: 1px solid #374151;">Safe?</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cases.map((c) => {
+              const output = c.fn(c.input);
+              const safe = !output.includes('<script') && !output.includes('onmouseover');
+              return (
+                <tr style="border-bottom: 1px solid #1f2937;">
+                  <td style="padding: 6px 8px; color: #60a5fa;">{c.label}</td>
+                  <td style="padding: 6px 8px; color: #f87171;">{c.input}</td>
+                  <td style="padding: 6px 8px; color: #34d399;">{output}</td>
+                  <td style="padding: 6px 8px;">{safe ? '✅' : '❌'}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 14px;">
+        <p style="color: #94a3b8; font-size: 12px; margin-bottom: 6px;">Custom input:</p>
+        <input
+          class="field-input"
+          type="text"
+          placeholder="Type anything with <, >, &, quotes…"
+          value={custom()}
+          onInput={(e) => setCustom((e.target as HTMLInputElement).value)}
+          style="width: 100%; padding: 6px 10px; background: #1a1a1a; border: 1px solid #374151; border-radius: 4px; color: #e5e7eb; font-size: 13px;"
+        />
+        <Show when={escapedCustom()}>
+          <div class="state-panel" style="margin-top: 8px;">
+            <p style="color: #6b7280; font-size: 11px; margin-bottom: 3px;">escapeHtml output:</p>
+            <code style="color: #34d399; font-size: 13px;">{escapedCustom()}</code>
+          </div>
+        </Show>
+      </div>
+    </div>
+  );
+}

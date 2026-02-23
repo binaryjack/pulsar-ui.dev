@@ -1,0 +1,84 @@
+/**
+ * Retry Demo
+ * IRetryConfig — maxAttempts, backoff strategy
+ * Uses an intentionally failing endpoint to trigger retries
+ */
+
+import { createSignal, createHttpClient, useHttpGet, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import type { IRetryConfig } from '@pulsar-framework/pulsar.dev';
+
+const retryConfig: IRetryConfig = {
+  maxAttempts: 3,
+  delay: 600,
+  backoff: 'exponential',
+  retryOn: [500, 503],
+};
+
+const goodClient = createHttpClient({ baseURL: 'https://jsonplaceholder.typicode.com' });
+
+export component RetryDemo() {
+  const [trigger, setTrigger] = createSignal(false);
+  const [attempt, setAttempt] = createSignal(0);
+
+  // Track attempt count via a request interceptor (added at component scope for demo log)
+  const retryClientWithLog = createHttpClient({
+    baseURL: 'https://jsonplaceholder.typicode.com',
+    retry: { ...retryConfig, retryOn: [404] },
+    interceptors: {
+      request: [(cfg) => { setAttempt((n) => n + 1); return cfg; }],
+    },
+  });
+
+  const failingResult = useHttpGet<unknown>(retryClientWithLog, '/does-not-exist');
+  const goodResult = useHttpGet<{ id: number; title: string }>(goodClient, '/posts/1');
+
+  goodResult.execute().catch(() => {});
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">3️⃣ Retry with Backoff</h3>
+      <p class="demo-desc">
+        <code>IRetryConfig {'{ maxAttempts: 3, delay: 600, backoff: "exponential", retryOn: [404] }'}</code>.
+        Each attempt logged. Good request shown alongside for contrast.
+      </p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+        <div class="state-panel">
+          <strong style="color: #f87171;">Failing request (404 → retry)</strong>
+          <p style="font-size: 12px; color: #6b7280; margin-bottom: 8px;">Attempt counter: {attempt()}</p>
+          <button
+            class="submit-btn"
+            onClick={() => { setAttempt(0); setTrigger(true); failingResult.execute().catch(() => {}); }}
+            style="margin-bottom: 8px;"
+          >
+            🔁 Trigger Retry
+          </button>
+          <Show when={failingResult.loading()}>
+            <p class="status-loading">⏳ attempt {attempt()} / 3…</p>
+          </Show>
+          <Show when={failingResult.error()}>
+            <p class="status-fail">❌ Exhausted after {attempt()} attempts: {failingResult.error()?.message}</p>
+          </Show>
+        </div>
+
+        <div class="state-panel">
+          <strong style="color: #34d399;">Successful request (no retry)</strong>
+          <Show when={goodResult.loading()}>
+            <p class="status-loading">⏳ loading…</p>
+          </Show>
+          <Show when={goodResult.error()}>
+            <p class="status-fail">❌ {String(goodResult.error()?.message)}</p>
+          </Show>
+          <Show when={goodResult.data()}>
+            <pre class="result-pre">{JSON.stringify(goodResult.data(), null, 2)}</pre>
+          </Show>
+        </div>
+      </div>
+
+      <div class="state-panel">
+        <strong style="color: #94a3b8; font-size: 12px;">Config</strong>
+        <pre class="result-pre" style="font-size: 11px;">{JSON.stringify(retryConfig, null, 2)}</pre>
+      </div>
+    </div>
+  );
+}

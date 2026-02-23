@@ -1,0 +1,75 @@
+/**
+ * Guard Demo
+ * router.beforeEach(guard) — block navigation when form is dirty
+ * B-03 resolved: API is beforeEach, NOT beforeNavigate
+ */
+
+import { createSignal, useRouter, onCleanup, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+
+export component GuardDemo() {
+  const router = useRouter();
+  const [isDirty, setIsDirty] = createSignal(false);
+  const [blocked, setBlocked] = createSignal(false);
+  const [navLog, setNavLog] = createSignal<string[]>([]);
+
+  const ts = () => new Date().toLocaleTimeString('en-US', { hour12: false });
+  const log = (msg: string) => setNavLog((prev) => [`[${ts()}] ${msg}`, ...prev].slice(0, 8));
+
+  // Register guard — returns an unsubscribe fn
+  const unsubscribe = router.beforeEach((to, from) => {
+    if (isDirty()) {
+      setBlocked(true);
+      log(`🚫 BLOCKED: ${from} → ${to} (form is dirty)`);
+      return false;
+    }
+    setBlocked(false);
+    log(`✅ ALLOWED: ${from} → ${to}`);
+    return true;
+  });
+
+  onCleanup(unsubscribe);
+
+  const tryNavigate = async () => {
+    await router.navigate('/showcase/routing/guard-target');
+  };
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">5️⃣ Navigation Guard — beforeEach</h3>
+      <p class="demo-desc">
+        <code>router.beforeEach((to, from) ={'>'} boolean)</code> — returning <code>false</code> cancels navigation.
+        Guard removed via the returned unsubscribe function on cleanup.
+      </p>
+
+      <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px; flex-wrap: wrap;">
+        <label style="display: flex; align-items: center; gap: 8px; color: #e5e7eb; cursor: pointer;">
+          <input
+            type="checkbox"
+            checked={isDirty()}
+            onChange={(e) => setIsDirty((e.target as HTMLInputElement).checked)}
+          />
+          <span>Simulate dirty form</span>
+        </label>
+
+        <button class="submit-btn" onClick={tryNavigate}>
+          Navigate → /showcase/routing/guard-target
+        </button>
+      </div>
+
+      <div class="state-panel" style="margin-bottom: 8px;">
+        <span class={`badge ${isDirty() ? 'badge--on' : 'badge--off'}`} style="margin-right: 8px;">
+          {isDirty() ? '✏️ dirty' : '✔ clean'}
+        </span>
+        <Show when={blocked()}>
+          <span class="badge badge--on" style="background: #7f1d1d; color: #fca5a5;">🚫 last navigation blocked</span>
+        </Show>
+      </div>
+
+      <Show when={navLog().length > 0}>
+        <pre class="result-pre" style="font-size: 11px; max-height: 120px; overflow-y: auto;">
+          {navLog().join('\n')}
+        </pre>
+      </Show>
+    </div>
+  );
+}

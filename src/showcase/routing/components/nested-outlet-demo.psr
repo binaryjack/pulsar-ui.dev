@@ -1,0 +1,73 @@
+/**
+ * Nested Outlet Demo
+ * Parent route renders <Outlet /> — child routes render into the outlet slot
+ * Demonstrates multi-level routing composition
+ */
+
+import { createSignal, useRouter, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+
+const ChildOne = () => (
+  <div style="padding: 12px; background: #0f172a; border-radius: 6px; border-left: 3px solid #34d399;">
+    <strong style="color: #34d399;">Child Route A</strong>
+    <p style="color: #9ca3af; font-size: 13px; margin-top: 4px;">Rendered inside the parent {"<Outlet />"} slot</p>
+  </div>
+);
+
+const ChildTwo = () => (
+  <div style="padding: 12px; background: #0f172a; border-radius: 6px; border-left: 3px solid #f59e0b;">
+    <strong style="color: #f59e0b;">Child Route B</strong>
+    <p style="color: #9ca3af; font-size: 13px; margin-top: 4px;">Swapped reactively — parent layout stays intact</p>
+  </div>
+);
+
+const ParentLayout = (props: { children: JSX.Element }) => (
+  <div style="padding: 16px; background: #1e293b; border-radius: 8px; border: 1px solid #334155;">
+    <p style="color: #60a5fa; font-size: 13px; margin-bottom: 12px;">
+      📐 Parent layout (persistent) — active child renders below ↓
+    </p>
+    {props.children}
+  </div>
+);
+
+export component NestedOutletDemo() {
+  const router = useRouter();
+  const [active, setActive] = createSignal<'a' | 'b' | null>(null);
+
+  const go = async (child: 'a' | 'b') => {
+    setActive(child);
+    await router.navigate(`/showcase/routing/nested/${child}`);
+  };
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">4️⃣ Nested Outlet</h3>
+      <p class="demo-desc">
+        Parent component keeps its layout. Children swap reactively inside it.
+        Switching children does NOT unmount the parent.
+      </p>
+
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <button class="submit-btn" onClick={() => go('a')} style={active() === 'a' ? 'outline: 2px solid #34d399;' : ''}>
+          Child A
+        </button>
+        <button class="submit-btn" onClick={() => go('b')} style={active() === 'b' ? 'outline: 2px solid #f59e0b;' : ''}>
+          Child B
+        </button>
+      </div>
+
+      <ParentLayout>
+        <Show when={active() === 'a'}>
+          <ChildOne />
+        </Show>
+        <Show when={active() === 'b'}>
+          <ChildTwo />
+        </Show>
+      </ParentLayout>
+
+      <p style="color: #6b7280; font-size: 12px; margin-top: 8px;">
+        Active child: <code style="color: #e5e7eb;">{active() ?? 'none'}</code>
+        — path: <code style="color: #e5e7eb;">{router.location.pathname}</code>
+      </p>
+    </div>
+  );
+}

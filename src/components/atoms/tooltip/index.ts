@@ -2,4 +2,4 @@
  * Tooltip component - Index
  */
 
-export { Tooltip } from './';
+export { Tooltip } from './tooltip.psr';

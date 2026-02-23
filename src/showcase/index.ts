@@ -13,11 +13,15 @@ export { DragDropTestPage } from './drag-drop/drag-drop-test.psr';
 export { ErrorBoundaryMegaPage } from './error-boundary/error-boundary-mega.psr';
 export { ErrorBoundarySimplePage } from './error-boundary/error-boundary-simple.psr';
 export { ErrorBoundaryTestPage } from './error-boundary/error-boundary-test.psr';
+export { FormsTestPage } from './forms/forms-test.psr';
 export { HomePage } from './home/home.psr';
+export { HttpTestPage } from './http/http-test.psr';
 export { JsxTestPage } from './jsx/jsx-test.psr';
 export { PortalTestPage } from './portal/portal-test.psr';
 export { ReactivityTestPage } from './reactivity/reactivity-test.psr';
 export { ResourceTestPage } from './resource/resource-test.psr';
+export { RoutingTestPage } from './routing/routing-test.psr';
+export { SSRTestPage } from './ssr/ssr-test.psr';
 
 // Test pages
 export { AssignmentTest } from './tests/assignment-test.psr';

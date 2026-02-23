@@ -7,16 +7,18 @@ import { createSignal, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev
 import { PageHeader } from '../common/components/page-header.psr';
 import { DemoSection } from '../common/components/demo-section.psr';
 import { DemoButton } from '../common/components/demo-button.psr';
+import { AsyncValidationDemo } from './components/async-validation-demo.psr';
 import { BasicFormDemo } from './components/basic-form-demo.psr';
-import { ValidationDemo } from './components/validation-demo.psr';
 import { FieldStateDemo } from './components/field-state-demo.psr';
 import { SubmissionDemo } from './components/submission-demo.psr';
+import { ValidationDemo } from './components/validation-demo.psr';
 
 export component FormsTestPage() {
   const [showBasic, setShowBasic] = createSignal(false);
   const [showValidation, setShowValidation] = createSignal(false);
   const [showFieldState, setShowFieldState] = createSignal(false);
   const [showSubmission, setShowSubmission] = createSignal(false);
+  const [showAsyncValidation, setShowAsyncValidation] = createSignal(false);
 
   return (
     <div>
@@ -79,6 +81,20 @@ export component FormsTestPage() {
         />
         <Show when={showSubmission()}>
           <SubmissionDemo />
+        </Show>
+      </DemoSection>
+
+      <DemoSection
+        title="5️⃣ Async Validation + debounce(200)"
+        description="debounce(200) defers async validation on every keystroke. isValidating badge tracks in-flight state."
+        borderColor="#8b5cf6"
+      >
+        <DemoButton
+          label={showAsyncValidation() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowAsyncValidation((v) => !v)}
+        />
+        <Show when={showAsyncValidation()}>
+          <AsyncValidationDemo />
         </Show>
       </DemoSection>
     </div>

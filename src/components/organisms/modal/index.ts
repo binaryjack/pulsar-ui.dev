@@ -2,11 +2,11 @@
  * Modal component - Index
  */
 
-export { Modal } from './';
-export { ModalHeader } from './';
-export { ModalBody } from './';
-export { ModalFooter } from './';
-export type { IModalProps } from './modal.type';
-export type { IModalHeaderProps } from './modal-header.type';
+export { ModalBody } from './modal-body.psr';
 export type { IModalBodyProps } from './modal-body.type';
+export { ModalFooter } from './modal-footer.psr';
 export type { IModalFooterProps } from './modal-footer.type';
+export { ModalHeader } from './modal-header.psr';
+export type { IModalHeaderProps } from './modal-header.type';
+export { Modal } from './modal.psr';
+export type { IModalProps } from './modal.type';

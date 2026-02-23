@@ -4,7 +4,7 @@
  * Uses FormContext.Provider + TextField — FInputField handles all DOM binding via field.register() + field.ref()
  */
 
-import { createResource, createSignal, onCleanup, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, onCleanup, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
 import { createForm, f } from '@pulsar-framework/formular.dev';
 import type { IFormular } from '@pulsar-framework/formular.dev';
 import { FormContext, TextField } from '@/components/formular';
@@ -27,32 +27,32 @@ export component SubmissionDemo() {
   const [status, setStatus] = createSignal<SubmitStatus>('idle');
   const [submitResult, setSubmitResult] = createSignal('');
 
-  const form = createResource(async () => {
-    return await createForm({
-      schema: f.object({
-        firstName: f.string().min(1).nonempty().debounce(200),
-        lastName: f.string().min(1).nonempty().debounce(200),
-      }),
-      defaultValues: { firstName: '', lastName: '' },
-      onSubmit: async (data) => {
-        await new Promise<void>((resolve) => setTimeout(resolve, 800));
-        return data;
-      },
-      onSuccess: (data) => {
-        setSubmitResult(JSON.stringify(data, null, 2));
-        setStatus('success');
-      },
-      onError: (err) => {
-        setSubmitResult(String(err));
-        setStatus('error');
-      },
-    });
-  });
+  const [form, setForm] = createSignal<IFormular<{ firstName: string; lastName: string }> | null>(null);
 
-  onCleanup(() => form.data?.clear());
+  createForm({
+    schema: f.object({
+      firstName: f.string().min(1).nonempty().debounce(200),
+      lastName: f.string().min(1).nonempty().debounce(200),
+    }),
+    defaultValues: { firstName: '', lastName: '' },
+    onSubmit: async (data) => {
+      await new Promise<void>((resolve) => setTimeout(resolve, 800));
+      return data;
+    },
+    onSuccess: (data) => {
+      setSubmitResult(JSON.stringify(data, null, 2));
+      setStatus('success');
+    },
+    onError: (err) => {
+      setSubmitResult(String(err));
+      setStatus('error');
+    },
+  }).then(setForm);
+
+  onCleanup(() => form()?.clear());
 
   const handleSubmit = async () => {
-    const current = form.data;
+    const current = form();
     if (!current) return;
     setStatus('submitting');
     setSubmitResult('');
@@ -79,8 +79,8 @@ export component SubmissionDemo() {
         All field binding via <code>field.register()</code> + <code>field.ref()</code> inside <code>FInputField</code>.
       </p>
 
-      <Show when={form.data}>
-        <FormContext.Provider value={buildFormContext(form.data)}>
+      <Show when={form()}>
+        <FormContext.Provider value={buildFormContext(form()!)}>
           <div class="form-wrapper">
             <TextField name="firstName" label="First Name" showErrors={true} showGuides={true} />
             <TextField name="lastName" label="Last Name" showErrors={true} showGuides={true} />

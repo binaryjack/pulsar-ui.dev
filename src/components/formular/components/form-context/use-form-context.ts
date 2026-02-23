@@ -6,7 +6,7 @@
 
 import { useContext } from '@pulsar-framework/pulsar.dev';
 import type { IFormContext } from '../../types';
-import { FormContext } from './formContext';
+import { FormContext } from './form-context';
 
 /**
  * Hook for accessing form context

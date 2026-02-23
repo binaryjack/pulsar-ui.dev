@@ -21,8 +21,8 @@
       "@pulsar-framework/design-tokens/*": ["../pulsar-design-system/dist/src/*"],
       "@pulsar-framework/pulsar.dev": ["../pulsar.dev/dist/index.d.ts"],
       "@pulsar-framework/pulsar.dev/*": ["../pulsar.dev/dist/*"],
-      "@pulsar-framework/formular.dev": ["../formular.dev/dist/index.d.ts"],
-      "@pulsar-framework/formular.dev/*": ["../formular.dev/dist/*"]
+      "@pulsar-framework/formular.dev": ["../formular.dev/dist/types/formular-dev.es.d.ts"],
+      "@pulsar-framework/formular.dev/*": ["../formular.dev/dist/types/*"]
     }
   },
   "files": [

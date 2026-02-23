@@ -3,5 +3,5 @@
  * Exports the Stack components
  */
 
-export { Stack, VStack, HStack } from './';
+export { HStack, Stack, VStack } from './stack.psr';
 export type { IStackProps } from './stack.type';

@@ -19,6 +19,5 @@ export function isEmpty(value: any): boolean {
 }
 
 // Export hooks and utilities
-export * from './useFieldDescriptors';
-export * from './useFormularManager';
-
+export * from './use-field-descriptors';
+export * from './use-formular-manager';

@@ -1,0 +1,129 @@
+/**
+ * Async Validation Demo
+ * debounce(200) on f.string() — async uniqueness check via form.observe() + setTimeout
+ * Note: no asyncValidator() on the schema chain; async logic lives in the component.
+ */
+
+import { createSignal, createEffect, onCleanup, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { createForm, f } from '@pulsar-framework/formular.dev';
+import type { IFormular } from '@pulsar-framework/formular.dev';
+import { FormContext, TextField } from '@/components/formular';
+
+const buildFormContext = (form: IFormular<{ username: string; email: string }>) => ({
+  form,
+  getField: (name: string) => form.getField(name),
+  updateField: (name: string, val: unknown) => (form as any).updateField(name, val),
+  clearField: (name: string) => (form as any).clearField(name),
+  reset: () => form.reset(),
+  validateField: (name: string) => (form as any).validateField(name),
+  preValidateField: (name: string) => form.preValidateField(name),
+  validateForm: () => form.validateForm(),
+  getErrors: () => (form as any).getErrors(),
+});
+
+/**
+ * Simulate an async uniqueness check — resolves after 400 ms.
+ * Type "taken" to trigger the failure path.
+ */
+const checkUsernameUnique = (value: string): Promise<boolean> =>
+  new Promise((resolve) => setTimeout(() => resolve(value !== 'taken'), 400));
+
+export component AsyncValidationDemo() {
+  const [form, setForm] = createSignal<IFormular<{ username: string; email: string }> | null>(null);
+
+  createForm({
+    schema: f.object({
+      username: f.string().min(3).max(20).nonempty().debounce(200),
+      email: f.string().email().nonempty().debounce(200),
+    }),
+    defaultValues: { username: '', email: '' },
+  }).then(setForm);
+
+  const [isValidating, setIsValidating] = createSignal(false);
+  const [asyncError, setAsyncError] = createSignal<string | null>(null);
+  const [validationLog, setValidationLog] = createSignal<string[]>([]);
+
+  const log = (msg: string) => {
+    const ts = new Date().toLocaleTimeString('en-US', { hour12: false });
+    setValidationLog((prev) => [`[${ts}] ${msg}`, ...prev].slice(0, 10));
+  };
+
+  let unsub: (() => void) | undefined;
+  let timerId: ReturnType<typeof setTimeout> | undefined;
+
+  createEffect(() => {
+    unsub?.();
+    clearTimeout(timerId);
+    const currentForm = form();
+    if (!currentForm) return;
+
+    unsub = currentForm.observe('username', () => {
+      const value = String(currentForm.getData()['username'] ?? '');
+
+      clearTimeout(timerId);
+      if (value.length < 3) {
+        setAsyncError(null);
+        return;
+      }
+
+      setIsValidating(true);
+      log('⏳ Async uniqueness check running…');
+
+      timerId = setTimeout(async () => {
+        const unique = await checkUsernameUnique(value);
+        setIsValidating(false);
+        if (unique) {
+          setAsyncError(null);
+          log('✅ Username available');
+        } else {
+          setAsyncError(`"${value}" is already taken`);
+          log(`❌ "${value}" is already taken`);
+        }
+      }, 0);
+    });
+  });
+
+  onCleanup(() => {
+    clearTimeout(timerId);
+    unsub?.();
+    form()?.clear();
+  });
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">5️⃣ Async Validation + debounce(200)</h3>
+      <p class="demo-desc">
+        <code>f.string().debounce(200)</code> + <code>form.observe('username', cb)</code> — async uniqueness
+        check fires after schema debounce settles. Type <strong>"taken"</strong> to trigger the failure path.
+      </p>
+
+      <Show when={!form()}>
+        <p class="status-loading">⏳ Initialising form engine…</p>
+      </Show>
+
+      <Show when={form()}>
+        <FormContext.Provider value={buildFormContext(form()!)}>
+          <div class="form-wrapper">
+            <TextField name="username" label="Username (try: taken)" showErrors={true} showGuides={true} />
+            <TextField name="email" label="Email" showErrors={true} showGuides={true} />
+
+            <div class="state-panel" style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+              <span class={`badge ${isValidating() ? 'badge--on' : 'badge--off'}`}>
+                {isValidating() ? '⏳ validating…' : '✔ idle'}
+              </span>
+              <Show when={asyncError() !== null}>
+                <span class="badge badge--error" style="color: #dc2626;">❌ {asyncError()}</span>
+              </Show>
+            </div>
+
+            <Show when={validationLog().length > 0}>
+              <pre class="result-pre" style="margin-top: 10px; font-size: 11px; max-height: 140px; overflow-y: auto;">
+                {validationLog().join('\n')}
+              </pre>
+            </Show>
+          </div>
+        </FormContext.Provider>
+      </Show>
+    </div>
+  );
+}

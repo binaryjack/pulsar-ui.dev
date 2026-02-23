@@ -2,5 +2,5 @@
  * Input component exports
  */
 
-export { Input } from './'
-export type { IInputProps } from './input.type'
+export { Input } from './input.psr';
+export type { IInputProps } from './input.type';

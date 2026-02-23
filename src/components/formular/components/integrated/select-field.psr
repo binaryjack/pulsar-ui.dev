@@ -3,8 +3,8 @@ import {
   IFieldSetProps,
 } from '../../types/field-component.type';
 import { useFormContext } from '../form-context';
-import { ValidationResults } from '../modal/ValidationResults';
-import { FSelectField } from '../primitives/FSelectField';
+import { ValidationResults } from '../modal/validation-results';
+import { FSelectField } from '../primitives/f-select-field';
 
 /**
  * SelectField - Integrated select dropdown component

@@ -3,8 +3,8 @@ import {
   IFieldSetProps,
 } from '../../types/field-component.type';
 import { useFormContext } from '../form-context';
-import { ValidationResults } from '../modal/ValidationResults';
-import { FInputField } from '../primitives/FInputField';
+import { ValidationResults } from '../modal/validation-results';
+import { FInputField } from '../primitives/f-input-field';
 
 /**
  * InputField - Integrated text input component

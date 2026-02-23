@@ -3,8 +3,8 @@ import {
   IFieldSetProps,
 } from '../../types/field-component.type';
 import { useFormContext } from '../form-context';
-import { ValidationResults } from '../modal/ValidationResults';
-import { FCheckboxField } from '../primitives/FCheckboxField';
+import { ValidationResults } from '../modal/validation-results';
+import { FCheckboxField } from '../primitives/f-checkbox-field';
 
 /**
  * CheckboxField - Integrated checkbox component

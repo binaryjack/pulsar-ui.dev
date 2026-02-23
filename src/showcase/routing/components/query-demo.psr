@@ -1,0 +1,63 @@
+/**
+ * Query Params Demo
+ * useSearchParams() — [get, set] tuple, reactive read/write
+ */
+
+import { createSignal, useLocation, useSearchParams, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+
+export component QueryDemo() {
+  const location = useLocation();
+  const [, setSearch] = useSearchParams();
+  const [inputVal, setInputVal] = createSignal('');
+
+  const applyQuery = () => {
+    const q = inputVal().trim();
+    if (!q) return;
+    setSearch({ q, page: '1' });
+  };
+
+  const clearQuery = () => {
+    setSearch({});
+    setInputVal('');
+  };
+
+  // Derive a plain object from the reactive location.search string for display.
+  // location.search is a reactive getter — updates whenever the URL changes.
+  const currentParams = () => {
+    const raw = location.search;
+    if (!raw || raw === '?') return {};
+    return Object.fromEntries(new URLSearchParams(raw.replace(/^\?/, '')));
+  };
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">3️⃣ Search Params</h3>
+      <p class="demo-desc">
+        <code>useSearchParams()</code> returns a reactive <code>[get, set]</code> tuple.
+        Changes update <code>window.location.search</code> without navigation.
+      </p>
+
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <input
+          class="field-input"
+          type="text"
+          placeholder="search term…"
+          value={inputVal()}
+          onInput={(e) => setInputVal((e.target as HTMLInputElement).value)}
+          style="flex: 1; padding: 6px 10px; background: #1a1a1a; border: 1px solid #374151; border-radius: 4px; color: #e5e7eb;"
+        />
+        <button class="submit-btn" onClick={applyQuery}>Set ?q=…</button>
+        <button class="submit-btn" onClick={clearQuery} style="background: #374151;">Clear</button>
+      </div>
+
+      <div class="state-panel">
+        <strong style="color: #94a3b8; font-size: 12px;">Current search params</strong>
+        <pre class="result-pre">{JSON.stringify(currentParams(), null, 2)}</pre>
+      </div>
+
+      <p style="font-size: 12px; color: #6b7280; margin-top: 8px;">
+        Check browser address bar — <code>?q=…&amp;page=1</code> updates reactively.
+      </p>
+    </div>
+  );
+}

@@ -10,7 +10,7 @@
  * - All with just ONE hook call!
  */
 
-import { useField } from '../../hooks/useField';
+import { useField } from '../../hooks/use-field';
 import { useFormContext } from '../form-context';
 
 export interface IAdvancedTextFieldProps {

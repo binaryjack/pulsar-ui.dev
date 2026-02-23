@@ -20,6 +20,6 @@ export const ThemeContext = createContext({
 export const ThemeProvider = (props: { children: JSX.Element }) => {
   return ThemeContext.Provider({
     value: { theme: _theme, setTheme: _setTheme, primaryColor: _primaryColor, setPrimaryColor: _setPrimaryColor },
-    children: props.children
+    children: typeof props.children === 'function' ? props.children : () => props.children
   });
 };

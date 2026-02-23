@@ -17,4 +17,4 @@ export * from './primitives';
 export * from './integrated';
 
 // Debug components
-export { FormDataDisplay } from './debug/FormDataDisplay';
+export { FormDataDisplay } from './debug/form-data-display';

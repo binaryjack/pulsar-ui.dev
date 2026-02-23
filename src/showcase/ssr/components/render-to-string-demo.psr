@@ -1,0 +1,71 @@
+/**
+ * renderToString Demo
+ * Live renderToString output viewer — call against a stateful component, display raw HTML
+ */
+
+import { createSignal, renderToString, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+
+// A stateful component used as the SSR target
+const SampleComponent = () => {
+  return {
+    type: 'div',
+    props: {
+      className: 'ssr-sample',
+      children: [
+        { type: 'h2', props: { children: ['Hello from SSR'] } },
+        { type: 'p', props: { children: ['Rendered server-side at: ', new Date().toISOString()] } },
+        { type: 'ul', props: { children: [1, 2, 3].map((n) => ({ type: 'li', props: { children: [`Item ${n}`] } })) } },
+      ],
+    },
+  };
+};
+
+export component RenderToStringDemo() {
+  const [output, setOutput] = createSignal<{ html: string; styles?: string[] } | null>(null);
+  const [elapsed, setElapsed] = createSignal<number | null>(null);
+  const [error, setError] = createSignal<string | null>(null);
+
+  const run = () => {
+    setError(null);
+    try {
+      const t0 = performance.now();
+      const result = renderToString(SampleComponent, { serializeState: false });
+      const t1 = performance.now();
+      setElapsed(+(t1 - t0).toFixed(3));
+      setOutput(result as unknown as { html: string });
+    } catch (e) {
+      setError(String(e));
+    }
+  };
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">1️⃣ renderToString — Live Output Viewer</h3>
+      <p class="demo-desc">
+        <code>renderToString(componentFn, options)</code> — executes a component tree synchronously,
+        returns an <code>IRenderResult</code> with the HTML string. Displayed below as a
+        syntax-highlighted <code>{'<pre>'}</code>.
+      </p>
+
+      <button class="submit-btn" onClick={run} style="margin-bottom: 12px;">
+        ▶ Run renderToString
+      </button>
+
+      <Show when={error()}>
+        <p class="status-fail">❌ {error()}</p>
+      </Show>
+
+      <Show when={output()}>
+        <div class="state-panel">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <strong style="color: #94a3b8; font-size: 12px;">IRenderResult.html</strong>
+            <span style="color: #6b7280; font-size: 11px;">⏱ {elapsed()}ms</span>
+          </div>
+          <pre class="result-pre" style="white-space: pre-wrap; word-break: break-all; max-height: 280px; overflow-y: auto; font-size: 11px;">
+            {JSON.stringify(output(), null, 2)}
+          </pre>
+        </div>
+      </Show>
+    </div>
+  );
+}

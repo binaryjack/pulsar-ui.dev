@@ -2,4 +2,4 @@
  * FormProvider exports
  */
 
-export { FormProvider } from './FormProvider';
+export { FormProvider } from './form-provider';

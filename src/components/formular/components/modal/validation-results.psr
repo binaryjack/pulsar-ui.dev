@@ -10,8 +10,8 @@
  */
 
 import { useFormContext } from '../form-context';
-import { ErrorMessage } from './ErrorMessage';
-import { GuideMessage } from './GuideMessage';
+import { ErrorMessage } from './error-message';
+import { GuideMessage } from './guide-message';
 
 interface IValidationResultsProps {
   readonly name: string;

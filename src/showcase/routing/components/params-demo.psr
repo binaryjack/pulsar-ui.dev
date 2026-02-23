@@ -1,0 +1,54 @@
+/**
+ * Params Demo
+ * useRoute() — currentParams reactive on path change
+ * Simulates /user/:id navigation and reads params.id
+ */
+
+import { createSignal, useRouter, useParams, createEffect, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+
+export component ParamsDemo() {
+  const router = useRouter();
+  const [paramHistory, setParamHistory] = createSignal<string[]>([]);
+
+  const ids = [1, 2, 3, 42, 99];
+
+  const navigateTo = async (id: number) => {
+    await router.navigate(`/showcase/routing/user/${id}`);
+  };
+
+  createEffect(() => {
+    const params = useParams();
+    if (params?.id) {
+      const ts = new Date().toLocaleTimeString('en-US', { hour12: false });
+      setParamHistory((prev) => [`[${ts}] id = ${params.id}`, ...prev].slice(0, 8));
+    }
+  });
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">2️⃣ Route Params — /user/:id</h3>
+      <p class="demo-desc">
+        <code>useParams()</code> — reactive on every navigation.
+      </p>
+
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        {ids.map((id) => (
+          <button class="submit-btn" onClick={() => navigateTo(id)} style="font-size: 12px;">
+            id={id}
+          </button>
+        ))}
+      </div>
+
+      <div class="state-panel" style="margin-bottom: 8px;">
+        <strong style="color: #94a3b8; font-size: 12px;">Current params</strong>
+        <pre class="result-pre">{JSON.stringify(useParams(), null, 2)}</pre>
+      </div>
+
+      <Show when={paramHistory().length > 0}>
+        <pre class="result-pre" style="font-size: 11px; max-height: 100px; overflow-y: auto;">
+          {paramHistory().join('\n')}
+        </pre>
+      </Show>
+    </div>
+  );
+}

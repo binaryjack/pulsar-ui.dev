@@ -1,0 +1,96 @@
+/**
+ * useSync Demo
+ * Bridge an external reactive store into Pulsar reactivity
+ * useSync(subscribe, getSnapshot) → () => T
+ *
+ * Pattern: similar to React's useSyncExternalStore
+ * Use-case: formular.dev signals, external EventEmitter, RxJS observable
+ */
+
+import { createSignal, useSync } from '@pulsar-framework/pulsar.dev';
+
+/**
+ * Minimal external store — simulates a non-Pulsar reactive system
+ * (e.g. formular.dev internal store, a game loop counter, an RxJS subject)
+ */
+const ExternalCounter = (() => {
+  let value = 0;
+  const listeners = new Set<() => void>();
+
+  return {
+    increment() {
+      value += 1;
+      listeners.forEach((l) => l());
+    },
+    decrement() {
+      value -= 1;
+      listeners.forEach((l) => l());
+    },
+    reset() {
+      value = 0;
+      listeners.forEach((l) => l());
+    },
+    subscribe(listener: () => void) {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+    getSnapshot() {
+      return value;
+    },
+  };
+})();
+
+export component UseSyncDemo() {
+  // Bridge the external store into Pulsar's reactive graph
+  const externalCount = useSync(
+    (notify) => ExternalCounter.subscribe(notify),
+    () => ExternalCounter.getSnapshot(),
+  );
+
+  // Example: a Pulsar signal that depends on the external value via a memo
+  const [multiplier, setMultiplier] = createSignal(2);
+  const doubled = () => externalCount() * multiplier();
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">5️⃣ useSync — External Store Bridge</h3>
+      <p class="demo-desc">
+        <code>useSync(subscribe, getSnapshot)</code> — like <code>useSyncExternalStore</code>.
+        Bridges non-Pulsar reactive stores (formular.dev, RxJS, etc.) into the Pulsar signal graph.
+        The returned accessor is fully reactive — memos and effects re-run when the store changes.
+      </p>
+
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
+        <button class="submit-btn" onClick={() => ExternalCounter.increment()}>+ Increment</button>
+        <button class="submit-btn" onClick={() => ExternalCounter.decrement()}>− Decrement</button>
+        <button class="submit-btn" onClick={() => ExternalCounter.reset()} style="background: #374151;">↺ Reset</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+        <div class="state-panel" style="text-align: center;">
+          <p style="color: #94a3b8; font-size: 12px;">External store value</p>
+          <p style="color: #60a5fa; font-size: 32px; font-weight: bold;">{externalCount()}</p>
+          <p style="color: #4b5563; font-size: 10px;">externalCount()</p>
+        </div>
+        <div class="state-panel" style="text-align: center;">
+          <p style="color: #94a3b8; font-size: 12px;">Pulsar multiplier</p>
+          <p style="color: #f59e0b; font-size: 32px; font-weight: bold;">{multiplier()}</p>
+          <div style="display: flex; gap: 4px; justify-content: center; margin-top: 4px;">
+            <button class="submit-btn" style="padding: 2px 8px;" onClick={() => setMultiplier((n) => n - 1)}>−</button>
+            <button class="submit-btn" style="padding: 2px 8px;" onClick={() => setMultiplier((n) => n + 1)}>+</button>
+          </div>
+        </div>
+        <div class="state-panel" style="text-align: center;">
+          <p style="color: #94a3b8; font-size: 12px;">Derived (external × Pulsar)</p>
+          <p style="color: #34d399; font-size: 32px; font-weight: bold;">{doubled()}</p>
+          <p style="color: #4b5563; font-size: 10px;">externalCount() × multiplier()</p>
+        </div>
+      </div>
+
+      <p style="color: #6b7280; font-size: 12px;">
+        The external store notifies Pulsar via the <code>subscribe</code> callback. No Pulsar signal owns the external state —
+        <code>getSnapshot</code> reads it synchronously whenever the graph needs to re-evaluate.
+      </p>
+    </div>
+  );
+}

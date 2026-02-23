@@ -2,6 +2,5 @@
  * Textarea component exports
  */
 
-export { Textarea } from './'
-export type { ITextareaProps } from './textarea.type'
-
+export { Textarea } from './textarea.psr';
+export type { ITextareaProps } from './textarea.type';

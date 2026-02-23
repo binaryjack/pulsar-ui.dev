@@ -1,0 +1,88 @@
+/**
+ * P1-02 HTTP Showcase
+ * HttpClient · createHttpClient · useHttpGet · useHttpPost
+ * Interceptors · Retry · Abort
+ * Real network — jsonplaceholder.typicode.com
+ */
+
+import { createSignal, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { DemoButton } from '../common/components/demo-button.psr';
+import { BasicRequestsDemo } from './components/basic-requests-demo.psr';
+import { InterceptorsDemo } from './components/interceptors-demo.psr';
+import { RetryDemo } from './components/retry-demo.psr';
+import { AbortDemo } from './components/abort-demo.psr';
+
+export component HttpTestPage() {
+  const [showBasic, setShowBasic] = createSignal(false);
+  const [showInterceptors, setShowInterceptors] = createSignal(false);
+  const [showRetry, setShowRetry] = createSignal(false);
+  const [showAbort, setShowAbort] = createSignal(false);
+
+  return (
+    <div>
+      <PageHeader
+        title="HTTP Client"
+        emoji="🌐"
+        description="P1-02 · createHttpClient · useHttpGet / useHttpPost · interceptors · retry · abort"
+      />
+
+      <DemoSection
+        title="1️⃣ Basic GET + POST"
+        description="createHttpClient at module scope. useHttpGet / useHttpPost with real JSONPlaceholder calls."
+        borderColor="#3b82f6"
+      >
+        <DemoButton
+          label={showBasic() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowBasic((v) => !v)}
+        />
+        <Show when={showBasic()}>
+          <BasicRequestsDemo />
+        </Show>
+      </DemoSection>
+
+      <DemoSection
+        title="2️⃣ Interceptors"
+        description="RequestInterceptor injects Authorization header. ResponseInterceptor logs latency. ErrorInterceptor catches failures."
+        borderColor="#8b5cf6"
+      >
+        <DemoButton
+          label={showInterceptors() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowInterceptors((v) => !v)}
+        />
+        <Show when={showInterceptors()}>
+          <InterceptorsDemo />
+        </Show>
+      </DemoSection>
+
+      <DemoSection
+        title="3️⃣ Retry with Backoff"
+        description="IRetryConfig: maxAttempts, delay, exponential backoff. Triggers on configured status codes."
+        borderColor="#f59e0b"
+      >
+        <DemoButton
+          label={showRetry() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowRetry((v) => !v)}
+        />
+        <Show when={showRetry()}>
+          <RetryDemo />
+        </Show>
+      </DemoSection>
+
+      <DemoSection
+        title="4️⃣ Abort on Unmount"
+        description="Request cancelled when component unmounts mid-flight. AbortError confirms no stale state updates."
+        borderColor="#ef4444"
+      >
+        <DemoButton
+          label={showAbort() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowAbort((v) => !v)}
+        />
+        <Show when={showAbort()}>
+          <AbortDemo />
+        </Show>
+      </DemoSection>
+    </div>
+  );
+}

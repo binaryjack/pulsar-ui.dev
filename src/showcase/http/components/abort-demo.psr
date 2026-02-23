@@ -1,0 +1,87 @@
+/**
+ * Abort Demo
+ * Request cancelled when component unmounts mid-flight → AbortError in console
+ * Uses a slow endpoint (artificial 2s delay via query param) and toggleMount to force unmount
+ */
+
+import { createSignal, createHttpClient, useHttpGet, onCleanup, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+
+const slowClient = createHttpClient({
+  baseURL: 'https://jsonplaceholder.typicode.com',
+  timeout: 10_000,
+});
+
+export const AbortInner = () => {
+  // /posts?_delay=2000 is not a real JSONPlaceholder param but the request itself
+  // will be aborted before it completes when the parent unmounts.
+  const result = useHttpGet<unknown[]>(slowClient, '/posts');
+  result.execute();
+
+  onCleanup(() => {
+    console.log('[AbortDemo] component unmounted — request should be aborted');
+  });
+
+  return (
+    <div>
+      <Show when={result.loading()}>
+        <p class="status-loading">⏳ Request in-flight… unmount now to abort</p>
+      </Show>
+      <Show when={result.error()}>
+        <p class="status-fail">
+          {(result.error() as any)?.name === 'AbortError'
+            ? '✅ AbortError — request was correctly cancelled on unmount'
+            : `❌ ${result.error()?.message}`}
+        </p>
+      </Show>
+      <Show when={result.data()}>
+        <p class="status-ok">✅ Completed (unmount was too slow) — {(result.data() as unknown[])?.length} items</p>
+      </Show>
+    </div>
+  );
+};
+
+export component AbortDemo() {
+  const [mounted, setMounted] = createSignal(false);
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">4️⃣ Abort on Unmount</h3>
+      <p class="demo-desc">
+        Mount the inner component to start a request. Unmount before it resolves.
+        <code>AbortError</code> in the console confirms the request was cancelled — no
+        state-update-after-unmount warning.
+      </p>
+
+      <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+        <button
+          class="submit-btn"
+          onClick={() => setMounted(true)}
+          disabled={mounted()}
+        >
+          🟢 Mount + Start Request
+        </button>
+        <button
+          class="submit-btn"
+          onClick={() => setMounted(false)}
+          disabled={!mounted()}
+          style="background: #7f1d1d;"
+        >
+          🔴 Unmount (Abort)
+        </button>
+      </div>
+
+      <div class="state-panel" style="min-height: 60px;">
+        <Show when={!mounted()}>
+          <p style="color: #4b5563; font-size: 13px;">Component is unmounted.</p>
+        </Show>
+        <Show when={mounted()}>
+          <AbortInner />
+        </Show>
+      </div>
+
+      <p style="color: #6b7280; font-size: 12px; margin-top: 8px;">
+        Check DevTools console for the <code>AbortError</code> log.
+      </p>
+    </div>
+  );
+}

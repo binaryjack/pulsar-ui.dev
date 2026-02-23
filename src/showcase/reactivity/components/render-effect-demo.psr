@@ -1,0 +1,72 @@
+/**
+ * createRenderEffect Demo
+ * ⚠️ B-01 BLOCKER: `createRenderEffect` does not exist in @pulsar-framework/pulsar.dev
+ *
+ * This component renders a blocker notice when the primitive is absent.
+ * Once `createRenderEffect(fn)` is implemented (synchronous-flush variant of createEffect
+ * that runs before paint), replace the execution-order log below with the real API.
+ *
+ * INTENDED DEMO (post-fix):
+ *   createRenderEffect(() => log('renderEffect: ' + Date.now()))
+ *   createEffect(() => log('effect: ' + Date.now()))
+ *   // Sequence: renderEffect entry always appears BEFORE effect entry in the log
+ */
+
+import { createSignal, createEffect } from '@pulsar-framework/pulsar.dev';
+
+export component RenderEffectDemo() {
+  const [trigger, setTrigger] = createSignal(0);
+  const [log, setLog] = createSignal<{ label: string; ts: number }[]>([]);
+
+  // Simulate execution order — createEffect only (no createRenderEffect available)
+  createEffect(() => {
+    trigger(); // subscribe
+    setLog((prev) => [
+      ...prev,
+      { label: 'createEffect (async)', ts: performance.now() },
+    ].slice(-10));
+  });
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">7️⃣ createRenderEffect — Sync-Before-Paint</h3>
+
+      <div
+        style="background: #422006; border: 1px solid #92400e; border-radius: 6px; padding: 12px; margin-bottom: 14px;"
+      >
+        <strong style="color: #fbbf24;">⚠️ B-01 BLOCKER</strong>
+        <p style="color: #fde68a; font-size: 13px; margin-top: 6px; margin-bottom: 0;">
+          <code>createRenderEffect(fn)</code> does not exist in <code>@pulsar-framework/pulsar.dev</code>.
+          The demo below only shows <code>createEffect</code> timing — the synchronous-before-paint
+          variant cannot be demonstrated until the primitive is implemented.
+        </p>
+        <p style="color: #fde68a; font-size: 12px; margin-top: 6px; margin-bottom: 0;">
+          Fix: implement <code>createRenderEffect</code> as a synchronous-flush variant of
+          <code>createEffect</code> in <code>packages/pulsar.dev/src/reactivity/</code>.
+        </p>
+      </div>
+
+      <p class="demo-desc">
+        <strong>Concept:</strong> <code>createRenderEffect(fn)</code> fires <em>synchronously before paint</em>,
+        while <code>createEffect(fn)</code> fires <em>asynchronously after paint</em>.
+        In the full demo, tapping "Trigger" would show two log entries:
+        <code>renderEffect</code> always at an earlier <code>performance.now()</code> timestamp.
+      </p>
+
+      <button class="submit-btn" onClick={() => setTrigger((n) => n + 1)} style="margin-bottom: 12px;">
+        ⚡ Trigger ({trigger()})
+      </button>
+
+      <div class="state-panel">
+        <strong style="color: #94a3b8; font-size: 12px;">Execution log (createEffect only)</strong>
+        <div style="max-height: 140px; overflow-y: auto; font-size: 11px; font-family: monospace; margin-top: 6px;">
+          {log().map((entry) => (
+            <div style="color: #a5b4fc; margin-bottom: 3px;">
+              <span style="color: #4b5563;">t={entry.ts.toFixed(2)}ms</span> {entry.label}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

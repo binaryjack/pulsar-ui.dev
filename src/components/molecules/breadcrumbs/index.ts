@@ -3,6 +3,6 @@
  * Exports the Breadcrumbs component
  */
 
-export { Breadcrumbs, BreadcrumbItem } from './';
-export type { IBreadcrumbsProps } from './breadcrumbs.type';
 export type { IBreadcrumbItemProps } from './breadcrumb-item.type';
+export { BreadcrumbItem, Breadcrumbs } from './breadcrumbs.psr';
+export type { IBreadcrumbsProps } from './breadcrumbs.type';

@@ -2,6 +2,5 @@
  * Radio component exports
  */
 
-export { Radio } from './'
-export type { IRadioProps } from './radio.type'
-
+export { Radio } from './radio.psr';
+export type { IRadioProps } from './radio.type';

@@ -3,7 +3,7 @@
  * createForm + f.object schema + FormContext.Provider + TextField
  */
 
-import { createResource, onCleanup, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, onCleanup, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
 import { createForm, f } from '@pulsar-framework/formular.dev';
 import type { IFormular } from '@pulsar-framework/formular.dev';
 import { FormContext, TextField } from '@/components/formular';
@@ -21,17 +21,17 @@ const buildFormContext = (form: IFormular<{ username: string; email: string }>) 
 });
 
 export component BasicFormDemo() {
-  const form = createResource(async () => {
-    return await createForm({
-      schema: f.object({
-        username: f.string().min(3).max(20).nonempty().debounce(200),
-        email: f.string().email().nonempty().debounce(200),
-      }),
-      defaultValues: { username: '', email: '' },
-    });
-  });
+  const [form, setForm] = createSignal<IFormular<{ username: string; email: string }> | null>(null);
 
-  onCleanup(() => form.data?.clear());
+  createForm({
+    schema: f.object({
+      username: f.string().min(3).max(20).nonempty().debounce(200),
+      email: f.string().email().nonempty().debounce(200),
+    }),
+    defaultValues: { username: '', email: '' },
+  }).then(setForm);
+
+  onCleanup(() => form()?.clear());
 
   return (
     <div class="demo-card">
@@ -41,12 +41,12 @@ export component BasicFormDemo() {
         Binding, validation and error display fully managed by formular.dev.
       </p>
 
-      <Show when={form.isLoading}>
+      <Show when={!form()}>
         <p class="status-loading">⏳ Initialising form engine…</p>
       </Show>
 
-      <Show when={form.data}>
-        <FormContext.Provider value={buildFormContext(form.data)}>
+      <Show when={form()}>
+        <FormContext.Provider value={buildFormContext(form()!)}>
           <div class="form-wrapper">
             <TextField name="username" label="Username (3–20 chars)" showErrors={true} showGuides={true} />
             <TextField name="email" label="Email" showErrors={true} showGuides={true} />

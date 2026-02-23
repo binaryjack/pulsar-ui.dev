@@ -30,6 +30,6 @@ export const SettingsContext = createContext({
 export const SettingsProvider = (props: SettingsProviderProps) => {
   return SettingsContext.Provider({
     value: { fontSize: _fontSize, setFontSize: _setFontSize, notifications: _notifications, setNotifications: _setNotifications, language: _language, setLanguage: _setLanguage },
-    children: props.children
+    children: typeof props.children === 'function' ? props.children : () => props.children
   });
 };

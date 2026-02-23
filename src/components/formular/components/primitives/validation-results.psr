@@ -12,7 +12,7 @@
  * ```
  */
 
-import { useField } from '../../hooks/useField';
+import { useField } from '../../hooks/use-field';
 import type { IFieldError } from '../../types';
 import { useFormContext } from '../form-context';
 

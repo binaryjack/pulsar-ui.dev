@@ -2,6 +2,5 @@
  * Footer component exports
  */
 
-export { Footer } from './'
-export type { IFooterProps } from './footer.type'
-
+export { Footer } from './footer.psr';
+export type { IFooterProps } from './footer.type';

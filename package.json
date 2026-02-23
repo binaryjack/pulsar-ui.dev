@@ -35,6 +35,7 @@
     "tailwind"
   ],
   "dependencies": {
+    "@pulsar-framework/formular.dev": "workspace:^",
     "@pulsar-framework/design-tokens": "workspace:^",
     "@pulsar-framework/pulsar.dev": "workspace:*",
     "@types/prismjs": "^1.26.5",
@@ -46,7 +47,7 @@
     "postcss": "^8.4.33",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.9.3",
-    "vite": "^6.0.0"
+    "vite": "^6.4.1"
   },
   "author": "Tadeo Piana <https://www.linkedin.com/in/tadeopiana/>",
   "license": "MIT",

@@ -1,0 +1,90 @@
+/**
+ * Interceptors Demo
+ * RequestInterceptor → inject auth header
+ * ResponseInterceptor → log latency
+ * ErrorInterceptor → catch 4xx / 5xx globally
+ */
+
+import { createSignal, createHttpClient, useHttpGet, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import type { RequestInterceptor, ResponseInterceptor, ErrorInterceptor } from '@pulsar-framework/pulsar.dev';
+
+interface IRequestLog { type: 'req' | 'res' | 'err'; message: string; ts: string }
+
+const buildInterceptedClient = (addLog: (l: IRequestLog) => void) => {
+  const onRequest: RequestInterceptor = (config) => {
+    addLog({ type: 'req', message: `→ ${config.method ?? 'GET'} ${config.url}  [Authorization: Bearer demo-token]`, ts: ts() });
+    return { ...config, headers: { ...(config.headers ?? {}), Authorization: 'Bearer demo-token' } };
+  };
+
+  const onResponse: ResponseInterceptor = (response) => {
+    addLog({ type: 'res', message: `← ${response.status} ${response.config?.url}`, ts: ts() });
+    return response;
+  };
+
+  const onError: ErrorInterceptor = (error) => {
+    addLog({ type: 'err', message: `💥 ${error.message}`, ts: ts() });
+    return Promise.reject(error);
+  };
+
+  return createHttpClient({
+    baseURL: 'https://jsonplaceholder.typicode.com',
+    interceptors: { request: [onRequest], response: [onResponse], error: [onError] },
+  });
+};
+
+const ts = () => new Date().toLocaleTimeString('en-US', { hour12: false });
+
+export component InterceptorsDemo() {
+  const [logs, setLogs] = createSignal<IRequestLog[]>([]);
+  const addLog = (l: IRequestLog) => setLogs((prev) => [l, ...prev].slice(0, 12));
+
+  const client = buildInterceptedClient(addLog);
+  const todos = useHttpGet<{ id: number; title: string; completed: boolean }[]>(client, '/todos?_limit=3');
+
+  todos.execute();
+
+  const logColor = (type: IRequestLog['type']) => {
+    if (type === 'req') return '#60a5fa';
+    if (type === 'res') return '#34d399';
+    return '#f87171';
+  };
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">2️⃣ Request / Response / Error Interceptors</h3>
+      <p class="demo-desc">
+        Interceptor chain: <code>RequestInterceptor</code> injects <code>Authorization</code> header,
+        <code>ResponseInterceptor</code> logs latency, <code>ErrorInterceptor</code> catches failures.
+      </p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div>
+          <strong style="color: #94a3b8; font-size: 13px;">Response</strong>
+          <Show when={todos.loading()}>
+            <p class="status-loading">⏳ loading…</p>
+          </Show>
+          <Show when={todos.error()}>
+            <p class="status-fail">❌ {String(todos.error()?.message)}</p>
+          </Show>
+          <Show when={todos.data()}>
+            <pre class="result-pre">{JSON.stringify(todos.data()?.slice(0, 3), null, 2)}</pre>
+          </Show>
+        </div>
+
+        <div>
+          <strong style="color: #94a3b8; font-size: 13px;">Interceptor Log</strong>
+          <div style="background: #0f0f0f; border-radius: 4px; padding: 8px; max-height: 180px; overflow-y: auto; font-size: 11px; font-family: monospace;">
+            <Show when={logs().length === 0}>
+              <p style="color: #4b5563;">No events yet…</p>
+            </Show>
+            {logs().map((l) => (
+              <div style={`color: ${logColor(l.type)}; margin-bottom: 4px;`}>
+                <span style="color: #4b5563;">{l.ts} </span>{l.message}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -4,8 +4,8 @@ import {
   IFieldSetProps,
 } from '../../types/field-component.type';
 import { useFormContext } from '../form-context';
-import { ValidationResults } from '../modal/ValidationResults';
-import { FRadioButton } from '../primitives/FRadioButton';
+import { ValidationResults } from '../modal/validation-results';
+import { FRadioButton } from '../primitives/f-radio-button';
 
 /**
  * RadioGroupField - Integrated radio button group component

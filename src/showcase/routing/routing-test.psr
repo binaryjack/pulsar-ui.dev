@@ -1,0 +1,102 @@
+/**
+ * P1-03 Router Showcase
+ * navigate · route params · search params · nested Outlet · beforeEach guard
+ */
+
+import { createSignal, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { DemoButton } from '../common/components/demo-button.psr';
+import { NavigationDemo } from './components/navigation-demo.psr';
+import { ParamsDemo } from './components/params-demo.psr';
+import { QueryDemo } from './components/query-demo.psr';
+import { NestedOutletDemo } from './components/nested-outlet-demo.psr';
+import { GuardDemo } from './components/guard-demo.psr';
+
+export component RoutingTestPage() {
+  const [showNav, setShowNav] = createSignal(false);
+  const [showParams, setShowParams] = createSignal(false);
+  const [showQuery, setShowQuery] = createSignal(false);
+  const [showOutlet, setShowOutlet] = createSignal(false);
+  const [showGuard, setShowGuard] = createSignal(false);
+
+  return (
+    <div>
+      <PageHeader
+        title="Router — Full Navigation Surface"
+        emoji="🧭"
+        description="P1-03 · navigate · params · query · Outlet · beforeEach guard"
+      />
+
+      <DemoSection
+        title="1️⃣ Programmatic Navigation"
+        description="router.navigate(path) — Promise-based, history-aware."
+        borderColor="#3b82f6"
+      >
+        <DemoButton
+          label={showNav() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowNav((v) => !v)}
+        />
+        <Show when={showNav()}>
+          <NavigationDemo />
+        </Show>
+      </DemoSection>
+
+      <DemoSection
+        title="2️⃣ Route Params"
+        description="useRoute() + router.currentParams — reactive on every path change."
+        borderColor="#8b5cf6"
+      >
+        <DemoButton
+          label={showParams() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowParams((v) => !v)}
+        />
+        <Show when={showParams()}>
+          <ParamsDemo />
+        </Show>
+      </DemoSection>
+
+      <DemoSection
+        title="3️⃣ Search / Query Params"
+        description="useSearchParams() [get, set] tuple — updates window.location.search reactively."
+        borderColor="#10b981"
+      >
+        <DemoButton
+          label={showQuery() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowQuery((v) => !v)}
+        />
+        <Show when={showQuery()}>
+          <QueryDemo />
+        </Show>
+      </DemoSection>
+
+      <DemoSection
+        title="4️⃣ Nested Outlet"
+        description="Parent layout persists. <Outlet /> renders matched child route."
+        borderColor="#f59e0b"
+      >
+        <DemoButton
+          label={showOutlet() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowOutlet((v) => !v)}
+        />
+        <Show when={showOutlet()}>
+          <NestedOutletDemo />
+        </Show>
+      </DemoSection>
+
+      <DemoSection
+        title="5️⃣ Navigation Guard — beforeEach"
+        description="router.beforeEach((to, from) => boolean) — blocks nav when form is dirty. Guard cleaned up via returned unsubscribe fn."
+        borderColor="#ef4444"
+      >
+        <DemoButton
+          label={showGuard() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowGuard((v) => !v)}
+        />
+        <Show when={showGuard()}>
+          <GuardDemo />
+        </Show>
+      </DemoSection>
+    </div>
+  );
+}

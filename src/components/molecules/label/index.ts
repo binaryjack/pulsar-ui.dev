@@ -2,6 +2,5 @@
  * Label component exports
  */
 
-export { Label } from './'
-export type { ILabelProps } from './label.type'
-
+export { Label } from './label.psr';
+export type { ILabelProps } from './label.type';

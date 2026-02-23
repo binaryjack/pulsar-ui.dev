@@ -2,5 +2,5 @@
  * Form context exports
  */
 
-export { FormContext } from './formContext';
-export { useFormContext } from './useFormContext';
+export { FormContext } from './form-context';
+export { useFormContext } from './use-form-context';

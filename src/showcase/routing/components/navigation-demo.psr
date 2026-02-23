@@ -1,0 +1,47 @@
+/**
+ * Navigation Demo
+ * router.navigate(path) · history back/forward
+ */
+
+import { createSignal, useRouter, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+
+export component NavigationDemo() {
+  const router = useRouter();
+  const [navLog, setNavLog] = createSignal<string[]>([]);
+
+  const ts = () => new Date().toLocaleTimeString('en-US', { hour12: false });
+
+  const go = async (path: string) => {
+    setNavLog((prev) => [`[${ts()}] navigate("${path}")`, ...prev].slice(0, 8));
+    await router.navigate(path);
+    setNavLog((prev) => [`[${ts()}] ✅ now at: ${router.location.pathname}`, ...prev].slice(0, 8));
+  };
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">1️⃣ Programmatic Navigate</h3>
+      <p class="demo-desc">
+        <code>router.navigate(path)</code> — returns a <code>Promise</code> that resolves after transition.
+      </p>
+
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
+        {['/showcase/routing', '/showcase/home', '/showcase/about', '/showcase/routing/params'].map((p) => (
+          <button class="submit-btn" onClick={() => go(p)} style="font-size: 12px; padding: 6px 10px;">
+            → {p}
+          </button>
+        ))}
+      </div>
+
+      <div class="state-panel">
+        <strong style="color: #94a3b8; font-size: 12px;">Current path</strong>
+        <p style="color: #60a5fa; font-family: monospace;">{router.location.pathname}</p>
+      </div>
+
+      <Show when={navLog().length > 0}>
+        <pre class="result-pre" style="font-size: 11px; max-height: 120px; overflow-y: auto;">
+          {navLog().join('\n')}
+        </pre>
+      </Show>
+    </div>
+  );
+}

@@ -4,7 +4,7 @@
  * Uses FormContext.Provider + TextField — state tracked via form.observe() API
  */
 
-import { createResource, createSignal, createEffect, onCleanup, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, createEffect, onCleanup, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
 import { createForm, f } from '@pulsar-framework/formular.dev';
 import type { IFormular } from '@pulsar-framework/formular.dev';
 import { FormContext, TextField } from '@/components/formular';
@@ -22,30 +22,35 @@ const buildFormContext = (form: IFormular<{ nickname: string; bio: string }>) =>
 });
 
 export component FieldStateDemo() {
-  const form = createResource(async () => {
-    return await createForm({
-      schema: f.object({
-        nickname: f.string().min(2).max(30).nonempty().debounce(200),
-        bio: f.string().max(160).optional().debounce(200),
-      }),
-      defaultValues: { nickname: '', bio: '' },
-    });
-  });
+  const [form, setForm] = createSignal<IFormular<{ nickname: string; bio: string }> | null>(null);
+
+  createForm({
+    schema: f.object({
+      nickname: f.string().min(2).max(30).nonempty().debounce(200),
+      bio: f.string().max(160).optional().debounce(200),
+    }),
+    defaultValues: { nickname: '', bio: '' },
+  }).then(setForm);
 
   const [snapshot, setSnapshot] = createSignal<Record<string, unknown>>({});
   const [isDirty, setIsDirty] = createSignal(false);
 
+  let unsub: (() => void) | undefined;
+
   createEffect(() => {
-    const currentForm = form.data;
+    unsub?.();
+    const currentForm = form();
     if (!currentForm) return;
-    const unsub = currentForm.observe(undefined, () => {
+    unsub = currentForm.observe(undefined, () => {
       setSnapshot(currentForm.getData());
       setIsDirty(currentForm.getFormFlags().isDirty ?? false);
     });
-    onCleanup(unsub);
   });
 
-  onCleanup(() => form.data?.clear());
+  onCleanup(() => {
+    unsub?.();
+    form()?.clear();
+  });
 
   return (
     <div class="demo-card">
@@ -55,8 +60,8 @@ export component FieldStateDemo() {
         <code>form.getData()</code> + <code>form.getFormFlags().isDirty</code> for reactive snapshot.
       </p>
 
-      <Show when={form.data}>
-        <FormContext.Provider value={buildFormContext(form.data)}>
+      <Show when={form()}>
+        <FormContext.Provider value={buildFormContext(form()!)}>
           <div class="form-wrapper">
             <TextField name="nickname" label="Nickname (2–30)" showErrors={true} showGuides={true} />
             <TextField name="bio" label="Bio (max 160)" showErrors={true} showGuides={true} />

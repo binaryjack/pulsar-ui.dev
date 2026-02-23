@@ -1,0 +1,88 @@
+/**
+ * Basic Requests Demo
+ * useHttpGet / useHttpPost against JSONPlaceholder — real network, no mocking
+ * B-02 resolved: createHttpClient at module scope, passed as first arg to hooks
+ */
+
+import { createSignal, createHttpClient, useHttpGet, useHttpPost, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+
+const client = createHttpClient({ baseURL: 'https://jsonplaceholder.typicode.com' });
+
+interface IPost { id: number; title: string; body: string; userId: number }
+interface IUser { id: number; name: string; email: string; username: string }
+
+export component BasicRequestsDemo() {
+  // GET /posts/1
+  const post = useHttpGet<IPost>(client, '/posts/1');
+  post.execute();
+
+  // GET /users/1
+  const user = useHttpGet<IUser>(client, '/users/1');
+  user.execute();
+
+  // POST /posts (JSONPlaceholder echoes back the body with a fake id)
+  const [postTriggered, setPostTriggered] = createSignal(false);
+  const newPost = useHttpPost<IPost>(client, '/posts', {
+    body: { title: 'Harness Test', body: 'P1-02 coverage', userId: 1 },
+  });
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">1️⃣ GET + POST — JSONPlaceholder</h3>
+      <p class="demo-desc">
+        <code>createHttpClient({'{ baseURL }'})</code> at module scope.
+        <code>useHttpGet(client, path)</code> / <code>useHttpPost(client, path, config)</code>.<br />
+        Real network — no mocking.
+      </p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+        <div class="state-panel">
+          <strong style="color: #60a5fa;">GET /posts/1</strong>
+          <Show when={post.loading()}>
+            <p class="status-loading">⏳ loading…</p>
+          </Show>
+          <Show when={post.error()}>
+            <p class="status-fail">❌ {String(post.error()?.message)}</p>
+          </Show>
+          <Show when={post.data()}>
+            <pre class="result-pre">{JSON.stringify(post.data(), null, 2)}</pre>
+          </Show>
+        </div>
+
+        <div class="state-panel">
+          <strong style="color: #34d399;">GET /users/1</strong>
+          <Show when={user.loading()}>
+            <p class="status-loading">⏳ loading…</p>
+          </Show>
+          <Show when={user.error()}>
+            <p class="status-fail">❌ {String(user.error()?.message)}</p>
+          </Show>
+          <Show when={user.data()}>
+            <pre class="result-pre">{JSON.stringify({ name: user.data()?.name, email: user.data()?.email }, null, 2)}</pre>
+          </Show>
+        </div>
+      </div>
+
+      <div class="state-panel">
+        <strong style="color: #f59e0b;">POST /posts</strong>
+        <button
+          class="submit-btn"
+          onClick={() => { if (!postTriggered()) { setPostTriggered(true); newPost.execute(); } }}
+          disabled={postTriggered()}
+          style="margin-bottom: 8px;"
+        >
+          {postTriggered() ? '📤 Sent' : '📤 Send POST'}
+        </button>
+        <Show when={newPost.loading()}>
+          <p class="status-loading">⏳ posting…</p>
+        </Show>
+        <Show when={newPost.error()}>
+          <p class="status-fail">❌ {String(newPost.error()?.message)}</p>
+        </Show>
+        <Show when={newPost.data()}>
+          <pre class="result-pre">{JSON.stringify(newPost.data(), null, 2)}</pre>
+        </Show>
+      </div>
+    </div>
+  );
+}

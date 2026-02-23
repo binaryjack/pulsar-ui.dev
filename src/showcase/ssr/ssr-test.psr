@@ -1,0 +1,88 @@
+/**
+ * P1-05 SSR Showcase
+ * renderToString · escapeHtml · escapeAttribute
+ * createHydrationScript · serializeData / deserializeData · extractHydrationState
+ * hydrate() — calls option A (split-pane in-browser visualizer)
+ */
+
+import { createSignal, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { DemoButton } from '../common/components/demo-button.psr';
+import { RenderToStringDemo } from './components/render-to-string-demo.psr';
+import { EscapeDemo } from './components/escape-demo.psr';
+import { HydrationScriptDemo } from './components/hydration-script-demo.psr';
+import { HydrateDemo } from './components/hydrate-demo.psr';
+
+export component SSRTestPage() {
+  const [showRender, setShowRender] = createSignal(false);
+  const [showEscape, setShowEscape] = createSignal(false);
+  const [showScript, setShowScript] = createSignal(false);
+  const [showHydrate, setShowHydrate] = createSignal(false);
+
+  return (
+    <div>
+      <PageHeader
+        title="SSR — Server-Side Rendering"
+        emoji="🖥️"
+        description="P1-05 · renderToString · escapeHtml/Attribute · createHydrationScript · serialize round-trip · hydrate()"
+      />
+
+      <DemoSection
+        title="1️⃣ renderToString — Live Output"
+        description="Executes a component tree synchronously. Returns IRenderResult with html string. Displayed raw in a <pre>."
+        borderColor="#3b82f6"
+      >
+        <DemoButton
+          label={showRender() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowRender((v) => !v)}
+        />
+        <Show when={showRender()}>
+          <RenderToStringDemo />
+        </Show>
+      </DemoSection>
+
+      <DemoSection
+        title="2️⃣ escapeHtml / escapeAttribute — XSS Safety"
+        description="Every user-controlled prop goes through escapeHtml (text) or escapeAttribute (attributes). Table proves XSS payloads are neutralised."
+        borderColor="#ef4444"
+      >
+        <DemoButton
+          label={showEscape() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowEscape((v) => !v)}
+        />
+        <Show when={showEscape()}>
+          <EscapeDemo />
+        </Show>
+      </DemoSection>
+
+      <DemoSection
+        title="3️⃣ Hydration Script Round-Trip"
+        description="createHydrationScript → serialized blob. serializeData / deserializeData equality check. extractHydrationState reads blob from DOM."
+        borderColor="#10b981"
+      >
+        <DemoButton
+          label={showScript() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowScript((v) => !v)}
+        />
+        <Show when={showScript()}>
+          <HydrationScriptDemo />
+        </Show>
+      </DemoSection>
+
+      <DemoSection
+        title="4️⃣ hydrate() — SSR → Client Lifecycle"
+        description="renderToString → innerHTML inject → hydrate(). B-07: hydrate() partially implemented — demo exercises call path + captures warning."
+        borderColor="#f59e0b"
+      >
+        <DemoButton
+          label={showHydrate() ? 'Hide Demo' : 'Show Demo'}
+          onClick={() => setShowHydrate((v) => !v)}
+        />
+        <Show when={showHydrate()}>
+          <HydrateDemo />
+        </Show>
+      </DemoSection>
+    </div>
+  );
+}
