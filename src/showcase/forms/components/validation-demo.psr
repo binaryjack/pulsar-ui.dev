@@ -3,22 +3,10 @@
  * Schema validators (min/email/number range) — FieldValidation auto-rendered inside TextField
  */
 
-import { createSignal, onCleanup, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, onCleanup } from '@pulsar-framework/pulsar.dev';
 import { createForm, f } from '@pulsar-framework/formular.dev';
 import type { IFormular } from '@pulsar-framework/formular.dev';
-import { FormContext, TextField } from '@/components/formular';
-
-const buildFormContext = (form: IFormular<{ password: string; age: number }>) => ({
-  form,
-  getField: (name: string) => form.getField(name),
-  updateField: (name: string, val: unknown) => (form as any).updateField(name, val),
-  clearField: (name: string) => (form as any).clearField(name),
-  reset: () => form.reset(),
-  validateField: (name: string) => (form as any).validateField(name),
-  preValidateField: (name: string) => form.preValidateField(name),
-  validateForm: () => form.validateForm(),
-  getErrors: () => (form as any).getErrors(),
-});
+import { FormProvider, TextField } from '@/components/formular';
 
 export component ValidationDemo() {
   const [form, setForm] = createSignal<IFormular<{ password: string; age: number }> | null>(null);
@@ -48,24 +36,24 @@ export component ValidationDemo() {
         <code>FieldValidation</code> auto-rendered inside <code>TextField</code>. Debounce: 200ms.
       </p>
 
-      <Show when={form()}>
-        <FormContext.Provider value={buildFormContext(form()!)}>
-          <div class="form-wrapper">
-            <TextField name="password" label="Password (min 8 chars)" showErrors={true} showGuides={true} />
-            <TextField name="age" label="Age (18–120)" showErrors={true} showGuides={true} />
+      {!form() ? (
+        <p class="status-loading">⏳ Initialising form engine…</p>
+      ) : (
+        <FormProvider form={form()!} onSaveCallback={() => {}} onQuitCallback={() => {}}>
+          <TextField name="password" label="Password (min 8 chars)" showErrors={true} showGuides={true} />
+          <TextField name="age" label="Age (18–120)" showErrors={true} showGuides={true} />
 
-            <button class="submit-btn" onClick={handleValidateAll}>
-              🔍 Validate All
-            </button>
+          <button class="submit-btn" onClick={handleValidateAll}>
+            🔍 Validate All
+          </button>
 
-            <Show when={isValid() !== null}>
-              <p class={isValid() ? 'status-ok' : 'status-fail'}>
-                {isValid() ? '✅ All fields valid' : '❌ Form has errors'}
-              </p>
-            </Show>
-          </div>
-        </FormContext.Provider>
-      </Show>
+          {isValid() !== null ? (
+            <p class={isValid() ? 'status-ok' : 'status-fail'}>
+              {isValid() ? '✅ All fields valid' : '❌ Form has errors'}
+            </p>
+          ) : null}
+        </FormProvider>
+      )}
     </div>
   );
 }

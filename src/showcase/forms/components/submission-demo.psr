@@ -1,27 +1,15 @@
 /**
  * Submission Demo
  * form.submit() → onSubmit async → onSuccess / onError lifecycle
- * Uses FormContext.Provider + TextField — FInputField handles all DOM binding via field.register() + field.ref()
+ * Uses FormProvider + TextField — FInputField handles all DOM binding via field.register() + field.ref()
  */
 
-import { createSignal, onCleanup, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, onCleanup } from '@pulsar-framework/pulsar.dev';
 import { createForm, f } from '@pulsar-framework/formular.dev';
 import type { IFormular } from '@pulsar-framework/formular.dev';
-import { FormContext, TextField } from '@/components/formular';
+import { FormProvider, TextField } from '@/components/formular';
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
-
-const buildFormContext = (form: IFormular<{ firstName: string; lastName: string }>) => ({
-  form,
-  getField: (name: string) => form.getField(name),
-  updateField: (name: string, val: unknown) => (form as any).updateField(name, val),
-  clearField: (name: string) => (form as any).clearField(name),
-  reset: () => form.reset(),
-  validateField: (name: string) => (form as any).validateField(name),
-  preValidateField: (name: string) => form.preValidateField(name),
-  validateForm: () => form.validateForm(),
-  getErrors: () => (form as any).getErrors(),
-});
 
 export component SubmissionDemo() {
   const [status, setStatus] = createSignal<SubmitStatus>('idle');
@@ -36,6 +24,7 @@ export component SubmissionDemo() {
     }),
     defaultValues: { firstName: '', lastName: '' },
     onSubmit: async (data) => {
+      setStatus('submitting');
       await new Promise<void>((resolve) => setTimeout(resolve, 800));
       return data;
     },
@@ -50,18 +39,6 @@ export component SubmissionDemo() {
   }).then(setForm);
 
   onCleanup(() => form()?.clear());
-
-  const handleSubmit = async () => {
-    const current = form();
-    if (!current) return;
-    setStatus('submitting');
-    setSubmitResult('');
-    const result = await current.submit();
-    if (result === null) {
-      setStatus('error');
-      setSubmitResult('Validation failed — fix required fields.');
-    }
-  };
 
   const statusColor = () => {
     const s = status();
@@ -79,31 +56,23 @@ export component SubmissionDemo() {
         All field binding via <code>field.register()</code> + <code>field.ref()</code> inside <code>FInputField</code>.
       </p>
 
-      <Show when={form()}>
-        <FormContext.Provider value={buildFormContext(form()!)}>
-          <div class="form-wrapper">
-            <TextField name="firstName" label="First Name" showErrors={true} showGuides={true} />
-            <TextField name="lastName" label="Last Name" showErrors={true} showGuides={true} />
+      {!form() ? (
+        <p class="status-loading">⏳ Initialising form engine…</p>
+      ) : (
+        <FormProvider form={form()!} onSaveCallback={() => setSubmitResult('')} onQuitCallback={() => { setStatus('idle'); setSubmitResult(''); }}>
+          <TextField name="firstName" label="First Name" showErrors={true} showGuides={true} />
+          <TextField name="lastName" label="Last Name" showErrors={true} showGuides={true} />
 
-            <button
-              class="submit-btn"
-              onClick={handleSubmit}
-              disabled={status() === 'submitting'}
-            >
-              {status() === 'submitting' ? '⏳ Submitting…' : '🚀 Submit'}
-            </button>
-
-            <Show when={status() !== 'idle'}>
-              <div class={`submit-status ${statusColor()}`}>
-                <strong>{status().toUpperCase()}</strong>
-                <Show when={submitResult()}>
-                  <pre class="result-pre">{submitResult()}</pre>
-                </Show>
-              </div>
-            </Show>
-          </div>
-        </FormContext.Provider>
-      </Show>
+          {status() !== 'idle' ? (
+            <div class={`submit-status ${statusColor()}`}>
+              <strong>{status().toUpperCase()}</strong>
+              {submitResult() ? (
+                <pre class="result-pre">{submitResult()}</pre>
+              ) : null}
+            </div>
+          ) : null}
+        </FormProvider>
+      )}
     </div>
   );
 }

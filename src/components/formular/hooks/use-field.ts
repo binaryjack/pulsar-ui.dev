@@ -38,7 +38,7 @@
  */
 
 import type { IFieldGuide } from '@pulsar-framework/formular.dev';
-import { createSignal, useSync } from '@pulsar-framework/pulsar.dev';
+import { createEffect, createSignal, useSync } from '@pulsar-framework/pulsar.dev';
 import type { IFieldError, IValidationResult } from '../types';
 
 export interface IUseFieldResult {
@@ -113,62 +113,72 @@ export function useField(field: any): IUseFieldResult {
 
   const input = field.input;
 
-  // ==================== SINGLE REACTIVE BRIDGE ====================
-  // One notifier registered with formular's notificationManager for:
-  //   - 'onUiUpdate'          → fires after validation + focus/blur changes
-  //   - 'onValidationChange'  → fires after validation results are stored
-  // Both go through the notifiers Map (not observers channel).
-  // observers.subscribe() is NOT triggered by standard field lifecycle.
+  // ==================== PER-SIGNAL REACTIVE BRIDGE ====================
+  // Each formular signal gets its own useSync+createEffect subscription.
+  // createEffect(() => { signal.get(); notify(); }) registers a dependency
+  // inside formular's own reactive graph — guaranteed to fire whenever the
+  // signal is set, regardless of whether notificationManager.notify() is
+  // called anywhere in the code path.
   //
-  // Key shape: `${event.target}.${event.action}` — must be unique per field.
-  const _notifierKey = `pulsar-sync-${input?.id ?? 'unknown'}`;
+  // Plain properties (isDirty, isPristine, isFocus) are not formular signals,
+  // so we subscribe to the observers channel (String(input.id)) which fires
+  // via notificationManager.trigger() → observers.trigger(channelId).
 
-  const fieldSnapshot = useSync<{
-    value: any;
-    validationResults: IValidationResult[];
-    isValid: boolean;
+  // --- Reactive signals ---
+  const value = useSync<any>(
+    (notify) =>
+      createEffect(() => {
+        input?._value?.get();
+        notify();
+      }),
+    () => input?._value?.get()
+  );
+
+  const validationResults = useSync<IValidationResult[]>(
+    (notify) =>
+      createEffect(() => {
+        (input as any)?._validationResults?.get();
+        notify();
+      }),
+    () => (input as any)?._validationResults?.get() ?? []
+  );
+
+  const isValid = useSync<boolean>(
+    (notify) =>
+      createEffect(() => {
+        input?._isValid?.get();
+        notify();
+      }),
+    () => input?._isValid?.get() ?? true
+  );
+
+  // isRequired is static (set at field creation) — plain read, no reactive subscription needed
+  const isRequired = () => input?.validationOptions?.required?.value ?? false;
+
+  // --- Plain-property state (not signals) via observers channel ---
+  const _channel = input?.id ? String(input.id) : null;
+
+  const fieldStateSnapshot = useSync<{
     isDirty: boolean;
     isPristine: boolean;
     isFocus: boolean;
-    isRequired: boolean;
   }>(
     (notify) => {
-      if (!input?.notificationManager) return () => {};
-
-      const notifier = {
-        event: {
-          fieldName: input.name ?? '',
-          emitterName: _notifierKey,
-          types: ['onUiUpdate', 'onValidationChange'] as any[],
-          action: 'sync',
-          target: _notifierKey,
-          toFlags: () => `${_notifierKey}.sync`,
-        },
-        method: () => notify(),
-      };
-
-      input.notificationManager.accept(notifier);
-      return () => input.notificationManager.dismiss(notifier);
+      if (!_channel || !input?.notificationManager?.observers) return () => {};
+      const cb = () => notify();
+      input.notificationManager.observers.subscribe(_channel, cb, false);
+      return () => input.notificationManager.observers.unSubscribe(_channel, cb, false);
     },
     () => ({
-      value: input?._value?.get(),
-      validationResults: (input as any)?._validationResults?.get() || [],
-      isValid: input?._isValid?.get() ?? true,
       isDirty: input?.isDirty ?? false,
       isPristine: input?.isPristine ?? true,
       isFocus: input?.isFocus ?? false,
-      isRequired: input?.validationOptions?.required?.value ?? false,
     })
   );
 
-  // Derive individual reactive getters from the single snapshot signal
-  const value = () => fieldSnapshot().value;
-  const validationResults = () => fieldSnapshot().validationResults;
-  const isValid = () => fieldSnapshot().isValid;
-  const isDirty = () => fieldSnapshot().isDirty;
-  const isPristine = () => fieldSnapshot().isPristine;
-  const isFocused = () => fieldSnapshot().isFocus;
-  const isRequired = () => fieldSnapshot().isRequired;
+  const isDirty = () => fieldStateSnapshot().isDirty;
+  const isPristine = () => fieldStateSnapshot().isPristine;
+  const isFocused = () => fieldStateSnapshot().isFocus;
   const isDisabled = () => input?.disabled ?? false;
 
   // ==================== TOUCHED TRACKING ====================

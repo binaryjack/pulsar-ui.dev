@@ -1,25 +1,13 @@
 /**
  * Field State Demo
  * form.observe() → reactive isDirty / getData() snapshot
- * Uses FormContext.Provider + TextField — state tracked via form.observe() API
+ * Uses FormProvider + TextField — state tracked via form.observe() API
  */
 
-import { createSignal, createEffect, onCleanup, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, createEffect, onCleanup } from '@pulsar-framework/pulsar.dev';
 import { createForm, f } from '@pulsar-framework/formular.dev';
 import type { IFormular } from '@pulsar-framework/formular.dev';
-import { FormContext, TextField } from '@/components/formular';
-
-const buildFormContext = (form: IFormular<{ nickname: string; bio: string }>) => ({
-  form,
-  getField: (name: string) => form.getField(name),
-  updateField: (name: string, val: unknown) => (form as any).updateField(name, val),
-  clearField: (name: string) => (form as any).clearField(name),
-  reset: () => form.reset(),
-  validateField: (name: string) => (form as any).validateField(name),
-  preValidateField: (name: string) => form.preValidateField(name),
-  validateForm: () => form.validateForm(),
-  getErrors: () => (form as any).getErrors(),
-});
+import { FormProvider, TextField } from '@/components/formular';
 
 export component FieldStateDemo() {
   const [form, setForm] = createSignal<IFormular<{ nickname: string; bio: string }> | null>(null);
@@ -60,23 +48,23 @@ export component FieldStateDemo() {
         <code>form.getData()</code> + <code>form.getFormFlags().isDirty</code> for reactive snapshot.
       </p>
 
-      <Show when={form()}>
-        <FormContext.Provider value={buildFormContext(form()!)}>
-          <div class="form-wrapper">
-            <TextField name="nickname" label="Nickname (2–30)" showErrors={true} showGuides={true} />
-            <TextField name="bio" label="Bio (max 160)" showErrors={true} showGuides={true} />
+      {!form() ? (
+        <p class="status-loading">⏳ Initialising form engine…</p>
+      ) : (
+        <FormProvider form={form()!} onSaveCallback={() => {}} onQuitCallback={() => {}}>
+          <TextField name="nickname" label="Nickname (2–30)" showErrors={true} showGuides={true} />
+          <TextField name="bio" label="Bio (max 160)" showErrors={true} showGuides={true} />
 
-            <div class="state-panel">
-              <span class={`badge ${isDirty() ? 'badge--on' : 'badge--off'}`}>
-                {isDirty() ? '✏️ dirty' : '✔ pristine'}
-              </span>
-              <Show when={Object.keys(snapshot()).length > 0}>
-                <pre class="result-pre">{JSON.stringify(snapshot(), null, 2)}</pre>
-              </Show>
-            </div>
+          <div class="state-panel">
+            <span class={`badge ${isDirty() ? 'badge--on' : 'badge--off'}`}>
+              {isDirty() ? '✏️ dirty' : '✔ pristine'}
+            </span>
+            {Object.keys(snapshot()).length > 0 ? (
+              <pre class="result-pre">{JSON.stringify(snapshot(), null, 2)}</pre>
+            ) : null}
           </div>
-        </FormContext.Provider>
-      </Show>
+        </FormProvider>
+      )}
     </div>
   );
 }
