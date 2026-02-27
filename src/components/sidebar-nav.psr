@@ -32,6 +32,7 @@ export const SidebarNav = ({ onNavigate, onToggle }: ISidebarNavProps) => {
     { id: 7,  path: '/portal',         label: 'Portals',             emoji: '🌀', color: '#06b6d4' },
     { id: 8,  path: '/drag-drop',      label: 'Drag & Drop',         emoji: '🎯', color: '#f59e0b' },
     { id: 9,  path: '/error-boundary', label: 'Error Boundaries',    emoji: '🛡️', color: '#ef4444' },
+    { id: 16, path: '/error-boundary-mega', label: 'Error Boundaries MEGA', emoji: '💥', color: '#dc2626' },
     { id: 10, path: '/context',        label: 'Context API',         emoji: '🔌', color: '#8b5cf6' },
     { id: 11, path: '/forms',          label: 'Forms',               emoji: '📋', color: '#6366f1' },
     { id: 12, path: '/http',           label: 'HTTP Client',         emoji: '🌐', color: '#0ea5e9' },
