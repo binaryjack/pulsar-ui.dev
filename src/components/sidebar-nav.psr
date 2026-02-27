@@ -39,6 +39,7 @@ export const SidebarNav = ({ onNavigate, onToggle }: ISidebarNavProps) => {
     { id: 13, path: '/routing',        label: 'Router',              emoji: '🧭', color: '#14b8a6' },
     { id: 14, path: '/ssr',            label: 'SSR',                 emoji: '🖥️', color: '#a855f7' },
     { id: 15, path: '/about',          label: 'About',               emoji: 'ℹ️', color: '#64748b' },
+    { id: 17, path: '/svg-canvas',     label: 'SVG Canvas',          emoji: '✏️', color: '#22d3ee' },
   ];
 
   const _lsPath = (() => { try { return localStorage.getItem('__pulsar_path__'); } catch { return null; } })();

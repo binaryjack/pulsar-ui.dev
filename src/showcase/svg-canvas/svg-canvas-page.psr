@@ -1,0 +1,28 @@
+/**
+ * SVG Canvas Page
+ * Demonstrates SVG drawing with dotted grid, line draw, and drag-to-move
+ */
+
+import { PageHeader } from '../common/components/page-header.psr';
+import { DemoSection } from '../common/components/demo-section.psr';
+import { LineCanvasDemo } from './components/line-canvas.psr';
+
+export component SvgCanvasPage() {
+  return (
+    <div>
+      <PageHeader
+        title="SVG Canvas"
+        emoji="✏️"
+        color="#22d3ee"
+        description="Reactive SVG canvas — dotted grid, draw lines, drag to reposition"
+      />
+
+      <DemoSection
+        title="Line Canvas"
+        description="Drag on the background to draw · click a line then drag to move it"
+        borderColor="#22d3ee">
+        <LineCanvasDemo />
+      </DemoSection>
+    </div>
+  );
+}

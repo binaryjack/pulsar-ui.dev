@@ -1,0 +1,286 @@
+/**
+ * Line Canvas Demo
+ * SVG canvas: dotted grid, draw lines by click-drag, move lines by drag
+ */
+
+import { createSignal, scheduleFrame } from '@pulsar-framework/pulsar.dev';
+
+interface ILine {
+  id: number
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+}
+
+interface IDragState {
+  lineId: number
+  mouseX: number
+  mouseY: number
+  origX1: number
+  origY1: number
+  origX2: number
+  origY2: number
+}
+
+export component LineCanvasDemo() {
+  let idCounter = 0;
+
+  const [lines, setLines]         = createSignal<ILine[]>([]);
+  const [isDrawing, setIsDrawing] = createSignal(false);
+  const [drawStart, setDrawStart] = createSignal({ x: 0, y: 0 });
+  const [drawEnd, setDrawEnd]     = createSignal({ x: 0, y: 0 });
+  const [dragState, setDragState] = createSignal<IDragState | null>(null);
+  const [selectedId, setSelectedId] = createSignal<number | null>(null);
+
+  // --- coordinate helpers ---
+
+  const svgCoords = (e: MouseEvent): { x: number; y: number } => {
+    const svg = (e.currentTarget as SVGElement).ownerSVGElement
+      ?? (e.currentTarget as SVGSVGElement);
+    const rect = svg.getBoundingClientRect();
+    return {
+      x: Math.round(e.clientX - rect.left),
+      y: Math.round(e.clientY - rect.top),
+    };
+  };
+
+  // --- drawing handlers ---
+
+  const handleBgDown = (e: MouseEvent) => {
+    if (e.button !== 0) return;
+    const p = svgCoords(e);
+    setSelectedId(null);
+    setIsDrawing(true);
+    setDrawStart(p);
+    setDrawEnd(p);
+  };
+
+  const handleLineDown = (e: MouseEvent, lineId: number) => {
+    e.stopPropagation();
+    if (e.button !== 0) return;
+    const p = svgCoords(e);
+    const line = lines().find(l => l.id === lineId);
+    if (!line) return;
+    setSelectedId(lineId);
+    setDragState({
+      lineId,
+      mouseX:  p.x,
+      mouseY:  p.y,
+      origX1:  line.x1,
+      origY1:  line.y1,
+      origX2:  line.x2,
+      origY2:  line.y2,
+    });
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    // Capture coords synchronously — defer state writes to next rAF
+    const svg = e.currentTarget as SVGSVGElement;
+    const rect = svg.getBoundingClientRect();
+    const x = Math.round(e.clientX - rect.left);
+    const y = Math.round(e.clientY - rect.top);
+
+    scheduleFrame(() => {
+      if (isDrawing()) {
+        setDrawEnd({ x, y });
+        return;
+      }
+      const d = dragState();
+      if (!d) return;
+      const dx = x - d.mouseX;
+      const dy = y - d.mouseY;
+      setLines(
+        lines().map(l =>
+          l.id === d.lineId
+            ? {
+                ...l,
+                x1: d.origX1 + dx,
+                y1: d.origY1 + dy,
+                x2: d.origX2 + dx,
+                y2: d.origY2 + dy,
+              }
+            : l
+        )
+      );
+    }, 'canvas-move');
+  };
+
+  const handleMouseUp = () => {
+    if (isDrawing()) {
+      const s = drawStart();
+      const e = drawEnd();
+      const len = Math.hypot(e.x - s.x, e.y - s.y);
+      if (len > 8) {
+        const newId = ++idCounter;
+        setLines([
+          ...lines(),
+          { id: newId, x1: s.x, y1: s.y, x2: e.x, y2: e.y },
+        ]);
+        setSelectedId(newId);
+      }
+      setIsDrawing(false);
+    }
+    if (dragState()) setDragState(null);
+  };
+
+  // --- actions ---
+
+  const deleteSelected = () => {
+    const id = selectedId();
+    if (id === null) return;
+    setLines(lines().filter(l => l.id !== id));
+    setSelectedId(null);
+  };
+
+  const deleteLine = (e: MouseEvent, id: number) => {
+    e.stopPropagation();
+    setLines(lines().filter(l => l.id !== id));
+    if (selectedId() === id) setSelectedId(null);
+  };
+
+  const clearAll = () => {
+    setLines([]);
+    setSelectedId(null);
+  };
+
+  // --- render ---
+
+  return (
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+
+      {/* ── Toolbar ── */}
+      <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 8px 14px; background: #06101e; border: 1px solid #1a2e45; border-radius: 8px; min-height: 42px;">
+
+        <span style="font-size: 13px; color: #94a3b8;">
+          {() => {
+            if (isDrawing()) return '✏️  Drawing — release to commit line';
+            if (dragState()) return '↔  Moving line';
+            return '➕  Drag on canvas to draw  ·  click a line to select & move';
+          }}
+        </span>
+
+        <span style="margin-left: auto; font-size: 12px; color: #475569; white-space: nowrap;">
+          {() => `${lines().length} line${lines().length === 1 ? '' : 's'}`}
+        </span>
+
+        {() => selectedId() !== null ? (
+          <button
+            onClick={deleteSelected}
+            style="padding: 5px 13px; background: transparent; color: #ef4444; border: 1px solid #ef4444; border-radius: 5px; cursor: pointer; font-size: 12px;">
+            Delete
+          </button>
+        ) : null}
+
+        <button
+          onClick={clearAll}
+          style="padding: 5px 13px; background: transparent; color: #475569; border: 1px solid #334155; border-radius: 5px; cursor: pointer; font-size: 12px;">
+          Clear all
+        </button>
+
+      </div>
+
+      {/* ── SVG Canvas ── */}
+      <svg
+        onMouseDown={handleBgDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        style={() => `display: block; width: 100%; height: calc(100vh - 320px); min-height: 460px; border-radius: 10px; border: 1px solid #1a2e45; cursor: ${dragState() ? 'grabbing' : 'crosshair'}; user-select: none;`}>
+
+        <defs>
+          <pattern id="vsb-dot-grid" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+            <circle cx="12" cy="12" r="1.3" fill="#1a3045" />
+          </pattern>
+        </defs>
+
+        {/* Dark background + dot overlay */}
+        <rect width="100%" height="100%" fill="#060e1a" rx="10" />
+        <rect width="100%" height="100%" fill="url(#vsb-dot-grid)" rx="10" />
+
+        {/* ── Committed lines ── */}
+        {() => lines().map((line) => {
+          const sel = selectedId() === line.id;
+          return (
+            <g>
+              {/* Wide transparent hit target — receives the drag */}
+              <line
+                x1={String(line.x1)} y1={String(line.y1)}
+                x2={String(line.x2)} y2={String(line.y2)}
+                stroke="transparent"
+                strokeWidth="18"
+                style="cursor: grab;"
+                onMouseDown={(e: MouseEvent) => handleLineDown(e, line.id)}
+              />
+
+              {/* Visible stroke */}
+              <line
+                x1={String(line.x1)} y1={String(line.y1)}
+                x2={String(line.x2)} y2={String(line.y2)}
+                stroke={sel ? '#22d3ee' : '#3b82f6'}
+                strokeWidth={sel ? '3' : '2'}
+                strokeLinecap="round"
+                style="pointer-events: none;"
+              />
+
+              {/* Endpoint handles shown when selected */}
+              {sel ? (
+                <g style="pointer-events: none;">
+                  <circle cx={String(line.x1)} cy={String(line.y1)} r="6" fill="#22d3ee" opacity="0.85" />
+                  <circle cx={String(line.x2)} cy={String(line.y2)} r="6" fill="#22d3ee" opacity="0.85" />
+                </g>
+              ) : null}
+            </g>
+          );
+        })}
+
+        {/* ── Preview stroke while drawing ── */}
+        {() => {
+          if (!isDrawing()) return null;
+          const s = drawStart();
+          const e = drawEnd();
+          return (
+            <g style="pointer-events: none;">
+              <line
+                x1={String(s.x)} y1={String(s.y)}
+                x2={String(e.x)} y2={String(e.y)}
+                stroke="#fbbf24"
+                strokeWidth="2"
+                strokeDasharray="8 5"
+                strokeLinecap="round"
+              />
+              <circle cx={String(s.x)} cy={String(s.y)} r="4" fill="#fbbf24" opacity="0.7" />
+            </g>
+          );
+        }}
+
+      </svg>
+
+      {/* ── Line badge list ── */}
+      {() => lines().length > 0 ? (
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; padding-top: 2px;">
+          {lines().map((line) => {
+            const active = selectedId() === line.id;
+            return (
+              <div
+                onClick={() => setSelectedId(line.id)}
+                style={`display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px 4px 12px; border: 1px solid ${active ? '#22d3ee' : '#1e293b'}; border-radius: 20px; background: ${active ? 'rgba(34,211,238,0.07)' : '#060e1a'}; cursor: pointer; font-size: 12px; color: ${active ? '#22d3ee' : '#475569'}; transition: border-color 0.15s, color 0.15s; user-select: none;`}>
+                <span>Line {line.id}</span>
+                <button
+                  onClick={(e: MouseEvent) => deleteLine(e, line.id)}
+                  style="background: none; border: none; color: #475569; cursor: pointer; font-size: 15px; padding: 0; line-height: 1; display: flex; align-items: center;">
+                  ×
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <p style="font-size: 12px; color: #334155; text-align: center; margin: 4px 0;">
+          No lines yet — click and drag on the canvas above to start drawing
+        </p>
+      )}
+
+    </div>
+  );
+}

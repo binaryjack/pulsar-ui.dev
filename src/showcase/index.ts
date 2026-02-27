@@ -22,6 +22,8 @@ export { ReactivityTestPage } from './reactivity/reactivity-test.psr';
 export { ResourceTestPage } from './resource/resource-test.psr';
 export { RoutingTestPage } from './routing/routing-test.psr';
 export { SSRTestPage } from './ssr/ssr-test.psr';
+export { SvgCanvasPage } from './svg-canvas/svg-canvas-page.psr';
+export { LineCanvasDemo } from './svg-canvas/components/line-canvas.psr';
 
 // Test pages
 export { AssignmentTest } from './tests/assignment-test.psr';

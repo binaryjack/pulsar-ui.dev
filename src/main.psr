@@ -27,6 +27,7 @@ import { AssignmentTest } from './showcase/tests/assignment-test.psr';
 import { SimpleTest } from './showcase/tests/simple-codegen-test.psr';
 import { RoutingTestPage } from './showcase/routing/routing-test.psr';
 import { SSRTestPage } from './showcase/ssr/ssr-test.psr';
+import { SvgCanvasPage } from './showcase/svg-canvas/svg-canvas-page.psr';
 
 export interface IAppProps {
   id?: string;
@@ -74,6 +75,7 @@ component App() {
             <Route path="/http" component={HttpTestPage} label="HTTP Client" />
             <Route path="/routing" component={RoutingTestPage} label="Router" />
             <Route path="/ssr" component={SSRTestPage} label="SSR" />
+            <Route path="/svg-canvas" component={SvgCanvasPage} label="SVG Canvas" />
             <Route path="/about" component={AboutPage} label="About" />
           </Router>
         </main>
