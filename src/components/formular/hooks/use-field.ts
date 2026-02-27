@@ -140,9 +140,9 @@ export function useField(field: any): IUseFieldResult {
           action: 'sync',
           emitterName: 'use-field',
           name: `${fieldKey}.use-field`,
-          toFlags: () => ''
+          toFlags: () => '',
         },
-        method: () => notify()
+        method: () => notify(),
       };
       nm.accept(notifier as any);
       return () => nm.dismiss(notifier as any);
