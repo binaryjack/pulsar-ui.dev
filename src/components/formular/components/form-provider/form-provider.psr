@@ -65,13 +65,14 @@ export const FormProvider = <T extends object>({
   }, [onModaleResult, onQuitCallback]);
 
   /**
-   * Save form data — triggers full submit lifecycle (onSubmit → onSuccess / onError)
+   * Save form data (after validation)
    */
   const handleSaveData = async () => {
-    const result = await form?.submit();
-    if (result !== null && result !== undefined) {
-      onSaveCallback();
+    const valid = await form?.validateForm();
+    if (!valid) {
+      return;
     }
+    onSaveCallback();
   };
 
   /**
@@ -160,27 +161,22 @@ export const FormProvider = <T extends object>({
     getErrors,
   };
 
-  // Use raw FormContext.Provider call (not JSX) to avoid double-thunk wrapping.
-  // The transformer wraps JSX Provider children in () => ..., but we need to
-  // resolve the incoming children thunk INSIDE that wrapper — after _syncStack.push.
-  return FormContext.Provider({
-    value: formContextData,
-    children: () => {
-      const resolvedChildren = typeof children === 'function' ? children() : children;
-      return (
-        <div data-form-provider={form?.id}>
-          <form id={form?.id} className="space-y-6">
-            {resolvedChildren}
-          </form>
-          <FormModale />
-          <FormValidationResults />
-          <div data-form-commands className="flex gap-2 mt-4">
-            <Button {...{ onclick: handleSaveData }}>Save</Button>
-            <Button {...{ onclick: handleResetForm }}>Reset</Button>
-            <Button {...{ onclick: handleQuit }}>Quit</Button>
-          </div>
+  // Context.Provider will set the signal BEFORE evaluating children
+  // Don't pre-evaluate children here - let Provider handle the timing
+  return (
+    <FormContext.Provider value={formContextData}>
+      <div data-form-provider={form?.id}>
+        <form id={form?.id} className="space-y-6">
+          {children?.()}
+        </form>
+        <FormModale />
+        <FormValidationResults />
+        <div data-form-commands className="flex gap-2 mt-4">
+          <Button {...{ onclick: handleSaveData }}>Save</Button>
+          <Button {...{ onclick: handleResetForm }}>Reset</Button>
+          <Button {...{ onclick: handleQuit }}>Quit</Button>
         </div>
-      );
-    },
-  });
+      </div>
+    </FormContext.Provider>
+  );
 };

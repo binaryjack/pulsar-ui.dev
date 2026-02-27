@@ -1,102 +1,179 @@
 /**
- * P1-01 Forms Showcase
- * createForm + f schema + field binding + validation + submit lifecycle
+ * P1-01 Forms Showcase — step 3: submit lifecycle
+ *  Step 1 ✓  fields render, errors on blur
+ *  Step 2 ✓  live isDirty / isValid badges + getData() snapshot
+ *  Step 3 ✓  Submit button → validate → onSubmit → success/error status
+ *
+ * Architecture note: formular.dev v simple-api.ts
+ *  simple-api.ts#schemaToDescriptors sets validationOptions:{} (does not bridge
+ *  schema _refinements to IValidationOptions), so form.submit() always passes
+ *  hasValidationOptions check.  We compensate by per-field safeParse on
+ *  demoSchema.shape.* inside onSubmit — if invalid, throws → DirectSubmissionStrategy
+ *  re-throws → showcase catch → failure banner.
  */
 
-import { createSignal, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, onCleanup, useSync } from '@pulsar-framework/pulsar.dev';
+import { createForm, f } from '@pulsar-framework/formular.dev';
+import type { IFormular } from '@pulsar-framework/formular.dev';
 import { PageHeader } from '../common/components/page-header.psr';
-import { DemoSection } from '../common/components/demo-section.psr';
-import { DemoButton } from '../common/components/demo-button.psr';
-import { AsyncValidationDemo } from './components/async-validation-demo.psr';
-import { BasicFormDemo } from './components/basic-form-demo.psr';
-import { FieldStateDemo } from './components/field-state-demo.psr';
-import { SubmissionDemo } from './components/submission-demo.psr';
-import { ValidationDemo } from './components/validation-demo.psr';
+import { FormProvider, TextField } from '@/components/formular';
+
+type FormData = { username: string; email: string };
+
+/** Keep schema reference so we can safeParse inside onSubmit */
+const demoSchema = f.object({
+  username: f.string().min(3).max(20).nonempty().debounce(200),
+  email:    f.string().email().nonempty().debounce(200),
+});
+
+/**
+ * FormStatePanel — mounts only after form is ready, safe to subscribe.
+ * Subscribes to every field observer channel so formular.dev mutations
+ * flow into Pulsar signals.
+ * isValid uses schema.safeParse (per-field) — same gate as onSubmit — so badge
+ * and submit ALWAYS agree regardless of internal field.input.isValid state.
+ */
+export component FormStatePanel({ form, schema }: { form: IFormular<FormData>; schema: any }) {
+  // Subscribe via notifiers bus (accept/dismiss) — NOT observers bus.
+  // debounceNotify('onUiUpdate') fires on every value change and after validation.
+  // Key per field: "${fieldName}.form-panel.sync" — must be unique.
+  const state = useSync(
+    (notify) => {
+      const notifiers = (form as any).fields.map((field: any) => {
+        const nm = field.input.notificationManager;
+        const n = {
+          event: {
+            types: ['onUiUpdate'],
+            target: `${field.input.name}.form-panel`,
+            action: 'sync',
+            emitterName: 'form-panel',
+            name: field.input.name,
+            toFlags: () => ''
+          },
+          method: () => notify()
+        };
+        nm.accept(n);
+        return () => nm.dismiss(n);
+      });
+      return () => notifiers.forEach((u: any) => u());
+    },
+    () => ({
+      // isDirty: read per-field — form.isDirty requires checkChanges() explicitly
+      isDirty: (form as any).fields.some((f: any) => f.input.isDirty),
+      // isValid: use schema.safeParse per field — same gate as onSubmit — guarantees
+      // badge and submit always agree regardless of internal validation engine state.
+      isValid: (() => {
+        const s = schema as any;
+        const fields = (form as any).fields as any[];
+        return fields.every((f: any) => {
+          const fieldSchema = s.shape?.[f.input.name];
+          return fieldSchema ? fieldSchema.safeParse(f.input.value ?? '').success : true;
+        });
+      })(),
+    })
+  );
+
+  const [snapshot, setSnapshot] = createSignal('');
+  const [submitResult, setSubmitResult] = createSignal<{ ok: boolean; msg: string } | null>(null);
+
+  return (
+    <div class="demo-card" style="margin-top:1rem;padding:1rem">
+      <h3 style="font-weight:600;margin-bottom:.5rem">Form state</h3>
+      <div style="display:flex;gap:.5rem;margin-bottom:.75rem">
+        <span style={() => `padding:2px 8px;border-radius:4px;font-size:.8rem;font-weight:600;${state().isDirty ? 'background:#fef3c7;color:#92400e' : 'background:#f3f4f6;color:#6b7280'}`}>
+          {() => state().isDirty ? '✎ dirty' : '○ pristine'}
+        </span>
+        <span style={() => `padding:2px 8px;border-radius:4px;font-size:.8rem;font-weight:600;${state().isValid ? 'background:#d1fae5;color:#065f46' : 'background:#fee2e2;color:#991b1b'}`}>
+          {() => state().isValid ? '✓ valid' : '✗ invalid'}
+        </span>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-bottom:.5rem">
+        <button
+          style="padding:4px 12px;background:#3b82f6;color:#fff;border-radius:4px;font-size:.8rem;cursor:pointer"
+          onclick={() => setSnapshot(JSON.stringify((form as any).getData?.() ?? {}, null, 2))}
+        >
+          getData()
+        </button>
+        <button
+          style="padding:4px 12px;background:#7c3aed;color:#fff;border-radius:4px;font-size:.8rem;cursor:pointer"
+          onclick={async () => {
+            setSubmitResult(null);
+            try {
+              const result = await (form as any).submit();
+              if (result === null || result === undefined) {
+                setSubmitResult({ ok: false, msg: 'Validation failed — fix errors above.' });
+              } else {
+                setSubmitResult({ ok: true, msg: JSON.stringify(result, null, 2) });
+              }
+            } catch (e: any) {
+              setSubmitResult({ ok: false, msg: String(e?.message ?? e) });
+            }
+          }}
+        >
+          submit()
+        </button>
+      </div>
+      {() => submitResult()
+        ? (
+            <div style={() => `margin-top:.5rem;padding:.5rem;border-radius:4px;font-size:.8rem;border:1px solid ${submitResult()!.ok ? '#6ee7b7' : '#fca5a5'};background:${submitResult()!.ok ? '#ecfdf5' : '#fff1f2'};color:${submitResult()!.ok ? '#065f46' : '#9f1239'}`}>
+              <strong>{() => submitResult()!.ok ? '✓ submit() succeeded' : '✗ submit() failed'}</strong>
+              {() => submitResult()!.ok
+                ? <pre style="margin-top:.25rem;font-size:.75rem;overflow:auto;background:transparent">{() => submitResult()!.msg}</pre>
+                : <p style="margin-top:.25rem">{() => submitResult()!.msg}</p>
+              }
+            </div>
+          )
+        : null
+      }
+      {() => snapshot()
+        ? <pre style="margin-top:.5rem;font-size:.75rem;background:#f8fafc;padding:.5rem;border-radius:4px;overflow:auto">{() => snapshot()}</pre>
+        : null
+      }
+    </div>
+  );
+};
 
 export component FormsTestPage() {
-  const [showBasic, setShowBasic] = createSignal(false);
-  const [showValidation, setShowValidation] = createSignal(false);
-  const [showFieldState, setShowFieldState] = createSignal(false);
-  const [showSubmission, setShowSubmission] = createSignal(false);
-  const [showAsyncValidation, setShowAsyncValidation] = createSignal(false);
+  const [form, setForm] = createSignal<IFormular<FormData> | null>(null);
+
+  createForm<FormData>({
+    schema: demoSchema,
+    defaultValues: { username: '', email: '' },
+    onSubmit: async (data: FormData) => {
+      // Step 3 proof: bridges the simple-api.ts validation gap.
+      // ObjectSchema has no _parse, so use per-field safeParse from shape.
+      const s = demoSchema as any;
+      const uR = s.shape.username.safeParse(data.username);
+      const eR = s.shape.email.safeParse(data.email);
+      if (!uR.success) throw new Error(uR.error?.message ?? 'username: invalid');
+      if (!eR.success) throw new Error(eR.error?.message ?? 'email: invalid');
+      console.info('[forms-demo] onSubmit:', data);
+    },
+  }).then(setForm);
+
+  onCleanup(() => form()?.clear());
 
   return (
     <div>
       <PageHeader
-        title="Forms: createForm + Schema Validation"
+        title="Forms — binding proof"
         emoji="📋"
-        description="P1-01 · formular.dev integration · f.object schema · field lifecycle"
+        description="Type, blur — errors appear below inputs. State badges update live."
       />
 
-      <DemoSection
-        title="1️⃣ Basic Form + Schema"
-        description="createForm with f.object schema, defaultValues, and manual field binding via form.parse()"
-        borderColor="#6366f1"
-      >
-        <DemoButton
-          label={showBasic() ? 'Hide Demo' : 'Show Demo'}
-          onClick={() => setShowBasic((v) => !v)}
-        />
-        <Show when={showBasic()}>
-          <BasicFormDemo />
-        </Show>
-      </DemoSection>
-
-      <DemoSection
-        title="2️⃣ Validation + Error Display"
-        description="Zod-backed validators. Errors surface after first interaction per field. isValid badge updates live."
-        borderColor="#ef4444"
-      >
-        <DemoButton
-          label={showValidation() ? 'Hide Demo' : 'Show Demo'}
-          onClick={() => setShowValidation((v) => !v)}
-        />
-        <Show when={showValidation()}>
-          <ValidationDemo />
-        </Show>
-      </DemoSection>
-
-      <DemoSection
-        title="3️⃣ Field State Badges"
-        description="isDirty / isValid / isFocus read from form.getField(name) after each input event."
-        borderColor="#f59e0b"
-      >
-        <DemoButton
-          label={showFieldState() ? 'Hide Demo' : 'Show Demo'}
-          onClick={() => setShowFieldState((v) => !v)}
-        />
-        <Show when={showFieldState()}>
-          <FieldStateDemo />
-        </Show>
-      </DemoSection>
-
-      <DemoSection
-        title="4️⃣ Submit Lifecycle"
-        description="form.submit() → validateForm → onSubmit async → onSuccess / onError callbacks."
-        borderColor="#10b981"
-      >
-        <DemoButton
-          label={showSubmission() ? 'Hide Demo' : 'Show Demo'}
-          onClick={() => setShowSubmission((v) => !v)}
-        />
-        <Show when={showSubmission()}>
-          <SubmissionDemo />
-        </Show>
-      </DemoSection>
-
-      <DemoSection
-        title="5️⃣ Async Validation + debounce(200)"
-        description="debounce(200) defers async validation on every keystroke. isValidating badge tracks in-flight state."
-        borderColor="#8b5cf6"
-      >
-        <DemoButton
-          label={showAsyncValidation() ? 'Hide Demo' : 'Show Demo'}
-          onClick={() => setShowAsyncValidation((v) => !v)}
-        />
-        <Show when={showAsyncValidation()}>
-          <AsyncValidationDemo />
-        </Show>
-      </DemoSection>
+      {!form() ? (
+        <p class="status-loading">⏳ Initialising form…</p>
+      ) : (
+        <div>
+          <div class="demo-card">
+            <FormProvider form={form()!} onSaveCallback={() => {}} onQuitCallback={() => {}}>
+              <TextField name="username" label="Username (3–20 chars)" showErrors={true} showGuides={true} />
+              <TextField name="email"    label="Email"                 showErrors={true} showGuides={true} />
+            </FormProvider>
+          </div>
+          <FormStatePanel form={form()!} schema={demoSchema} />
+        </div>
+      )}
     </div>
   );
 }

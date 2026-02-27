@@ -38,7 +38,7 @@
  */
 
 import type { IFieldGuide } from '@pulsar-framework/formular.dev';
-import { createEffect, createSignal, useSync } from '@pulsar-framework/pulsar.dev';
+import { useSync } from '@pulsar-framework/pulsar.dev';
 import type { IFieldError, IValidationResult } from '../types';
 
 export interface IUseFieldResult {
@@ -113,80 +113,61 @@ export function useField(field: any): IUseFieldResult {
 
   const input = field.input;
 
-  // ==================== PER-SIGNAL REACTIVE BRIDGE ====================
-  // Each formular signal gets its own useSync+createEffect subscription.
-  // createEffect(() => { signal.get(); notify(); }) registers a dependency
-  // inside formular's own reactive graph — guaranteed to fire whenever the
-  // signal is set, regardless of whether notificationManager.notify() is
-  // called anywhere in the code path.
-  //
-  // Plain properties (isDirty, isPristine, isFocus) are not formular signals,
-  // so we subscribe to the observers channel (String(input.id)) which fires
-  // via notificationManager.trigger() → observers.trigger(channelId).
-
-  // --- Reactive signals ---
-  const value = useSync<any>(
-    (notify) =>
-      createEffect(() => {
-        input?._value?.get();
-        notify();
-      }),
-    () => input?._value?.get()
-  );
-
-  const validationResults = useSync<IValidationResult[]>(
-    (notify) =>
-      createEffect(() => {
-        (input as any)?._validationResults?.get();
-        notify();
-      }),
-    () => (input as any)?._validationResults?.get() ?? []
-  );
-
-  const isValid = useSync<boolean>(
-    (notify) =>
-      createEffect(() => {
-        input?._isValid?.get();
-        notify();
-      }),
-    () => input?._isValid?.get() ?? true
-  );
-
-  // isRequired is static (set at field creation) — plain read, no reactive subscription needed
-  const isRequired = () => input?.validationOptions?.required?.value ?? false;
-
-  // --- Plain-property state (not signals) via observers channel ---
-  const _channel = input?.id ? String(input.id) : null;
-
-  const fieldStateSnapshot = useSync<{
+  // ==================== SINGLE OBSERVER-CHANNEL BRIDGE ====================
+  // formular.dev's reactive flow runs through `notifiers` (debounceNotify path),
+  // NOT through `observers`. The value setter calls debounceNotify('onUiUpdate', ...)
+  // after every value change; handleValidation calls it after every validation run.
+  // We register a notifier that listens to 'onUiUpdate' events and calls notify(),
+  // which re-reads all plain formular.dev properties fresh from the field instance.
+  // Key = `"${event.target}.${event.action}"` — must be unique per field instance.
+  const snapshot = useSync<{
+    value: any;
+    validationResults: IValidationResult[];
+    isValid: boolean;
     isDirty: boolean;
     isPristine: boolean;
     isFocus: boolean;
+    isRequired: boolean;
   }>(
     (notify) => {
-      if (!_channel || !input?.notificationManager?.observers) return () => {};
-      const cb = () => notify();
-      input.notificationManager.observers.subscribe(_channel, cb, false);
-      return () => input.notificationManager.observers.unSubscribe(_channel, cb, false);
+      const nm = input?.notificationManager;
+      if (!nm) return () => {};
+      const fieldKey = input?.name ? String(input.name) : String(input?.id ?? 'unknown');
+      const notifier = {
+        event: {
+          types: ['onUiUpdate'] as unknown as any[],
+          target: `${fieldKey}.use-field`,
+          action: 'sync',
+          emitterName: 'use-field',
+          name: `${fieldKey}.use-field`,
+          toFlags: () => ''
+        },
+        method: () => notify()
+      };
+      nm.accept(notifier as any);
+      return () => nm.dismiss(notifier as any);
     },
     () => ({
+      value: input?.value ?? null,
+      validationResults: input?.validationResults ?? [],
+      isValid: input?.isValid ?? true,
       isDirty: input?.isDirty ?? false,
       isPristine: input?.isPristine ?? true,
       isFocus: input?.isFocus ?? false,
+      isRequired: input?.validationOptions?.required?.value ?? false,
     })
   );
 
-  const isDirty = () => fieldStateSnapshot().isDirty;
-  const isPristine = () => fieldStateSnapshot().isPristine;
-  const isFocused = () => fieldStateSnapshot().isFocus;
-  const isDisabled = () => input?.disabled ?? false;
-
-  // ==================== TOUCHED TRACKING ====================
-  // "Touched" = field was focused and then blurred at least once.
-  // This is orthogonal to isDirty (user can focus+blur without changing value).
-  // We track it locally because formular does not expose an isTouched flag.
-  let _wasEverFocused = false;
-  const [_isTouched, _setIsTouched] = createSignal(false);
+  // ==================== REACTIVE ACCESSORS ====================
+  const value = (): any => snapshot().value;
+  const validationResults = (): IValidationResult[] =>
+    snapshot().validationResults as IValidationResult[];
+  const isValid = (): boolean => snapshot().isValid;
+  const isDirty = (): boolean => snapshot().isDirty;
+  const isPristine = (): boolean => snapshot().isPristine;
+  const isFocused = (): boolean => snapshot().isFocus;
+  const isRequired = (): boolean => snapshot().isRequired;
+  const isDisabled = (): boolean => input?.disabled ?? false;
 
   // ==================== DERIVED VALIDATION FUNCTIONS ====================
   const hasErrors = () => {
@@ -225,9 +206,12 @@ export function useField(field: any): IUseFieldResult {
   };
 
   // ==================== DERIVED STATE FUNCTIONS ====================
-  // "Touched" = has been focused then blurred; OR if the field is dirty
-  // (if dirty, user must have interacted with it).
-  const isTouched = () => _isTouched() || isDirty();
+  // "Touched" means the field has been focused and then blurred at least once
+  // We derive this from isDirty state (if dirty, user must have touched it)
+  const isTouched = () => {
+    // If field is dirty, it's been touched
+    return isDirty();
+  };
 
   // ==================== FIELD METADATA ====================
   const label = () => input?.label ?? field.name ?? '';
@@ -235,24 +219,16 @@ export function useField(field: any): IUseFieldResult {
   const type = () => input?.type ?? 'text';
 
   // ==================== FIELD ACTIONS ====================
-  // Go through formular's valueManager so isPristine/isDirty update
-  // and the 'onUiUpdate' notifier fires → Pulsar snapshot re-reads state.
   const setValue = (newValue: any) => {
-    if (input?.valueManager?.setValue) {
-      input.valueManager.setValue(field, newValue);
-    } else {
-      input?._value?.set(newValue);
-    }
+    // input.setValue() is the formular.dev public API — _value signal does not exist
+    input?.setValue(newValue);
   };
 
   const focus = () => {
-    _wasEverFocused = true;
     field?.focus?.();
   };
 
   const blur = () => {
-    // Mark as touched when the field is blurred after having been focused
-    if (_wasEverFocused) _setIsTouched(true);
     field?.blur?.();
   };
 
@@ -261,9 +237,15 @@ export function useField(field: any): IUseFieldResult {
   };
 
   const touch = () => {
-    // Directly mark as touched without requiring a real focus/blur cycle.
-    _wasEverFocused = true;
-    _setIsTouched(true);
+    // Mark field as touched by making it dirty if it isn't already
+    // In formular, "touched" is implicit from user interaction
+    // We can simulate it by ensuring the field has been interacted with
+    if (!isDirty() && !isFocused()) {
+      // Focus and blur to mark as touched
+      focus();
+      // Use setTimeout to allow focus to register before blur
+      setTimeout(() => blur(), 0);
+    }
   };
 
   return {
