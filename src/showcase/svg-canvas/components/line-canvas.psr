@@ -25,20 +25,22 @@ interface IDragState {
 
 export component LineCanvasDemo() {
   let idCounter = 0;
+  // Plain variable — not a signal. Never read in reactive JSX, so no signal needed.
+  let drag: IDragState | null = null;
+  // Ref to the SVG element captured via ref= callback
+  let svgEl: SVGSVGElement | null = null;
 
-  const [lines, setLines]         = createSignal<ILine[]>([]);
-  const [isDrawing, setIsDrawing] = createSignal(false);
-  const [drawStart, setDrawStart] = createSignal({ x: 0, y: 0 });
-  const [drawEnd, setDrawEnd]     = createSignal({ x: 0, y: 0 });
-  const [dragState, setDragState] = createSignal<IDragState | null>(null);
+  const [lines, setLines]           = createSignal<ILine[]>([]);
+  const [isDrawing, setIsDrawing]   = createSignal(false);
+  const [drawStart, setDrawStart]   = createSignal({ x: 0, y: 0 });
+  const [drawEnd, setDrawEnd]       = createSignal({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = createSignal(false);
   const [selectedId, setSelectedId] = createSignal<number | null>(null);
 
   // --- coordinate helpers ---
 
-  const svgCoords = (e: MouseEvent): { x: number; y: number } => {
-    const svg = (e.currentTarget as SVGElement).ownerSVGElement
-      ?? (e.currentTarget as SVGSVGElement);
-    const rect = svg.getBoundingClientRect();
+  const getSvgCoords = (e: MouseEvent): { x: number; y: number } => {
+    const rect = (svgEl ?? (e.currentTarget as SVGSVGElement)).getBoundingClientRect();
     return {
       x: Math.round(e.clientX - rect.left),
       y: Math.round(e.clientY - rect.top),
@@ -49,7 +51,7 @@ export component LineCanvasDemo() {
 
   const handleBgDown = (e: MouseEvent) => {
     if (e.button !== 0) return;
-    const p = svgCoords(e);
+    const p = getSvgCoords(e);
     setSelectedId(null);
     setIsDrawing(true);
     setDrawStart(p);
@@ -59,11 +61,11 @@ export component LineCanvasDemo() {
   const handleLineDown = (e: MouseEvent, lineId: number) => {
     e.stopPropagation();
     if (e.button !== 0) return;
-    const p = svgCoords(e);
+    const p = getSvgCoords(e);
     const line = lines().find(l => l.id === lineId);
     if (!line) return;
     setSelectedId(lineId);
-    setDragState({
+    drag = {
       lineId,
       mouseX:  p.x,
       mouseY:  p.y,
@@ -71,13 +73,14 @@ export component LineCanvasDemo() {
       origY1:  line.y1,
       origX2:  line.x2,
       origY2:  line.y2,
-    });
+    };
+    setIsDragging(true);
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    // Capture coords synchronously — defer state writes to next rAF
-    const svg = e.currentTarget as SVGSVGElement;
-    const rect = svg.getBoundingClientRect();
+    if (!isDrawing() && !drag) return;
+    // Capture raw coords synchronously so rAF sees the latest position
+    const rect = (svgEl ?? (e.currentTarget as SVGSVGElement)).getBoundingClientRect();
     const x = Math.round(e.clientX - rect.left);
     const y = Math.round(e.clientY - rect.top);
 
@@ -86,23 +89,32 @@ export component LineCanvasDemo() {
         setDrawEnd({ x, y });
         return;
       }
-      const d = dragState();
-      if (!d) return;
+      const d = drag;
+      if (!d || !svgEl) return;
+
       const dx = x - d.mouseX;
       const dy = y - d.mouseY;
-      setLines(
-        lines().map(l =>
-          l.id === d.lineId
-            ? {
-                ...l,
-                x1: d.origX1 + dx,
-                y1: d.origY1 + dy,
-                x2: d.origX2 + dx,
-                y2: d.origY2 + dy,
-              }
-            : l
-        )
-      );
+
+      // ── DIRECT DOM update — no signal write during drag ──
+      // Finds the <g data-line-id="..."> rendered by the lines().map() below
+      // and patches its child <line> attributes in-place, skipping reactive re-renders.
+      const g = svgEl.querySelector<SVGGElement>(`[data-line-id="${d.lineId}"]`);
+      if (!g) return;
+      const svgLines = g.querySelectorAll('line');
+      const nx1 = String(d.origX1 + dx);
+      const ny1 = String(d.origY1 + dy);
+      const nx2 = String(d.origX2 + dx);
+      const ny2 = String(d.origY2 + dy);
+      svgLines.forEach(l => {
+        l.setAttribute('x1', nx1); l.setAttribute('y1', ny1);
+        l.setAttribute('x2', nx2); l.setAttribute('y2', ny2);
+      });
+      // Update endpoint handles too
+      const circles = g.querySelectorAll('circle');
+      if (circles.length >= 2) {
+        circles[0].setAttribute('cx', nx1); circles[0].setAttribute('cy', ny1);
+        circles[1].setAttribute('cx', nx2); circles[1].setAttribute('cy', ny2);
+      }
     }, 'canvas-move');
   };
 
@@ -121,7 +133,26 @@ export component LineCanvasDemo() {
       }
       setIsDrawing(false);
     }
-    if (dragState()) setDragState(null);
+    if (drag) {
+      // Commit the visually-moved position back to signal (single write on release)
+      if (svgEl) {
+        const g = svgEl.querySelector<SVGGElement>(`[data-line-id="${drag.lineId}"]`);
+        if (g) {
+          const l = g.querySelector('line');
+          if (l) {
+            const x1 = Number(l.getAttribute('x1'));
+            const y1 = Number(l.getAttribute('y1'));
+            const x2 = Number(l.getAttribute('x2'));
+            const y2 = Number(l.getAttribute('y2'));
+            setLines(lines().map(ln =>
+              ln.id === drag!.lineId ? { ...ln, x1, y1, x2, y2 } : ln
+            ));
+          }
+        }
+      }
+      drag = null;
+      setIsDragging(false);
+    }
   };
 
   // --- actions ---
@@ -155,7 +186,7 @@ export component LineCanvasDemo() {
         <span style="font-size: 13px; color: #94a3b8;">
           {() => {
             if (isDrawing()) return '✏️  Drawing — release to commit line';
-            if (dragState()) return '↔  Moving line';
+            if (isDragging()) return '↔  Moving line';
             return '➕  Drag on canvas to draw  ·  click a line to select & move';
           }}
         </span>
@@ -182,11 +213,12 @@ export component LineCanvasDemo() {
 
       {/* ── SVG Canvas ── */}
       <svg
+        ref={(el: Element) => { svgEl = el as SVGSVGElement; }}
         onMouseDown={handleBgDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-        style={() => `display: block; width: 100%; height: calc(100vh - 320px); min-height: 460px; border-radius: 10px; border: 1px solid #1a2e45; cursor: ${dragState() ? 'grabbing' : 'crosshair'}; user-select: none;`}>
+        style={() => `display: block; width: 100%; height: calc(100vh - 320px); min-height: 460px; border-radius: 10px; border: 1px solid #1a2e45; cursor: ${isDragging() ? 'grabbing' : 'crosshair'}; user-select: none;`}>
 
         <defs>
           <pattern id="vsb-dot-grid" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
@@ -202,7 +234,7 @@ export component LineCanvasDemo() {
         {() => lines().map((line) => {
           const sel = selectedId() === line.id;
           return (
-            <g>
+            <g data-line-id={String(line.id)}>
               {/* Wide transparent hit target — receives the drag */}
               <line
                 x1={String(line.x1)} y1={String(line.y1)}
