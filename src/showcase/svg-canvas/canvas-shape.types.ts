@@ -38,7 +38,7 @@ export interface IAnchor {
 // ---------------------------------------------------------------------------
 
 export interface ILineConnection {
-  shapeId:  string;
+  shapeId: string;
   anchorId: string;
 }
 

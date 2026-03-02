@@ -24,10 +24,10 @@ export const CanvasLine = function (
   this.y1 = y1;
   this.x2 = x2;
   this.y2 = y2;
-  this.leftCardinality  = null as ICardinality | null;
+  this.leftCardinality = null as ICardinality | null;
   this.rightCardinality = null as ICardinality | null;
-  this.startConnection  = null;
-  this.endConnection    = null;
+  this.startConnection = null;
+  this.endConnection = null;
 } as unknown as new (
   id: string,
   code: string,
