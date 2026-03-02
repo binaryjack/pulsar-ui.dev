@@ -89,6 +89,7 @@ export const CanvasDiamond = function (
   this.width = width;
   this.height = height;
   this.anchors = buildDiamondAnchors(id, x, y, width, height);
+  this.collapsed = false;
 } as unknown as new (
   id: string,
   code: string,

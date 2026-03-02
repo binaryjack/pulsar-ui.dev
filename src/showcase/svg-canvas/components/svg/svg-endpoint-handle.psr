@@ -1,0 +1,29 @@
+/**
+ * SvgEndpointHandle — visual + hit-target circle pair for a line endpoint.
+ * Inner circle is decorative (pointer-events: none).
+ * Outer ring is the interactive grab target.
+ */
+
+interface ISvgEndpointHandleProps {
+  cx:           number
+  cy:           number
+  onMouseDown:  (e: MouseEvent) => void
+}
+
+export component SvgEndpointHandle({ cx, cy, onMouseDown }: ISvgEndpointHandleProps) {
+  return (
+    <g>
+      <circle
+        cx={String(cx)} cy={String(cy)}
+        r="5" fill="#22d3ee" opacity="0.9"
+        style="pointer-events: none;"
+      />
+      <circle
+        cx={String(cx)} cy={String(cy)}
+        r="10" fill="transparent" stroke="#22d3ee" stroke-width="1.5" opacity="0.5"
+        style="cursor: crosshair;"
+        onMouseDown={(e: MouseEvent) => { e.stopPropagation(); onMouseDown(e); }}
+      />
+    </g>
+  );
+}

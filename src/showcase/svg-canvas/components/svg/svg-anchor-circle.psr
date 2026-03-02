@@ -1,0 +1,44 @@
+/**
+ * SvgAnchorCircle — a single anchor point circle.
+ * Edge-midpoint anchors (snap-only, no pointer events) render as small cyan circles.
+ * Vertex anchors (resize handles) render as amber circles with hover grow and mousedown.
+ */
+
+import { AnchorPosition } from '../../canvas-entity.types';
+import { VERTEX_ANCHORS }  from '../../canvas-drag.types';
+
+interface ISvgAnchorCircleProps {
+  position:     AnchorPosition
+  cx:           number
+  cy:           number
+  onMouseDown?: (e: MouseEvent) => void
+}
+
+export component SvgAnchorCircle({ position, cx, cy, onMouseDown }: ISvgAnchorCircleProps) {
+  if (!VERTEX_ANCHORS.has(position)) {
+    return (
+      <circle
+        data-anchor-pos={position}
+        cx={String(cx)} cy={String(cy)}
+        r="4" fill="#22d3ee" opacity="0.7"
+        style="pointer-events: none;"
+      />
+    );
+  }
+
+  const isNWSE =
+    position === AnchorPosition.TopLeft ||
+    position === AnchorPosition.BottomRight;
+
+  return (
+    <circle
+      data-anchor-pos={position}
+      cx={String(cx)} cy={String(cy)}
+      r="6" fill="#f59e0b" opacity="0.9" stroke="#060e1a" stroke-width="1.5"
+      style={`cursor: ${isNWSE ? 'nwse-resize' : 'nesw-resize'};`}
+      onMouseEnter={(e: MouseEvent) => { (e.currentTarget as SVGCircleElement).setAttribute('r', '9'); }}
+      onMouseLeave={(e: MouseEvent) => { (e.currentTarget as SVGCircleElement).setAttribute('r', '6'); }}
+      onMouseDown={(e: MouseEvent) => onMouseDown?.(e)}
+    />
+  );
+}

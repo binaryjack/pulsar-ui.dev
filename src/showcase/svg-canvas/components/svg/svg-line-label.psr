@@ -1,0 +1,32 @@
+/**
+ * SvgLineLabel — midpoint rect + text label for a canvas line.
+ * Entirely non-interactive (pointer-events: none on entire group).
+ */
+
+interface ISvgLineLabelProps {
+  x1:   number
+  y1:   number
+  x2:   number
+  y2:   number
+  name: string
+}
+
+export component SvgLineLabel({ x1, y1, x2, y2, name }: ISvgLineLabelProps) {
+  const mx = Math.round((x1 + x2) / 2);
+  const my = Math.round((y1 + y2) / 2);
+
+  return (
+    <g data-line-label style="pointer-events: none;">
+      <rect
+        x={String(mx - 28)} y={String(my - 9)}
+        width="56" height="16" rx="3"
+        fill="#07111f" opacity="0.85"
+      />
+      <text
+        x={String(mx)} y={String(my + 4)}
+        text-anchor="middle" font-size="10" fill="#94a3b8"
+        style="user-select: none;"
+      >{name}</text>
+    </g>
+  );
+}

@@ -1,0 +1,27 @@
+/**
+ * CanvasTextInput — transparent inline text input used inside the entity card.
+ * Always stops mousedown propagation so the parent drag handler is not triggered.
+ */
+
+interface ICanvasTextInputProps {
+  value:    string
+  small?:   boolean
+  onBlur:   (value: string) => void
+}
+
+export component CanvasTextInput({
+  value,
+  small  = false,
+  onBlur,
+}: ICanvasTextInputProps) {
+  const color = small ? '#94a3b8' : '#e2e8f0';
+  return (
+    <input
+      type="text"
+      value={value}
+      onMouseDown={(e: MouseEvent) => e.stopPropagation()}
+      onBlur={(e: FocusEvent) => onBlur((e.target as HTMLInputElement).value)}
+      style={`flex:1;background:transparent;border:none;outline:none;color:${color};font-size:11px;min-width:0;cursor:text;`}
+    />
+  );
+}

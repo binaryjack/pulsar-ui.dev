@@ -16,7 +16,7 @@ export enum ShapeKind {
 // Tool kind  (what the user has selected in the toolbox)
 // ---------------------------------------------------------------------------
 
-export type ToolKind = 'line' | ShapeKind;
+export type ToolKind = 'select' | 'line' | ShapeKind;
 
 // ---------------------------------------------------------------------------
 // Anchor
@@ -53,6 +53,8 @@ export interface IShape extends IEntity {
   width: number;
   height: number;
   anchors: IAnchor[];
+  /** Whether the entity card body is collapsed (header-only view) */
+  collapsed: boolean;
 }
 
 // ---------------------------------------------------------------------------

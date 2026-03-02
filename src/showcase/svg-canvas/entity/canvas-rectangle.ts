@@ -27,6 +27,7 @@ export const CanvasRectangle = function (
   this.height = height;
   // Reuse the rectangular anchor formula
   this.anchors = buildSquareAnchors(id, x, y, width, height);
+  this.collapsed = false;
 } as unknown as new (
   id: string,
   code: string,

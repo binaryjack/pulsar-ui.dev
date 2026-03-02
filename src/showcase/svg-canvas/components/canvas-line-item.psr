@@ -1,30 +1,35 @@
 /**
  * CanvasLineItem — renders a single canvas line entity.
- * Consists of a wide transparent hit target (for easy grabbing),
- * a visible stroke, and selection endpoint circles.
+ * Hit target + visible stroke + optional name label + optional endpoint handles.
  */
 
-import type { ICanvasLine } from '../canvas-shape.types';
+import type { ICanvasLine }      from '../canvas-shape.types';
+import { SvgEndpointHandle }     from './svg/svg-endpoint-handle.psr';
+import { SvgLineLabel }          from './svg/svg-line-label.psr';
 
 interface ICanvasLineItemProps {
-  line:         ICanvasLine
-  selectedId:   () => string | null
-  onLineDown:   (e: MouseEvent) => void
-  onHoverEnter: (e: MouseEvent) => void
-  onHoverLeave: (e: MouseEvent) => void
+  line:            ICanvasLine
+  selectedId:      () => string | null
+  onLineDown:      (e: MouseEvent) => void
+  onEndpointDown:  (e: MouseEvent, endpoint: 'start' | 'end') => void
+  onHoverEnter:    (e: MouseEvent) => void
+  onHoverLeave:    (e: MouseEvent) => void
+  onDblClick?:     () => void
 }
 
 export component CanvasLineItem({
   line,
   selectedId,
   onLineDown,
+  onEndpointDown,
   onHoverEnter,
   onHoverLeave,
+  onDblClick,
 }: ICanvasLineItemProps) {
   return (
     <g data-entity-id={line.id}>
 
-      {/* Wide transparent hit target — easy to grab */}
+      {/* Wide transparent hit target */}
       <line
         x1={String(line.x1)} y1={String(line.y1)}
         x2={String(line.x2)} y2={String(line.y2)}
@@ -33,9 +38,10 @@ export component CanvasLineItem({
         onMouseDown={onLineDown}
         onMouseEnter={onHoverEnter}
         onMouseLeave={onHoverLeave}
+        onDblClick={() => onDblClick?.()}
       />
 
-      {/* Visible stroke — no pointer-events to avoid conflict with hit target */}
+      {/* Visible stroke */}
       {() => {
         const sel = selectedId() === line.id;
         return (
@@ -50,11 +56,14 @@ export component CanvasLineItem({
         );
       }}
 
-      {/* Endpoint circles — visible only when selected */}
+      {() => line.name
+        ? <SvgLineLabel x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} name={line.name} />
+        : null}
+
       {() => selectedId() === line.id ? (
-        <g style="pointer-events: none;">
-          <circle cx={String(line.x1)} cy={String(line.y1)} r="6" fill="#22d3ee" opacity="0.85" />
-          <circle cx={String(line.x2)} cy={String(line.y2)} r="6" fill="#22d3ee" opacity="0.85" />
+        <g>
+          <SvgEndpointHandle cx={line.x1} cy={line.y1} onMouseDown={(e: MouseEvent) => onEndpointDown(e, 'start')} />
+          <SvgEndpointHandle cx={line.x2} cy={line.y2} onMouseDown={(e: MouseEvent) => onEndpointDown(e, 'end')}   />
         </g>
       ) : null}
 

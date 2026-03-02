@@ -27,7 +27,7 @@ export const updateShapeBodyDom = (
     rectEl.setAttribute('x', String(nx));
     rectEl.setAttribute('y', String(ny));
     rectEl.setAttribute('width', String(nw));
-    rectEl.setAttribute('height', String(nh));
+    rectEl.setAttribute('height', s.collapsed ? '32' : String(nh));
   } else if (polyEl) {
     const cx = nx + nw / 2;
     const cy = ny + nh / 2;
@@ -38,6 +38,16 @@ export const updateShapeBodyDom = (
   if (txt) {
     txt.setAttribute('x', String(nx + nw / 2));
     txt.setAttribute('y', String(ny + nh / 2));
+  }
+
+  // foreignObject card (rect / square shapes)
+  const fo = g.querySelector('foreignObject');
+  if (fo) {
+    fo.setAttribute('x', String(nx));
+    fo.setAttribute('y', String(ny));
+    fo.setAttribute('width', String(nw));
+    // When collapsed keep header-only height; otherwise full height
+    fo.setAttribute('height', s.collapsed ? '32' : String(nh));
   }
 };
 

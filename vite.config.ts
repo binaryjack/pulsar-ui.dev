@@ -9,6 +9,7 @@ export default defineConfig({
       debug: true, // Re-enable to see if plugin is being called
       autoInjectHMR: true,
       enableDependencyResolution: true,
+      devtools: false,
     }),
   ],
   root: resolve(__dirname, '.'),

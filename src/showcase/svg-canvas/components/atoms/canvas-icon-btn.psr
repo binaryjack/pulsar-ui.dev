@@ -1,0 +1,32 @@
+/**
+ * CanvasIconBtn — tiny transparent icon button used throughout the canvas card UI.
+ * Always stops mousedown propagation by default to avoid interfering with shape drag.
+ */
+
+interface ICanvasIconBtnProps {
+  title:        string
+  icon:         string
+  danger?:      boolean
+  small?:       boolean
+  onClick:      () => void
+}
+
+export component CanvasIconBtn({
+  title,
+  icon,
+  danger  = false,
+  small   = false,
+  onClick,
+}: ICanvasIconBtnProps) {
+  const color   = danger ? '#ef4444' : '#64748b';
+  const fsz     = small  ? '9px'     : '10px';
+  return (
+    <button
+      title={title}
+      onMouseDown={(e: MouseEvent) => e.stopPropagation()}
+      onClick={onClick}
+      style={`background:transparent;border:none;cursor:pointer;color:${color};padding:0 2px;font-size:${fsz};line-height:1;`}>
+      {icon}
+    </button>
+  );
+}

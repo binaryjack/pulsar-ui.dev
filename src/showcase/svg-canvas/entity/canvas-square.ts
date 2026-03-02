@@ -49,6 +49,7 @@ export const CanvasSquare = function (
   this.width = size;
   this.height = size;
   this.anchors = buildSquareAnchors(id, x, y, size, size);
+  this.collapsed = false;
 } as unknown as new (
   id: string,
   code: string,

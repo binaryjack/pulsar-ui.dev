@@ -16,6 +16,7 @@ interface IToolEntry {
 }
 
 const TOOLS: IToolEntry[] = [
+  { kind: 'select',    label: 'Select',  icon: '↖' },
   { kind: 'line',      label: 'Line',    icon: '╱' },
   { kind: 'square',    label: 'Square',  icon: '▢' },
   { kind: 'rectangle', label: 'Rect',    icon: '▭' },

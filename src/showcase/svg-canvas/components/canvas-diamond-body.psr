@@ -1,0 +1,50 @@
+/**
+ * CanvasDiamondBody — SVG polygon + centred text label for a Diamond shape.
+ * Grabs mousedown for drag; text is non-interactive.
+ */
+
+interface ICanvasDiamondBodyProps {
+  x:           number
+  y:           number
+  width:       number
+  height:      number
+  name:        string
+  selected:    boolean
+  onShapeDown: (e: MouseEvent) => void
+}
+
+export component CanvasDiamondBody({
+  x,
+  y,
+  width,
+  height,
+  name,
+  selected,
+  onShapeDown,
+}: ICanvasDiamondBodyProps) {
+  const cx   = x + width  / 2;
+  const cy   = y + height / 2;
+  const pts  = `${cx},${y} ${x + width},${cy} ${cx},${y + height} ${x},${cy}`;
+
+  const stroke  = selected ? '#22d3ee' : '#3b82f6';
+  const strokeW = selected ? '2.5'     : '1.5';
+  const fill    = selected ? 'rgba(34,211,238,0.06)' : 'rgba(59,130,246,0.07)';
+  const textCol = selected ? '#22d3ee' : '#64748b';
+
+  return (
+    <g>
+      <polygon
+        points={pts}
+        fill={fill} stroke={stroke} stroke-width={strokeW}
+        style="cursor: grab;"
+        onMouseDown={onShapeDown}
+      />
+      <text
+        x={String(cx)} y={String(cy)}
+        text-anchor="middle" dominant-baseline="middle"
+        fill={textCol} font-size="12"
+        style="pointer-events: none; user-select: none;"
+      >{name}</text>
+    </g>
+  );
+}
