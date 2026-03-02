@@ -1,0 +1,63 @@
+/**
+ * CanvasLineItem — renders a single canvas line entity.
+ * Consists of a wide transparent hit target (for easy grabbing),
+ * a visible stroke, and selection endpoint circles.
+ */
+
+import type { ICanvasLine } from '../canvas-shape.types';
+
+interface ICanvasLineItemProps {
+  line:         ICanvasLine
+  selectedId:   () => string | null
+  onLineDown:   (e: MouseEvent) => void
+  onHoverEnter: (e: MouseEvent) => void
+  onHoverLeave: (e: MouseEvent) => void
+}
+
+export component CanvasLineItem({
+  line,
+  selectedId,
+  onLineDown,
+  onHoverEnter,
+  onHoverLeave,
+}: ICanvasLineItemProps) {
+  return (
+    <g data-entity-id={line.id}>
+
+      {/* Wide transparent hit target — easy to grab */}
+      <line
+        x1={String(line.x1)} y1={String(line.y1)}
+        x2={String(line.x2)} y2={String(line.y2)}
+        stroke="transparent" stroke-width="18"
+        style="cursor: grab;"
+        onMouseDown={onLineDown}
+        onMouseEnter={onHoverEnter}
+        onMouseLeave={onHoverLeave}
+      />
+
+      {/* Visible stroke — no pointer-events to avoid conflict with hit target */}
+      {() => {
+        const sel = selectedId() === line.id;
+        return (
+          <line
+            x1={String(line.x1)} y1={String(line.y1)}
+            x2={String(line.x2)} y2={String(line.y2)}
+            stroke={sel ? '#22d3ee' : '#3b82f6'}
+            stroke-width={sel ? '3' : '2'}
+            stroke-linecap="round"
+            style="pointer-events: none;"
+          />
+        );
+      }}
+
+      {/* Endpoint circles — visible only when selected */}
+      {() => selectedId() === line.id ? (
+        <g style="pointer-events: none;">
+          <circle cx={String(line.x1)} cy={String(line.y1)} r="6" fill="#22d3ee" opacity="0.85" />
+          <circle cx={String(line.x2)} cy={String(line.y2)} r="6" fill="#22d3ee" opacity="0.85" />
+        </g>
+      ) : null}
+
+    </g>
+  );
+}

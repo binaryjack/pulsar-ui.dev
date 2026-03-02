@@ -1,76 +1,39 @@
 /**
- * Line Canvas Demo
- * SVG canvas: dotted grid, draw shapes + lines, drag to move, anchor snap, hover thickness,
- * shape resize via vertex anchors, connected line endpoints follow dragged shapes.
+ * LineCanvasDemo — SVG canvas orchestrator.
+ *
+ * Owns: signals, drag state, event handlers, connected-line signal commits.
+ * Delegates: rendering to sub-components, DOM ops to canvas-dom-ops, math to canvas-helpers.
  */
 
 import { createSignal, scheduleFrame }                         from '@pulsar-framework/pulsar.dev';
-import { AnchorPosition, ShapeKind }                           from '../canvas-shape.types';
+import { AnchorPosition }                                      from '../canvas-entity.types';
 import type { ICanvasLine, ILineConnection, IShape, ToolKind } from '../entity';
+import { createCanvasLine, createShape }                       from '../entity';
+import { ShapeKind }                                           from '../canvas-shape.types';
+import type { IDragState }                                     from '../canvas-drag.types';
 import {
-  createCanvasLine,
-  createShape,
-  buildSquareAnchors,
-  buildDiamondAnchors,
-}                                                from '../entity';
-import { SideToolbox }                           from './side-toolbox.psr';
+  calcResizeGeom,
+  getSvgCoords,
+  rebuildShape,
+  snapToAnchor,
+}                                                              from '../canvas-helpers';
+import {
+  rebuildAnchorsDom,
+  updateConnectedLinesDom,
+  updateShapeBodyDom,
+}                                                              from '../canvas-dom-ops';
+import { CanvasBadgeList }                                     from './canvas-badge-list.psr';
+import { CanvasDrawPreview }                                   from './canvas-draw-preview.psr';
+import { CanvasLineItem }                                      from './canvas-line-item.psr';
+import { CanvasShapeItem }                                     from './canvas-shape-item.psr';
+import { CanvasToolbar }                                       from './canvas-toolbar.psr';
+import { SideToolbox }                                         from './side-toolbox.psr';
 
-// ── Drag state ────────────────────────────────────────────────────────────────
-
-interface ILineDragState {
-  type:     'line'
-  lineId:   string
-  mouseX:   number
-  mouseY:   number
-  origX1:   number
-  origY1:   number
-  origX2:   number
-  origY2:   number
-  latestDx: number
-  latestDy: number
-}
-
-interface IShapeDragState {
-  type:     'shape'
-  shapeId:  string
-  mouseX:   number
-  mouseY:   number
-  origX:    number
-  origY:    number
-  latestDx: number
-  latestDy: number
-}
-
-interface IAnchorResizeDragState {
-  type:      'anchor-resize'
-  shapeId:   string
-  anchorPos: AnchorPosition
-  mouseX:    number
-  mouseY:    number
-  origX:     number
-  origY:     number
-  origW:     number
-  origH:     number
-  latestX:   number
-  latestY:   number
-  latestW:   number
-  latestH:   number
-}
-
-type IDragState = ILineDragState | IShapeDragState | IAnchorResizeDragState
-
-const SNAP_RADIUS    = 15;
-const MIN_SIZE       = 20;
-const VERTEX_ANCHORS = new Set<AnchorPosition>([
-  AnchorPosition.TopLeft,
-  AnchorPosition.TopRight,
-  AnchorPosition.BottomLeft,
-  AnchorPosition.BottomRight,
-]);
+// ── Dot-grid pattern background (inlined so defs stay with the canvas)
 
 export component LineCanvasDemo() {
-  let svgEl: SVGSVGElement | null       = null;
-  let drag: IDragState | null           = null;
+  let svgEl: SVGSVGElement | null          = null;
+  let drag:  IDragState | null             = null;
   let drawStartConn: ILineConnection | null = null;
 
   const [lines,          setLines]          = createSignal<ICanvasLine[]>([]);
@@ -83,82 +46,14 @@ export component LineCanvasDemo() {
   const [isDragging,     setIsDragging]     = createSignal(false);
   const [hoveredShapeId, setHoveredShapeId] = createSignal<string | null>(null);
 
-  // ── Coord helpers ─────────────────────────────────────────────────────────
+  // ── Signal-level commit of connected-line endpoints after a shape move / resize ──
 
-  const getSvgCoords = (e: MouseEvent): { x: number; y: number } => {
-    const r = (svgEl ?? (e.currentTarget as SVGSVGElement)).getBoundingClientRect();
-    return { x: Math.round(e.clientX - r.left), y: Math.round(e.clientY - r.top) };
-  };
-
-  type AnchorHit = { x: number; y: number; conn: ILineConnection };
-
-  const findAnchorAt = (px: number, py: number): AnchorHit | null => {
-    for (const s of shapes()) {
-      for (const a of s.anchors) {
-        if (Math.hypot(a.x - px, a.y - py) <= SNAP_RADIUS)
-          return { x: a.x, y: a.y, conn: { shapeId: s.id, anchorId: a.id } };
-      }
-    }
-    return null;
-  };
-
-  const snapToAnchor = (px: number, py: number): { x: number; y: number; conn: ILineConnection | null } => {
-    const hit = findAnchorAt(px, py);
-    return hit ? { x: hit.x, y: hit.y, conn: hit.conn } : { x: px, y: py, conn: null };
-  };
-
-  const rebuildShape = (s: IShape, nx: number, ny: number, nw?: number, nh?: number): IShape => {
-    const w = nw ?? s.width;
-    const h = nh ?? s.height;
-    const anchors = s.kind === ShapeKind.Diamond
-      ? buildDiamondAnchors(s.id, nx, ny, w, h)
-      : buildSquareAnchors(s.id, nx, ny, w, h);
-    return { ...s, x: nx, y: ny, width: w, height: h, anchors };
-  };
-
-  // Updates anchor circle cx/cy inside the anchor group DOM element
-  const rebuildAnchorsDom = (g: SVGGElement, s: IShape, nx: number, ny: number, nw: number, nh: number) => {
-    const newAnchors = s.kind === ShapeKind.Diamond
-      ? buildDiamondAnchors(s.id, nx, ny, nw, nh)
-      : buildSquareAnchors(s.id, nx, ny, nw, nh);
-    const ag = g.querySelector(`[data-anchor-group="${s.id}"]`);
-    if (!ag) return;
-    for (const a of newAnchors) {
-      const circle = ag.querySelector<SVGCircleElement>(`[data-anchor-pos="${a.position}"]`);
-      if (circle) {
-        circle.setAttribute('cx', String(a.x));
-        circle.setAttribute('cy', String(a.y));
-      }
-    }
-  };
-
-  // Updates DOM endpoints of all lines connected to a shape (during live drag)
-  const updateConnectedLinesDom = (shapeId: string, anchors: Array<{ id: string; x: number; y: number }>) => {
-    if (!svgEl) return;
-    for (const ln of lines()) {
-      const isStart = ln.startConnection?.shapeId === shapeId;
-      const isEnd   = ln.endConnection?.shapeId   === shapeId;
-      if (!isStart && !isEnd) continue;
-      const lg = svgEl.querySelector<SVGGElement>(`[data-entity-id="${ln.id}"]`);
-      if (!lg) continue;
-      const lineEls = lg.querySelectorAll('line');
-      if (isStart) {
-        const a = anchors.find(a => a.id === ln.startConnection!.anchorId);
-        if (a) lineEls.forEach(el => { el.setAttribute('x1', String(a.x)); el.setAttribute('y1', String(a.y)); });
-      }
-      if (isEnd) {
-        const a = anchors.find(a => a.id === ln.endConnection!.anchorId);
-        if (a) lineEls.forEach(el => { el.setAttribute('x2', String(a.x)); el.setAttribute('y2', String(a.y)); });
-      }
-    }
-  };
-
-  // Commits connected-line signal positions after a shape move/resize is finalised
   const commitConnectedLines = (shapeId: string) => {
     const updatedShape = shapes().find(s => s.id === shapeId);
     if (!updatedShape) return;
     setLines(lines().map(ln => {
-      if (ln.startConnection?.shapeId !== shapeId && ln.endConnection?.shapeId !== shapeId) return ln;
+      if (ln.startConnection?.shapeId !== shapeId && ln.endConnection?.shapeId !== shapeId)
+        return ln;
       const a0 = updatedShape.anchors.find(a => a.id === ln.startConnection?.anchorId);
       const a1 = updatedShape.anchors.find(a => a.id === ln.endConnection?.anchorId);
       return {
@@ -173,10 +68,10 @@ export component LineCanvasDemo() {
 
   const handleBgDown = (e: MouseEvent) => {
     if (e.button !== 0) return;
-    const p    = getSvgCoords(e);
+    const p    = getSvgCoords(e, svgEl);
+    const snap = snapToAnchor(p.x, p.y, shapes());
     setSelectedId(null);
     setIsDrawing(true);
-    const snap = snapToAnchor(p.x, p.y);
     drawStartConn = snap.conn;
     setDrawStart({ x: snap.x, y: snap.y });
     setDrawEnd({ x: snap.x, y: snap.y });
@@ -185,35 +80,39 @@ export component LineCanvasDemo() {
   const handleLineDown = (e: MouseEvent, lineId: string) => {
     e.stopPropagation();
     if (e.button !== 0) return;
-    const p  = getSvgCoords(e);
+    const p  = getSvgCoords(e, svgEl);
     const ln = lines().find(l => l.id === lineId);
     if (!ln) return;
     setSelectedId(lineId);
-    drag = { type: 'line', lineId,
-             mouseX: p.x, mouseY: p.y,
-             origX1: ln.x1, origY1: ln.y1, origX2: ln.x2, origY2: ln.y2,
-             latestDx: 0, latestDy: 0 };
+    drag = {
+      type: 'line', lineId,
+      mouseX: p.x, mouseY: p.y,
+      origX1: ln.x1, origY1: ln.y1, origX2: ln.x2, origY2: ln.y2,
+      latestDx: 0, latestDy: 0,
+    };
     setIsDragging(true);
   };
 
   const handleShapeDown = (e: MouseEvent, shapeId: string) => {
     e.stopPropagation();
     if (e.button !== 0) return;
-    const p = getSvgCoords(e);
+    const p = getSvgCoords(e, svgEl);
     const s = shapes().find(sh => sh.id === shapeId);
     if (!s) return;
     setSelectedId(shapeId);
-    drag = { type: 'shape', shapeId,
-             mouseX: p.x, mouseY: p.y,
-             origX: s.x, origY: s.y,
-             latestDx: 0, latestDy: 0 };
+    drag = {
+      type: 'shape', shapeId,
+      mouseX: p.x, mouseY: p.y,
+      origX: s.x, origY: s.y,
+      latestDx: 0, latestDy: 0,
+    };
     setIsDragging(true);
   };
 
   const handleAnchorDown = (e: MouseEvent, shapeId: string, anchorPos: AnchorPosition) => {
     e.stopPropagation();
     if (e.button !== 0) return;
-    const p = getSvgCoords(e);
+    const p = getSvgCoords(e, svgEl);
     const s = shapes().find(sh => sh.id === shapeId);
     if (!s) return;
     setSelectedId(shapeId);
@@ -226,22 +125,22 @@ export component LineCanvasDemo() {
     setIsDragging(true);
   };
 
-  // Line hover — +5 px on the visible stroke, direct DOM, no signal
+  // Line hover — direct DOM, no signal
   const handleLineHoverEnter = (e: MouseEvent) => {
     const g = (e.currentTarget as SVGElement).closest<SVGGElement>('[data-entity-id]');
     if (!g) return;
     const vis = g.querySelectorAll('line')[1];
-    if (!vis) return;
-    const cur = Number(vis.getAttribute('stroke-width') ?? '2');
-    vis.setAttribute('stroke-width', String(cur + 5));
+    if (vis) {
+      const cur = Number(vis.getAttribute('stroke-width') ?? '2');
+      vis.setAttribute('stroke-width', String(cur + 5));
+    }
   };
 
   const handleLineHoverLeave = (e: MouseEvent, lineId: string) => {
     const g = (e.currentTarget as SVGElement).closest<SVGGElement>('[data-entity-id]');
     if (!g) return;
     const vis = g.querySelectorAll('line')[1];
-    if (!vis) return;
-    vis.setAttribute('stroke-width', selectedId() === lineId ? '3' : '2');
+    if (vis) vis.setAttribute('stroke-width', selectedId() === lineId ? '3' : '2');
   };
 
   const handleMouseMove = (e: MouseEvent) => {
@@ -250,14 +149,31 @@ export component LineCanvasDemo() {
     const x = Math.round(e.clientX - rect.left);
     const y = Math.round(e.clientY - rect.top);
 
+    // ── FIX: update committed coords BEFORE the frame so mouseUp always has
+    //         the latest position even when the frame hasn't executed yet.
+    if (drag) {
+      const dx = x - drag.mouseX;
+      const dy = y - drag.mouseY;
+      if (drag.type === 'line' || drag.type === 'shape') {
+        drag.latestDx = dx;
+        drag.latestDy = dy;
+      } else {
+        const { rx, ry, rw, rh } = calcResizeGeom(
+          drag.origX, drag.origY, drag.origW, drag.origH, drag.anchorPos, dx, dy,
+        );
+        drag.latestX = rx; drag.latestY = ry;
+        drag.latestW = rw; drag.latestH = rh;
+      }
+    }
+
     scheduleFrame(() => {
       if (isDrawing()) { setDrawEnd({ x, y }); return; }
 
       const d = drag;
       if (!d || !svgEl) return;
+
       const dx = x - d.mouseX;
       const dy = y - d.mouseY;
-      if (d.type !== 'anchor-resize') { d.latestDx = dx; d.latestDy = dy; }
 
       if (d.type === 'line') {
         const g = svgEl.querySelector<SVGGElement>(`[data-entity-id="${d.lineId}"]`);
@@ -283,78 +199,24 @@ export component LineCanvasDemo() {
         if (!g) return;
         const s = shapes().find(sh => sh.id === d.shapeId);
         if (!s) return;
-        const rectEl = g.querySelector('rect');
-        const polyEl = g.querySelector('polygon');
-        if (rectEl) {
-          rectEl.setAttribute('x', String(nx));
-          rectEl.setAttribute('y', String(ny));
-        } else if (polyEl) {
-          const cx = nx + s.width / 2; const cy = ny + s.height / 2;
-          polyEl.setAttribute('points',
-            `${cx},${ny} ${nx + s.width},${cy} ${cx},${ny + s.height} ${nx},${cy}`);
-        }
-        const txt = g.querySelector('text');
-        if (txt) {
-          txt.setAttribute('x', String(nx + s.width  / 2));
-          txt.setAttribute('y', String(ny + s.height / 2));
-        }
-        // Feature 1: anchors follow the shape during drag
-        rebuildAnchorsDom(g, s, nx, ny, s.width, s.height);
-        // Feature 3: connected line endpoints follow the shape
-        const movedAnchors = s.kind === ShapeKind.Diamond
-          ? buildDiamondAnchors(s.id, nx, ny, s.width, s.height)
-          : buildSquareAnchors(s.id, nx, ny, s.width, s.height);
-        updateConnectedLinesDom(s.id, movedAnchors);
+        updateShapeBodyDom(g, s, nx, ny, s.width, s.height);
+        // rebuildAnchorsDom returns the new anchor list — reuse for line updates (no double build)
+        const movedAnchors = rebuildAnchorsDom(g, s, nx, ny, s.width, s.height);
+        updateConnectedLinesDom(svgEl, s.id, movedAnchors, lines());
         return;
       }
 
       if (d.type === 'anchor-resize') {
-        // Feature 2: resize by dragging a vertex anchor
-        let rx = d.origX, ry = d.origY, rw = d.origW, rh = d.origH;
-        const ap = d.anchorPos;
-        if (ap === AnchorPosition.TopLeft) {
-          rx = d.origX + dx; ry = d.origY + dy;
-          rw = Math.max(MIN_SIZE, d.origW - dx); rh = Math.max(MIN_SIZE, d.origH - dy);
-          if (rw === MIN_SIZE) rx = d.origX + d.origW - MIN_SIZE;
-          if (rh === MIN_SIZE) ry = d.origY + d.origH - MIN_SIZE;
-        } else if (ap === AnchorPosition.TopRight) {
-          ry = d.origY + dy;
-          rw = Math.max(MIN_SIZE, d.origW + dx); rh = Math.max(MIN_SIZE, d.origH - dy);
-          if (rh === MIN_SIZE) ry = d.origY + d.origH - MIN_SIZE;
-        } else if (ap === AnchorPosition.BottomLeft) {
-          rx = d.origX + dx;
-          rw = Math.max(MIN_SIZE, d.origW - dx); rh = Math.max(MIN_SIZE, d.origH + dy);
-          if (rw === MIN_SIZE) rx = d.origX + d.origW - MIN_SIZE;
-        } else {
-          // BottomRight
-          rw = Math.max(MIN_SIZE, d.origW + dx);
-          rh = Math.max(MIN_SIZE, d.origH + dy);
-        }
-        d.latestX = rx; d.latestY = ry; d.latestW = rw; d.latestH = rh;
+        const { rx, ry, rw, rh } = calcResizeGeom(
+          d.origX, d.origY, d.origW, d.origH, d.anchorPos, dx, dy,
+        );
         const g = svgEl.querySelector<SVGGElement>(`[data-entity-id="${d.shapeId}"]`);
         if (!g) return;
         const s = shapes().find(sh => sh.id === d.shapeId);
         if (!s) return;
-        const rectEl = g.querySelector('rect');
-        const polyEl = g.querySelector('polygon');
-        if (rectEl) {
-          rectEl.setAttribute('x', String(rx)); rectEl.setAttribute('y', String(ry));
-          rectEl.setAttribute('width', String(rw)); rectEl.setAttribute('height', String(rh));
-        } else if (polyEl) {
-          const cx = rx + rw / 2; const cy = ry + rh / 2;
-          polyEl.setAttribute('points',
-            `${cx},${ry} ${rx + rw},${cy} ${cx},${ry + rh} ${rx},${cy}`);
-        }
-        const txt = g.querySelector('text');
-        if (txt) {
-          txt.setAttribute('x', String(rx + rw / 2));
-          txt.setAttribute('y', String(ry + rh / 2));
-        }
-        rebuildAnchorsDom(g, s, rx, ry, rw, rh);
-        const resizedAnchors = s.kind === ShapeKind.Diamond
-          ? buildDiamondAnchors(s.id, rx, ry, rw, rh)
-          : buildSquareAnchors(s.id, rx, ry, rw, rh);
-        updateConnectedLinesDom(s.id, resizedAnchors);
+        updateShapeBodyDom(g, s, rx, ry, rw, rh);
+        const resizedAnchors = rebuildAnchorsDom(g, s, rx, ry, rw, rh);
+        updateConnectedLinesDom(svgEl, s.id, resizedAnchors, lines());
       }
     }, 'canvas-move');
   };
@@ -371,7 +233,7 @@ export component LineCanvasDemo() {
 
       if (tool === 'line') {
         if (Math.hypot(e.x - s.x, e.y - s.y) > 8) {
-          const endSnap = snapToAnchor(e.x, e.y);
+          const endSnap = snapToAnchor(e.x, e.y, shapes());
           const ln = createCanvasLine(s.x, s.y, endSnap.x, endSnap.y);
           ln.startConnection = drawStartConn;
           ln.endConnection   = endSnap.conn;
@@ -383,17 +245,18 @@ export component LineCanvasDemo() {
         setShapes([...shapes(), shape]);
         setSelectedId(shape.id);
       }
+
       drawStartConn = null;
       setIsDrawing(false);
     }
 
     if (drag) {
       if (drag.type === 'line') {
-        const d = drag;
-        const x1 = d.origX1 + d.latestDx; const y1 = d.origY1 + d.latestDy;
-        const x2 = d.origX2 + d.latestDx; const y2 = d.origY2 + d.latestDy;
-        const startSnap = snapToAnchor(x1, y1);
-        const endSnap   = snapToAnchor(x2, y2);
+        const d         = drag;
+        const x1        = d.origX1 + d.latestDx; const y1 = d.origY1 + d.latestDy;
+        const x2        = d.origX2 + d.latestDx; const y2 = d.origY2 + d.latestDy;
+        const startSnap = snapToAnchor(x1, y1, shapes());
+        const endSnap   = snapToAnchor(x2, y2, shapes());
         setLines(lines().map(ln => ln.id === d.lineId ? {
           ...ln,
           x1: startSnap.x, y1: startSnap.y,
@@ -413,6 +276,7 @@ export component LineCanvasDemo() {
           ? rebuildShape(s, d.latestX, d.latestY, d.latestW, d.latestH) : s));
         commitConnectedLines(d.shapeId);
       }
+
       drag = null;
       setIsDragging(false);
     }
@@ -444,47 +308,25 @@ export component LineCanvasDemo() {
     setSelectedId(null);
   };
 
+  // ── Layout ────────────────────────────────────────────────────────────────
+
   return (
     <div style="display: flex; flex-direction: row; gap: 10px; align-items: flex-start;">
 
-      {/* ── Side Toolbox ── */}
       <SideToolbox activeTool={activeTool} onSelect={setActiveTool} />
 
-      {/* ── Canvas area ── */}
       <div style="display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0;">
 
-        {/* ── Toolbar ── */}
-        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 8px 14px; background: #06101e; border: 1px solid #1a2e45; border-radius: 8px; min-height: 42px;">
+        <CanvasToolbar
+          isDrawing={isDrawing}
+          isDragging={isDragging}
+          activeTool={activeTool}
+          itemCount={() => lines().length + shapes().length}
+          hasSelection={() => selectedId() !== null}
+          onDelete={deleteSelected}
+          onClear={clearAll}
+        />
 
-          <span style="font-size: 13px; color: #94a3b8;">
-            {() => {
-              if (isDrawing()) return activeTool() === 'line'
-                ? '✏️  Drawing line — release to commit'
-                : `▢  Drawing ${activeTool()} — release to commit`;
-              if (isDragging()) return '↔  Moving — release to drop';
-              return `Tool: ${activeTool()} · drag canvas to draw · click item to select`;
-            }}
-          </span>
-
-          <span style="margin-left: auto; font-size: 12px; color: #475569; white-space: nowrap;">
-            {() => { const n = lines().length + shapes().length; return `${n} item${n === 1 ? '' : 's'}`; }}
-          </span>
-
-          {() => selectedId() !== null ? (
-            <button onClick={deleteSelected}
-              style="padding: 5px 13px; background: transparent; color: #ef4444; border: 1px solid #ef4444; border-radius: 5px; cursor: pointer; font-size: 12px;">
-              Delete
-            </button>
-          ) : null}
-
-          <button onClick={clearAll}
-            style="padding: 5px 13px; background: transparent; color: #475569; border: 1px solid #334155; border-radius: 5px; cursor: pointer; font-size: 12px;">
-            Clear all
-          </button>
-
-        </div>
-
-        {/* ── SVG Canvas ── */}
         <svg
           ref={(el: Element) => { svgEl = el as SVGSVGElement; }}
           onMouseDown={handleBgDown}
@@ -506,186 +348,47 @@ export component LineCanvasDemo() {
           <rect width="100%" height="100%" fill="#060e1a" rx="10" />
           <rect width="100%" height="100%" fill="url(#vsb-dot-grid)" rx="10" />
 
-          {/* ── Committed shapes ── */}
-          {() => shapes().map((shape) => {
-            const sel         = selectedId()     === shape.id;
-            const showAnchors = hoveredShapeId() === shape.id || sel || isDrawing();
-            const stroke      = sel ? '#22d3ee' : '#3b82f6';
-            const strokeW     = sel ? '2.5'     : '1.5';
-            const fill        = sel ? 'rgba(34,211,238,0.06)' : 'rgba(59,130,246,0.07)';
+          {() => shapes().map((shape) => (
+            <CanvasShapeItem
+              shape={shape}
+              selectedId={selectedId}
+              hoveredShapeId={hoveredShapeId}
+              isDrawing={isDrawing}
+              onShapeDown={(e: MouseEvent) => handleShapeDown(e, shape.id)}
+              onAnchorDown={(e: MouseEvent, pos: AnchorPosition) => handleAnchorDown(e, shape.id, pos)}
+              onHoverEnter={() => setHoveredShapeId(shape.id)}
+              onHoverLeave={() => setHoveredShapeId(null)}
+            />
+          ))}
 
-            const shapeBody = shape.kind === ShapeKind.Diamond
-              ? (() => {
-                  const cx  = shape.x + shape.width  / 2;
-                  const cy  = shape.y + shape.height / 2;
-                  const pts = `${cx},${shape.y} ${shape.x + shape.width},${cy} ${cx},${shape.y + shape.height} ${shape.x},${cy}`;
-                  return (
-                    <polygon
-                      points={pts} fill={fill} stroke={stroke} stroke-width={strokeW}
-                      style="cursor: grab;"
-                      onMouseDown={(e: MouseEvent) => handleShapeDown(e, shape.id)}
-                    />
-                  );
-                })()
-              : (
-                  <rect
-                    x={String(shape.x)} y={String(shape.y)}
-                    width={String(shape.width)} height={String(shape.height)}
-                    fill={fill} stroke={stroke} stroke-width={strokeW} rx="4"
-                    style="cursor: grab;"
-                    onMouseDown={(e: MouseEvent) => handleShapeDown(e, shape.id)}
-                  />
-                );
+          {() => lines().map((line) => (
+            <CanvasLineItem
+              line={line}
+              selectedId={selectedId}
+              onLineDown={(e: MouseEvent) => handleLineDown(e, line.id)}
+              onHoverEnter={handleLineHoverEnter}
+              onHoverLeave={(e: MouseEvent) => handleLineHoverLeave(e, line.id)}
+            />
+          ))}
 
-            return (
-              <g data-entity-id={shape.id}
-                onMouseEnter={() => setHoveredShapeId(shape.id)}
-                onMouseLeave={() => setHoveredShapeId(null)}>
-                {shapeBody}
-                <text
-                  x={String(shape.x + shape.width  / 2)}
-                  y={String(shape.y + shape.height / 2)}
-                  text-anchor="middle" dominant-baseline="middle"
-                  fill={sel ? '#22d3ee' : '#64748b'} font-size="12"
-                  style="pointer-events: none; user-select: none;">
-                  {shape.name}
-                </text>
-                {showAnchors ? (
-                  <g data-anchor-group={shape.id}>
-                    {shape.anchors.filter(a => !VERTEX_ANCHORS.has(a.position)).map((anchor) => (
-                      <circle
-                        data-anchor-pos={anchor.position}
-                        cx={String(anchor.x)} cy={String(anchor.y)}
-                        r="4" fill="#22d3ee" opacity="0.7"
-                        style="pointer-events: none;"
-                      />
-                    ))}
-                    {shape.anchors.filter(a => VERTEX_ANCHORS.has(a.position)).map((anchor) => {
-                      const isNWSE = anchor.position === AnchorPosition.TopLeft || anchor.position === AnchorPosition.BottomRight;
-                      return (
-                        <circle
-                          data-anchor-pos={anchor.position}
-                          cx={String(anchor.x)} cy={String(anchor.y)}
-                          r="6" fill="#f59e0b" opacity="0.9" stroke="#060e1a" stroke-width="1.5"
-                          style={`cursor: ${isNWSE ? 'nwse-resize' : 'nesw-resize'};`}
-                          onMouseDown={(e: MouseEvent) => handleAnchorDown(e, shape.id, anchor.position)}
-                        />
-                      );
-                    })}
-                  </g>
-                ) : null}
-              </g>
-            );
-          })}
-
-          {/* ── Committed lines ── */}
-          {() => lines().map((line) => {
-            const sel = selectedId() === line.id;
-            return (
-              <g data-entity-id={line.id}>
-                {/* Wide transparent hit target */}
-                <line
-                  x1={String(line.x1)} y1={String(line.y1)}
-                  x2={String(line.x2)} y2={String(line.y2)}
-                  stroke="transparent" stroke-width="18"
-                  style="cursor: grab;"
-                  onMouseDown={(e: MouseEvent) => handleLineDown(e, line.id)}
-                  onMouseEnter={handleLineHoverEnter}
-                  onMouseLeave={(e: MouseEvent) => handleLineHoverLeave(e, line.id)}
-                />
-                {/* Visible stroke */}
-                <line
-                  x1={String(line.x1)} y1={String(line.y1)}
-                  x2={String(line.x2)} y2={String(line.y2)}
-                  stroke={sel ? '#22d3ee' : '#3b82f6'}
-                  stroke-width={sel ? '3' : '2'}
-                  stroke-linecap="round"
-                  style="pointer-events: none;"
-                />
-                {sel ? (
-                  <g style="pointer-events: none;">
-                    <circle cx={String(line.x1)} cy={String(line.y1)} r="6" fill="#22d3ee" opacity="0.85" />
-                    <circle cx={String(line.x2)} cy={String(line.y2)} r="6" fill="#22d3ee" opacity="0.85" />
-                  </g>
-                ) : null}
-              </g>
-            );
-          })}
-
-          {/* ── Draw preview ── */}
-          {() => {
-            if (!isDrawing()) return null;
-            const s    = drawStart();
-            const e    = drawEnd();
-            const tool = activeTool();
-
-            if (tool === 'line') {
-              return (
-                <g style="pointer-events: none;">
-                  <line x1={String(s.x)} y1={String(s.y)} x2={String(e.x)} y2={String(e.y)}
-                    stroke="#fbbf24" stroke-width="2" stroke-dasharray="8 5" stroke-linecap="round" />
-                  <circle cx={String(s.x)} cy={String(s.y)} r="4" fill="#fbbf24" opacity="0.7" />
-                </g>
-              );
-            }
-
-            const x = Math.min(s.x, e.x); const y = Math.min(s.y, e.y);
-            const w = Math.abs(e.x - s.x); const h = Math.abs(e.y - s.y);
-
-            if (tool === ShapeKind.Diamond) {
-              const cx = x + w / 2; const cy = y + h / 2;
-              return (
-                <polygon
-                  points={`${cx},${y} ${x + w},${cy} ${cx},${y + h} ${x},${cy}`}
-                  fill="rgba(251,191,36,0.08)" stroke="#fbbf24"
-                  stroke-width="2" stroke-dasharray="8 5"
-                  style="pointer-events: none;"
-                />
-              );
-            }
-
-            return (
-              <rect x={String(x)} y={String(y)} width={String(w)} height={String(h)}
-                fill="rgba(251,191,36,0.08)" stroke="#fbbf24"
-                stroke-width="2" stroke-dasharray="8 5" rx="4"
-                style="pointer-events: none;"
-              />
-            );
-          }}
+          <CanvasDrawPreview
+            isDrawing={isDrawing}
+            drawStart={drawStart}
+            drawEnd={drawEnd}
+            activeTool={activeTool}
+          />
 
         </svg>
 
-        {/* ── Item badge list ── */}
-        {() => (lines().length > 0 || shapes().length > 0) ? (
-          <div style="display: flex; flex-wrap: wrap; gap: 8px; padding-top: 2px;">
-            {shapes().map((shape) => {
-              const active = selectedId() === shape.id;
-              return (
-                <div onClick={() => setSelectedId(shape.id)}
-                  style={`display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px 4px 12px; border: 1px solid ${active ? '#22d3ee' : '#1e293b'}; border-radius: 20px; background: ${active ? 'rgba(34,211,238,0.07)' : '#060e1a'}; cursor: pointer; font-size: 12px; color: ${active ? '#22d3ee' : '#475569'}; transition: border-color 0.15s, color 0.15s; user-select: none;`}>
-                  <span>{shape.name}</span>
-                  <button onClick={(e: MouseEvent) => deleteShape(e, shape.id)}
-                    style="background: none; border: none; color: #475569; cursor: pointer; font-size: 15px; padding: 0; line-height: 1; display: flex; align-items: center;">×</button>
-                </div>
-              );
-            })}
-            {lines().map((line) => {
-              const active = selectedId() === line.id;
-              return (
-                <div onClick={() => setSelectedId(line.id)}
-                  style={`display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px 4px 12px; border: 1px solid ${active ? '#22d3ee' : '#1e293b'}; border-radius: 20px; background: ${active ? 'rgba(34,211,238,0.07)' : '#060e1a'}; cursor: pointer; font-size: 12px; color: ${active ? '#22d3ee' : '#475569'}; transition: border-color 0.15s, color 0.15s; user-select: none;`}>
-                  <span>{line.name}</span>
-                  <button onClick={(e: MouseEvent) => deleteLine(e, line.id)}
-                    style="background: none; border: none; color: #475569; cursor: pointer; font-size: 15px; padding: 0; line-height: 1; display: flex; align-items: center;">×</button>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <p style="font-size: 12px; color: #334155; text-align: center; margin: 4px 0;">
-            No items yet — select a tool and drag on the canvas
-          </p>
-        )}
+        <CanvasBadgeList
+          shapes={shapes}
+          lines={lines}
+          selectedId={selectedId}
+          onSelectShape={setSelectedId}
+          onSelectLine={setSelectedId}
+          onDeleteShape={deleteShape}
+          onDeleteLine={deleteLine}
+        />
 
       </div>
     </div>

@@ -1,0 +1,123 @@
+/**
+ * CanvasShapeItem — renders a single shape entity with its anchors.
+ * Displays as either a rect (square/rectangle) or polygon (diamond).
+ * Vertex anchors (amber) are interactive resize handles.
+ * Edge-midpoint anchors (cyan) are snap-snap targets only.
+ */
+
+import { AnchorPosition } from '../canvas-entity.types';
+import type { IShape } from '../canvas-shape.types';
+import { ShapeKind } from '../canvas-shape.types';
+import { VERTEX_ANCHORS } from '../canvas-drag.types';
+
+interface ICanvasShapeItemProps {
+  shape:          IShape
+  selectedId:     () => string | null
+  hoveredShapeId: () => string | null
+  isDrawing:      () => boolean
+  onShapeDown:    (e: MouseEvent) => void
+  onAnchorDown:   (e: MouseEvent, pos: AnchorPosition) => void
+  onHoverEnter:   () => void
+  onHoverLeave:   () => void
+}
+
+export component CanvasShapeItem({
+  shape,
+  selectedId,
+  hoveredShapeId,
+  isDrawing,
+  onShapeDown,
+  onAnchorDown,
+  onHoverEnter,
+  onHoverLeave,
+}: ICanvasShapeItemProps) {
+  return (
+    <g
+      data-entity-id={shape.id}
+      onMouseEnter={onHoverEnter}
+      onMouseLeave={onHoverLeave}>
+
+      {() => {
+        const sel    = selectedId()     === shape.id;
+        const stroke = sel ? '#22d3ee' : '#3b82f6';
+        const strokeW = sel ? '2.5'    : '1.5';
+        const fill   = sel ? 'rgba(34,211,238,0.06)' : 'rgba(59,130,246,0.07)';
+
+        if (shape.kind === ShapeKind.Diamond) {
+          const cx  = shape.x + shape.width  / 2;
+          const cy  = shape.y + shape.height / 2;
+          const pts = `${cx},${shape.y} ${shape.x + shape.width},${cy} ${cx},${shape.y + shape.height} ${shape.x},${cy}`;
+          return (
+            <polygon
+              points={pts}
+              fill={fill} stroke={stroke} stroke-width={strokeW}
+              style="cursor: grab;"
+              onMouseDown={onShapeDown}
+            />
+          );
+        }
+
+        return (
+          <rect
+            x={String(shape.x)} y={String(shape.y)}
+            width={String(shape.width)} height={String(shape.height)}
+            fill={fill} stroke={stroke} stroke-width={strokeW} rx="4"
+            style="cursor: grab;"
+            onMouseDown={onShapeDown}
+          />
+        );
+      }}
+
+      {() => {
+        const sel = selectedId() === shape.id;
+        return (
+          <text
+            x={String(shape.x + shape.width  / 2)}
+            y={String(shape.y + shape.height / 2)}
+            text-anchor="middle" dominant-baseline="middle"
+            fill={sel ? '#22d3ee' : '#64748b'} font-size="12"
+            style="pointer-events: none; user-select: none;">
+            {shape.name}
+          </text>
+        );
+      }}
+
+      {() => {
+        const sel         = selectedId()     === shape.id;
+        const showAnchors = hoveredShapeId() === shape.id || sel || isDrawing();
+        if (!showAnchors) return null;
+
+        return (
+          <g data-anchor-group={shape.id}>
+            {shape.anchors
+              .filter(a => !VERTEX_ANCHORS.has(a.position))
+              .map((anchor) => (
+                <circle
+                  data-anchor-pos={anchor.position}
+                  cx={String(anchor.x)} cy={String(anchor.y)}
+                  r="4" fill="#22d3ee" opacity="0.7"
+                  style="pointer-events: none;"
+                />
+              ))}
+            {shape.anchors
+              .filter(a => VERTEX_ANCHORS.has(a.position))
+              .map((anchor) => {
+                const isNWSE =
+                  anchor.position === AnchorPosition.TopLeft ||
+                  anchor.position === AnchorPosition.BottomRight;
+                return (
+                  <circle
+                    data-anchor-pos={anchor.position}
+                    cx={String(anchor.x)} cy={String(anchor.y)}
+                    r="6" fill="#f59e0b" opacity="0.9" stroke="#060e1a" stroke-width="1.5"
+                    style={`cursor: ${isNWSE ? 'nwse-resize' : 'nesw-resize'};`}
+                    onMouseDown={(e: MouseEvent) => onAnchorDown(e, anchor.position)}
+                  />
+                );
+              })}
+          </g>
+        );
+      }}
+    </g>
+  );
+}

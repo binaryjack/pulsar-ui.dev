@@ -1,0 +1,72 @@
+/**
+ * CanvasBadgeList — horizontal scrollable row of item chips at the bottom of the canvas.
+ * Each chip shows the item name and a remove button.
+ */
+
+import type { ICanvasLine, IShape } from '../canvas-shape.types';
+
+interface ICanvasBadgeListProps {
+  shapes:        () => IShape[]
+  lines:         () => ICanvasLine[]
+  selectedId:    () => string | null
+  onSelectShape: (id: string) => void
+  onSelectLine:  (id: string) => void
+  onDeleteShape: (e: MouseEvent, id: string) => void
+  onDeleteLine:  (e: MouseEvent, id: string) => void
+}
+
+export component CanvasBadgeList({
+  shapes,
+  lines,
+  selectedId,
+  onSelectShape,
+  onSelectLine,
+  onDeleteShape,
+  onDeleteLine,
+}: ICanvasBadgeListProps) {
+  return (
+    <div>
+      {() => (shapes().length > 0 || lines().length > 0) ? (
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; padding-top: 2px;">
+
+          {shapes().map((shape) => {
+            const active = selectedId() === shape.id;
+            return (
+              <div
+                onClick={() => onSelectShape(shape.id)}
+                style={`display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px 4px 12px; border: 1px solid ${active ? '#22d3ee' : '#1e293b'}; border-radius: 20px; background: ${active ? 'rgba(34,211,238,0.07)' : '#060e1a'}; cursor: pointer; font-size: 12px; color: ${active ? '#22d3ee' : '#475569'}; transition: border-color 0.15s, color 0.15s; user-select: none;`}>
+                <span>{shape.name}</span>
+                <button
+                  onClick={(e: MouseEvent) => onDeleteShape(e, shape.id)}
+                  style="background: none; border: none; color: #475569; cursor: pointer; font-size: 15px; padding: 0; line-height: 1; display: flex; align-items: center;">
+                  ×
+                </button>
+              </div>
+            );
+          })}
+
+          {lines().map((line) => {
+            const active = selectedId() === line.id;
+            return (
+              <div
+                onClick={() => onSelectLine(line.id)}
+                style={`display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px 4px 12px; border: 1px solid ${active ? '#22d3ee' : '#1e293b'}; border-radius: 20px; background: ${active ? 'rgba(34,211,238,0.07)' : '#060e1a'}; cursor: pointer; font-size: 12px; color: ${active ? '#22d3ee' : '#475569'}; transition: border-color 0.15s, color 0.15s; user-select: none;`}>
+                <span>{line.name}</span>
+                <button
+                  onClick={(e: MouseEvent) => onDeleteLine(e, line.id)}
+                  style="background: none; border: none; color: #475569; cursor: pointer; font-size: 15px; padding: 0; line-height: 1; display: flex; align-items: center;">
+                  ×
+                </button>
+              </div>
+            );
+          })}
+
+        </div>
+      ) : (
+        <p style="font-size: 12px; color: #334155; text-align: center; margin: 4px 0;">
+          No items yet — select a tool and drag on the canvas
+        </p>
+      )}
+    </div>
+  );
+}
