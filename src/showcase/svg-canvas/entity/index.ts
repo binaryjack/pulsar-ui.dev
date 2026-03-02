@@ -4,7 +4,7 @@ export { AnchorPosition, ConstraintEnum, DataType } from '../canvas-entity.types
 export type { ICardinality, IEntity, IProperty, IValidation } from '../canvas-entity.types';
 
 export { ShapeKind } from '../canvas-shape.types';
-export type { IAnchor, ICanvasLine, IShape, ToolKind } from '../canvas-shape.types';
+export type { IAnchor, ICanvasLine, ILineConnection, IShape, ToolKind } from '../canvas-shape.types';
 
 export { CanvasDiamond, buildDiamondAnchors } from './canvas-diamond';
 export { CanvasEntity } from './canvas-entity';

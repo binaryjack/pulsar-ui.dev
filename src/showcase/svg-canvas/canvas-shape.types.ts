@@ -34,6 +34,15 @@ export interface IAnchor {
 }
 
 // ---------------------------------------------------------------------------
+// Line connection  (which anchor an endpoint is snapped to)
+// ---------------------------------------------------------------------------
+
+export interface ILineConnection {
+  shapeId:  string;
+  anchorId: string;
+}
+
+// ---------------------------------------------------------------------------
 // Shape  (extends IEntity with geometry + anchors)
 // ---------------------------------------------------------------------------
 
@@ -59,4 +68,8 @@ export interface ICanvasLine extends IEntity {
   leftCardinality: ICardinality | null;
   /** Cardinality at the end endpoint (right side) — null until bound */
   rightCardinality: ICardinality | null;
+  /** Which anchor the start endpoint is connected to — null if free */
+  startConnection: ILineConnection | null;
+  /** Which anchor the end endpoint is connected to — null if free */
+  endConnection: ILineConnection | null;
 }
