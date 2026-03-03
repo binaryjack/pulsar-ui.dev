@@ -1,0 +1,67 @@
+/**
+ * CanvasLineItem — renders a single canvas line entity.
+ * Hit target + visible stroke + optional name label + optional endpoint handles.
+ */
+
+import type { ICanvasLine }      from '../model/i-canvas-line';
+import { SvgEndpointHandle }     from './svg/svg-endpoint-handle.psr';
+import { SvgLineLabel }          from './svg/svg-line-label.psr';
+
+interface ICanvasLineItemProps {
+  line:            ICanvasLine
+  selectedId:      () => string | null
+  onLineDown:      (e: MouseEvent) => void
+  onEndpointDown:  (e: MouseEvent, endpoint: 'start' | 'end') => void
+  onHoverEnter:    (e: MouseEvent) => void
+  onHoverLeave:    (e: MouseEvent) => void
+  onDblClick?:     () => void
+}
+
+export component CanvasLineItem({
+  line,
+  selectedId,
+  onLineDown,
+  onEndpointDown,
+  onHoverEnter,
+  onHoverLeave,
+  onDblClick,
+}: ICanvasLineItemProps) {
+  return (
+    <g data-entity-id={line.id}>
+
+      {/* Wide transparent hit target */}
+      <line
+        x1={String(line.x1)} y1={String(line.y1)}
+        x2={String(line.x2)} y2={String(line.y2)}
+        stroke="transparent" stroke-width="18"
+        style="cursor: grab;"
+        onMouseDown={onLineDown}
+        onMouseEnter={onHoverEnter}
+        onMouseLeave={onHoverLeave}
+        onDblClick={() => onDblClick?.()}
+      />
+
+      {/* Visible stroke */}
+      <line
+        x1={String(line.x1)} y1={String(line.y1)}
+        x2={String(line.x2)} y2={String(line.y2)}
+        stroke={() => selectedId() === line.id ? '#22d3ee' : '#3b82f6'}
+        stroke-width={() => selectedId() === line.id ? '3' : '2'}
+        stroke-linecap="round"
+        style="pointer-events: none;"
+      />
+
+      {() => line.name
+        ? <SvgLineLabel x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} name={line.name} />
+        : null}
+
+      {() => selectedId() === line.id ? (
+        <g>
+          <SvgEndpointHandle cx={line.x1} cy={line.y1} onMouseDown={(e: MouseEvent) => onEndpointDown(e, 'start')} />
+          <SvgEndpointHandle cx={line.x2} cy={line.y2} onMouseDown={(e: MouseEvent) => onEndpointDown(e, 'end')}   />
+        </g>
+      ) : null}
+
+    </g>
+  );
+}

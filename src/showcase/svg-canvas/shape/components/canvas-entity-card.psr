@@ -1,0 +1,89 @@
+/**
+ * CanvasEntityCard — foreignObject HTML card for rect/square shapes.
+ * Composes CardHeader + PropertyRow atoms; body is hidden when collapsed.
+ */
+
+import type { IProperty }  from '../../shared/model/i-entity';
+import { CARD_HEADER_H }   from '../../shared/model/i-drag';
+import { CardHeader }      from './card-header.psr';
+import { PropertyRow }     from './property-row.psr';
+
+interface ICanvasEntityCardProps {
+  x:                      number
+  y:                      number
+  width:                  number
+  height:                 number
+  name:                   string
+  collapsed:              boolean
+  properties:             IProperty[]
+  onShapeDown:            (e: MouseEvent) => void
+  onNameChange:           (name: string)  => void
+  onSettingsOpen:         ()              => void
+  onCollapseToggle:       ()              => void
+  onDeleteShape:          ()              => void
+  onAddProperty:          ()              => void
+  onDeleteProperty:       (propId: string) => void
+  onPropertyNameChange:   (propId: string, name: string) => void
+  onPropertySettingsOpen: (propId: string) => void
+}
+
+export component CanvasEntityCard({
+  x,
+  y,
+  width,
+  height,
+  name,
+  collapsed,
+  properties,
+  onShapeDown,
+  onNameChange,
+  onSettingsOpen,
+  onCollapseToggle,
+  onDeleteShape,
+  onAddProperty,
+  onDeleteProperty,
+  onPropertyNameChange,
+  onPropertySettingsOpen,
+}: ICanvasEntityCardProps) {
+  return (
+    <foreignObject
+      x={String(x)}
+      y={String(y)}
+      width={String(width)}
+      height={String(collapsed ? CARD_HEADER_H : height)}
+    >
+      <div style="box-sizing:border-box;width:100%;height:100%;display:flex;flex-direction:column;font-family:system-ui,sans-serif;font-size:12px;color:#cbd5e1;overflow:hidden;">
+
+        <CardHeader
+          name={name}
+          collapsed={collapsed}
+          onShapeDown={onShapeDown}
+          onNameChange={onNameChange}
+          onSettingsOpen={onSettingsOpen}
+          onCollapseToggle={onCollapseToggle}
+          onDeleteShape={onDeleteShape}
+        />
+
+        {() => collapsed ? null : (
+          <div style="flex:1;overflow-y:auto;padding:4px 6px;background:#07111f;">
+            {properties.map((p: IProperty) => (
+              <PropertyRow
+                property={p}
+                onNameChange={(n: string) => onPropertyNameChange(p.id, n)}
+                onSettingsOpen={() => onPropertySettingsOpen(p.id)}
+                onDelete={() => onDeleteProperty(p.id)}
+              />
+            ))}
+            <button
+              onMouseDown={(e: MouseEvent) => e.stopPropagation()}
+              onClick={onAddProperty}
+              style="margin-top:4px;width:100%;background:transparent;border:1px dashed #1e3a5f;border-radius:3px;color:#475569;cursor:pointer;padding:3px;font-size:10px;">
+              + Add Property
+            </button>
+          </div>
+        )}
+
+      </div>
+    </foreignObject>
+  );
+}

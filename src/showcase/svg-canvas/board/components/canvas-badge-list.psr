@@ -1,0 +1,59 @@
+/**
+ * CanvasBadgeList — horizontal scrollable row of item chips at the bottom of the canvas.
+ */
+
+import type { IShape }      from '../../shape/model/i-shape';
+import type { ICanvasLine } from '../../line/model/i-canvas-line';
+import { CanvasBadge }      from '../../shared/atoms/canvas-badge.psr';
+
+interface ICanvasBadgeListProps {
+  shapes:        () => IShape[]
+  lines:         () => ICanvasLine[]
+  selectedId:    () => string | null
+  onSelectShape: (id: string) => void
+  onSelectLine:  (id: string) => void
+  onDeleteShape: (e: MouseEvent, id: string) => void
+  onDeleteLine:  (e: MouseEvent, id: string) => void
+}
+
+export component CanvasBadgeList({
+  shapes,
+  lines,
+  selectedId,
+  onSelectShape,
+  onSelectLine,
+  onDeleteShape,
+  onDeleteLine,
+}: ICanvasBadgeListProps) {
+  return (
+    <div>
+      {() => (shapes().length > 0 || lines().length > 0) ? (
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; padding-top: 2px;">
+
+          {shapes().map((shape) => (
+            <CanvasBadge
+              label={shape.name}
+              active={selectedId() === shape.id}
+              onClick={() => onSelectShape(shape.id)}
+              onDelete={(e: MouseEvent) => onDeleteShape(e, shape.id)}
+            />
+          ))}
+
+          {lines().map((line) => (
+            <CanvasBadge
+              label={line.name}
+              active={selectedId() === line.id}
+              onClick={() => onSelectLine(line.id)}
+              onDelete={(e: MouseEvent) => onDeleteLine(e, line.id)}
+            />
+          ))}
+
+        </div>
+      ) : (
+        <p style="font-size: 12px; color: #334155; text-align: center; margin: 4px 0;">
+          No items yet — select a tool and drag on the canvas
+        </p>
+      )}
+    </div>
+  );
+}

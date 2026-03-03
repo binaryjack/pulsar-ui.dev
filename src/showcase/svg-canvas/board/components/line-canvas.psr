@@ -1,0 +1,624 @@
+/**
+ * LineCanvasDemo — SVG canvas orchestrator.
+ *
+ * Zero createSignal calls — all reactive state lives in canvasStore.
+ * Delegates: rendering to sub-components, DOM ops to canvas-dom-ops, math to canvas-helpers.
+ */
+
+import { scheduleFrame }                                       from '@pulsar-framework/pulsar.dev';
+import { AnchorPosition }                                      from '../../shared/model/i-entity';
+import { DataType }                                            from '../../shared/model/i-entity';
+import type { IDragState }                                     from '../../shared/model/i-drag';
+import type { ILineConnection }                                from '../../line/model/i-canvas-line';
+import { createCanvasLine }                                    from '../../line/entity/create-canvas-line';
+import type { IShape }                                         from '../../shape/model/i-shape';
+import { ShapeKind }                                           from '../../shape/model/i-shape';
+import { createShape, nextShapeId }                            from '../../shape/entity/create-shape';
+import {
+  calcResizeGeom,
+  getSvgCoords,
+  rebuildShape,
+  snapToAnchor,
+}                                                              from '../../shared/helpers/canvas-helpers';
+import {
+  rebuildAnchorsDom,
+  updateConnectedLinesDom,
+  updateShapeBodyDom,
+}                                                              from '../../shared/helpers/canvas-dom-ops';
+import {
+  canvasStore,
+  selectActiveTool,
+  selectDrawEnd,
+  selectDrawStart,
+  selectHoveredShapeId,
+  selectIsDragging,
+  selectIsDrawing,
+  selectLines,
+  selectSelectedId,
+  selectShapes,
+}                                                              from '../../store/canvas-store';
+import { CanvasBadgeList }                                     from './canvas-badge-list.psr';
+import { CanvasDrawPreview }                                   from './canvas-draw-preview.psr';
+import { CanvasToolbar }                                       from './canvas-toolbar.psr';
+import { SideToolbox }                                         from './side-toolbox.psr';
+import { CanvasDotGrid }                                       from './svg/canvas-dot-grid.psr';
+import { CanvasSettingsModal }                                 from '../../modal/components/canvas-settings-modal.psr';
+import { CanvasLineItem }                                      from '../../line/components/canvas-line-item.psr';
+import { CanvasShapeItem }                                     from '../../shape/components/canvas-shape-item.psr';
+
+// Local prop-id counter (no cross-domain collision risk)
+let _propSeq = 0;
+const nextPropId = () => `prop-${++_propSeq}`;
+
+export component LineCanvasDemo() {
+  let svgEl: SVGSVGElement | null          = null;
+  let drag:  IDragState | null             = null;
+  let drawStartConn: ILineConnection | null = null;
+  // Draw intent — setIsDrawing only after ≥5px movement to prevent click artifacts
+  let drawIntentStarted = false;
+  let drawIntentX       = 0;
+  let drawIntentY       = 0;
+
+  // All reactive state from store
+  const shapes      = selectShapes;      // () => IShape[]
+  const lines       = selectLines;       // () => ICanvasLine[]
+  const activeTool  = selectActiveTool;  // () => ToolKind
+  const selectedId  = selectSelectedId;  // () => string | null
+  const isDrawing   = selectIsDrawing;   // () => boolean
+  const drawStart   = selectDrawStart;   // () => IDrawPoint | null
+  const drawEnd     = selectDrawEnd;     // () => IDrawPoint | null
+  const isDragging     = selectIsDragging;     // () => boolean
+  const hoveredShapeId = selectHoveredShapeId; // () => string | null
+
+  // ── Signal-level commit of connected-line endpoints after a shape move / resize ──
+
+  const commitConnectedLines = (shapeId: string) => {
+    const updatedShape = shapes().find(s => s.id === shapeId);
+    if (!updatedShape) return;
+    canvasStore.dispatch({
+      type: 'LINES/SET',
+      payload: lines().map(ln => {
+        if (ln.startConnection?.shapeId !== shapeId && ln.endConnection?.shapeId !== shapeId)
+          return ln;
+        const a0 = updatedShape.anchors.find(a => a.id === ln.startConnection?.anchorId);
+        const a1 = updatedShape.anchors.find(a => a.id === ln.endConnection?.anchorId);
+        return {
+          ...ln,
+          x1: a0 ? a0.x : ln.x1, y1: a0 ? a0.y : ln.y1,
+          x2: a1 ? a1.x : ln.x2, y2: a1 ? a1.y : ln.y2,
+        };
+      }),
+    });
+  };
+
+  // ── Event handlers ────────────────────────────────────────────────────────
+
+  const handleBgDown = (e: MouseEvent) => {
+    if (e.button !== 0) return;
+    if (activeTool() === 'select') {
+      canvasStore.dispatch({ type: 'BOARD/SET_HOVERED', payload: null });
+      canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: null });
+      return;
+    }
+    const p    = getSvgCoords(e, svgEl);
+    const snap = snapToAnchor(p.x, p.y, shapes());
+    canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: null });
+    drawIntentStarted = true;
+    drawIntentX = p.x;
+    drawIntentY = p.y;
+    drawStartConn = snap.conn;
+    canvasStore.dispatch({ type: 'BOARD/SET_DRAW_START', payload: { x: snap.x, y: snap.y } });
+    canvasStore.dispatch({ type: 'BOARD/SET_DRAW_END',   payload: { x: snap.x, y: snap.y } });
+  };
+
+  const handleLineDown = (e: MouseEvent, lineId: string) => {
+    e.stopPropagation();
+    if (e.button !== 0) return;
+    const p  = getSvgCoords(e, svgEl);
+    const ln = lines().find(l => l.id === lineId);
+    if (!ln) return;
+    canvasStore.dispatch({ type: 'BOARD/SET_HOVERED', payload: null });
+    canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: lineId });
+    drag = {
+      type: 'line', lineId,
+      mouseX: p.x, mouseY: p.y,
+      origX1: ln.x1, origY1: ln.y1, origX2: ln.x2, origY2: ln.y2,
+      latestDx: 0, latestDy: 0,
+    };
+    canvasStore.dispatch({ type: 'BOARD/SET_DRAGGING', payload: true });
+  };
+
+  const handleEndpointDown = (e: MouseEvent, lineId: string, endpoint: 'start' | 'end') => {
+    e.stopPropagation();
+    if (e.button !== 0) return;
+    const p  = getSvgCoords(e, svgEl);
+    const ln = lines().find(l => l.id === lineId);
+    if (!ln) return;
+    canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: lineId });
+    drag = {
+      type: 'line-endpoint', lineId, endpoint,
+      mouseX: p.x, mouseY: p.y,
+      fixedX: endpoint === 'start' ? ln.x2 : ln.x1,
+      fixedY: endpoint === 'start' ? ln.y2 : ln.y1,
+      origX:  endpoint === 'start' ? ln.x1 : ln.x2,
+      origY:  endpoint === 'start' ? ln.y1 : ln.y2,
+      latestX: endpoint === 'start' ? ln.x1 : ln.x2,
+      latestY: endpoint === 'start' ? ln.y1 : ln.y2,
+    };
+    canvasStore.dispatch({ type: 'BOARD/SET_DRAGGING', payload: true });
+  };
+
+  const handleShapeDown = (e: MouseEvent, shapeId: string) => {
+    if (activeTool() !== 'select') return;
+    e.stopPropagation();
+    if (e.button !== 0) return;
+    const p = getSvgCoords(e, svgEl);
+    const s = shapes().find(sh => sh.id === shapeId);
+    if (!s) return;
+    canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: shapeId });
+    drag = {
+      type: 'shape', shapeId,
+      mouseX: p.x, mouseY: p.y,
+      origX: s.x, origY: s.y,
+      latestDx: 0, latestDy: 0,
+    };
+    canvasStore.dispatch({ type: 'BOARD/SET_DRAGGING', payload: true });
+  };
+
+  const handleAnchorDown = (e: MouseEvent, shapeId: string, anchorPos: AnchorPosition) => {
+    if (activeTool() !== 'select') return;
+    e.stopPropagation();
+    if (e.button !== 0) return;
+    const p = getSvgCoords(e, svgEl);
+    const s = shapes().find(sh => sh.id === shapeId);
+    if (!s) return;
+    canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: shapeId });
+    drag = {
+      type: 'anchor-resize', shapeId, anchorPos,
+      mouseX: p.x, mouseY: p.y,
+      origX: s.x, origY: s.y, origW: s.width, origH: s.height,
+      latestX: s.x, latestY: s.y, latestW: s.width, latestH: s.height,
+    };
+    canvasStore.dispatch({ type: 'BOARD/SET_DRAGGING', payload: true });
+  };
+
+  const handleLineHoverEnter = (e: MouseEvent) => {
+    const g = (e.currentTarget as SVGElement).closest<SVGGElement>('[data-entity-id]');
+    if (!g) return;
+    const vis = g.querySelectorAll('line')[1];
+    if (vis) {
+      const cur = Number(vis.getAttribute('stroke-width') ?? '2');
+      vis.setAttribute('stroke-width', String(cur + 5));
+    }
+  };
+
+  const handleLineHoverLeave = (e: MouseEvent, lineId: string) => {
+    const g = (e.currentTarget as SVGElement).closest<SVGGElement>('[data-entity-id]');
+    if (!g) return;
+    const vis = g.querySelectorAll('line')[1];
+    if (vis) vis.setAttribute('stroke-width', selectedId() === lineId ? '3' : '2');
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDrawing() && !drag && !drawIntentStarted) return;
+    const rect = (svgEl ?? (e.currentTarget as SVGSVGElement)).getBoundingClientRect();
+    const x = Math.round(e.clientX - rect.left);
+    const y = Math.round(e.clientY - rect.top);
+
+    if (drawIntentStarted && !isDrawing()) {
+      if (Math.hypot(x - drawIntentX, y - drawIntentY) >= 5) {
+        canvasStore.dispatch({ type: 'BOARD/SET_DRAWING', payload: true });
+        drawIntentStarted = false;
+      } else {
+        return;
+      }
+    }
+
+    if (drag) {
+      const dx = x - drag.mouseX;
+      const dy = y - drag.mouseY;
+      if (drag.type === 'line' || drag.type === 'shape') {
+        drag.latestDx = dx;
+        drag.latestDy = dy;
+      } else if (drag.type === 'line-endpoint') {
+        drag.latestX = x;
+        drag.latestY = y;
+      } else {
+        const { rx, ry, rw, rh } = calcResizeGeom(
+          drag.origX, drag.origY, drag.origW, drag.origH, drag.anchorPos, dx, dy,
+        );
+        drag.latestX = rx; drag.latestY = ry;
+        drag.latestW = rw; drag.latestH = rh;
+      }
+    }
+
+    scheduleFrame(() => {
+      if (isDrawing()) {
+        canvasStore.dispatch({ type: 'BOARD/SET_DRAW_END', payload: { x, y } });
+        return;
+      }
+
+      const d = drag;
+      if (!d || !svgEl) return;
+
+      const dx = x - d.mouseX;
+      const dy = y - d.mouseY;
+
+      if (d.type === 'line') {
+        const g = svgEl.querySelector<SVGGElement>(`[data-entity-id="${d.lineId}"]`);
+        if (!g) return;
+        const nx1 = String(d.origX1 + dx); const ny1 = String(d.origY1 + dy);
+        const nx2 = String(d.origX2 + dx); const ny2 = String(d.origY2 + dy);
+        g.querySelectorAll('line').forEach(l => {
+          l.setAttribute('x1', nx1); l.setAttribute('y1', ny1);
+          l.setAttribute('x2', nx2); l.setAttribute('y2', ny2);
+        });
+        const cir = g.querySelectorAll('circle');
+        if (cir.length >= 4) {
+          cir[0].setAttribute('cx', nx1); cir[0].setAttribute('cy', ny1);
+          cir[1].setAttribute('cx', nx1); cir[1].setAttribute('cy', ny1);
+          cir[2].setAttribute('cx', nx2); cir[2].setAttribute('cy', ny2);
+          cir[3].setAttribute('cx', nx2); cir[3].setAttribute('cy', ny2);
+        }
+        const midX = Math.round((d.origX1 + d.origX2) / 2 + dx);
+        const midY = Math.round((d.origY1 + d.origY2) / 2 + dy);
+        const label = g.querySelector('[data-line-label]');
+        if (label) {
+          label.querySelector('rect')?.setAttribute('x', String(midX - 28));
+          label.querySelector('rect')?.setAttribute('y', String(midY - 9));
+          label.querySelector('text')?.setAttribute('x', String(midX));
+          label.querySelector('text')?.setAttribute('y', String(midY + 4));
+        }
+        return;
+      }
+
+      if (d.type === 'line-endpoint') {
+        const g = svgEl.querySelector<SVGGElement>(`[data-entity-id="${d.lineId}"]`);
+        if (!g) return;
+        const nx = String(x); const ny = String(y);
+        g.querySelectorAll('line').forEach(l => {
+          if (d.endpoint === 'start') { l.setAttribute('x1', nx); l.setAttribute('y1', ny); }
+          else                        { l.setAttribute('x2', nx); l.setAttribute('y2', ny); }
+        });
+        const cir = g.querySelectorAll('circle');
+        if (d.endpoint === 'start') {
+          if (cir[0]) { cir[0].setAttribute('cx', nx); cir[0].setAttribute('cy', ny); }
+          if (cir[1]) { cir[1].setAttribute('cx', nx); cir[1].setAttribute('cy', ny); }
+        } else {
+          if (cir[2]) { cir[2].setAttribute('cx', nx); cir[2].setAttribute('cy', ny); }
+          if (cir[3]) { cir[3].setAttribute('cx', nx); cir[3].setAttribute('cy', ny); }
+        }
+        const epMidX = Math.round((d.fixedX + x) / 2);
+        const epMidY = Math.round((d.fixedY + y) / 2);
+        const epLabel = g.querySelector('[data-line-label]');
+        if (epLabel) {
+          epLabel.querySelector('rect')?.setAttribute('x', String(epMidX - 28));
+          epLabel.querySelector('rect')?.setAttribute('y', String(epMidY - 9));
+          epLabel.querySelector('text')?.setAttribute('x', String(epMidX));
+          epLabel.querySelector('text')?.setAttribute('y', String(epMidY + 4));
+        }
+        return;
+      }
+
+      if (d.type === 'shape') {
+        const nx = d.origX + dx;
+        const ny = d.origY + dy;
+        const g  = svgEl.querySelector<SVGGElement>(`[data-entity-id="${d.shapeId}"]`);
+        if (!g) return;
+        const s = shapes().find(sh => sh.id === d.shapeId);
+        if (!s) return;
+        updateShapeBodyDom(g, s, nx, ny, s.width, s.height);
+        const movedAnchors = rebuildAnchorsDom(g, s, nx, ny, s.width, s.height);
+        updateConnectedLinesDom(svgEl, s.id, movedAnchors, lines());
+        return;
+      }
+
+      if (d.type === 'anchor-resize') {
+        const { rx, ry, rw, rh } = calcResizeGeom(
+          d.origX, d.origY, d.origW, d.origH, d.anchorPos, dx, dy,
+        );
+        const g = svgEl.querySelector<SVGGElement>(`[data-entity-id="${d.shapeId}"]`);
+        if (!g) return;
+        const s = shapes().find(sh => sh.id === d.shapeId);
+        if (!s) return;
+        updateShapeBodyDom(g, s, rx, ry, rw, rh);
+        const resizedAnchors = rebuildAnchorsDom(g, s, rx, ry, rw, rh);
+        updateConnectedLinesDom(svgEl, s.id, resizedAnchors, lines());
+      }
+    }, 'canvas-move');
+  };
+
+  const handleMouseUp = () => {
+    drawIntentStarted = false;
+
+    if (isDrawing()) {
+      const s    = drawStart();
+      const e    = drawEnd();
+      const tool = activeTool();
+      if (!s || !e) { canvasStore.dispatch({ type: 'BOARD/SET_DRAWING', payload: false }); return; }
+      const w    = Math.abs(e.x - s.x);
+      const h    = Math.abs(e.y - s.y);
+      const ox   = Math.min(s.x, e.x);
+      const oy   = Math.min(s.y, e.y);
+
+      if (tool === 'line') {
+        if (Math.hypot(e.x - s.x, e.y - s.y) > 8) {
+          const endSnap = snapToAnchor(e.x, e.y, shapes());
+          const ln = createCanvasLine(s.x, s.y, endSnap.x, endSnap.y);
+          ln.startConnection = drawStartConn;
+          ln.endConnection   = endSnap.conn;
+          canvasStore.dispatch({ type: 'LINES/ADD', payload: ln });
+          canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: ln.id });
+        }
+      } else if (w > 8 && h > 8) {
+        const shape = createShape(tool as ShapeKind, ox, oy, w, h);
+        canvasStore.dispatch({ type: 'SHAPES/ADD', payload: shape });
+        canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: shape.id });
+      }
+
+      drawStartConn = null;
+      canvasStore.dispatch({ type: 'BOARD/SET_DRAWING', payload: false });
+    }
+
+    if (drag) {
+      if (drag.type === 'line') {
+        const d         = drag;
+        const x1        = d.origX1 + d.latestDx; const y1 = d.origY1 + d.latestDy;
+        const x2        = d.origX2 + d.latestDx; const y2 = d.origY2 + d.latestDy;
+        const startSnap = snapToAnchor(x1, y1, shapes());
+        const endSnap   = snapToAnchor(x2, y2, shapes());
+        canvasStore.dispatch({
+          type: 'LINES/SET',
+          payload: lines().map(ln => ln.id === d.lineId ? {
+            ...ln,
+            x1: startSnap.x, y1: startSnap.y,
+            x2: endSnap.x,   y2: endSnap.y,
+            startConnection: startSnap.conn,
+            endConnection:   endSnap.conn,
+          } : ln),
+        });
+      } else if (drag.type === 'line-endpoint') {
+        const d    = drag;
+        const snap = snapToAnchor(d.latestX, d.latestY, shapes());
+        canvasStore.dispatch({
+          type: 'LINES/SET',
+          payload: lines().map(ln => {
+            if (ln.id !== d.lineId) return ln;
+            return {
+              ...ln,
+              x1: d.endpoint === 'start' ? snap.x : ln.x1,
+              y1: d.endpoint === 'start' ? snap.y : ln.y1,
+              x2: d.endpoint === 'end'   ? snap.x : ln.x2,
+              y2: d.endpoint === 'end'   ? snap.y : ln.y2,
+              startConnection: d.endpoint === 'start' ? snap.conn : ln.startConnection,
+              endConnection:   d.endpoint === 'end'   ? snap.conn : ln.endConnection,
+            };
+          }),
+        });
+      } else if (drag.type === 'shape') {
+        const d  = drag;
+        const nx = d.origX + d.latestDx;
+        const ny = d.origY + d.latestDy;
+        canvasStore.dispatch({
+          type: 'SHAPES/SET',
+          payload: shapes().map(s => s.id === d.shapeId ? rebuildShape(s, nx, ny) : s),
+        });
+        commitConnectedLines(d.shapeId);
+      } else if (drag.type === 'anchor-resize') {
+        const d = drag;
+        canvasStore.dispatch({
+          type: 'SHAPES/SET',
+          payload: shapes().map(s => s.id === d.shapeId
+            ? rebuildShape(s, d.latestX, d.latestY, d.latestW, d.latestH) : s),
+        });
+        commitConnectedLines(d.shapeId);
+      }
+
+      drag = null;
+      canvasStore.dispatch({ type: 'BOARD/SET_DRAGGING', payload: false });
+    }
+  };
+
+  const deleteSelected = () => {
+    const id = selectedId();
+    if (id === null) return;
+    canvasStore.dispatch({ type: 'LINES/SET',  payload: lines().filter(l => l.id !== id) });
+    canvasStore.dispatch({ type: 'SHAPES/SET', payload: shapes().filter(s => s.id !== id) });
+    canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: null });
+  };
+
+  const deleteLine = (e: MouseEvent, id: string) => {
+    e.stopPropagation();
+    canvasStore.dispatch({ type: 'LINES/REMOVE', payload: id });
+    if (selectedId() === id)
+      canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: null });
+  };
+
+  const deleteShape = (e: MouseEvent, id: string) => {
+    e.stopPropagation();
+    canvasStore.dispatch({ type: 'SHAPES/REMOVE', payload: id });
+    if (selectedId() === id)
+      canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: null });
+  };
+
+  const clearAll = () => {
+    canvasStore.dispatch({ type: 'LINES/SET',  payload: [] });
+    canvasStore.dispatch({ type: 'SHAPES/SET', payload: [] });
+    canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: null });
+  };
+
+  // ── Shape card callbacks ──────────────────────────────────────────────────
+
+  const handleShapeNameChange = (shapeId: string, name: string) => {
+    canvasStore.dispatch({
+      type:    'SHAPES/SET',
+      payload: shapes().map(s => s.id === shapeId ? { ...s, name } : s),
+    });
+  };
+
+  const handleShapeCollapse = (shapeId: string) => {
+    canvasStore.dispatch({
+      type:    'SHAPES/SET',
+      payload: shapes().map(s => s.id === shapeId ? { ...s, collapsed: !s.collapsed } : s),
+    });
+  };
+
+  const handleShapeDelete = (shapeId: string) => {
+    canvasStore.dispatch({
+      type:    'SHAPES/SET',
+      payload: shapes().filter(s => s.id !== shapeId),
+    });
+    canvasStore.dispatch({
+      type:    'LINES/SET',
+      payload: lines().filter(l =>
+        l.startConnection?.shapeId !== shapeId && l.endConnection?.shapeId !== shapeId
+      ),
+    });
+    if (selectedId() === shapeId)
+      canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: null });
+  };
+
+  const handleAddProperty = (shapeId: string) => {
+    const pid = nextPropId();
+    canvasStore.dispatch({
+      type:    'SHAPES/SET',
+      payload: shapes().map(s =>
+        s.id === shapeId
+          ? { ...s, properties: [...s.properties, { id: pid, name: 'property', dataType: DataType.String, validation: {} }] }
+          : s
+      ),
+    });
+  };
+
+  const handleDeleteProperty = (shapeId: string, propId: string) => {
+    canvasStore.dispatch({
+      type:    'SHAPES/SET',
+      payload: shapes().map(s =>
+        s.id === shapeId
+          ? { ...s, properties: s.properties.filter(p => p.id !== propId) }
+          : s
+      ),
+    });
+  };
+
+  const handlePropertyNameChange = (shapeId: string, propId: string, name: string) => {
+    canvasStore.dispatch({
+      type:    'SHAPES/SET',
+      payload: shapes().map(s =>
+        s.id === shapeId
+          ? { ...s, properties: s.properties.map(p => p.id === propId ? { ...p, name } : p) }
+          : s
+      ),
+    });
+  };
+
+  const handleShapeSettingsOpen = (shapeId: string) => {
+    const s = shapes().find(sh => sh.id === shapeId);
+    if (s) canvasStore.dispatch({ type: 'MODAL/OPEN', payload: { kind: 'shape', id: shapeId, name: s.name } });
+  };
+
+  const handlePropertySettingsOpen = (shapeId: string, propId: string) => {
+    const s = shapes().find(sh => sh.id === shapeId);
+    const p = s?.properties.find(pr => pr.id === propId);
+    if (s && p) canvasStore.dispatch({ type: 'MODAL/OPEN', payload: { kind: 'property', id: shapeId, name: p.name, propId } });
+  };
+
+  const handleLineDblClick = (lineId: string) => {
+    const l = lines().find(ln => ln.id === lineId);
+    if (l) canvasStore.dispatch({ type: 'MODAL/OPEN', payload: { kind: 'line', id: lineId, name: l.name ?? '' } });
+  };
+
+  // ── Layout ────────────────────────────────────────────────────────────────
+
+  return (
+    <div style="display: flex; flex-direction: row; gap: 10px; align-items: flex-start;">
+
+      <SideToolbox
+        activeTool={activeTool}
+        onSelect={(tool) => canvasStore.dispatch({ type: 'BOARD/SET_TOOL', payload: tool })}
+      />
+
+      <div style="display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0;">
+
+        <CanvasToolbar
+          isDrawing={isDrawing}
+          isDragging={isDragging}
+          activeTool={activeTool}
+          itemCount={() => lines().length + shapes().length}
+          hasSelection={() => selectedId() !== null}
+          onDelete={deleteSelected}
+          onClear={clearAll}
+        />
+
+        <svg
+          ref={(el: Element) => { svgEl = el as SVGSVGElement; }}
+          onMouseDown={handleBgDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          style={() =>
+            `display: block; width: 100%; height: calc(100vh - 320px); min-height: 460px;` +
+            `border-radius: 10px; border: 1px solid #1a2e45; user-select: none;` +
+            `cursor: ${isDragging() ? 'grabbing' : activeTool() === 'line' ? 'crosshair' : 'cell'};`
+          }>
+
+          <CanvasDotGrid />
+
+          {() => shapes().map((shape) => (
+            <CanvasShapeItem
+              shape={shape}
+              selectedId={selectedId}
+              hoveredShapeId={hoveredShapeId}
+              isDrawing={isDrawing}
+              onShapeDown={(e: MouseEvent) => handleShapeDown(e, shape.id)}
+              onAnchorDown={(e: MouseEvent, pos: AnchorPosition) => handleAnchorDown(e, shape.id, pos)}
+              onHoverEnter={() => canvasStore.dispatch({ type: 'BOARD/SET_HOVERED', payload: shape.id })}
+              onHoverLeave={() => { if (selectedId() !== shape.id) canvasStore.dispatch({ type: 'BOARD/SET_HOVERED', payload: null }); }}
+              onNameChange={(name: string) => handleShapeNameChange(shape.id, name)}
+              onCollapseToggle={() => handleShapeCollapse(shape.id)}
+              onDeleteShape={() => handleShapeDelete(shape.id)}
+              onAddProperty={() => handleAddProperty(shape.id)}
+              onDeleteProperty={(propId: string) => handleDeleteProperty(shape.id, propId)}
+              onPropertyNameChange={(propId: string, name: string) => handlePropertyNameChange(shape.id, propId, name)}
+              onSettingsOpen={() => handleShapeSettingsOpen(shape.id)}
+              onPropertySettingsOpen={(propId: string) => handlePropertySettingsOpen(shape.id, propId)}
+            />
+          ))}
+
+          {() => lines().map((line) => (
+            <CanvasLineItem
+              line={line}
+              selectedId={selectedId}
+              onLineDown={(e: MouseEvent) => handleLineDown(e, line.id)}
+              onEndpointDown={(e: MouseEvent, ep: 'start' | 'end') => handleEndpointDown(e, line.id, ep)}
+              onHoverEnter={handleLineHoverEnter}
+              onHoverLeave={(e: MouseEvent) => handleLineHoverLeave(e, line.id)}
+              onDblClick={() => handleLineDblClick(line.id)}
+            />
+          ))}
+
+          <CanvasDrawPreview
+            isDrawing={isDrawing}
+            drawStart={drawStart}
+            drawEnd={drawEnd}
+            activeTool={activeTool}
+          />
+
+        </svg>
+
+        <CanvasBadgeList
+          shapes={shapes}
+          lines={lines}
+          selectedId={selectedId}
+          onSelectShape={(id) => canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: id })}
+          onSelectLine={(id)  => canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: id })}
+          onDeleteShape={deleteShape}
+          onDeleteLine={deleteLine}
+        />
+
+        <CanvasSettingsModal />
+
+      </div>
+    </div>
+  );
+}

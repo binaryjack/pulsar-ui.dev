@@ -1,0 +1,86 @@
+/**
+ * CanvasSettingsModal — full-screen overlay for shape / line / property settings.
+ * Zero props — reads all state from canvasStore, dispatches directly.
+ */
+
+import { CanvasIconBtn }    from '../../shared/atoms/canvas-icon-btn.psr';
+import {
+  canvasStore,
+  selectModal,
+  selectShapes,
+  selectLines,
+}                           from '../../store/canvas-store';
+import type { ICanvasModalState } from '../model/i-canvas-modal';
+
+const TITLES: Record<ICanvasModalState['kind'], string> = {
+  shape:    'Shape Settings',
+  line:     'Line Settings',
+  property: 'Property Settings',
+};
+
+export component CanvasSettingsModal() {
+  const modal  = selectModal;   // () => ICanvasModalState | null
+  const shapes = selectShapes;  // () => IShape[]
+  const lines  = selectLines;   // () => ICanvasLine[]
+
+  const handleClose = () => {
+    canvasStore.dispatch({ type: 'MODAL/CLOSE' });
+  };
+
+  const handleNameChange = (val: string) => {
+    const m = modal();
+    if (!m) return;
+
+    canvasStore.dispatch({ type: 'MODAL/SET_NAME', payload: val });
+
+    if (m.kind === 'shape') {
+      const s = shapes().find(sh => sh.id === m.id);
+      if (s) canvasStore.dispatch({ type: 'SHAPES/UPDATE', payload: { ...s, name: val } });
+    } else if (m.kind === 'line') {
+      const l = lines().find(ln => ln.id === m.id);
+      if (l) canvasStore.dispatch({ type: 'LINES/UPDATE', payload: { ...l, name: val } });
+    } else if (m.kind === 'property' && m.propId) {
+      const s = shapes().find(sh => sh.id === m.id);
+      if (s) {
+        canvasStore.dispatch({
+          type: 'SHAPES/UPDATE',
+          payload: {
+            ...s,
+            properties: s.properties.map(p => p.id === m.propId ? { ...p, name: val } : p),
+          },
+        });
+      }
+    }
+  };
+
+  return (
+    <>{() => {
+      const m = modal();
+      return m === null ? null : (
+        <div
+          style="position:fixed;inset:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:1000;"
+          onMouseDown={(e: MouseEvent) => { if (e.target === e.currentTarget) handleClose(); }}
+        >
+          <div style="background:#0c1a28;border:1px solid #1a3a5f;border-radius:8px;padding:20px;min-width:300px;color:#cbd5e1;font-family:system-ui,sans-serif;">
+
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <h3 style="margin:0;font-size:14px;color:#e2e8f0;">{TITLES[m.kind]}</h3>
+              <CanvasIconBtn title="Close" icon="✕" onClick={handleClose} />
+            </div>
+
+            <div style="margin-bottom:12px;">
+              <label style="display:block;font-size:11px;color:#64748b;margin-bottom:4px;">Name</label>
+              <input
+                type="text"
+                value={m.name}
+                onBlur={(e: FocusEvent) => handleNameChange((e.target as HTMLInputElement).value)}
+                style="width:100%;box-sizing:border-box;background:#07111f;border:1px solid #1a3a5f;border-radius:4px;color:#e2e8f0;padding:6px 8px;font-size:12px;outline:none;"
+              />
+            </div>
+
+          </div>
+        </div>
+      );
+    }}</>
+  );
+}

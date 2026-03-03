@@ -1,0 +1,54 @@
+/**
+ * CanvasAnchorGroup — anchor <g> for a single shape entity.
+ *
+ * ALWAYS in the DOM, hidden by default (visibility: hidden).
+ * Visibility is toggled imperatively via showAnchors/hideAnchors so that
+ * rebuildAnchorsDom() can find [data-anchor-pos] circles at any time during drag.
+ *
+ * Edge-midpoint anchors: visual snap targets only, pointer-events: none.
+ * Vertex anchors: resize handles, forward mousedown to onAnchorDown.
+ */
+
+import type { IAnchor }     from '../model/i-shape';
+import { AnchorPosition }   from '../../shared/model/i-entity';
+import { VERTEX_ANCHORS }   from '../../shared/model/i-drag';
+import { SvgAnchorCircle }  from './svg/svg-anchor-circle.psr';
+
+interface ICanvasAnchorGroupProps {
+  shapeId:      string
+  anchors:      IAnchor[]
+  visible:      () => boolean
+  onAnchorDown: (e: MouseEvent, pos: AnchorPosition) => void
+}
+
+export component CanvasAnchorGroup({ shapeId, anchors, visible, onAnchorDown }: ICanvasAnchorGroupProps) {
+  return (
+    <g
+      data-anchor-group={shapeId}
+      style={() => visible()
+        ? 'visibility: visible;'
+        : 'visibility: hidden; pointer-events: none;'}
+    >
+      {anchors
+        .filter(a => !VERTEX_ANCHORS.has(a.position))
+        .map(a => (
+          <SvgAnchorCircle
+            position={a.position}
+            cx={a.x}
+            cy={a.y}
+          />
+        ))}
+
+      {anchors
+        .filter(a => VERTEX_ANCHORS.has(a.position))
+        .map(a => (
+          <SvgAnchorCircle
+            position={a.position}
+            cx={a.x}
+            cy={a.y}
+            onMouseDown={(e: MouseEvent) => onAnchorDown(e, a.position)}
+          />
+        ))}
+    </g>
+  );
+}

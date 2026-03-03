@@ -1,0 +1,37 @@
+/**
+ * CanvasRectBody — selection-aware background <rect> for Square/Rectangle shapes.
+ * pointer-events: none — the card foreignObject handles all interaction.
+ */
+
+import { CARD_HEADER_H } from '../../shared/model/i-drag';
+
+interface ICanvasRectBodyProps {
+  x:         number
+  y:         number
+  width:     number
+  height:    number
+  collapsed: boolean
+  selected:  () => boolean
+}
+
+export component CanvasRectBody({
+  x,
+  y,
+  width,
+  height,
+  collapsed,
+  selected,
+}: ICanvasRectBodyProps) {
+  return (
+    <rect
+      x={String(x)} y={String(y)}
+      width={String(width)}
+      height={String(collapsed ? CARD_HEADER_H : height)}
+      fill={() => selected() ? 'rgba(34,211,238,0.06)' : 'rgba(59,130,246,0.07)'}
+      stroke={() => selected() ? '#22d3ee' : '#3b82f6'}
+      stroke-width={() => selected() ? '2.5' : '1.5'}
+      rx="4"
+      style="pointer-events: none;"
+    />
+  );
+}

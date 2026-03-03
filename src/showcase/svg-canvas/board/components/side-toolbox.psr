@@ -1,0 +1,51 @@
+/**
+ * SideToolbox — vertical strip for selecting the active drawing tool.
+ */
+
+import type { ToolKind } from '../model/i-board';
+
+interface ISideToolboxProps {
+  activeTool: () => ToolKind
+  onSelect:   (tool: ToolKind) => void
+}
+
+interface IToolEntry {
+  kind:  ToolKind
+  label: string
+  icon:  string
+}
+
+const TOOLS: IToolEntry[] = [
+  { kind: 'select',    label: 'Select',  icon: '↖' },
+  { kind: 'line',      label: 'Line',    icon: '╱' },
+  { kind: 'square',    label: 'Square',  icon: '▢' },
+  { kind: 'rectangle', label: 'Rect',    icon: '▭' },
+  { kind: 'diamond',   label: 'Diamond', icon: '◇' },
+];
+
+export component SideToolbox({ activeTool, onSelect }: ISideToolboxProps) {
+  return (
+    <div style="display: flex; flex-direction: column; gap: 6px; padding: 10px 8px; background: #06101e; border: 1px solid #1a2e45; border-radius: 8px; min-width: 60px; align-items: center; flex-shrink: 0;">
+
+      <span style="font-size: 9px; color: #334155; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px;">Tools</span>
+
+      {TOOLS.map((t) => (
+        <button
+          title={t.label}
+          onClick={() => onSelect(t.kind)}
+          style={() =>
+            `display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;` +
+            `width: 46px; height: 54px; border-radius: 6px; cursor: pointer;` +
+            `font-size: 20px; transition: all 0.15s;` +
+            (activeTool() === t.kind
+              ? `background: rgba(34,211,238,0.12); border: 1px solid #22d3ee; color: #22d3ee;`
+              : `background: transparent; border: 1px solid #1a2e45; color: #475569;`)
+          }>
+          <span>{t.icon}</span>
+          <span style="font-size: 9px; letter-spacing: 0.03em;">{t.label}</span>
+        </button>
+      ))}
+
+    </div>
+  );
+}
