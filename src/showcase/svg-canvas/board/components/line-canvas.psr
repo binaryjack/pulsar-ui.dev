@@ -307,8 +307,9 @@ export component LineCanvasDemo() {
         if (!g) return;
         const s = shapes().find(sh => sh.id === d.shapeId);
         if (!s) return;
-        updateShapeBodyDom(g, s, nx, ny, s.width, s.height);
-        const movedAnchors = rebuildAnchorsDom(g, s, nx, ny, s.width, s.height);
+        const effectiveH = s.collapsed ? 32 : s.height;
+        updateShapeBodyDom(g, s, nx, ny, s.width, effectiveH);
+        const movedAnchors = rebuildAnchorsDom(g, s, nx, ny, s.width, effectiveH);
         updateConnectedLinesDom(svgEl, s.id, movedAnchors, lines());
         return;
       }
@@ -401,7 +402,13 @@ export component LineCanvasDemo() {
         const ny = d.origY + d.latestDy;
         canvasStore.dispatch({
           type: 'SHAPES/SET',
-          payload: shapes().map(s => s.id === d.shapeId ? rebuildShape(s, nx, ny) : s),
+          payload: shapes().map(s => {
+            if (s.id !== d.shapeId) return s;
+            const effectiveH = s.collapsed ? 32 : s.height;
+            const rebuilt    = rebuildShape(s, nx, ny, s.width, effectiveH);
+            // Keep original height so uncollapse restores the full size.
+            return { ...rebuilt, height: s.height };
+          }),
         });
         commitConnectedLines(d.shapeId);
       } else if (drag.type === 'anchor-resize') {
@@ -457,10 +464,33 @@ export component LineCanvasDemo() {
   };
 
   const handleShapeCollapse = (shapeId: string) => {
+    const s = shapes().find(sh => sh.id === shapeId);
+    if (!s || !svgEl) return;
+
+    const nextCollapsed = !s.collapsed;
+    const effectiveH    = nextCollapsed ? 32 : s.height;
+
+    // Recompute anchors for the effective height so the store is always the
+    // source of truth.  rebuildShape sets height = effectiveH, so we override
+    // height back to s.height to preserve the original size for uncollapse.
+    const rebuilt      = rebuildShape(s, s.x, s.y, s.width, effectiveH);
+    const updatedShape = { ...rebuilt, height: s.height, collapsed: nextCollapsed };
+
     canvasStore.dispatch({
       type:    'SHAPES/SET',
-      payload: shapes().map(s => s.id === shapeId ? { ...s, collapsed: !s.collapsed } : s),
+      payload: shapes().map(sh => sh.id === shapeId ? updatedShape : sh),
     });
+
+    const g = svgEl.querySelector<SVGGElement>(`[data-entity-id="${shapeId}"]`);
+    if (!g) return;
+
+    updateShapeBodyDom(g, updatedShape, s.x, s.y, s.width, effectiveH);
+    const newAnchors = rebuildAnchorsDom(g, updatedShape, s.x, s.y, s.width, effectiveH);
+    updateConnectedLinesDom(svgEl, shapeId, newAnchors, lines());
+    // Persist the new endpoint coordinates to the LINES store so that the
+    // next reactive render doesn't restore the old x1/y1/x2/y2 values.
+    // commitConnectedLines reads the already-dispatched updatedShape.anchors.
+    commitConnectedLines(shapeId);
   };
 
   const handleShapeDelete = (shapeId: string) => {

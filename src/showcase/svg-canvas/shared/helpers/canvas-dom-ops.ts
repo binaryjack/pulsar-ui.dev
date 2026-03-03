@@ -112,22 +112,46 @@ export const updateConnectedLinesDom = (
 
     const lineEls = lg.querySelectorAll('line');
 
+    // Track updated endpoint coords so the label midpoint stays correct.
+    let newX1 = ln.x1,
+      newY1 = ln.y1,
+      newX2 = ln.x2,
+      newY2 = ln.y2;
+
     if (isStart) {
       const a = anchors.find((a) => a.id === ln.startConnection!.anchorId);
-      if (a)
+      if (a) {
+        newX1 = a.x;
+        newY1 = a.y;
         lineEls.forEach((el) => {
           el.setAttribute('x1', String(a.x));
           el.setAttribute('y1', String(a.y));
         });
+      }
     }
 
     if (isEnd) {
       const a = anchors.find((a) => a.id === ln.endConnection!.anchorId);
-      if (a)
+      if (a) {
+        newX2 = a.x;
+        newY2 = a.y;
         lineEls.forEach((el) => {
           el.setAttribute('x2', String(a.x));
           el.setAttribute('y2', String(a.y));
         });
+      }
+    }
+
+    // Reposition mid-label to new line centre (covers both endpoint-only
+    // and both-endpoints cases transparently).
+    const label = lg.querySelector('[data-line-label]');
+    if (label) {
+      const midX = Math.round((newX1 + newX2) / 2);
+      const midY = Math.round((newY1 + newY2) / 2);
+      label.querySelector('rect')?.setAttribute('x', String(midX - 28));
+      label.querySelector('rect')?.setAttribute('y', String(midY - 9));
+      label.querySelector('text')?.setAttribute('x', String(midX));
+      label.querySelector('text')?.setAttribute('y', String(midY + 4));
     }
   }
 };

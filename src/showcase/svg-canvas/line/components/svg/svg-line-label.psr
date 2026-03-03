@@ -4,19 +4,20 @@
  */
 
 interface ISvgLineLabelProps {
-  x1:   number
-  y1:   number
-  x2:   number
-  y2:   number
-  name: string
+  x1:        number
+  y1:        number
+  x2:        number
+  y2:        number
+  name:      string
+  onDblClick?: () => void
 }
 
-export component SvgLineLabel({ x1, y1, x2, y2, name }: ISvgLineLabelProps) {
+export component SvgLineLabel({ x1, y1, x2, y2, name, onDblClick }: ISvgLineLabelProps) {
   const mx = Math.round((x1 + x2) / 2);
   const my = Math.round((y1 + y2) / 2);
 
   return (
-    <g data-line-label="1" style="pointer-events: none;">
+    <g data-line-label="1" style="cursor: pointer;" onDblClick={() => onDblClick?.()}>
       <rect
         x={String(mx - 28)} y={String(my - 9)}
         width="56" height="16" rx="3"

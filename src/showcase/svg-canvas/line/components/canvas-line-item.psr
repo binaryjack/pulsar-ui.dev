@@ -52,7 +52,7 @@ export component CanvasLineItem({
       />
 
       {() => line.name
-        ? <SvgLineLabel x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} name={line.name} />
+        ? <SvgLineLabel x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} name={line.name} onDblClick={onDblClick} />
         : null}
 
       {() => selectedId() === line.id ? (
