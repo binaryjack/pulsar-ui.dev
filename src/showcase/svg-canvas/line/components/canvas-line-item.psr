@@ -1,11 +1,13 @@
 /**
  * CanvasLineItem — renders a single canvas line entity.
- * Hit target + visible stroke + optional name label + optional endpoint handles.
+ * Hit target + visual stroke (polyline for orthogonal, line for linear)
+ * + optional name label + optional endpoint handles.
  */
 
 import type { ICanvasLine }      from '../model/i-canvas-line';
 import { SvgEndpointHandle }     from './svg/svg-endpoint-handle.psr';
 import { SvgLineLabel }          from './svg/svg-line-label.psr';
+import { waypointsToPoints }     from '../../shared/helpers/route-orthogonal';
 
 interface ICanvasLineItemProps {
   line:            ICanvasLine
@@ -29,7 +31,7 @@ export component CanvasLineItem({
   return (
     <g data-entity-id={line.id}>
 
-      {/* Wide transparent hit target */}
+      {/* Wide transparent hit target — always a <line> for click/drag detection */}
       <line
         x1={String(line.x1)} y1={String(line.y1)}
         x2={String(line.x2)} y2={String(line.y2)}
@@ -41,15 +43,30 @@ export component CanvasLineItem({
         onDblClick={() => onDblClick?.()}
       />
 
-      {/* Visible stroke */}
-      <line
-        x1={String(line.x1)} y1={String(line.y1)}
-        x2={String(line.x2)} y2={String(line.y2)}
-        stroke={() => selectedId() === line.id ? '#22d3ee' : '#3b82f6'}
-        stroke-width={() => selectedId() === line.id ? '3' : '2'}
-        stroke-linecap="round"
-        style="pointer-events: none;"
-      />
+      {/* Visual stroke — polyline when orthogonal, line when linear */}
+      {() => line.mode === 'orthogonal' && line.waypoints.length > 1
+        ? (
+          <polyline
+            data-line-visual="1"
+            points={waypointsToPoints(line.waypoints)}
+            stroke={() => selectedId() === line.id ? '#22d3ee' : '#3b82f6'}
+            stroke-width={() => selectedId() === line.id ? '3' : '2'}
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            fill="none"
+            style="pointer-events: none;"
+          />
+        ) : (
+          <line
+            x1={String(line.x1)} y1={String(line.y1)}
+            x2={String(line.x2)} y2={String(line.y2)}
+            stroke={() => selectedId() === line.id ? '#22d3ee' : '#3b82f6'}
+            stroke-width={() => selectedId() === line.id ? '3' : '2'}
+            stroke-linecap="round"
+            style="pointer-events: none;"
+          />
+        )
+      }
 
       {() => line.name
         ? <SvgLineLabel x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} name={line.name} onDblClick={onDblClick} />
@@ -65,3 +82,4 @@ export component CanvasLineItem({
     </g>
   );
 }
+

@@ -25,6 +25,7 @@ import {
   updateConnectedLinesDom,
   updateShapeBodyDom,
 }                                                              from '../../shared/helpers/canvas-dom-ops';
+import { recomputeWaypoints }                                  from '../../shared/helpers/route-orthogonal';
 import {
   canvasStore,
   selectActiveTool,
@@ -82,11 +83,13 @@ export component LineCanvasDemo() {
           return ln;
         const a0 = updatedShape.anchors.find(a => a.id === ln.startConnection?.anchorId);
         const a1 = updatedShape.anchors.find(a => a.id === ln.endConnection?.anchorId);
-        return {
+        const updated = {
           ...ln,
           x1: a0 ? a0.x : ln.x1, y1: a0 ? a0.y : ln.y1,
           x2: a1 ? a1.x : ln.x2, y2: a1 ? a1.y : ln.y2,
         };
+        // Recompute orthogonal waypoints with full shape bbox avoidance.
+        return { ...updated, waypoints: recomputeWaypoints(updated, shapes()) };
       }),
     });
   };
@@ -119,6 +122,12 @@ export component LineCanvasDemo() {
     if (!ln) return;
     canvasStore.dispatch({ type: 'BOARD/SET_HOVERED', payload: null });
     canvasStore.dispatch({ type: 'BOARD/SET_SELECTED', payload: lineId });
+    // A freely-dragged line loses its anchor connections → must be linear.
+    // Convert before setting up drag so the reactive render replaces <polyline>
+    // with <line> before the first mousemove fires.
+    if (ln.mode === 'orthogonal') {
+      canvasStore.dispatch({ type: 'LINES/UPDATE', payload: { ...ln, mode: 'linear', waypoints: [] } });
+    }
     drag = {
       type: 'line', lineId,
       mouseX: p.x, mouseY: p.y,
@@ -310,7 +319,7 @@ export component LineCanvasDemo() {
         const effectiveH = s.collapsed ? 32 : s.height;
         updateShapeBodyDom(g, s, nx, ny, s.width, effectiveH);
         const movedAnchors = rebuildAnchorsDom(g, s, nx, ny, s.width, effectiveH);
-        updateConnectedLinesDom(svgEl, s.id, movedAnchors, lines());
+        updateConnectedLinesDom(svgEl, s.id, movedAnchors, lines(), shapes());
         return;
       }
 
@@ -324,7 +333,7 @@ export component LineCanvasDemo() {
         if (!s) return;
         updateShapeBodyDom(g, s, rx, ry, rw, rh);
         const resizedAnchors = rebuildAnchorsDom(g, s, rx, ry, rw, rh);
-        updateConnectedLinesDom(svgEl, s.id, resizedAnchors, lines());
+        updateConnectedLinesDom(svgEl, s.id, resizedAnchors, lines(), shapes());
       }
     }, 'canvas-move');
   };
@@ -368,6 +377,8 @@ export component LineCanvasDemo() {
         const x2        = d.origX2 + d.latestDx; const y2 = d.origY2 + d.latestDy;
         const startSnap = snapToAnchor(x1, y1, shapes());
         const endSnap   = snapToAnchor(x2, y2, shapes());
+        // A line dragged freely: always linear (both connections may be lost).
+        const fullyConnected = startSnap.conn !== null && endSnap.conn !== null;
         canvasStore.dispatch({
           type: 'LINES/SET',
           payload: lines().map(ln => ln.id === d.lineId ? {
@@ -376,6 +387,8 @@ export component LineCanvasDemo() {
             x2: endSnap.x,   y2: endSnap.y,
             startConnection: startSnap.conn,
             endConnection:   endSnap.conn,
+            mode:      fullyConnected ? ln.mode : 'linear',
+            waypoints: fullyConnected ? ln.waypoints : [],
           } : ln),
         });
       } else if (drag.type === 'line-endpoint') {
@@ -385,14 +398,20 @@ export component LineCanvasDemo() {
           type: 'LINES/SET',
           payload: lines().map(ln => {
             if (ln.id !== d.lineId) return ln;
+            const newStart = d.endpoint === 'start' ? snap.conn : ln.startConnection;
+            const newEnd   = d.endpoint === 'end'   ? snap.conn : ln.endConnection;
+            // Must be connected to 2 entities to stay orthogonal.
+            const fullyConnected = newStart !== null && newEnd !== null;
             return {
               ...ln,
               x1: d.endpoint === 'start' ? snap.x : ln.x1,
               y1: d.endpoint === 'start' ? snap.y : ln.y1,
               x2: d.endpoint === 'end'   ? snap.x : ln.x2,
               y2: d.endpoint === 'end'   ? snap.y : ln.y2,
-              startConnection: d.endpoint === 'start' ? snap.conn : ln.startConnection,
-              endConnection:   d.endpoint === 'end'   ? snap.conn : ln.endConnection,
+              startConnection: newStart,
+              endConnection:   newEnd,
+              mode:      fullyConnected ? ln.mode : 'linear',
+              waypoints: fullyConnected ? ln.waypoints : [],
             };
           }),
         });
@@ -486,7 +505,7 @@ export component LineCanvasDemo() {
 
     updateShapeBodyDom(g, updatedShape, s.x, s.y, s.width, effectiveH);
     const newAnchors = rebuildAnchorsDom(g, updatedShape, s.x, s.y, s.width, effectiveH);
-    updateConnectedLinesDom(svgEl, shapeId, newAnchors, lines());
+    updateConnectedLinesDom(svgEl, shapeId, newAnchors, lines(), shapes());
     // Persist the new endpoint coordinates to the LINES store so that the
     // next reactive render doesn't restore the old x1/y1/x2/y2 values.
     // commitConnectedLines reads the already-dispatched updatedShape.anchors.

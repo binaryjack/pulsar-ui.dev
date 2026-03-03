@@ -11,6 +11,8 @@ import {
   selectLines,
 }                           from '../../store/canvas-store';
 import type { ICanvasModalState } from '../model/i-canvas-modal';
+import type { LineMode }          from '../../line/model/i-canvas-line';
+import { recomputeWaypoints }     from '../../shared/helpers/route-orthogonal';
 
 const TITLES: Record<ICanvasModalState['kind'], string> = {
   shape:    'Shape Settings',
@@ -53,6 +55,13 @@ export component CanvasSettingsModal() {
     }
   };
 
+  const handleModeChange = (lineId: string, mode: LineMode) => {
+    const l = lines().find(ln => ln.id === lineId);
+    if (!l) return;
+    const waypoints = mode === 'orthogonal' ? recomputeWaypoints(l, shapes()) : [];
+    canvasStore.dispatch({ type: 'LINES/UPDATE', payload: { ...l, mode, waypoints } });
+  };
+
   return (
     <>{() => {
       const m = modal();
@@ -77,6 +86,29 @@ export component CanvasSettingsModal() {
                 style="width:100%;box-sizing:border-box;background:#07111f;border:1px solid #1a3a5f;border-radius:4px;color:#e2e8f0;padding:6px 8px;font-size:12px;outline:none;"
               />
             </div>
+
+            {() => m.kind === 'line' ? (() => {
+              const l = lines().find(ln => ln.id === m.id);
+              if (!l) return null;
+              const isOrtho        = l.mode === 'orthogonal';
+              const canBeOrthogonal = l.startConnection !== null && l.endConnection !== null;
+              return (
+                <div style="margin-bottom:12px;">
+                  <label style="display:block;font-size:11px;color:#64748b;margin-bottom:6px;">Routing</label>
+                  <div style="display:flex;gap:6px;">
+                    <button
+                      onClick={() => handleModeChange(m.id, 'linear')}
+                      style={`background:${!isOrtho ? '#1a3a5f' : '#07111f'};border:1px solid ${!isOrtho ? '#22d3ee' : '#1a3a5f'};border-radius:4px;color:${!isOrtho ? '#22d3ee' : '#64748b'};padding:5px 12px;font-size:11px;cursor:pointer;`}
+                    >Linear</button>
+                    <button
+                      onClick={() => canBeOrthogonal && handleModeChange(m.id, 'orthogonal')}
+                      title={canBeOrthogonal ? '' : 'Connect both endpoints to entities first'}
+                      style={`background:${isOrtho ? '#1a3a5f' : '#07111f'};border:1px solid ${isOrtho ? '#22d3ee' : '#1a3a5f'};border-radius:4px;color:${canBeOrthogonal ? (isOrtho ? '#22d3ee' : '#64748b') : '#334155'};padding:5px 12px;font-size:11px;cursor:${canBeOrthogonal ? 'pointer' : 'not-allowed'};opacity:${canBeOrthogonal ? '1' : '0.45'};`}
+                    >Orthogonal</button>
+                  </div>
+                </div>
+              );
+            })() : null}
 
           </div>
         </div>

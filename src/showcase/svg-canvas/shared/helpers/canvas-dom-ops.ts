@@ -8,6 +8,7 @@ import { buildDiamondAnchors } from '../../shape/entity/canvas-diamond';
 import { buildSquareAnchors } from '../../shape/entity/canvas-square';
 import type { IShape } from '../../shape/model/i-shape';
 import { ShapeKind } from '../../shape/model/i-shape';
+import { routeOrthogonal, waypointsToPoints } from './route-orthogonal';
 
 // ---------------------------------------------------------------------------
 // Shape body + label position
@@ -95,12 +96,14 @@ export const rebuildAnchorsDom = (
 /**
  * Moves every SVG line element whose connected endpoint belongs to the given shape.
  * Reuses the anchor list returned by `rebuildAnchorsDom` — no extra computation.
+ * Pass `shapes` to also re-route orthogonal polylines during live drag.
  */
 export const updateConnectedLinesDom = (
   svgEl: SVGSVGElement,
   shapeId: string,
   anchors: Array<{ id: string; x: number; y: number }>,
-  lines: ICanvasLine[]
+  lines: ICanvasLine[],
+  shapes?: IShape[]
 ): void => {
   for (const ln of lines) {
     const isStart = ln.startConnection?.shapeId === shapeId;
@@ -110,40 +113,67 @@ export const updateConnectedLinesDom = (
     const lg = svgEl.querySelector<SVGGElement>(`[data-entity-id="${ln.id}"]`);
     if (!lg) continue;
 
-    const lineEls = lg.querySelectorAll('line');
-
-    // Track updated endpoint coords so the label midpoint stays correct.
+    // Resolve new endpoint coordinates.
     let newX1 = ln.x1,
       newY1 = ln.y1,
       newX2 = ln.x2,
       newY2 = ln.y2;
-
     if (isStart) {
       const a = anchors.find((a) => a.id === ln.startConnection!.anchorId);
       if (a) {
         newX1 = a.x;
         newY1 = a.y;
-        lineEls.forEach((el) => {
-          el.setAttribute('x1', String(a.x));
-          el.setAttribute('y1', String(a.y));
-        });
       }
     }
-
     if (isEnd) {
       const a = anchors.find((a) => a.id === ln.endConnection!.anchorId);
       if (a) {
         newX2 = a.x;
         newY2 = a.y;
-        lineEls.forEach((el) => {
-          el.setAttribute('x2', String(a.x));
-          el.setAttribute('y2', String(a.y));
-        });
       }
     }
 
-    // Reposition mid-label to new line centre (covers both endpoint-only
-    // and both-endpoints cases transparently).
+    if (ln.mode === 'orthogonal') {
+      // Resolve exit directions from stored anchor positions.
+      const posA =
+        shapes
+          ?.find((s) => s.id === ln.startConnection?.shapeId)
+          ?.anchors.find((a) => a.id === ln.startConnection?.anchorId)?.position ?? null;
+      const posB =
+        shapes
+          ?.find((s) => s.id === ln.endConnection?.shapeId)
+          ?.anchors.find((a) => a.id === ln.endConnection?.anchorId)?.position ?? null;
+
+      // Route without bbox avoidance during live drag (fast; commitConnectedLines
+      // re-routes with full shape data on mouse-up).
+      const pts = routeOrthogonal(newX1, newY1, posA, newX2, newY2, posB, null, null);
+      const ptsStr = waypointsToPoints(pts);
+
+      lg.querySelector<SVGPolylineElement>('[data-line-visual]')?.setAttribute('points', ptsStr);
+      lg.querySelector<SVGPolylineElement>('[data-line-hit]')?.setAttribute('points', ptsStr);
+
+      // Keep hit <line> in sync in case the mode just changed.
+      lg.querySelectorAll('line').forEach((el) => {
+        el.setAttribute('x1', String(newX1));
+        el.setAttribute('y1', String(newY1));
+        el.setAttribute('x2', String(newX2));
+        el.setAttribute('y2', String(newY2));
+      });
+    } else {
+      // Linear: update all <line> elements.
+      lg.querySelectorAll('line').forEach((el) => {
+        if (isStart) {
+          el.setAttribute('x1', String(newX1));
+          el.setAttribute('y1', String(newY1));
+        }
+        if (isEnd) {
+          el.setAttribute('x2', String(newX2));
+          el.setAttribute('y2', String(newY2));
+        }
+      });
+    }
+
+    // Reposition mid-label to new line centre.
     const label = lg.querySelector('[data-line-label]');
     if (label) {
       const midX = Math.round((newX1 + newX2) / 2);
