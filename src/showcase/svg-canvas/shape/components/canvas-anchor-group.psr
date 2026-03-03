@@ -2,17 +2,24 @@
  * CanvasAnchorGroup — anchor <g> for a single shape entity.
  *
  * ALWAYS in the DOM, hidden by default (visibility: hidden).
- * Visibility is toggled imperatively via showAnchors/hideAnchors so that
+ * Visibility is toggled reactively via $REGISTRY.wire on style.cssText so that
  * rebuildAnchorsDom() can find [data-anchor-pos] circles at any time during drag.
  *
  * Edge-midpoint anchors: visual snap targets only, pointer-events: none.
  * Vertex anchors: resize handles, forward mousedown to onAnchorDown.
+ *
+ * NOTE: Circles are built imperatively with createElementNS rather than via
+ * PSR JSX iteration. The PSR transformer converts {array.map(item => <Component/>)}
+ * to ForRegistry which (a) wraps children in an HTML <div> — invalid inside SVG —
+ * and (b) rejects SVGCircleElement with `instanceof HTMLElement` check, silently
+ * dropping every circle. Direct DOM construction is the correct approach for SVG
+ * element children in this framework.
  */
 
-import type { IAnchor }     from '../model/i-shape';
-import { AnchorPosition }   from '../../shared/model/i-entity';
-import { VERTEX_ANCHORS }   from '../../shared/model/i-drag';
-import { SvgAnchorCircle }  from './svg/svg-anchor-circle.psr';
+import { $REGISTRY }      from '@pulsar-framework/pulsar.dev';
+import { IAnchor }   from '../model/i-shape';
+import { AnchorPosition } from '../../shared/model/i-entity';
+import { VERTEX_ANCHORS } from '../../shared/model/i-drag';
 
 interface ICanvasAnchorGroupProps {
   shapeId:      string
@@ -21,34 +28,55 @@ interface ICanvasAnchorGroupProps {
   onAnchorDown: (e: MouseEvent, pos: AnchorPosition) => void
 }
 
-export component CanvasAnchorGroup({ shapeId, anchors, visible, onAnchorDown }: ICanvasAnchorGroupProps) {
-  return (
-    <g
-      data-anchor-group={shapeId}
-      style={() => visible()
-        ? 'visibility: visible;'
-        : 'visibility: hidden; pointer-events: none;'}
-    >
-      {anchors
-        .filter(a => !VERTEX_ANCHORS.has(a.position))
-        .map(a => (
-          <SvgAnchorCircle
-            position={a.position}
-            cx={a.x}
-            cy={a.y}
-          />
-        ))}
+const SVG_NS = 'http://www.w3.org/2000/svg';
 
-      {anchors
-        .filter(a => VERTEX_ANCHORS.has(a.position))
-        .map(a => (
-          <SvgAnchorCircle
-            position={a.position}
-            cx={a.x}
-            cy={a.y}
-            onMouseDown={(e: MouseEvent) => onAnchorDown(e, a.position)}
-          />
-        ))}
-    </g>
-  );
+export component CanvasAnchorGroup({ shapeId, anchors, visible, onAnchorDown }: ICanvasAnchorGroupProps) {
+  const g = document.createElementNS(SVG_NS, 'g') as SVGGElement;
+  g.setAttribute('data-anchor-group', shapeId);
+
+  // Reactive visibility — wire reads visible() (which reads isDrawing, selectedId,
+  // hoveredShapeId) so wire_effect.run is subscribed to all three signals.
+  $REGISTRY.wire(g, 'style.cssText', () =>
+    visible() ? 'visibility: visible;' : 'visibility: hidden; pointer-events: none;');
+
+  // Build circles statically — anchors is a plain array prop, never a signal.
+  for (const a of anchors) {
+    const isVertex = VERTEX_ANCHORS.has(a.position);
+    const c = document.createElementNS(SVG_NS, 'circle') as SVGCircleElement;
+    c.setAttribute('data-anchor-pos', a.position);
+    c.setAttribute('cx', String(a.x));
+    c.setAttribute('cy', String(a.y));
+
+    if (isVertex) {
+      const isNWSE =
+        a.position === AnchorPosition.TopLeft ||
+        a.position === AnchorPosition.BottomRight;
+      c.setAttribute('r', '6');
+      c.setAttribute('fill', '#f59e0b');
+      c.setAttribute('opacity', '0.9');
+      c.setAttribute('stroke', '#060e1a');
+      c.setAttribute('stroke-width', '1.5');
+      c.style.cssText = `cursor: ${isNWSE ? 'nwse-resize' : 'nesw-resize'};`;
+      c.addEventListener('mouseenter', (e: Event) => {
+        (e.currentTarget as SVGCircleElement).setAttribute('r', '9');
+      });
+      c.addEventListener('mouseleave', (e: Event) => {
+        (e.currentTarget as SVGCircleElement).setAttribute('r', '6');
+      });
+      c.addEventListener('mousedown', (e: MouseEvent) => {
+        e.stopPropagation();
+        onAnchorDown(e, a.position);
+      });
+    } else {
+      c.setAttribute('r', '4');
+      c.setAttribute('fill', '#22d3ee');
+      c.setAttribute('opacity', '0.7');
+      c.style.cssText = 'pointer-events: none;';
+    }
+
+    g.appendChild(c);
+  }
+
+  return g;
 }
+

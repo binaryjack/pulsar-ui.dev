@@ -51,8 +51,19 @@ export component CanvasShapeItem({
   onSettingsOpen,
   onPropertySettingsOpen,
 }: ICanvasShapeItemProps) {
-  const sel     = () => selectedId()     === shape.id;
-  const visible = () => isDrawing() || selectedId() === shape.id || hoveredShapeId() === shape.id;
+  const sel     = () => selectedId() === shape.id;
+  // Force-read ALL three signals unconditionally every time.
+  // wire.js only subscribes signals that are read during the FIRST run (when
+  // _currentEffect is the wire effect). JS short-circuit would skip reading
+  // hoveredShapeId when selectedId already matches, meaning hoveredShapeId
+  // would never be subscribed — hover updates would be silently ignored after
+  // any SHAPES/UPDATE re-mount. Assigning to locals before the || prevents that.
+  const visible = () => {
+    const d = isDrawing();
+    const s = selectedId() === shape.id;
+    const h = hoveredShapeId() === shape.id;
+    return d || s || h;
+  };
 
   return (
     <g
