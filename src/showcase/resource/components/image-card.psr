@@ -3,23 +3,31 @@
  * Single image card with loading state
  */
 
-
-
-interface Resource<T> {
-  isLoading: boolean
-  isSuccess: boolean
-  data?: T
-}
+import { createSignal, createEffect } from '@pulsar-framework/pulsar.dev';
 
 interface ImageCardProps {
-  resource: Resource<string>
+  resource: any
   index: number
 }
 
 export const ImageCard = ({ resource, index }: ImageCardProps) => {
+  // resource.isLoading / isSuccess are JS property getters backed by a signal
+  // internally. They must be read inside createEffect so the reactivity system
+  // tracks them. We bridge into local call-expression signals so the PSR
+  // transformer can promote the JSX ternaries to ShowRegistry.
+  const [loading, setLoading] = createSignal(resource.isLoading);
+  const [success, setSuccess] = createSignal(resource.isSuccess);
+  const [imgSrc, setImgSrc] = createSignal(resource.data);
+
+  createEffect(() => {
+    setLoading(resource.isLoading);
+    setSuccess(resource.isSuccess);
+    setImgSrc(resource.data);
+  });
+
   return (
     <div style="aspect-ratio: 3/2; background: #1a1a1a; border-radius: 8px; overflow: hidden; position: relative;">
-      {resource.isLoading ? (
+      {loading() ? (
         <div style="width: 100%; height: 100%; display: flex; alignItems: center; justify-content: center; background: #334155;">
           <div style="text-align: center;">
             <div style="color: #06b6d4; font-size: 24px; margin-bottom: 5px;">⏳</div>
@@ -27,11 +35,11 @@ export const ImageCard = ({ resource, index }: ImageCardProps) => {
           </div>
         </div>
       ) : null}
-      
-      {resource.isSuccess ? (
+
+      {success() ? (
         <div style="position: relative; width: 100%; height: 100%;">
-          <img 
-            src={resource.data} 
+          <img
+            src={imgSrc()}
             alt={`Image ${index}`}
             style="width: 100%; height: 100%; object-fit: cover;"
           />

@@ -3,7 +3,7 @@
  * Shows coordinated loading with Waiting/Suspense
  */
 
-import { createResource, createEffect, Waiting, resolveWaiting } from '@pulsar-framework/pulsar.dev';
+import { createResource, createEffect, createSignal, Waiting, resolveWaiting } from '@pulsar-framework/pulsar.dev';
 import { fetchUser, fetchPosts, fetchActivity } from './mock-api.ts';
 import { SuspenseSkeleton } from './suspense-skeleton.psr';
 
@@ -11,6 +11,18 @@ export const WaitingDemo = () => {
   const userResource = createResource(() => fetchUser(1));
   const postsResource = createResource(() => fetchPosts(1));
   const activityResource = createResource(() => fetchActivity(1));
+
+  // Bridge resource state getters to local reactive signals so the PSR
+  // transformer can detect CallExpressions and make the status indicators reactive.
+  const [userLoading, setUserLoading] = createSignal(userResource.isLoading);
+  const [postsLoading, setPostsLoading] = createSignal(postsResource.isLoading);
+  const [activityLoading, setActivityLoading] = createSignal(activityResource.isLoading);
+
+  createEffect(() => {
+    setUserLoading(userResource.isLoading);
+    setPostsLoading(postsResource.isLoading);
+    setActivityLoading(activityResource.isLoading);
+  });
   
   const waitingContainer = (
     <Waiting default={<SuspenseSkeleton />}>
@@ -77,20 +89,20 @@ export const WaitingDemo = () => {
         <div style="display: grid; gap: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #0a0a0a; border-radius: 4px;">
             <span style="color: #94a3b8; font-size: 13px;">User Resource:</span>
-            <span style={`color: ${userResource.isLoading ? '#f59e0b' : '#10b981'}; font-weight: bold; font-size: 12px;`}>
-              {userResource.isLoading ? '⏳ Loading...' : '✓ Loaded'}
+            <span style={`color: ${userLoading() ? '#f59e0b' : '#10b981'}; font-weight: bold; font-size: 12px;`}>
+              {userLoading() ? '⏳ Loading...' : '✓ Loaded'}
             </span>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #0a0a0a; border-radius: 4px;">
             <span style="color: #94a3b8; font-size: 13px;">Posts Resource:</span>
-            <span style={`color: ${postsResource.isLoading ? '#f59e0b' : '#10b981'}; font-weight: bold; font-size: 12px;`}>
-              {postsResource.isLoading ? '⏳ Loading...' : '✓ Loaded'}
+            <span style={`color: ${postsLoading() ? '#f59e0b' : '#10b981'}; font-weight: bold; font-size: 12px;`}>
+              {postsLoading() ? '⏳ Loading...' : '✓ Loaded'}
             </span>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #0a0a0a; border-radius: 4px;">
             <span style="color: #94a3b8; font-size: 13px;">Activity Resource:</span>
-            <span style={`color: ${activityResource.isLoading ? '#f59e0b' : '#10b981'}; font-weight: bold; font-size: 12px;`}>
-              {activityResource.isLoading ? '⏳ Loading...' : '✓ Loaded'}
+            <span style={`color: ${activityLoading() ? '#f59e0b' : '#10b981'}; font-weight: bold; font-size: 12px;`}>
+              {activityLoading() ? '⏳ Loading...' : '✓ Loaded'}
             </span>
           </div>
         </div>

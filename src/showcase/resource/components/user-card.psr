@@ -3,7 +3,7 @@
  * Displays user data from resource
  */
 
-
+import { createSignal, createEffect } from '@pulsar-framework/pulsar.dev';
 
 interface UserData {
   avatar: string
@@ -11,39 +11,44 @@ interface UserData {
   requestId: number
 }
 
-interface Resource<T> {
-  isLoading: boolean
-  data?: T
-}
-
 interface UserCardProps {
-  resource: Resource<UserData>
+  resource: any
   label: string
 }
 
 export const UserCard = ({ resource, label }: UserCardProps) => {
+  // Bridge resource signal state into local call-expression signals so
+  // the PSR transformer wraps the JSX ternaries in ShowRegistry.
+  const [loading, setLoading] = createSignal(resource.isLoading);
+  const [userData, setUserData] = createSignal(resource.data);
+
+  createEffect(() => {
+    setLoading(resource.isLoading);
+    setUserData(resource.data);
+  });
+
   return (
     <div style="padding: 15px; background: #1a1a1a; border-radius: 4px; border: 1px solid #334155;">
       <div style="color: #06b6d4; font-size: 12px; margin-bottom: 10px; font-weight: bold;">
         {label}
       </div>
-      
-      {resource.isLoading ? (
+
+      {loading() ? (
         <div style="text-align: center; padding: 20px; color: #64748b;">⏳</div>
       ) : null}
-      
-      {!resource.isLoading && resource.data ? (
+
+      {!loading() && userData() ? (
         <div style="text-align: center;">
-          <img 
-            src={resource.data?.avatar} 
-            alt={resource.data?.name}
+          <img
+            src={userData().avatar}
+            alt={userData().name}
             style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 10px;"
           />
           <div style="color: white; font-size: 14px; font-weight: bold;">
-            {resource.data?.name}
+            {userData().name}
           </div>
           <div style="color: #64748b; font-size: 11px; margin-top: 5px;">
-            Request #{resource.data?.requestId}
+            Request #{userData().requestId}
           </div>
         </div>
       ) : null}
