@@ -2,61 +2,32 @@
  * CanvasAnchorGroup — anchor group for a single shape entity.
  *
  * ALWAYS in the DOM, hidden by default (visibility: hidden).
- * Visibility is toggled reactively via $REGISTRY.wire on style.cssText.
+ * Visibility is toggled reactively via the style prop (wired to style.cssText).
  *
- * Imperative DOM construction bypasses ForRegistry which rejects SVGElement
- * children (instanceof HTMLElement check) and wraps in HTML div (invalid in SVG).
+ * Uses <ForRegistry isSvg={true}> which creates a <g> container (not <div>)
+ * and accepts SVGElement children. This is the correct declarative approach —
+ * ForRegistry was fixed in pulsar.dev to support SVG contexts via the isSvg prop.
  */
 
-import { AnchorPosition } from '../../shared/model/i-entity';
-import { VERTEX_ANCHORS } from '../../shared/model/i-drag';
-
-const SVG_NS = 'http://www.w3.org/2000/svg';
+import { SvgAnchorCircle } from './svg/svg-anchor-circle.psr';
 
 export component CanvasAnchorGroup({ shapeId, anchors, visible, onAnchorDown }) {
-  const g = document.createElementNS(SVG_NS, 'g');
-  g.setAttribute('data-anchor-group', shapeId);
-
-  $REGISTRY.wire(g, 'style.cssText', () =>
-    visible() ? 'visibility: visible;' : 'visibility: hidden; pointer-events: none;');
-
-  for (const a of anchors) {
-    const isVertex = VERTEX_ANCHORS.has(a.position);
-    const c = document.createElementNS(SVG_NS, 'circle');
-    c.setAttribute('data-anchor-pos', a.position);
-    c.setAttribute('cx', String(a.x));
-    c.setAttribute('cy', String(a.y));
-
-    if (isVertex) {
-      const isNWSE =
-        a.position === AnchorPosition.TopLeft ||
-        a.position === AnchorPosition.BottomRight;
-      c.setAttribute('r', '6');
-      c.setAttribute('fill', '#f59e0b');
-      c.setAttribute('opacity', '0.9');
-      c.setAttribute('stroke', '#060e1a');
-      c.setAttribute('stroke-width', '1.5');
-      c.style.cssText = 'cursor: ' + (isNWSE ? 'nwse-resize' : 'nesw-resize') + ';';
-      c.addEventListener('mouseenter', function (e) {
-        e.currentTarget.setAttribute('r', '9');
-      });
-      c.addEventListener('mouseleave', function (e) {
-        e.currentTarget.setAttribute('r', '6');
-      });
-      c.addEventListener('mousedown', function (e) {
-        e.stopPropagation();
-        onAnchorDown(e, a.position);
-      });
-    } else {
-      c.setAttribute('r', '4');
-      c.setAttribute('fill', '#22d3ee');
-      c.setAttribute('opacity', '0.7');
-      c.style.cssText = 'pointer-events: none;';
-    }
-
-    g.appendChild(c);
-  }
-
-  return g;
+  return (
+    <g
+      data-anchor-group={shapeId}
+      style={() => visible() ? 'visibility: visible;' : 'visibility: hidden; pointer-events: none;'}
+    >
+      <ForRegistry each={() => anchors} isSvg={true} key={(a) => a.position}>
+        {(a) => (
+          <SvgAnchorCircle
+            position={a.position}
+            cx={a.x}
+            cy={a.y}
+            onMouseDown={(e) => onAnchorDown(e, a.position)}
+          />
+        )}
+      </ForRegistry>
+    </g>
+  );
 }
 
