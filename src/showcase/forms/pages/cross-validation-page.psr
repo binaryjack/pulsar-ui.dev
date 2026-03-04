@@ -128,7 +128,7 @@ export component CrossValidationPage() {
         <FormProvider form={form()!} onSaveCallback={() => {}} onQuitCallback={() => {}}>
           <div class="demo-card">
 
-            <div style="padding:.75rem;background:#fef3c7;border-radius:6px;border:1px solid #fcd34d;margin-bottom:1rem;font-size:.8rem;color:#92400e">
+            <div class="demo-banner demo-banner--warn" style="margin-top:0;margin-bottom:1rem">
               <strong>⚠️ Architecture note:</strong>{' '}
               <code>f.object().refine()</code> is not bridged by <code>schemaToDescriptors</code>
               to live field validation. Cross-field rules must be enforced via{' '}
@@ -142,19 +142,21 @@ export component CrossValidationPage() {
 
             {/* Live match feedback */}
             {() => matchError() ? (
-              <p style="margin-top:.5rem;color:#991b1b;font-size:.85rem;font-weight:500">
+              <p class="demo-banner demo-banner--error" style="margin-top:.5rem;padding:.5rem">
                 🔴 {() => matchError()}
               </p>
             ) : null}
 
             {() => matchOk() ? (
-              <p style="margin-top:.5rem;color:#065f46;font-size:.85rem;font-weight:500">
+              <p class="demo-banner demo-banner--success" style="margin-top:.5rem;padding:.5rem">
                 🟢 Passwords match
               </p>
             ) : null}
 
             <button
-              style={`margin-top:1rem;padding:8px 18px;border-radius:4px;color:#fff;cursor:${matchOk() ? 'pointer' : 'default'};background:${matchOk() ? '#ef4444' : '#d1d5db'};font-weight:600`}
+              type="button"
+              class={() => `btn-demo btn-demo--danger${!matchOk() ? ' btn-demo--disabled' : ''}`}
+              style="margin-top:1rem"
               onclick={handleSubmit}
               disabled={() => !matchOk()}
             >
@@ -162,14 +164,14 @@ export component CrossValidationPage() {
             </button>
 
             {() => submitStatus() === 'success' ? (
-              <div style="margin-top:.75rem;padding:.75rem;background:#d1fae5;border-radius:6px;border:1px solid #6ee7b7">
-                <strong style="color:#065f46">✓ Password changed successfully.</strong>
+              <div class="demo-banner demo-banner--success">
+                <strong>✓ Password changed successfully.</strong>
               </div>
             ) : null}
 
             {() => submitStatus() === 'error' && submitError() ? (
-              <div style="margin-top:.75rem;padding:.75rem;background:#fee2e2;border-radius:6px;border:1px solid #fca5a5">
-                <strong style="color:#991b1b">✗ {() => submitError()}</strong>
+              <div class="demo-banner demo-banner--error">
+                <strong>✗ {() => submitError()}</strong>
               </div>
             ) : null}
 

@@ -13,6 +13,7 @@
  */
 
 import { ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import type { IExtendedInput } from '@pulsar-framework/formular.dev';
 import { useField } from '../../hooks/use-field';
 import type { IFieldError } from '../../types';
 import { useFormContext } from '../form-context';
@@ -20,6 +21,11 @@ import { useFormContext } from '../form-context';
 export interface IFieldValidationProps {
   /** Field name to display validation for */
   fieldName: string;
+  /**
+   * Pre-resolved field instance. When provided, skips the context getField
+   * lookup (avoids timing issues in lazily-mounted reactive slots).
+   */
+  field?: IExtendedInput;
   /** Whether to show error messages (default: true) */
   showErrors?: boolean;
   /** Whether to show guide/hint messages (default: true) */
@@ -36,13 +42,21 @@ export interface IFieldValidationProps {
  */
 export const FieldValidation = ({
   fieldName,
+  field: fieldProp,
   showErrors = true,
   showGuides = true,
   errorsClassName = 'validation-errors mt-1',
   guidesClassName = 'validation-guides mt-1',
 }: IFieldValidationProps): HTMLElement => {
   const formContext = useFormContext();
-  const field = formContext.getField(fieldName);
+  // Prefer the pre-resolved field prop (passed by TextField) over a fresh
+  // context lookup. The context lookup can return undefined for lazily-mounted
+  // slots (e.g. dynamic field arrays) due to reactive scheduling timing.
+  const field = fieldProp ?? formContext.getField(fieldName);
+
+  if (!field) {
+    return <div className="field-validation-container" /> as HTMLElement;
+  }
 
   // ✅ Use unified hook - gets ALL field state in one place
   const { hasErrors, errors, guides, isFocused } = useField(field);

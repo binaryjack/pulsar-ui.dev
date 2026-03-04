@@ -149,16 +149,16 @@ export component WizardPage() {
           <div class="demo-card">
 
             {/* Step indicator */}
-            <div style="display:flex;gap:.5rem;margin-bottom:1.25rem">
+            <div style="display:flex;gap:.5rem;margin-bottom:1.25rem;align-items:center">
               {[1, 2, 3].map((n) => (
                 <div
                   key={String(n)}
-                  style={() => `display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;font-size:.8rem;font-weight:700;${step() === n ? 'background:#8b5cf6;color:#fff' : step() > n ? 'background:#d1fae5;color:#065f46' : 'background:#f3f4f6;color:#9ca3af'}`}
+                  class={() => `demo-step${step() === n ? ' demo-step--active' : step() > n ? ' demo-step--done' : ''}`}
                 >
                   {() => step() > n ? '✓' : String(n)}
                 </div>
               ))}
-              <span style="margin-left:.5rem;font-size:.9rem;font-weight:600;align-self:center">
+              <span style="margin-left:.5rem;font-size:.9rem;font-weight:600;color:var(--color-text)">
                 {() => STEP_LABELS[step()]}
               </span>
             </div>
@@ -194,9 +194,9 @@ export component WizardPage() {
               <div>
                 <p class="demo-desc">Review your details and accept the terms.</p>
 
-                <div style="padding:.75rem;background:#f8fafc;border-radius:6px;margin-bottom:.75rem">
-                  <strong style="font-size:.8rem;color:#64748b">Data preview</strong>
-                  <pre style="font-size:.75rem;margin-top:.25rem;overflow:auto">{JSON.stringify(getDataSnapshot(), null, 2)}</pre>
+                <div class="demo-data-preview">
+                  <span class="demo-data-preview__label">Data preview</span>
+                  <pre style="font-size:.75rem;overflow:auto">{JSON.stringify(getDataSnapshot(), null, 2)}</pre>
                 </div>
 
                 <CheckboxField name="terms" />
@@ -205,13 +205,13 @@ export component WizardPage() {
 
             {/* Step error */}
             {() => stepError() ? (
-              <p style="margin-top:.5rem;color:#991b1b;font-size:.85rem">{() => stepError()}</p>
+              <p class="demo-banner demo-banner--error" style="padding:.5rem">{() => stepError()}</p>
             ) : null}
 
             {/* Submit success */}
             {() => submitStatus() === 'success' && result() ? (
-              <div style="margin-top:.75rem;padding:.75rem;background:#d1fae5;border-radius:6px;border:1px solid #6ee7b7">
-                <strong style="color:#065f46">✓ Form submitted</strong>
+              <div class="demo-banner demo-banner--success">
+                <strong>✓ Form submitted</strong>
                 <pre style="font-size:.75rem;margin-top:.25rem;overflow:auto">{JSON.stringify(result(), null, 2)}</pre>
               </div>
             ) : null}
@@ -220,7 +220,8 @@ export component WizardPage() {
             {() => submitStatus() !== 'success' ? (
               <div style="display:flex;justify-content:space-between;margin-top:1rem">
                 <button
-                  style={() => `padding:6px 16px;border-radius:4px;cursor:${step() > 1 ? 'pointer' : 'default'};background:${step() > 1 ? '#6b7280' : '#e5e7eb'};color:#fff`}
+                  type="button"
+                  class="btn-demo btn-demo--neutral"
                   onclick={goBack}
                   disabled={() => step() === 1}
                 >
@@ -228,17 +229,15 @@ export component WizardPage() {
                 </button>
 
                 {() => step() < TOTAL_STEPS ? (
-                  <button
-                    style="padding:6px 16px;background:#8b5cf6;color:#fff;border-radius:4px;cursor:pointer"
-                    onclick={goNext}
-                  >
+                  <button type="button" class="btn-demo btn-demo--purple" onclick={goNext}>
                     Next →
                   </button>
                 ) : (
                   <button
-                    style={`padding:6px 16px;background:${submitStatus() === 'submitting' ? '#a78bfa' : '#7c3aed'};color:#fff;border-radius:4px;cursor:pointer`}
+                    type="button"
+                    class="btn-demo btn-demo--purple"
                     onclick={handleSubmit}
-                    disabled={submitStatus() === 'submitting'}
+                    disabled={() => submitStatus() === 'submitting'}
                   >
                     {() => submitStatus() === 'submitting' ? '⏳ Submitting…' : '✓ Submit'}
                   </button>

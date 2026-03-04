@@ -43,7 +43,7 @@ export const RadioGroupField = (props: IFieldSetProps): HTMLElement => {
   }
 
   return (
-    <div id={`${name}-field-set`} className="space-y-2">
+    <div id={`${name}-field-set`} className="form-field-set">
       <fieldset>
         <legend className="block text-sm font-medium mb-2">{field.label}</legend>
         <div className="space-y-2">
@@ -59,7 +59,7 @@ export const RadioGroupField = (props: IFieldSetProps): HTMLElement => {
       <ValidationResults name={name} />
 
       {options.debug && (
-        <div className="mt-2 p-2 bg-gray-100 rounded text-xs">
+        <div className="field-debug">
           <strong>Debug:</strong> name={name}, value={JSON.stringify(field.value)}
         </div>
       )}

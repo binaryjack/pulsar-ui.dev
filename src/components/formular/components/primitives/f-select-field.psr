@@ -9,6 +9,7 @@
  */
 
 import type { ISelectFieldProps } from '../../types';
+import type { IOptionItem } from '@pulsar-framework/formular.dev';
 import { devLog } from '../../utils/dev-logger';
 import { useFormContext } from '../form-context';
 
@@ -35,16 +36,23 @@ export const FSelectField = ({
     return <div className="h-10 w-full bg-gray-200 animate-pulse rounded" data-loading={name} />;
   }
 
+  // <select> has a read-only `type` getter — strip it from register() spread.
+  const { type: _type, ...registerAttrs } = field.register();
+
+  // field.ref is a prototype method — must invoke via dot-notation or .call()
+  // to preserve `this`. Passing it bare loses the receiver.
+  const boundRef = (el: HTMLSelectElement | null) => { field.ref(el); };
+
   // Single output: select element
   return (
     <select
-      {...field.register()}
-      ref={field.ref}
+      {...registerAttrs}
+      ref={boundRef}
       className={`px-3 py-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none w-full ${className}`}
     >
       {placeholder && <option value="">{placeholder}</option>}
-      {field.options?.map((option: any) => (
-        <option key={option.id} value={option.value}>
+      {field.options?.map((option: IOptionItem) => (
+        <option key={String(option.id ?? option.value)} value={String(option.value)}>
           {option.label}
         </option>
       ))}

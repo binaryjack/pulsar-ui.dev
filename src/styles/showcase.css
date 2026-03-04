@@ -3,7 +3,6 @@
  * Uses design-system.css tokens — no hardcoded colors.
  * Dynamic accents via CSS custom properties (--section-accent, --nav-accent).
  */
-
 /* ── App Shell ───────────────────────────────────────────── */
 .app-shell {
   min-height: 100vh;
@@ -88,8 +87,8 @@
   cursor: pointer;
   font-size: 16px;
   transition: border-color var(--transition-fast),
-              color var(--transition-fast),
-              background var(--transition-fast);
+    color var(--transition-fast),
+    background var(--transition-fast);
 }
 
 .theme-toggle:hover {
@@ -313,8 +312,15 @@
   cursor: not-allowed;
 }
 
-.demo-btn--sm { padding: 6px 12px; font-size: var(--font-size-xs); }
-.demo-btn--lg { padding: 14px 28px; font-size: var(--font-size-base); }
+.demo-btn--sm {
+  padding: 6px 12px;
+  font-size: var(--font-size-xs);
+}
+
+.demo-btn--lg {
+  padding: 14px 28px;
+  font-size: var(--font-size-base);
+}
 
 /* ── Code Block ──────────────────────────────────────────── */
 .code-block {
@@ -409,4 +415,239 @@
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
   font-style: italic;
+}
+
+/* ── Forms Demo Utilities ─────────────────────────────────── */
+.demo-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary-500);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+}
+
+.demo-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xs);
+}
+
+.demo-desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-md);
+  line-height: var(--line-height-relaxed);
+}
+
+.status-loading {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-md) 0;
+}
+
+/* Demo banners */
+.demo-banner {
+  padding: .75rem;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  border: 1px solid;
+  margin-top: .75rem;
+  line-height: var(--line-height-normal);
+}
+
+.demo-banner--success {
+  background: var(--color-success-100);
+  border-color: var(--color-success-300);
+  color: var(--color-success-800);
+}
+
+[data-theme="dark"] .demo-banner--success {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: var(--color-success-700);
+  color: var(--color-success-300);
+}
+
+.demo-banner--error {
+  background: var(--color-error-100);
+  border-color: var(--color-error-300);
+  color: var(--color-error-800);
+}
+
+[data-theme="dark"] .demo-banner--error {
+  background: rgba(239, 68, 68, 0.14);
+  border-color: var(--color-error-700);
+  color: var(--color-error-300);
+}
+
+.demo-banner--warn {
+  background: var(--color-warning-100);
+  border-color: var(--color-warning-300);
+  color: var(--color-warning-800);
+}
+
+[data-theme="dark"] .demo-banner--warn {
+  background: rgba(245, 158, 11, 0.14);
+  border-color: var(--color-warning-700);
+  color: var(--color-warning-300);
+}
+
+.demo-banner--info {
+  background: var(--color-primary-50);
+  border-color: var(--color-primary-200);
+  color: var(--color-primary-800);
+}
+
+[data-theme="dark"] .demo-banner--info {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: var(--color-primary-700);
+  color: var(--color-primary-300);
+}
+
+/* Step indicators */
+.demo-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  border: 2px solid var(--color-border);
+  background: var(--color-surface-hover);
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.demo-step--active {
+  background: var(--color-secondary-500);
+  border-color: var(--color-secondary-500);
+  color: #ffffff;
+}
+
+.demo-step--done {
+  background: var(--color-success-500);
+  border-color: var(--color-success-500);
+  color: #ffffff;
+}
+
+/* Data preview box */
+.demo-data-preview {
+  padding: .75rem;
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: .75rem;
+}
+
+.demo-data-preview__label {
+  display: block;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  margin-bottom: .25rem;
+}
+
+/* Revealed/conditional section */
+.demo-revealed {
+  padding: .75rem;
+  background: var(--color-success-50);
+  border: 1px solid var(--color-success-200);
+  border-radius: var(--radius-md);
+}
+
+[data-theme="dark"] .demo-revealed {
+  background: rgba(34, 197, 94, 0.08);
+  border-color: var(--color-success-800);
+}
+
+.demo-revealed__note {
+  font-size: var(--font-size-xs);
+  color: var(--color-success-700);
+  margin-bottom: .5rem;
+}
+
+[data-theme="dark"] .demo-revealed__note {
+  color: var(--color-success-400);
+}
+
+/* Demo form buttons */
+.btn-demo {
+  padding: 6px 16px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: opacity var(--transition-fast), filter var(--transition-fast);
+}
+
+.btn-demo:disabled,
+.btn-demo[disabled] {
+  opacity: 0.45;
+  cursor: default;
+  pointer-events: none;
+}
+
+.btn-demo:not(:disabled):hover {
+  filter: brightness(1.12);
+}
+
+.btn-demo--primary {
+  background: var(--color-primary-500);
+}
+
+.btn-demo--purple {
+  background: var(--color-secondary-600);
+}
+
+.btn-demo--success {
+  background: var(--color-success-600);
+}
+
+.btn-demo--danger {
+  background: var(--color-error-500);
+}
+
+.btn-demo--neutral {
+  background: var(--color-neutral-500);
+}
+
+.btn-demo--sm {
+  padding: 4px 12px;
+  font-size: var(--font-size-xs);
+}
+
+/* Form field sets: ensure theme-aware label and control colors */
+.form-field-set {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.form-field-set>label,
+.form-field-set>label span {
+  color: var(--color-text);
+}
+
+.form-field-set input,
+.form-field-set select,
+.form-field-set textarea {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.form-field-set .field-debug {
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  padding: .25rem .5rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  margin-top: .25rem;
 }

@@ -10,7 +10,7 @@
  *   <Show when={showState}> wraps the dependent field.
  */
 
-import { createSignal, createEffect, onCleanup, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { createSignal, createEffect, onCleanup } from '@pulsar-framework/pulsar.dev';
 import { createForm, f } from '@pulsar-framework/formular.dev';
 import type { IExtendedInput, IFormular, IOptionItem } from '@pulsar-framework/formular.dev';
 import { PageHeader } from '../../common/components/page-header.psr';
@@ -103,14 +103,14 @@ export component DependentFieldsPage() {
             <div style="display:flex;flex-direction:column;gap:1rem">
               <SelectField name="country" />
 
-              <Show when={showState()}>
-                <div style="padding:.75rem;background:var(--color-surface-hover,#f0fdf4);border-radius:6px;border:1px solid #bbf7d0">
-                  <p style="font-size:.8rem;color:#065f46;margin-bottom:.5rem">
+              {showState() ? (
+                <div class="demo-revealed">
+                  <p class="demo-revealed__note">
                     🗺️ US state revealed by <code>form.observe('country', cb)</code>
                   </p>
                   <SelectField name="state" />
                 </div>
-              </Show>
+              ) : null}
             </div>
           </div>
         </FormProvider>

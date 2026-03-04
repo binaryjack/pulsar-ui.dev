@@ -98,7 +98,8 @@ export component EditFormPage() {
           >
             <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem">
               <span
-                style={() => `padding:2px 8px;border-radius:4px;font-size:.8rem;font-weight:600;${isDirty() ? 'background:#fef3c7;color:#92400e' : 'background:#d1fae5;color:#065f46'}`}
+                class={() => `demo-banner ${isDirty() ? 'demo-banner--warn' : 'demo-banner--success'}`}
+                style="padding:2px 8px;margin-top:0;display:inline-block;font-size:.8rem;font-weight:600"
               >
                 {() => isDirty() ? '✎ modified' : '✔ unmodified'}
               </span>
@@ -127,14 +128,12 @@ export component EditFormPage() {
             </FormProvider>
 
             <div style="display:flex;gap:.5rem;margin-top:1rem">
-              <button
-                style="padding:6px 16px;background:#3b82f6;color:#fff;border-radius:4px;cursor:pointer"
-                onclick={handleSave}
-              >
+              <button type="button" class="btn-demo btn-demo--primary" onclick={handleSave}>
                 💾 Save
               </button>
               <button
-                style={() => `padding:6px 16px;background:${isDirty() ? '#ef4444' : '#9ca3af'};color:#fff;border-radius:4px;cursor:${isDirty() ? 'pointer' : 'default'}`}
+                type="button"
+                class="btn-demo btn-demo--danger"
                 onclick={handleReset}
                 disabled={() => !isDirty()}
               >
@@ -143,15 +142,15 @@ export component EditFormPage() {
             </div>
 
             {saveStatus() === 'saved' && savedData() && (
-              <div style="margin-top:.75rem;padding:.75rem;background:#d1fae5;border-radius:6px;border:1px solid #6ee7b7">
-                <strong style="color:#065f46;font-size:.85rem">✓ Saved snapshot</strong>
-                <pre style="margin-top:.25rem;font-size:.75rem;color:#064e3b;overflow:auto">{JSON.stringify(savedData(), null, 2)}</pre>
+              <div class="demo-banner demo-banner--success">
+                <strong>✓ Saved snapshot</strong>
+                <pre style="margin-top:.25rem;font-size:.75rem;overflow:auto">{JSON.stringify(savedData(), null, 2)}</pre>
               </div>
             )}
 
             {saveStatus() === 'error' && (
-              <div style="margin-top:.75rem;padding:.75rem;background:#fee2e2;border-radius:6px;border:1px solid #fca5a5">
-                <strong style="color:#991b1b;font-size:.85rem">✗ Validation failed — fix errors above.</strong>
+              <div class="demo-banner demo-banner--error">
+                <strong>✗ Validation failed — fix errors above.</strong>
               </div>
             )}
           </div>

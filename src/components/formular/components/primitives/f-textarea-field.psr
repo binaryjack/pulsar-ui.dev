@@ -34,11 +34,18 @@ export const FTextareaField = ({
     return <div className="h-24 w-full bg-gray-200 animate-pulse rounded" data-loading={name} />;
   }
 
+  // <textarea> has a read-only `type` getter — strip it from register() spread.
+  const { type: _type, ...registerAttrs } = field.register();
+
+  // field.ref is a prototype method — must invoke via dot-notation or .call()
+  // to preserve `this`. Passing it bare loses the receiver.
+  const boundRef = (el: HTMLTextAreaElement | null) => { field.ref(el); };
+
   // Single output: textarea element
   return (
     <textarea
-      {...field.register()}
-      ref={field.ref}
+      {...registerAttrs}
+      ref={boundRef}
       className={`px-3 py-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none w-full ${className}`}
       rows={4}
     />

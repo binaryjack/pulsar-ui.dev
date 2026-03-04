@@ -32,7 +32,7 @@ export const InputField = (props: IFieldSetProps): HTMLElement => {
   }
 
   return (
-    <div id={`${name}-field-set`} className="space-y-2">
+    <div id={`${name}-field-set`} className="form-field-set">
       <label htmlFor={`${name}-input`} className="block text-sm font-medium">
         {field.label}
       </label>
@@ -42,7 +42,7 @@ export const InputField = (props: IFieldSetProps): HTMLElement => {
       <ValidationResults name={name} />
 
       {options.debug && (
-        <div className="mt-2 p-2 bg-gray-100 rounded text-xs">
+        <div className="field-debug">
           <strong>Debug:</strong> name={name}, value={JSON.stringify(field.value)}
         </div>
       )}
