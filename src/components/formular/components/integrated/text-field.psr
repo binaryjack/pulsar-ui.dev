@@ -42,7 +42,7 @@ export const TextField = ({
     <div className={`form-field ${className}`} data-field={name}>
       <FieldLabel showLabel={showLabel} label={displayLabel} htmlFor={`${input?.id}`} />
       <FInputField name={name} className="" />
-      <FieldValidation fieldName={name} field={field} showErrors={showErrors} showGuides={showGuides} />
+      <FieldValidation fieldName={name} showErrors={showErrors} showGuides={showGuides} />
       <HelperText helperText={helperText} />
     </div>
   ) as HTMLElement;
