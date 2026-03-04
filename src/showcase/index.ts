@@ -14,6 +14,12 @@ export { ErrorBoundaryMegaPage } from './error-boundary/error-boundary-mega.psr'
 export { ErrorBoundarySimplePage } from './error-boundary/error-boundary-simple.psr';
 export { ErrorBoundaryTestPage } from './error-boundary/error-boundary-test.psr';
 export { FormsTestPage } from './forms/forms-test.psr';
+export { CrossValidationPage } from './forms/pages/cross-validation-page.psr';
+export { DependentFieldsPage } from './forms/pages/dependent-fields-page.psr';
+export { DynamicFieldsPage } from './forms/pages/dynamic-fields-page.psr';
+export { EditFormPage } from './forms/pages/edit-form-page.psr';
+export { SelectControlsPage } from './forms/pages/select-controls-page.psr';
+export { WizardPage } from './forms/pages/wizard-page.psr';
 export { HomePage } from './home/home.psr';
 export { HttpTestPage } from './http/http-test.psr';
 export { JsxTestPage } from './jsx/jsx-test.psr';

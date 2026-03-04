@@ -1,0 +1,181 @@
+/**
+ * Forms Demo — Cross-field Validation
+ * Demonstrates: password + confirmPassword must match.
+ *
+ * Two approaches shown side-by-side:
+ *
+ * 1. LIVE cross-check via form.observe('confirmPassword', cb)
+ *    Compares confirmPassword to password on every keystroke (after debounce).
+ *    Produces a reactive error message without touching the formular validation engine.
+ *
+ * 2. SUBMIT-TIME cross-check in onSubmit handler
+ *    Schema-level refine() does NOT bridge to live field validation (known limitation
+ *    of simple-api.ts schemaToDescriptors which ignores _refinements). The check
+ *    is therefore enforced in onSubmit using schema.safeParse.
+ *
+ * This page intentionally exposes the gap so the pattern is clearly documented.
+ */
+
+import { createSignal, createEffect, onCleanup } from '@pulsar-framework/pulsar.dev';
+import { createForm, f } from '@pulsar-framework/formular.dev';
+import type { IExtendedInput, IFormular } from '@pulsar-framework/formular.dev';
+import { PageHeader } from '../../common/components/page-header.psr';
+import { FormProvider, TextField } from '@/components/formular';
+
+type CrossValidationData = {
+  password:        string;
+  confirmPassword: string;
+};
+
+type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
+
+const crossSchema = f.object({
+  password:        f.string().min(8).nonempty().debounce(200),
+  confirmPassword: f.string().min(8).nonempty().debounce(200),
+});
+
+export component CrossValidationPage() {
+  const [form, setForm] = createSignal<IFormular<CrossValidationData> | null>(null);
+
+  /** Live match signal — driven by form.observe('confirmPassword') */
+  const [matchError, setMatchError]     = createSignal<string | null>(null);
+  const [matchOk, setMatchOk]           = createSignal(false);
+  const [submitStatus, setSubmitStatus] = createSignal<SubmitStatus>('idle');
+  const [submitError, setSubmitError]   = createSignal<string | null>(null);
+
+  createForm<CrossValidationData>({
+    schema: crossSchema,
+    defaultValues: { password: '', confirmPassword: '' },
+    onSubmit: async (data: CrossValidationData) => {
+      // submit-time cross-field enforcement
+      if (data.password !== data.confirmPassword) {
+        throw new Error('Passwords do not match.');
+      }
+      setSubmitStatus('submitting');
+      await new Promise<void>((resolve) => setTimeout(resolve, 500));
+      return data;
+    },
+    onSuccess: () => {
+      setSubmitStatus('success');
+      setSubmitError(null);
+    },
+    onError: (err: Error) => {
+      setSubmitStatus('error');
+      setSubmitError(err.message);
+    },
+  }).then(setForm);
+
+  onCleanup(() => form()?.clear());
+
+  /**
+   * Live cross-field observer.
+   * Watches BOTH fields; compares values on every update.
+   * This fires after debounce(200) settles on either field.
+   */
+  createEffect(() => {
+    const f = form();
+    if (!f) return;
+
+    const check = () => {
+      const pwdField:  IExtendedInput | undefined = f.getField('password');
+      const confField: IExtendedInput | undefined = f.getField('confirmPassword');
+      const pwd  = String(pwdField?.value  ?? '');
+      const conf = String(confField?.value ?? '');
+
+      if (!conf) {
+        setMatchError(null);
+        setMatchOk(false);
+        return;
+      }
+      if (pwd === conf) {
+        setMatchError(null);
+        setMatchOk(true);
+      } else {
+        setMatchError('Passwords do not match.');
+        setMatchOk(false);
+      }
+    };
+
+    const unsubPwd:  () => void = f.observe('password', check);
+    const unsubConf: () => void = f.observe('confirmPassword', check);
+
+    onCleanup(() => {
+      unsubPwd();
+      unsubConf();
+    });
+  });
+
+  const handleSubmit = async () => {
+    const f = form();
+    if (!f) return;
+    setSubmitStatus('idle');
+    setSubmitError(null);
+    await f.submit();
+  };
+
+  return (
+    <div>
+      <PageHeader
+        title="Cross-field Validation"
+        emoji="🔐"
+        color="#ef4444"
+        description="Password + confirm must match. Live check via form.observe(); submit-time enforcement in onSubmit."
+      />
+
+      {!form() ? (
+        <p class="status-loading">⏳ Initialising form…</p>
+      ) : (
+        <FormProvider form={form()!} onSaveCallback={() => {}} onQuitCallback={() => {}}>
+          <div class="demo-card">
+
+            <div style="padding:.75rem;background:#fef3c7;border-radius:6px;border:1px solid #fcd34d;margin-bottom:1rem;font-size:.8rem;color:#92400e">
+              <strong>⚠️ Architecture note:</strong>{' '}
+              <code>f.object().refine()</code> is not bridged by <code>schemaToDescriptors</code>
+              to live field validation. Cross-field rules must be enforced via{' '}
+              <code>form.observe()</code> (live) and <code>onSubmit</code> (submit-time).
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:.75rem">
+              <TextField name="password"        label="Password (min 8)" showErrors showGuides />
+              <TextField name="confirmPassword" label="Confirm Password"  showErrors showGuides />
+            </div>
+
+            {/* Live match feedback */}
+            {() => matchError() ? (
+              <p style="margin-top:.5rem;color:#991b1b;font-size:.85rem;font-weight:500">
+                🔴 {() => matchError()}
+              </p>
+            ) : null}
+
+            {() => matchOk() ? (
+              <p style="margin-top:.5rem;color:#065f46;font-size:.85rem;font-weight:500">
+                🟢 Passwords match
+              </p>
+            ) : null}
+
+            <button
+              style={`margin-top:1rem;padding:8px 18px;border-radius:4px;color:#fff;cursor:${matchOk() ? 'pointer' : 'default'};background:${matchOk() ? '#ef4444' : '#d1d5db'};font-weight:600`}
+              onclick={handleSubmit}
+              disabled={() => !matchOk()}
+            >
+              {() => submitStatus() === 'submitting' ? '⏳ Changing password…' : '🔐 Change Password'}
+            </button>
+
+            {() => submitStatus() === 'success' ? (
+              <div style="margin-top:.75rem;padding:.75rem;background:#d1fae5;border-radius:6px;border:1px solid #6ee7b7">
+                <strong style="color:#065f46">✓ Password changed successfully.</strong>
+              </div>
+            ) : null}
+
+            {() => submitStatus() === 'error' && submitError() ? (
+              <div style="margin-top:.75rem;padding:.75rem;background:#fee2e2;border-radius:6px;border:1px solid #fca5a5">
+                <strong style="color:#991b1b">✗ {() => submitError()}</strong>
+              </div>
+            ) : null}
+
+          </div>
+        </FormProvider>
+      )}
+    </div>
+  );
+}

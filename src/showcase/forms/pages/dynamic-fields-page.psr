@@ -1,0 +1,216 @@
+/**
+ * Forms Demo — Dynamic Field Array
+ * Demonstrates: pre-created field slots with show/hide via count signal.
+ *
+ * Approach: formular does not natively support runtime field creation, so we
+ * pre-create N slots (MAX_EMAILS = 5) and reveal them one at a time.
+ * This models the most common real-world pattern: bounded dynamic lists.
+ *
+ * A `count` signal drives which slots are visible.
+ * "Add email" increments count (up to MAX_EMAILS).
+ * "Remove last" decrements count and clears the vacated slot.
+ *
+ * On submit: only the first `count` slots are included via getData() slice.
+ */
+
+import { createSignal, onCleanup } from '@pulsar-framework/pulsar.dev';
+import { createForm, f } from '@pulsar-framework/formular.dev';
+import type { IExtendedInput, IFormular } from '@pulsar-framework/formular.dev';
+import { PageHeader } from '../../common/components/page-header.psr';
+import { FormProvider, TextField } from '@/components/formular';
+
+type DynamicEmailsData = {
+  email0: string;
+  email1: string;
+  email2: string;
+  email3: string;
+  email4: string;
+};
+
+const MAX_EMAILS = 5;
+
+const FIELD_KEYS: ReadonlyArray<keyof DynamicEmailsData> = [
+  'email0',
+  'email1',
+  'email2',
+  'email3',
+  'email4',
+];
+
+type SubmitStatus = 'idle' | 'success' | 'error';
+
+export component DynamicFieldsPage() {
+  const [form, setForm] = createSignal<IFormular<DynamicEmailsData> | null>(null);
+  const [count, setCount]               = createSignal<number>(1);
+  const [submitStatus, setSubmitStatus] = createSignal<SubmitStatus>('idle');
+  const [submitted, setSubmitted]       = createSignal<string[]>([]);
+
+  createForm<DynamicEmailsData>({
+    schema: f.object({
+      email0: f.string().email().nonempty().debounce(200),
+      email1: f.string().email().optional().debounce(200),
+      email2: f.string().email().optional().debounce(200),
+      email3: f.string().email().optional().debounce(200),
+      email4: f.string().email().optional().debounce(200),
+    }),
+    defaultValues: { email0: '', email1: '', email2: '', email3: '', email4: '' },
+  }).then(setForm);
+
+  onCleanup(() => form()?.clear());
+
+  const addEmail = () => {
+    setCount((c) => Math.min(c + 1, MAX_EMAILS));
+    setSubmitStatus('idle');
+  };
+
+  const removeLast = () => {
+    const c = count();
+    if (c <= 1) return;
+    const f = form();
+    if (f) {
+      // Clear the slot being hidden.
+      const key: keyof DynamicEmailsData = FIELD_KEYS[c - 1];
+      const field: IExtendedInput | undefined = f.getField(String(key));
+      field?.setValue('');
+    }
+    setCount((c) => Math.max(c - 1, 1));
+    setSubmitStatus('idle');
+  };
+
+  const handleSubmit = async () => {
+    const f = form();
+    if (!f) return;
+
+    // Validate only visible slots.
+    await f.validateForm();
+    const visibleKeys = FIELD_KEYS.slice(0, count());
+    const allValid = visibleKeys.every((key: keyof DynamicEmailsData) => {
+      const field: IExtendedInput | undefined = f.getField(String(key));
+      return field?.isValid ?? true;
+    });
+
+    if (!allValid) {
+      setSubmitStatus('error');
+      return;
+    }
+
+    const data = f.getData() as Record<keyof DynamicEmailsData, unknown>;
+    const emails = visibleKeys.map((key) => String(data[key] ?? '')).filter(Boolean);
+    setSubmitted(emails);
+    setSubmitStatus('success');
+  };
+
+  return (
+    <div>
+      <PageHeader
+        title="Dynamic Field Array"
+        emoji="➕"
+        color="#f59e0b"
+        description="Pre-created slots (5 max) revealed one-by-one. Demonstrates bounded dynamic lists with formular."
+      />
+
+      {!form() ? (
+        <p class="status-loading">⏳ Initialising form…</p>
+      ) : (
+        <FormProvider form={form()!} onSaveCallback={() => {}} onQuitCallback={() => {}}>
+          <div class="demo-card">
+            <p class="demo-desc">
+              Formular manages a fixed set of <code>email0…email4</code> fields. Only
+              the first <strong>{() => String(count())}</strong> slot(s) are active and validated.
+            </p>
+
+            <div style="display:flex;flex-direction:column;gap:.75rem">
+              {/* Slot 0 — always visible */}
+              <div style="display:flex;align-items:flex-start;gap:.5rem">
+                <div style="flex:1">
+                  <TextField name="email0" label="Email 1" showErrors showGuides />
+                </div>
+              </div>
+
+              {/* Slot 1 */}
+              {() => count() > 1 ? (
+                <div style="display:flex;align-items:flex-start;gap:.5rem">
+                  <div style="flex:1">
+                    <TextField name="email1" label="Email 2" showErrors showGuides />
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Slot 2 */}
+              {() => count() > 2 ? (
+                <div style="display:flex;align-items:flex-start;gap:.5rem">
+                  <div style="flex:1">
+                    <TextField name="email2" label="Email 3" showErrors showGuides />
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Slot 3 */}
+              {() => count() > 3 ? (
+                <div style="display:flex;align-items:flex-start;gap:.5rem">
+                  <div style="flex:1">
+                    <TextField name="email3" label="Email 4" showErrors showGuides />
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Slot 4 */}
+              {() => count() > 4 ? (
+                <div style="display:flex;align-items:flex-start;gap:.5rem">
+                  <div style="flex:1">
+                    <TextField name="email4" label="Email 5" showErrors showGuides />
+                  </div>
+                </div>
+              ) : null}
+            </div>
+
+            {/* Controls */}
+            <div style="display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap">
+              <button
+                style={() => `padding:6px 14px;border-radius:4px;cursor:${count() < MAX_EMAILS ? 'pointer' : 'default'};background:${count() < MAX_EMAILS ? '#10b981' : '#d1d5db'};color:#fff;font-size:.85rem`}
+                onclick={addEmail}
+                disabled={() => count() >= MAX_EMAILS}
+              >
+                + Add email
+              </button>
+
+              <button
+                style={() => `padding:6px 14px;border-radius:4px;cursor:${count() > 1 ? 'pointer' : 'default'};background:${count() > 1 ? '#ef4444' : '#d1d5db'};color:#fff;font-size:.85rem`}
+                onclick={removeLast}
+                disabled={() => count() <= 1}
+              >
+                − Remove last
+              </button>
+
+              <button
+                style="padding:6px 16px;background:#3b82f6;color:#fff;border-radius:4px;cursor:pointer;font-size:.85rem"
+                onclick={handleSubmit}
+              >
+                Submit {() => String(count())} email{() => count() > 1 ? 's' : ''}
+              </button>
+            </div>
+
+            {/* Results */}
+            {() => submitStatus() === 'success' ? (
+              <div style="margin-top:.75rem;padding:.75rem;background:#d1fae5;border-radius:6px;border:1px solid #6ee7b7">
+                <strong style="color:#065f46;font-size:.85rem">✓ Submitted</strong>
+                <ul style="margin-top:.25rem;font-size:.8rem;padding-left:1.25rem">
+                  {submitted().map((email, i) => (
+                    <li key={String(i)}>{email}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
+            {() => submitStatus() === 'error' ? (
+              <div style="margin-top:.75rem;padding:.75rem;background:#fee2e2;border-radius:6px;border:1px solid #fca5a5">
+                <strong style="color:#991b1b;font-size:.85rem">✗ Fix validation errors above.</strong>
+              </div>
+            ) : null}
+
+          </div>
+        </FormProvider>
+      )}
+    </div>
+  );
+}

@@ -1,0 +1,112 @@
+/**
+ * Forms Demo — Select / Checkbox / Toggle / Radio
+ * Demonstrates: CheckboxField · ToggleField · SelectField · RadioGroupField
+ * All option-based controls wired through the same FormProvider.
+ *
+ * Note on options: schemaToDescriptors always initialises options:[].
+ * We populate field.options before mounting (before setForm) so that the
+ * first render already has the correct option list available.
+ */
+
+import { createSignal, onCleanup } from '@pulsar-framework/pulsar.dev';
+import { createForm, f } from '@pulsar-framework/formular.dev';
+import type { IExtendedInput, IFormular, IOptionItem } from '@pulsar-framework/formular.dev';
+import { PageHeader } from '../../common/components/page-header.psr';
+import {
+  FormProvider,
+  CheckboxField,
+  ToggleField,
+  SelectField,
+  RadioGroupField,
+} from '@/components/formular';
+
+type SelectControlsData = {
+  newsletter: boolean;
+  notifications: boolean;
+  country: string;
+  plan: string;
+};
+
+const COUNTRY_OPTIONS: IOptionItem[] = [
+  { value: '',   label: '— Select a country —' },
+  { value: 'us', label: 'United States' },
+  { value: 'uk', label: 'United Kingdom' },
+  { value: 'fr', label: 'France' },
+  { value: 'de', label: 'Germany' },
+  { value: 'jp', label: 'Japan' },
+];
+
+const PLAN_OPTIONS: IOptionItem[] = [
+  { value: 'free',       label: '🆓 Free' },
+  { value: 'pro',        label: '⚡ Pro — $9/mo' },
+  { value: 'enterprise', label: '🏢 Enterprise — $49/mo' },
+];
+
+export component SelectControlsPage() {
+  const [form, setForm] = createSignal<IFormular<SelectControlsData> | null>(null);
+
+  createForm<SelectControlsData>({
+    schema: f.object({
+      newsletter:    f.boolean(),
+      notifications: f.boolean(),
+      country:       f.string().nonempty().debounce(200),
+      plan:          f.string().nonempty().debounce(200),
+    }),
+    defaultValues: { newsletter: false, notifications: true, country: '', plan: '' },
+  }).then((resolved: IFormular<SelectControlsData>) => {
+    // Populate options before mounting so first render has them.
+    const countryField: IExtendedInput | undefined = resolved.getField('country');
+    if (countryField) countryField.options = COUNTRY_OPTIONS;
+
+    const planField: IExtendedInput | undefined = resolved.getField('plan');
+    if (planField) planField.options = PLAN_OPTIONS;
+
+    setForm(resolved);
+  });
+
+  onCleanup(() => form()?.clear());
+
+  return (
+    <div>
+      <PageHeader
+        title="Select / Checkbox / Toggle / Radio"
+        emoji="☑️"
+        color="#6366f1"
+        description="CheckboxField · ToggleField · SelectField · RadioGroupField — all wired through one FormProvider."
+      />
+
+      {!form() ? (
+        <p class="status-loading">⏳ Initialising form…</p>
+      ) : (
+        <FormProvider form={form()!} onSaveCallback={() => {}} onQuitCallback={() => {}}>
+
+          <div class="demo-card">
+            <h3 class="demo-title">Boolean controls</h3>
+            <p class="demo-desc">
+              <code>f.boolean()</code> → <code>CheckboxField</code> and <code>ToggleField</code>.
+              Both bind through <code>FCheckboxField</code> / <code>FToggleField</code> primitives.
+            </p>
+            <div style="display:flex;flex-direction:column;gap:.75rem">
+              <CheckboxField name="newsletter" />
+              <ToggleField   name="notifications" />
+            </div>
+          </div>
+
+          <div class="demo-card" style="margin-top:1rem">
+            <h3 class="demo-title">Option-based controls</h3>
+            <p class="demo-desc">
+              Options are set on <code>field.options</code> (type <code>IOptionItem[]</code>) before
+              mounting. <code>SelectField</code> renders a <code>&lt;select&gt;</code>;
+              <code>RadioGroupField</code> renders one <code>FRadioButton</code> per option.
+            </p>
+            <div style="display:flex;flex-direction:column;gap:1rem">
+              <SelectField name="country" />
+              <RadioGroupField name="plan" />
+            </div>
+          </div>
+
+        </FormProvider>
+      )}
+    </div>
+  );
+}

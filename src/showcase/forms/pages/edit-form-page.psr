@@ -1,0 +1,162 @@
+/**
+ * Forms Demo — Edit Pre-populated Form
+ * Demonstrates: FormProvider data={existing} → form.parse() on mount
+ *
+ * A mock profile record is passed as `data` to FormProvider.
+ * FormProvider calls form.parse(data) inside useEffect([data, form]).
+ * form.observe(undefined, cb) tracks dirty state reactively.
+ *
+ * On save: validateForm() → onSaveCallback.
+ * On reset: form.reset() → isDirty clears.
+ */
+
+import { createSignal, createEffect, onCleanup } from '@pulsar-framework/pulsar.dev';
+import { createForm, f } from '@pulsar-framework/formular.dev';
+import type { IFormular } from '@pulsar-framework/formular.dev';
+import { PageHeader } from '../../common/components/page-header.psr';
+import { FormProvider, TextField, TextareaField, InputField } from '@/components/formular';
+
+type ProfileData = {
+  firstName: string;
+  lastName:  string;
+  bio:       string;
+  age:       number;
+};
+
+/**
+ * Mock pre-existing record — what a real app would load from an API.
+ */
+const MOCK_PROFILE: ProfileData = {
+  firstName: 'Tadeo',
+  lastName:  'Piana',
+  bio:       'Software engineer building the Pulsar framework.',
+  age:       30,
+};
+
+export component EditFormPage() {
+  const [form, setForm] = createSignal<IFormular<ProfileData> | null>(null);
+  const [isDirty, setIsDirty]       = createSignal(false);
+  const [savedData, setSavedData]   = createSignal<Record<string, unknown> | null>(null);
+  const [saveStatus, setSaveStatus] = createSignal<'idle' | 'saved' | 'error'>('idle');
+
+  createForm<ProfileData>({
+    schema: f.object({
+      firstName: f.string().min(1).nonempty().debounce(200),
+      lastName:  f.string().min(1).nonempty().debounce(200),
+      bio:       f.string().max(200).optional().debounce(200),
+      age:       f.number().min(1).max(150),
+    }),
+    defaultValues: MOCK_PROFILE,
+  }).then(setForm);
+
+  onCleanup(() => form()?.clear());
+
+  // Track dirty state via form.observe().
+  createEffect(() => {
+    const f = form();
+    if (!f) return;
+    const unsub: () => void = f.observe(undefined, () => {
+      setIsDirty(f.getFormFlags().isDirty ?? false);
+    });
+    onCleanup(() => unsub());
+  });
+
+  const handleSave = async () => {
+    const f = form();
+    if (!f) return;
+    const valid = await f.validateForm();
+    if (!valid) {
+      setSaveStatus('error');
+      return;
+    }
+    setSavedData(f.getData() as Record<string, unknown>);
+    setSaveStatus('saved');
+  };
+
+  const handleReset = () => {
+    form()?.reset();
+    setSaveStatus('idle');
+    setSavedData(null);
+  };
+
+  return (
+    <div>
+      <PageHeader
+        title="Edit Pre-populated Form"
+        emoji="✏️"
+        color="#f59e0b"
+        description="FormProvider data={existingRecord} → form.parse() on mount. Dirty tracking via form.observe()."
+      />
+
+      {!form() ? (
+        <p class="status-loading">⏳ Initialising form…</p>
+      ) : (
+        <div>
+          <div
+            class="demo-card"
+            style={() => `border-left-color:${isDirty() ? '#f59e0b' : '#10b981'}`}
+          >
+            <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem">
+              <span
+                style={() => `padding:2px 8px;border-radius:4px;font-size:.8rem;font-weight:600;${isDirty() ? 'background:#fef3c7;color:#92400e' : 'background:#d1fae5;color:#065f46'}`}
+              >
+                {() => isDirty() ? '✎ modified' : '✔ unmodified'}
+              </span>
+            </div>
+
+            <FormProvider
+              form={form()!}
+              data={MOCK_PROFILE}
+              onSaveCallback={handleSave}
+              onQuitCallback={handleReset}
+            >
+              <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+                <div style="flex:1;min-width:180px">
+                  <TextField name="firstName" label="First Name" showErrors showGuides />
+                </div>
+                <div style="flex:1;min-width:180px">
+                  <TextField name="lastName" label="Last Name" showErrors showGuides />
+                </div>
+              </div>
+              <div style="margin-top:.75rem">
+                <InputField name="age" />
+              </div>
+              <div style="margin-top:.75rem">
+                <TextareaField name="bio" />
+              </div>
+            </FormProvider>
+
+            <div style="display:flex;gap:.5rem;margin-top:1rem">
+              <button
+                style="padding:6px 16px;background:#3b82f6;color:#fff;border-radius:4px;cursor:pointer"
+                onclick={handleSave}
+              >
+                💾 Save
+              </button>
+              <button
+                style={() => `padding:6px 16px;background:${isDirty() ? '#ef4444' : '#9ca3af'};color:#fff;border-radius:4px;cursor:${isDirty() ? 'pointer' : 'default'}`}
+                onclick={handleReset}
+                disabled={() => !isDirty()}
+              >
+                ↺ Reset
+              </button>
+            </div>
+
+            {saveStatus() === 'saved' && savedData() && (
+              <div style="margin-top:.75rem;padding:.75rem;background:#d1fae5;border-radius:6px;border:1px solid #6ee7b7">
+                <strong style="color:#065f46;font-size:.85rem">✓ Saved snapshot</strong>
+                <pre style="margin-top:.25rem;font-size:.75rem;color:#064e3b;overflow:auto">{JSON.stringify(savedData(), null, 2)}</pre>
+              </div>
+            )}
+
+            {saveStatus() === 'error' && (
+              <div style="margin-top:.75rem;padding:.75rem;background:#fee2e2;border-radius:6px;border:1px solid #fca5a5">
+                <strong style="color:#991b1b;font-size:.85rem">✗ Validation failed — fix errors above.</strong>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

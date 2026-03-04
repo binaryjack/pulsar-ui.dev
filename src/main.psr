@@ -21,7 +21,13 @@ import { DragDropTestPage } from './showcase/drag-drop/drag-drop-test.psr';
 import { ErrorBoundaryTestPage } from './showcase/error-boundary/error-boundary-test.psr';
 import { ErrorBoundaryMegaPage } from './showcase/error-boundary/error-boundary-mega.psr';
 import { ContextTestPage } from './showcase/context/context-test.psr';
-import { FormsTestPage } from './showcase/forms/forms-test.psr';
+import { FormsTestPage }        from './showcase/forms/forms-test.psr';
+import { CrossValidationPage }  from './showcase/forms/pages/cross-validation-page.psr';
+import { DependentFieldsPage }  from './showcase/forms/pages/dependent-fields-page.psr';
+import { DynamicFieldsPage }    from './showcase/forms/pages/dynamic-fields-page.psr';
+import { EditFormPage }         from './showcase/forms/pages/edit-form-page.psr';
+import { SelectControlsPage }   from './showcase/forms/pages/select-controls-page.psr';
+import { WizardPage }           from './showcase/forms/pages/wizard-page.psr';
 import { HttpTestPage } from './showcase/http/http-test.psr';
 import { AssignmentTest } from './showcase/tests/assignment-test.psr';
 import { SimpleTest } from './showcase/tests/simple-codegen-test.psr';
@@ -71,7 +77,13 @@ component App() {
             <Route path="/error-boundary" component={ErrorBoundaryTestPage} label="Error Boundaries" />
             <Route path="/error-boundary-mega" component={ErrorBoundaryMegaPage} label="Error Boundaries MEGA" />
             <Route path="/context" component={ContextTestPage} label="Context API" />
-            <Route path="/forms" component={FormsTestPage} label="Forms" />
+            <Route path="/forms"                  component={FormsTestPage}       label="Forms" />
+            <Route path="/forms-select-controls"   component={SelectControlsPage}  label="Forms — Select Controls" />
+            <Route path="/forms-dependent"         component={DependentFieldsPage} label="Forms — Dependent Fields" />
+            <Route path="/forms-edit"              component={EditFormPage}         label="Forms — Edit Form" />
+            <Route path="/forms-wizard"            component={WizardPage}           label="Forms — Wizard" />
+            <Route path="/forms-dynamic"           component={DynamicFieldsPage}   label="Forms — Dynamic Fields" />
+            <Route path="/forms-cross-validation"  component={CrossValidationPage} label="Forms — Cross Validation" />
             <Route path="/http" component={HttpTestPage} label="HTTP Client" />
             <Route path="/routing" component={RoutingTestPage} label="Router" />
             <Route path="/ssr" component={SSRTestPage} label="SSR" />

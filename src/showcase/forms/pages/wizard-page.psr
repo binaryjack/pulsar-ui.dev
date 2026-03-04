@@ -1,0 +1,254 @@
+/**
+ * Forms Demo — Multi-step Wizard
+ * Demonstrates: step-scoped validation before advancing
+ *
+ * Single form, three steps shown/hidden via reactive signal.
+ * "Next" validates only the current step's fields — uses form.validateForm()
+ * then inspects getField(name).isValid per step field.
+ * Step 3 shows a data preview + terms checkbox + final submit.
+ *
+ * Steps:
+ *   1. Personal  → firstName, lastName
+ *   2. Account   → email, password (min 8)
+ *   3. Confirm   → terms (boolean) + preview + submit
+ */
+
+import { createSignal, onCleanup } from '@pulsar-framework/pulsar.dev';
+import { createForm, f } from '@pulsar-framework/formular.dev';
+import type { IExtendedInput, IFormular } from '@pulsar-framework/formular.dev';
+import { PageHeader } from '../../common/components/page-header.psr';
+import { FormProvider, TextField, CheckboxField } from '@/components/formular';
+
+type WizardData = {
+  firstName: string;
+  lastName:  string;
+  email:     string;
+  password:  string;
+  terms:     boolean;
+};
+
+const STEP_FIELDS: Record<number, Array<keyof WizardData>> = {
+  1: ['firstName', 'lastName'],
+  2: ['email', 'password'],
+  3: ['terms'],
+};
+
+const STEP_LABELS: Record<number, string> = {
+  1: 'Personal',
+  2: 'Account',
+  3: 'Confirm',
+};
+
+const TOTAL_STEPS = 3;
+
+type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
+
+type WizardSnapshot = Record<string, unknown>;
+
+export component WizardPage() {
+  const [form, setForm] = createSignal<IFormular<WizardData> | null>(null);
+  const [step, setStep]                 = createSignal<number>(1);
+  const [stepError, setStepError]       = createSignal<string | null>(null);
+  const [submitStatus, setSubmitStatus] = createSignal<SubmitStatus>('idle');
+  const [result, setResult]             = createSignal<WizardSnapshot | null>(null);
+
+  createForm<WizardData>({
+    schema: f.object({
+      firstName: f.string().min(1).nonempty().debounce(200),
+      lastName:  f.string().min(1).nonempty().debounce(200),
+      email:     f.string().email().nonempty().debounce(200),
+      password:  f.string().min(8).nonempty().debounce(200),
+      terms:     f.boolean(),
+    }),
+    defaultValues: { firstName: '', lastName: '', email: '', password: '', terms: false },
+    onSubmit: async (data: WizardData) => {
+      if (!data.terms) throw new Error('You must accept the terms to continue.');
+      setSubmitStatus('submitting');
+      await new Promise<void>((resolve) => setTimeout(resolve, 600));
+    },
+  }).then(setForm);
+
+  onCleanup(() => form()?.clear());
+
+  /**
+   * Validates current step's fields before advancing.
+   * Calls validateForm() to run all validators, then inspects
+   * isValid on each step field individually.
+   */
+  const validateCurrentStep = async (): Promise<boolean> => {
+    const f = form();
+    if (!f) return false;
+    await f.validateForm();
+    const fieldNames = STEP_FIELDS[step()] ?? [];
+    return fieldNames.every((name: keyof WizardData) => {
+      const field: IExtendedInput | undefined = f.getField(String(name));
+      return field?.isValid ?? true;
+    });
+  };
+
+  const goNext = async () => {
+    setStepError(null);
+    const valid = await validateCurrentStep();
+    if (!valid) {
+      setStepError('Please fix the errors above before continuing.');
+      return;
+    }
+    setStep((s) => Math.min(s + 1, TOTAL_STEPS));
+  };
+
+  const goBack = () => {
+    setStepError(null);
+    setStep((s) => Math.max(s - 1, 1));
+  };
+
+  const handleSubmit = async () => {
+    const f = form();
+    if (!f) return;
+    setStepError(null);
+    setSubmitStatus('idle');
+    try {
+      const valid = await validateCurrentStep();
+      if (!valid) {
+        setStepError('Please fix the errors above before submitting.');
+        return;
+      }
+      const submitted = await f.submit();
+      if (submitted !== null) {
+        setResult(f.getData() as Record<string, unknown>);
+        setSubmitStatus('success');
+      } else {
+        setStepError('Validation failed — fix errors above.');
+        setSubmitStatus('error');
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setStepError(msg);
+      setSubmitStatus('error');
+    }
+  };
+
+  const getDataSnapshot = (): WizardSnapshot | null => {
+    const f = form();
+    if (!f) return null;
+    return f.getData() as Record<string, unknown>;
+  };
+
+  return (
+    <div>
+      <PageHeader
+        title="Multi-step Wizard"
+        emoji="🧙"
+        color="#8b5cf6"
+        description="Single form across 3 steps. Each 'Next' validates only the current step's fields before advancing."
+      />
+
+      {!form() ? (
+        <p class="status-loading">⏳ Initialising form…</p>
+      ) : (
+        <FormProvider form={form()!} onSaveCallback={() => {}} onQuitCallback={() => {}}>
+          <div class="demo-card">
+
+            {/* Step indicator */}
+            <div style="display:flex;gap:.5rem;margin-bottom:1.25rem">
+              {[1, 2, 3].map((n) => (
+                <div
+                  key={String(n)}
+                  style={() => `display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;font-size:.8rem;font-weight:700;${step() === n ? 'background:#8b5cf6;color:#fff' : step() > n ? 'background:#d1fae5;color:#065f46' : 'background:#f3f4f6;color:#9ca3af'}`}
+                >
+                  {() => step() > n ? '✓' : String(n)}
+                </div>
+              ))}
+              <span style="margin-left:.5rem;font-size:.9rem;font-weight:600;align-self:center">
+                {() => STEP_LABELS[step()]}
+              </span>
+            </div>
+
+            {/* Step 1 — Personal */}
+            {() => step() === 1 ? (
+              <div>
+                <p class="demo-desc">Enter your name to continue.</p>
+                <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+                  <div style="flex:1;min-width:160px">
+                    <TextField name="firstName" label="First Name" showErrors showGuides />
+                  </div>
+                  <div style="flex:1;min-width:160px">
+                    <TextField name="lastName" label="Last Name" showErrors showGuides />
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
+            {/* Step 2 — Account */}
+            {() => step() === 2 ? (
+              <div>
+                <p class="demo-desc">Set up your account credentials.</p>
+                <div style="display:flex;flex-direction:column;gap:.75rem">
+                  <TextField name="email" label="Email" showErrors showGuides />
+                  <TextField name="password" label="Password (min 8 chars)" showErrors showGuides />
+                </div>
+              </div>
+            ) : null}
+
+            {/* Step 3 — Confirm */}
+            {() => step() === 3 ? (
+              <div>
+                <p class="demo-desc">Review your details and accept the terms.</p>
+
+                <div style="padding:.75rem;background:#f8fafc;border-radius:6px;margin-bottom:.75rem">
+                  <strong style="font-size:.8rem;color:#64748b">Data preview</strong>
+                  <pre style="font-size:.75rem;margin-top:.25rem;overflow:auto">{JSON.stringify(getDataSnapshot(), null, 2)}</pre>
+                </div>
+
+                <CheckboxField name="terms" />
+              </div>
+            ) : null}
+
+            {/* Step error */}
+            {() => stepError() ? (
+              <p style="margin-top:.5rem;color:#991b1b;font-size:.85rem">{() => stepError()}</p>
+            ) : null}
+
+            {/* Submit success */}
+            {() => submitStatus() === 'success' && result() ? (
+              <div style="margin-top:.75rem;padding:.75rem;background:#d1fae5;border-radius:6px;border:1px solid #6ee7b7">
+                <strong style="color:#065f46">✓ Form submitted</strong>
+                <pre style="font-size:.75rem;margin-top:.25rem;overflow:auto">{JSON.stringify(result(), null, 2)}</pre>
+              </div>
+            ) : null}
+
+            {/* Navigation */}
+            {() => submitStatus() !== 'success' ? (
+              <div style="display:flex;justify-content:space-between;margin-top:1rem">
+                <button
+                  style={() => `padding:6px 16px;border-radius:4px;cursor:${step() > 1 ? 'pointer' : 'default'};background:${step() > 1 ? '#6b7280' : '#e5e7eb'};color:#fff`}
+                  onclick={goBack}
+                  disabled={() => step() === 1}
+                >
+                  ← Back
+                </button>
+
+                {() => step() < TOTAL_STEPS ? (
+                  <button
+                    style="padding:6px 16px;background:#8b5cf6;color:#fff;border-radius:4px;cursor:pointer"
+                    onclick={goNext}
+                  >
+                    Next →
+                  </button>
+                ) : (
+                  <button
+                    style={`padding:6px 16px;background:${submitStatus() === 'submitting' ? '#a78bfa' : '#7c3aed'};color:#fff;border-radius:4px;cursor:pointer`}
+                    onclick={handleSubmit}
+                    disabled={submitStatus() === 'submitting'}
+                  >
+                    {() => submitStatus() === 'submitting' ? '⏳ Submitting…' : '✓ Submit'}
+                  </button>
+                )}
+              </div>
+            ) : null}
+
+          </div>
+        </FormProvider>
+      )}
+    </div>
+  );
+}

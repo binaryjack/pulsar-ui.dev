@@ -1,0 +1,120 @@
+/**
+ * Forms Demo — Dependent / Conditional Fields
+ * Demonstrates: form.observe() driving show/hide of a downstream field.
+ *
+ * When country === 'us', a US-state SelectField appears.
+ * When country changes away from 'us', the state field clears and hides.
+ *
+ * Pattern:
+ *   createEffect → form.observe('country', cb) → setShowState(...)
+ *   <Show when={showState}> wraps the dependent field.
+ */
+
+import { createSignal, createEffect, onCleanup, ShowRegistry as Show } from '@pulsar-framework/pulsar.dev';
+import { createForm, f } from '@pulsar-framework/formular.dev';
+import type { IExtendedInput, IFormular, IOptionItem } from '@pulsar-framework/formular.dev';
+import { PageHeader } from '../../common/components/page-header.psr';
+import { FormProvider, SelectField, TextField } from '@/components/formular';
+
+type DependentData = {
+  country: string;
+  state:   string;
+};
+
+const COUNTRY_OPTIONS: IOptionItem[] = [
+  { value: '',   label: '— Select a country —' },
+  { value: 'us', label: 'United States' },
+  { value: 'uk', label: 'United Kingdom' },
+  { value: 'ca', label: 'Canada' },
+  { value: 'au', label: 'Australia' },
+];
+
+const US_STATE_OPTIONS: IOptionItem[] = [
+  { value: '',   label: '— Select a state —' },
+  { value: 'ca', label: 'California' },
+  { value: 'ny', label: 'New York' },
+  { value: 'tx', label: 'Texas' },
+  { value: 'fl', label: 'Florida' },
+  { value: 'wa', label: 'Washington' },
+];
+
+export component DependentFieldsPage() {
+  const [form, setForm] = createSignal<IFormular<DependentData> | null>(null);
+  const [showState, setShowState] = createSignal(false);
+
+  createForm<DependentData>({
+    schema: f.object({
+      country: f.string().nonempty().debounce(200),
+      state:   f.string().optional().debounce(200),
+    }),
+    defaultValues: { country: '', state: '' },
+  }).then((resolved: IFormular<DependentData>) => {
+    const countryField: IExtendedInput | undefined = resolved.getField('country');
+    if (countryField) countryField.options = COUNTRY_OPTIONS;
+
+    const stateField: IExtendedInput | undefined = resolved.getField('state');
+    if (stateField) stateField.options = US_STATE_OPTIONS;
+
+    setForm(resolved);
+  });
+
+  onCleanup(() => form()?.clear());
+
+  // Wire observer once form is ready.
+  createEffect(() => {
+    const f = form();
+    if (!f) return;
+
+    const unsub: () => void = f.observe('country', () => {
+      const countryField: IExtendedInput | undefined = f.getField('country');
+      const val = String(countryField?.value ?? '');
+      const isUs = val === 'us';
+      setShowState(isUs);
+
+      // Clear state when country changes away from US.
+      if (!isUs) {
+        const stateField: IExtendedInput | undefined = f.getField('state');
+        stateField?.setValue('');
+      }
+    });
+
+    onCleanup(() => unsub());
+  });
+
+  return (
+    <div>
+      <PageHeader
+        title="Dependent / Conditional Fields"
+        emoji="🔗"
+        color="#10b981"
+        description="form.observe('country', cb) → shows a US-state picker only when country is 'United States'."
+      />
+
+      {!form() ? (
+        <p class="status-loading">⏳ Initialising form…</p>
+      ) : (
+        <FormProvider form={form()!} onSaveCallback={() => {}} onQuitCallback={() => {}}>
+          <div class="demo-card">
+            <p class="demo-desc">
+              Select <strong>United States</strong> to reveal the state picker.
+              Changing to any other country clears and hides it.
+            </p>
+
+            <div style="display:flex;flex-direction:column;gap:1rem">
+              <SelectField name="country" />
+
+              <Show when={showState()}>
+                <div style="padding:.75rem;background:var(--color-surface-hover,#f0fdf4);border-radius:6px;border:1px solid #bbf7d0">
+                  <p style="font-size:.8rem;color:#065f46;margin-bottom:.5rem">
+                    🗺️ US state revealed by <code>form.observe('country', cb)</code>
+                  </p>
+                  <SelectField name="state" />
+                </div>
+              </Show>
+            </div>
+          </div>
+        </FormProvider>
+      )}
+    </div>
+  );
+}
