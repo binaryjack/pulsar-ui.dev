@@ -42,13 +42,16 @@ export const FRadioButton = ({
   }
 
   // Single output: radio input (NO label wrapper)
+  // Destructure type out to prevent register() spreading type:'text', and wrap
+  // ref in an arrow function so field.ref(el) is called with correct `this`.
+  const { type: _type, ...registerProps } = field.register();
   const isChecked = field.value === value;
 
   return (
     <input
       type="radio"
-      {...field.register()}
-      ref={field.ref}
+      {...registerProps}
+      ref={(el) => field.ref(el)}
       name={field.name}
       value={value}
       checked={isChecked}

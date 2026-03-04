@@ -35,11 +35,14 @@ export const FCheckboxField = ({
   }
 
   // Single output: checkbox input
+  // Destructure type out of register() — spreading type:'text' would make formular
+  // use string-io validators on a boolean value, causing PARSING ERRORS at validation time.
+  const { type: _type, ...registerProps } = field.register();
   return (
     <input
       type="checkbox"
-      {...field.register()}
-      ref={field.ref}
+      {...registerProps}
+      ref={(el) => field.ref(el)}
       className={`h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 ${className}`}
       checked={field.value}
     />

@@ -96,13 +96,11 @@ export component CrossValidationPage() {
       }
     };
 
-    const unsubPwd:  () => void = f.observe('password', check);
-    const unsubConf: () => void = f.observe('confirmPassword', check);
-
-    onCleanup(() => {
-      unsubPwd();
-      unsubConf();
-    });
+    // onCleanup() is forbidden inside createEffect re-runs (requires component
+    // render context). Component-level onCleanup calls form.clear() on unmount,
+    // which disposes all observers automatically.
+    f.observe('password', check);
+    f.observe('confirmPassword', check);
   });
 
   const handleSubmit = async () => {

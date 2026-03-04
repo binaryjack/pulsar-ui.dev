@@ -65,7 +65,10 @@ export component DependentFieldsPage() {
     const f = form();
     if (!f) return;
 
-    const unsub: () => void = f.observe('country', () => {
+    // onCleanup() is forbidden inside createEffect re-runs (Pulsar lifecycle-hooks
+    // requires component render context). The component-level onCleanup above calls
+    // form.clear(), which disposes all observers when the page unmounts.
+    f.observe('country', () => {
       const countryField: IExtendedInput | undefined = f.getField('country');
       const val = String(countryField?.value ?? '');
       const isUs = val === 'us';
@@ -73,12 +76,11 @@ export component DependentFieldsPage() {
 
       // Clear state when country changes away from US.
       if (!isUs) {
+        // field.setValue lives on IInputBase (field.input), not IExtendedInput directly.
         const stateField: IExtendedInput | undefined = f.getField('state');
-        stateField?.setValue('');
+        stateField?.input.setValue('');
       }
     });
-
-    onCleanup(() => unsub());
   });
 
   return (

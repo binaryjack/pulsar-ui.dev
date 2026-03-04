@@ -55,10 +55,12 @@ export component EditFormPage() {
   createEffect(() => {
     const f = form();
     if (!f) return;
-    const unsub: () => void = f.observe(undefined, () => {
+    // onCleanup() is forbidden inside createEffect re-runs (requires component
+    // render context). Component-level onCleanup calls form.clear() on unmount,
+    // which disposes all observers automatically.
+    f.observe(undefined, () => {
       setIsDirty(f.getFormFlags().isDirty ?? false);
     });
-    onCleanup(() => unsub());
   });
 
   const handleSave = async () => {

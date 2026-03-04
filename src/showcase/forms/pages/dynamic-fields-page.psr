@@ -88,9 +88,10 @@ export component DynamicFieldsPage() {
     setCount((prev) => Math.max(prev - 1, 1));
     const f = form();
     if (f) {
+      // field.clear() does not exist on IExtendedInput — clear() lives on IInputBase
+      // (field.input.clear()) or on IFormular (f.clearField). Use clearField via the form.
       const key: keyof DynamicEmailsData = FIELD_KEYS[c - 1];
-      const field: IExtendedInput | undefined = f.getField(String(key));
-      field?.clear();
+      f.clearField(String(key));
     }
     setSubmitStatus('idle');
     setFormatError(null);
