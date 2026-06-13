@@ -4,7 +4,7 @@
  */
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ResourceTestPage } from '../resource-test.psr'
+import { ResourceTestPage } from '../resource-test.syn'
 
 describe('ResourceTestPage', () => {
   let container: HTMLElement;

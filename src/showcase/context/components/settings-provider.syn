@@ -1,0 +1,35 @@
+/**
+ * Settings Provider Component
+ * Provides app settings context
+ *
+ * IMPORTANT: signals must be at module level — in PSR/JSX children evaluate
+ * before the parent component body runs, so component-local signals would not
+ * be visible to children via useContext().
+ */
+
+import { createSignal, createContext } from '@synetics/synetics.dev';
+
+interface SettingsProviderProps {
+  children: JSX.Element
+}
+
+// Module-level signals — available before SettingsProvider body executes.
+const [_fontSize, _setFontSize] = createSignal(16);
+const [_notifications, _setNotifications] = createSignal(true);
+const [_language, _setLanguage] = createSignal('en');
+
+export const SettingsContext = createContext({
+  fontSize: _fontSize,
+  setFontSize: _setFontSize,
+  notifications: _notifications,
+  setNotifications: _setNotifications,
+  language: _language,
+  setLanguage: _setLanguage
+});
+
+export const SettingsProvider = (props: SettingsProviderProps) => {
+  return SettingsContext.Provider({
+    value: { fontSize: _fontSize, setFontSize: _setFontSize, notifications: _notifications, setNotifications: _setNotifications, language: _language, setLanguage: _setLanguage },
+    children: typeof props.children === 'function' ? props.children : () => props.children
+  });
+};

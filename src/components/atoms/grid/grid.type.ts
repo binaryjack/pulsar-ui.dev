@@ -2,7 +2,7 @@
  * Grid component props interface
  */
 
-import type { Pulsar } from '@pulsar-framework/pulsar.dev';
+import type { Pulsar } from '@synetics/synetics.dev';
 import type { Spacing } from '../../enums';
 
 export interface IGridProps extends Pulsar.HtmlExtends<'div'> {

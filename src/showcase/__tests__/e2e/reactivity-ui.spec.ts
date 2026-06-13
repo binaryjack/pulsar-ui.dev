@@ -17,7 +17,7 @@ test.describe('Reactivity UI Demo', () => {
     // Wait for page to load
     await page.waitForTimeout(1000);
 
-    // The app has TWO h1s: layout header "Pulsar Framework" and route header "Core Reactivity"
+    // The app has TWO h1s: layout header "Synetics framework" and route header "Core Reactivity"
     // Check that route content is present (not just layout)
     await expect(page.locator('text=Core Reactivity')).toBeVisible();
     await expect(page.locator('text=Testing signals, effects, memos')).toBeVisible();

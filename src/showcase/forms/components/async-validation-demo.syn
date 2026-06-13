@@ -1,0 +1,101 @@
+/**
+ * Async Validation Demo
+ * debounce(200) on f.string() — async uniqueness check via form.observe() + setTimeout
+ * Note: async logic lives in the component; formular handles the debounced schema.
+ */
+
+import { createSignal, createEffect, onCleanup } from '@synetics/synetics.dev';
+import { createForm, f } from '@synetics/formular.dev';
+import type { IFormular } from '@synetics/formular.dev';
+import { FormProvider, TextField } from '@/components/formular';
+
+type AsyncFormData = { username: string; email: string };
+
+/**
+ * Simulate an async uniqueness check — resolves after 400 ms.
+ * Type "taken" to trigger the failure path.
+ */
+const checkUsernameUnique = (value: string): Promise<boolean> =>
+  new Promise((resolve) => setTimeout(() => resolve(value !== 'taken'), 400));
+
+export component AsyncValidationDemo() {
+  const [form, setForm] = createSignal<IFormular<AsyncFormData> | null>(null);
+  const [isValidating, setIsValidating] = createSignal(false);
+  const [asyncError, setAsyncError] = createSignal<string | null>(null);
+  const [validationLog, setValidationLog] = createSignal<string[]>([]);
+
+  createForm<AsyncFormData>({
+    schema: f.object({
+      username: f.string().min(3).max(20).nonempty().debounce(200),
+      email: f.string().email().nonempty().debounce(200),
+    }),
+    defaultValues: { username: '', email: '' },
+  }).then(setForm);
+
+  onCleanup(() => form()?.clear());
+
+  const log = (msg: string) => {
+    const ts = new Date().toLocaleTimeString('en-US', { hour12: false });
+    setValidationLog((prev) => [`[${ts}] ${msg}`, ...prev].slice(0, 10));
+  };
+
+  // Wire async uniqueness check once the form is ready
+  createEffect(() => {
+    const f = form();
+    if (!f) return;
+
+    const unsub = f.observe('username', () => {
+      const field = f.getField('username');
+      const val: string = (field?.input as any)?._value?.get() ?? '';
+      if (!val || val.length < 3) {
+        setAsyncError(null);
+        return;
+      }
+      setIsValidating(true);
+      log(`Checking "${val}"…`);
+      let timerId: ReturnType<typeof setTimeout>;
+      checkUsernameUnique(val).then((ok) => {
+        setIsValidating(false);
+        if (ok) {
+          setAsyncError(null);
+          log(`✅ "${val}" is available`);
+        } else {
+          setAsyncError(`"${val}" is already taken`);
+          log(`❌ "${val}" is taken`);
+        }
+      });
+    });
+
+    onCleanup(() => unsub?.());
+  });
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">5️⃣ Async Validation + debounce(200)</h3>
+      <p class="demo-desc">
+        <code>f.string().debounce(200)</code> + <code>form.observe('username', cb)</code> — async uniqueness
+        check fires after schema debounce settles. Type <strong>"taken"</strong> to trigger the failure path.
+      </p>
+
+      {!form() ? (
+        <p class="status-loading">⏳ Initialising form engine…</p>
+      ) : (
+        <FormProvider form={form()!} onSaveCallback={() => {}} onQuitCallback={() => {}}>
+          <TextField name="username" label="Username (try: taken)" showErrors={true} showGuides={true} />
+          {isValidating() ? <p class="status-loading">⏳ Checking availability…</p> : null}
+          {asyncError() ? <p class="field-error">{asyncError()}</p> : null}
+          <TextField name="email" label="Email" showErrors={true} showGuides={true} />
+        </FormProvider>
+      )}
+
+      {validationLog().length > 0 ? (
+        <div class="log-panel">
+          <p class="log-title">Validation log</p>
+          {validationLog().map((entry) => (
+            <p class="log-entry">{entry}</p>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}

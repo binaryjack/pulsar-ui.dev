@@ -1,0 +1,9 @@
+import { createSignal } from '@synetics/synetics.dev';
+
+export component TestSignal() {
+  const [count, setCount] = createSignal(0);
+  
+  return (
+    <div>Count: {count()}</div>
+  );
+}

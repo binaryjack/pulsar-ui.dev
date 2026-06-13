@@ -14,7 +14,7 @@
  * ```
  */
 
-import type { IFieldGuide } from '@pulsar-framework/formular.dev';
+import type { IFieldGuide } from '@synetics/formular.dev';
 import type { IFieldError, IValidationResult } from '../types';
 import { useField } from './use-field';
 

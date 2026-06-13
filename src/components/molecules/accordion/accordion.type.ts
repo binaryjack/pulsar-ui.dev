@@ -2,7 +2,7 @@
  * Accordion component props interface
  */
 
-import type { Pulsar } from '@pulsar-framework/pulsar.dev';
+import type { Pulsar } from '@synetics/synetics.dev';
 
 export interface IAccordionProps extends Pulsar.HtmlExtends<'div'> {
   /**

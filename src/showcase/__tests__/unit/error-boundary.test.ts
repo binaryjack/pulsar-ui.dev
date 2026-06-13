@@ -3,7 +3,7 @@
  * Tests Tryer/Catcher error handling
  */
 
-import { createSignal } from '@pulsar-framework/pulsar.dev';
+import { createSignal } from '@synetics/synetics.dev';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('Error Boundary Unit Tests', () => {

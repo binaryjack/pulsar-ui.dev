@@ -2,7 +2,7 @@
  * Popover component props interface
  */
 
-import type { Pulsar } from '@pulsar-framework/pulsar.dev';
+import type { Pulsar } from '@synetics/synetics.dev';
 import type { PopoverPlacement } from '../../enums/popover-placement.type';
 import type { PopoverTrigger } from '../../enums/popover-trigger.type';
 

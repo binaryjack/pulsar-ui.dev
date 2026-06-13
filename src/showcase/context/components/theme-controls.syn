@@ -1,0 +1,51 @@
+/**
+ * Theme Controls Component
+ * UI for controlling theme settings
+ */
+
+import { useContext } from '@synetics/synetics.dev';
+import { ThemeContext } from './theme-provider.syn';
+
+export const ThemeControls = () => {
+  const ctx = useContext(ThemeContext);
+  
+  const colors = [
+    { name: 'Blue', value: '#3b82f6' },
+    { name: 'Green', value: '#10b981' },
+    { name: 'Purple', value: '#8b5cf6' },
+    { name: 'Orange', value: '#f59e0b' }
+  ];
+  
+  return (
+    <div>
+      <div style="margin-bottom: 15px;">
+        <h4 style="margin: 0 0 10px 0; color: white;">Theme Mode:</h4>
+        <div style="display: flex; gap: 10px;">
+          <button
+            onClick={() => ctx.setTheme('light')}
+            style={() => `padding: 8px 16px; background: ${ctx.theme() === 'light' ? '#10b981' : '#334155'}; color: white; border: 2px solid ${ctx.theme() === 'light' ? '#10b981' : '#475569'}; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s;`}>
+            ☀️ Light
+          </button>
+          <button
+            onClick={() => ctx.setTheme('dark')}
+            style={() => `padding: 8px 16px; background: ${ctx.theme() === 'dark' ? '#10b981' : '#334155'}; color: white; border: 2px solid ${ctx.theme() === 'dark' ? '#10b981' : '#475569'}; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s;`}>
+            🌙 Dark
+          </button>
+        </div>
+      </div>
+      
+      <div>
+        <h4 style="margin: 0 0 10px 0; color: white;">Primary Color:</h4>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          {colors.map(color => (
+            <button
+              onClick={() => ctx.setPrimaryColor(color.value)}
+              style={() => `padding: 8px 16px; background: ${ctx.primaryColor() === color.value ? color.value : '#334155'}; color: white; border: 2px solid ${color.value}; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s; opacity: ${ctx.primaryColor() === color.value ? '1' : '0.6'};`}>
+              {color.name}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};

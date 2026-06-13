@@ -3,7 +3,7 @@
  * Provides logging functions that both update UI and browser console
  */
 
-import { createSignal } from '@pulsar-framework/pulsar.dev'
+import { createSignal } from '@synetics/synetics.dev'
 
 type LogEntry = {
   timestamp: string;

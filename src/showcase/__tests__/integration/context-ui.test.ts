@@ -3,7 +3,7 @@
  * Tests context providers with theme and user controls
  */
 
-import { $REGISTRY, createSignal } from '@pulsar-framework/pulsar.dev';
+import { $REGISTRY, createSignal } from '@synetics/synetics.dev';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('Context + UI Component Integration', () => {

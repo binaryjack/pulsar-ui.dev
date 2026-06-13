@@ -8,7 +8,7 @@
     "outDir": "./dist",
     "skipLibCheck": true
   },
-  "files": ["../pulsar.dev/src/types/jsx.d.ts"],
+  "files": ["../synetics.dev/src/types/jsx.d.ts"],
   "include": [
     "src/index.ts",
     "src/components/**/index.ts",
@@ -21,7 +21,7 @@
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.stories.tsx",
-    "src/**/*.psr",
+    "src/**/*.syn",
     "src/showcase/**",
     "src/showcase-demos/**",
     "src/test-*.tsx",

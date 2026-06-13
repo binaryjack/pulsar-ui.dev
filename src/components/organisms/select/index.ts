@@ -3,5 +3,5 @@
  */
 
 export type { ISelectOption } from './select-option.type';
-export { Select } from './select.psr';
+export { Select } from './select.syn';
 export type { ISelectProps } from './select.type';

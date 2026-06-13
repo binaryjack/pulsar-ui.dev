@@ -3,7 +3,7 @@
  */
 
 import type { ModalSize } from '../../enums/modal-size.type';
-import type { Pulsar } from '@pulsar-framework/pulsar.dev';
+import type { Pulsar } from '@synetics/synetics.dev';
 
 export interface IModalProps extends Pulsar.HtmlExtends<'div'> {
   readonly isOpen?: boolean;

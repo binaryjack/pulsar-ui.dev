@@ -3,7 +3,7 @@
 ## ✅ All Architectural Fixes Applied
 
 ### 1. **Pulsar.HtmlExtends Utility** ✅
-- Created `Pulsar.HtmlExtends<T>` type utility in Pulsar framework
+- Created `Pulsar.HtmlExtends<T>` type utility in Synetics framework
 - Located at: `packages/pulsar/src/types/html-extends.ts`
 - Exported from main Pulsar index
 - Provides type-safe HTML element attribute extension (like React.ComponentProps)
@@ -190,7 +190,7 @@ const input = Input({
 
 ## Files Changed/Created
 
-### Pulsar Framework
+### Synetics framework
 - `src/types/html-extends.ts` (new)
 - `index.ts` (updated - exports HtmlExtends)
 

@@ -3,8 +3,8 @@
 /**
  * Entry point - MAIN PSR APP
  */
-import { pulse, ServiceManager } from '@pulsar-framework/pulsar.dev';
-import App from './main.psr';
+import { pulse, ServiceManager } from '@synetics/synetics.dev';
+import App from './main.syn';
 import './styles.css';
 
 // Apply persisted theme before paint (html has data-theme="dark" as default)
@@ -34,7 +34,7 @@ services.registerClass('config', ConfigService, {
 
 console.log('[App] ServiceManager configured with ConfigService');
 
-// Mount the REAL APP from main.psr
+// Mount the REAL APP from main.syn
 pulse(App, {
   root: '#app',
   services, // Pass ServiceManager to pulse

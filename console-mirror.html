@@ -59,8 +59,8 @@
       console.log('▶ Loading main-avatar-test...');
 
       try {
-        const { bootstrapApp } = await import('@pulsar-framework/pulsar.dev');
-        const { AvatarTest } = await import('./src/test-psr-avatar.psr');
+        const { bootstrapApp } = await import('@synetics/synetics.dev');
+        const { AvatarTest } = await import('./src/test-psr-avatar.syn');
 
         console.log('bootstrapApp:', typeof bootstrapApp);
         console.log('AvatarTest:', typeof AvatarTest);

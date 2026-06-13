@@ -1,4 +1,4 @@
-import { useEffect, useState } from '@pulsar-framework/pulsar.dev';
+import { useEffect, useState } from '@synetics/synetics.dev';
 
 interface UseDrawerPositionOptions {
   containerRef: { current: HTMLElement | null };

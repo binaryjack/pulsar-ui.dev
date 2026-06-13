@@ -3,7 +3,7 @@
  * Tests signals working with Show, For components
  */
 
-import { $REGISTRY, createMemo, createSignal } from '@pulsar-framework/pulsar.dev';
+import { $REGISTRY, createMemo, createSignal } from '@synetics/synetics.dev';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('Reactivity + Control Flow Integration', () => {

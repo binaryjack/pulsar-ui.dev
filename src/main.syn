@@ -1,0 +1,101 @@
+
+/**
+ * Pulsar UI Showcase - Main Application Entry Point (PSR)
+ * Navigation System Test
+ */
+
+import { createSignal, useNavigate, Router, Route } from '@synetics/synetics.dev';
+import { SidebarNav } from './components/sidebar-nav.syn';
+import { AppHeader } from './components/app-header.syn';
+import { AppFooter } from './components/app-footer.syn';
+import { HomePage } from './showcase/home/home.syn';
+import { AboutPage } from './showcase/about/about.syn';
+import { BootstrapTestPage } from './showcase/bootstrap/bootstrap-test.syn';
+import { DependencyInjectionTestPage } from './showcase/di/di-test.syn';
+import { ReactivityTestPage } from './showcase/reactivity/reactivity-test.syn';
+import { JsxTestPage } from './showcase/jsx/jsx-test.syn';
+import { ControlFlowTestPage } from './showcase/control-flow/control-flow-test.syn';
+import { ResourceTestPage } from './showcase/resource/resource-test.syn';
+import { PortalTestPage } from './showcase/portal/portal-test.syn';
+import { DragDropTestPage } from './showcase/drag-drop/drag-drop-test.syn';
+import { ErrorBoundaryTestPage } from './showcase/error-boundary/error-boundary-test.syn';
+import { ErrorBoundaryMegaPage } from './showcase/error-boundary/error-boundary-mega.syn';
+import { ContextTestPage } from './showcase/context/context-test.syn';
+import { FormsTestPage }        from './showcase/forms/forms-test.syn';
+import { CrossValidationPage }  from './showcase/forms/pages/cross-validation-page.syn';
+import { DependentFieldsPage }  from './showcase/forms/pages/dependent-fields-page.syn';
+import { DynamicFieldsPage }    from './showcase/forms/pages/dynamic-fields-page.syn';
+import { EditFormPage }         from './showcase/forms/pages/edit-form-page.syn';
+import { SelectControlsPage }   from './showcase/forms/pages/select-controls-page.syn';
+import { WizardPage }           from './showcase/forms/pages/wizard-page.syn';
+import { HttpTestPage } from './showcase/http/http-test.syn';
+import { AssignmentTest } from './showcase/tests/assignment-test.syn';
+import { SimpleTest } from './showcase/tests/simple-codegen-test.syn';
+import { RoutingTestPage } from './showcase/routing/routing-test.syn';
+import { SSRTestPage } from './showcase/ssr/ssr-test.syn';
+import { SvgCanvasPage } from './showcase/svg-canvas/svg-canvas-page.syn';
+
+export interface IAppProps {
+  id?: string;
+}
+
+component App() {
+  const navigate = useNavigate();
+  const [sidebarCollapsed, setSidebarCollapsed] = createSignal(false);
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
+
+  const handleSidebarToggle = (isCollapsed: boolean) => {
+    setSidebarCollapsed(isCollapsed);
+  };
+
+  return (
+    <div className="app-shell">
+      <SidebarNav
+        onNavigate={handleNavigate}
+        onToggle={handleSidebarToggle}
+      />
+
+      <div
+        className="app-content"
+        style={() => `margin-left: ${sidebarCollapsed() ? '68px' : '280px'}; transition: margin-left 0.3s ease-in-out;`}>
+        <AppHeader />
+
+        <main className="app-main">
+          <Router base={import.meta.env.BASE_URL}>
+            <Route path="/" component={HomePage} default={true} label="Home" />
+            <Route path="/bootstrap" component={BootstrapTestPage} label="Bootstrap" />
+            <Route path="/di" component={DependencyInjectionTestPage} label="Dependency Injection" />
+            <Route path="/reactivity" component={ReactivityTestPage} label="Reactivity Tests" />
+            <Route path="/jsx" component={JsxTestPage} label="JSX Tests" />
+            <Route path="/control-flow" component={ControlFlowTestPage} label="Control Flow" />
+            <Route path="/resources" component={ResourceTestPage} label="Resources" />
+            <Route path="/portal" component={PortalTestPage} label="Portals" />
+            <Route path="/drag-drop" component={DragDropTestPage} label="Drag & Drop" />
+            <Route path="/error-boundary" component={ErrorBoundaryTestPage} label="Error Boundaries" />
+            <Route path="/error-boundary-mega" component={ErrorBoundaryMegaPage} label="Error Boundaries MEGA" />
+            <Route path="/context" component={ContextTestPage} label="Context API" />
+            <Route path="/forms"                  component={FormsTestPage}       label="Forms" />
+            <Route path="/forms-select-controls"   component={SelectControlsPage}  label="Forms — Select Controls" />
+            <Route path="/forms-dependent"         component={DependentFieldsPage} label="Forms — Dependent Fields" />
+            <Route path="/forms-edit"              component={EditFormPage}         label="Forms — Edit Form" />
+            <Route path="/forms-wizard"            component={WizardPage}           label="Forms — Wizard" />
+            <Route path="/forms-dynamic"           component={DynamicFieldsPage}   label="Forms — Dynamic Fields" />
+            <Route path="/forms-cross-validation"  component={CrossValidationPage} label="Forms — Cross Validation" />
+            <Route path="/http" component={HttpTestPage} label="HTTP Client" />
+            <Route path="/routing" component={RoutingTestPage} label="Router" />
+            <Route path="/ssr" component={SSRTestPage} label="SSR" />
+            <Route path="/svg-canvas" component={SvgCanvasPage} label="SVG Canvas" />
+            <Route path="/about" component={AboutPage} label="About" />
+          </Router>
+        </main>
+
+        <AppFooter />
+      </div>
+    </div>
+  );
+}
+
+export default App;

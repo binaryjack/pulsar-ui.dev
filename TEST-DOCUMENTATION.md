@@ -2,7 +2,7 @@
 
 ## Overview
 
-Comprehensive test suite for Pulsar Framework showcase pages covering unit, integration, and E2E testing.
+Comprehensive test suite for Synetics framework showcase pages covering unit, integration, and E2E testing.
 
 ## Test Structure
 
@@ -31,7 +31,7 @@ Comprehensive test suite for Pulsar Framework showcase pages covering unit, inte
 ### Unit Tests
 
 ```bash
-cd packages/pulsar-ui.dev
+cd packages/synetics-ui.dev
 npm test                    # Run all unit tests
 npm test -- home.test       # Run specific test file
 npm test -- --coverage      # With coverage report

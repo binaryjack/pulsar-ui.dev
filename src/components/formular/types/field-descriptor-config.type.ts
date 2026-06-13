@@ -3,7 +3,7 @@
  * Used for declarative field definition with useFieldDescriptors hook
  */
 
-import type { IFieldDescriptor, ValidationConstraintConfig } from '@pulsar-framework/formular.dev';
+import type { IFieldDescriptor, ValidationConstraintConfig } from '@synetics/formular.dev';
 
 /**
  * Field configuration for a single field

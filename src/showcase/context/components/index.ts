@@ -2,11 +2,11 @@
  * Context Components Index
  */
 
-export { SettingsContext, SettingsProvider } from './settings-provider.psr'
-export { ThemeControls } from './theme-controls.psr'
-export { ThemeContext, ThemeProvider } from './theme-provider.psr'
-export { ThemedBox } from './themed-box.psr'
-export { UserControls } from './user-controls.psr'
-export { UserProfile } from './user-profile.psr'
-export { UserContext, UserProvider } from './user-provider.psr'
+export { SettingsContext, SettingsProvider } from './settings-provider.syn'
+export { ThemeControls } from './theme-controls.syn'
+export { ThemeContext, ThemeProvider } from './theme-provider.syn'
+export { ThemedBox } from './themed-box.syn'
+export { UserControls } from './user-controls.syn'
+export { UserProfile } from './user-profile.syn'
+export { UserContext, UserProvider } from './user-provider.syn'
 

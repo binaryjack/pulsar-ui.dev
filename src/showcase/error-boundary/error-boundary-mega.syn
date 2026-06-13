@@ -1,0 +1,180 @@
+/**
+ * Error Boundary Mega Demo
+ * Comprehensive demo with maximum visual feedback
+ */
+
+import { createSignal } from '@synetics/synetics.dev';
+import { PageHeader } from '../common/components/page-header.syn';
+import { DemoSection } from '../common/components/demo-section.syn';
+import { DemoButton } from '../common/components/demo-button.syn';
+import { VisualErrorBoundary } from './components/visual-boundary-wrapper.syn';
+import { SafeComponent, ErrorComponent } from './components';
+import { ErrorBoundaryControlPanel } from './components/error-boundary-control-panel.syn';
+import { ErrorBoundaryStatusSummary } from './components/error-boundary-status-summary.syn';
+import { ResetFlowDemo } from './components/reset-flow-demo.syn';
+import { CleanupDemo } from './components/cleanup-demo.syn';
+import { RetryCounterDemo } from './components/retry-counter-demo.syn';
+
+export component ErrorBoundaryMegaPage() {
+  // Individual error states for each section
+  const [basicError, setBasicError] = createSignal(false);
+  const [section1Error, setSection1Error] = createSignal(false);
+  const [section2Error, setSection2Error] = createSignal(false);
+  const [section3Error, setSection3Error] = createSignal(false);
+  const [nestedOuterError, setNestedOuterError] = createSignal(false);
+  const [nestedInnerError, setNestedInnerError] = createSignal(false);
+  
+  const [showResetFlowDemo, setShowResetFlowDemo] = createSignal(false);
+  const [showCleanupDemo, setShowCleanupDemo] = createSignal(false);
+  const [showRetryCounterDemo, setShowRetryCounterDemo] = createSignal(false);
+
+  return (
+    <div style="padding: 20px; background: linear-gradient(135deg, #0f172a, #1e293b); min-height: 100vh;">
+      <PageHeader 
+        title="ERROR BOUNDARIES MEGA DEMO"
+        emoji="🛡️"
+        color="#06b6d4"
+        description="Watch how error boundaries protect your app from crashes with MASSIVE VISUAL FEEDBACK!"
+      />
+
+      <div style="max-width: 1000px; margin: 0 auto;">
+        
+        {/* Master Control Panel */}
+        <ErrorBoundaryControlPanel 
+          basicError={basicError}
+          setBasicError={setBasicError}
+          section1Error={section1Error}
+          setSection1Error={setSection1Error}
+          section2Error={section2Error}
+          setSection2Error={setSection2Error}
+          section3Error={section3Error}
+          setSection3Error={setSection3Error}
+          nestedOuterError={nestedOuterError}
+          setNestedOuterError={setNestedOuterError}
+          nestedInnerError={nestedInnerError}
+          setNestedInnerError={setNestedInnerError}
+        />
+
+        {/* Basic Boundary */}
+        <VisualErrorBoundary title="BASIC BOUNDARY" borderColor="#06b6d4">
+          {() => basicError() 
+            ? <ErrorComponent message="Basic boundary error triggered!" title="Basic Component" /> 
+            : <SafeComponent title="Basic Component" />
+          }
+        </VisualErrorBoundary>
+
+        {/* Multiple Independent Boundaries */}
+        <DemoSection 
+          title="🔄 Multiple Independent Boundaries" 
+          description="Each boundary catches errors independently"
+          borderColor="#8b5cf6">
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            <VisualErrorBoundary title="SECTION 1" borderColor="#8b5cf6">
+              {() => section1Error() 
+                ? <ErrorComponent message="Section 1 crashed!" title="Section 1" /> 
+                : <SafeComponent title="Section 1" />
+              }
+            </VisualErrorBoundary>
+            
+            <VisualErrorBoundary title="SECTION 2" borderColor="#ec4899">
+              {() => section2Error() 
+                ? <ErrorComponent message="Section 2 crashed!" title="Section 2" /> 
+                : <SafeComponent title="Section 2" />
+              }
+            </VisualErrorBoundary>
+            
+            <VisualErrorBoundary title="SECTION 3" borderColor="#f59e0b">
+              {() => section3Error() 
+                ? <ErrorComponent message="Section 3 crashed!" title="Section 3" /> 
+                : <SafeComponent title="Section 3" />
+              }
+            </VisualErrorBoundary>
+          </div>
+        </DemoSection>
+
+        {/* Nested Boundaries */}
+        <DemoSection 
+          title="🪆 Nested Error Boundaries" 
+          description="Boundaries can be nested for granular error handling"
+          borderColor="#10b981">
+          
+          <VisualErrorBoundary title="OUTER BOUNDARY" borderColor="#10b981">
+            {() => nestedOuterError() 
+              ? <ErrorComponent message="Outer boundary error!" title="Outer Component" /> 
+              : (
+                <div>
+                  <SafeComponent title="Outer Component Safe" />
+                  
+                  <div style="margin-top: 20px;">
+                    <VisualErrorBoundary title="INNER BOUNDARY" borderColor="#ef4444">
+                      {() => nestedInnerError() 
+                        ? <ErrorComponent message="Inner boundary error!" title="Inner Component" /> 
+                        : <SafeComponent title="Inner Component Safe" />
+                      }
+                    </VisualErrorBoundary>
+                  </div>
+                </div>
+              )
+            }
+          </VisualErrorBoundary>
+        </DemoSection>
+        
+        {/* P1-07: External Reset Flow */}
+        <DemoSection
+          title="🔄 External resetTryer() API"
+          description="resetTryer(boundary) — imperatively reset a Tryer from outside the fallback."
+          borderColor="#06b6d4">
+          <div style="margin-bottom: 15px;">
+            <DemoButton
+              onClick={() => setShowResetFlowDemo(!showResetFlowDemo())}
+              color="#06b6d4">
+              {showResetFlowDemo() ? '🔄 Reset' : '▶ Run Demo'}
+            </DemoButton>
+          </div>
+          {showResetFlowDemo() ? <ResetFlowDemo /> : null}
+        </DemoSection>
+
+        {/* P1-07: Cleanup no-op */}
+        <DemoSection
+          title="🧹 cleanupTryer() Lifecycle"
+          description="cleanupTryer() is an intentional no-op — $REGISTRY.wire self-disposes on removal."
+          borderColor="#8b5cf6">
+          <div style="margin-bottom: 15px;">
+            <DemoButton
+              onClick={() => setShowCleanupDemo(!showCleanupDemo())}
+              color="#8b5cf6">
+              {showCleanupDemo() ? '🔄 Reset' : '▶ Run Demo'}
+            </DemoButton>
+          </div>
+          {showCleanupDemo() ? <CleanupDemo /> : null}
+        </DemoSection>
+
+        {/* P1-07: Retry counter with signal leak detection */}
+        <DemoSection
+          title="🔢 Reset Cycles + Signal Stability"
+          description="resetTryer() N times — $REGISTRY.getStats().signals stays stable (no leak)."
+          borderColor="#f59e0b">
+          <div style="margin-bottom: 15px;">
+            <DemoButton
+              onClick={() => setShowRetryCounterDemo(!showRetryCounterDemo())}
+              color="#f59e0b">
+              {showRetryCounterDemo() ? '🔄 Reset' : '▶ Run Demo'}
+            </DemoButton>
+          </div>
+          {showRetryCounterDemo() ? <RetryCounterDemo /> : null}
+        </DemoSection>
+
+        {/* Status Summary */}
+        <ErrorBoundaryStatusSummary 
+          basicError={basicError}
+          section1Error={section1Error}
+          section2Error={section2Error}
+          section3Error={section3Error}
+          nestedOuterError={nestedOuterError}
+          nestedInnerError={nestedInnerError}
+        />
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,95 @@
+/**
+ * Return Value Demo Component
+ * Demonstrates ApplicationRoot instance returned by pulse()
+ */
+
+import { createSignal, getCurrentAppRoot } from '@synetics/synetics.dev';
+import { ConsoleLogViewer } from '../../common/components/console-log-viewer.syn';
+import { useLogger } from '../../common/hooks/use-logger.ts';
+
+export const ReturnValueDemo = () => {
+  const [inspected, setInspected] = createSignal(false);
+  const [appInfo, setAppInfo] = createSignal<any>(null);
+  
+  // Use the logger hook
+  const logger = useLogger('[ReturnValueDemo]');
+  
+  const inspectApp = () => {
+    const app = getCurrentAppRoot();
+    if (app) {
+      setAppInfo({
+        hasServiceManager: !!app.serviceManager,
+        hasRegistry: !!app.registry,
+        hasEventDelegator: !!app.eventDelegator,
+        rootElement: app.rootElement?.tagName || 'Unknown'
+      });
+      setInspected(true);
+      logger.log(`✅ ApplicationRoot found - Root: <${app.rootElement?.tagName}>`);
+      logger.info(`ServiceManager: ${app.serviceManager ? '✓ Present' : '✗ Missing'}`);
+      logger.info(`Registry: ${app.registry ? '✓ Present' : '✗ Missing'}`);
+      logger.info(`EventDelegator: ${app.eventDelegator ? '✓ Present' : '✗ Missing'}`);
+    } else {
+      logger.error('❌ No ApplicationRoot found!');
+      alert('⚠️ No ApplicationRoot found!');
+    }
+  };
+  
+  return (
+    <div style="margin-bottom: 20px; padding: 20px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 8px;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="padding: 30px; background: rgba(16, 185, 129, 0.3); border-radius: 8px; transition: all 0.3s;">
+          <div style="font-size: 48px; margin-bottom: 10px;">⚡</div>
+          <div style="color: white; font-size: 18px; font-weight: bold; margin-bottom: 10px;">
+            This Page is Running in pulse()
+          </div>
+          <div style="color: rgba(255,255,255,0.8); font-size: 14px;">
+            Every Pulsar app starts with pulse() which returns an ApplicationRoot
+          </div>
+        </div>
+      </div>
+      
+      <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;">
+        <button 
+          onclick={() => inspectApp()}
+          style="padding: 12px 24px; background: white; color: #f59e0b; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+          Inspect ApplicationRoot
+        </button>
+      </div>
+      
+      {inspected() && appInfo() && (
+        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #10b981;">
+          <div style="color: #10b981; font-weight: bold; margin-bottom: 10px; font-size: 14px;">✓ ApplicationRoot Found!</div>
+          <div style="color: rgba(255,255,255,0.9); font-family: 'Consolas', monospace; font-size: 13px;">
+            <div style="padding: 4px 0;">serviceManager: <span style="color: #60a5fa;">{appInfo().hasServiceManager ? '✓ Available' : '✗ Missing'}</span></div>
+            <div style="padding: 4px 0;">registry: <span style="color: #60a5fa;">{appInfo().hasRegistry ? '✓ Available' : '✗ Missing'}</span></div>
+            <div style="padding: 4px 0;">eventDelegator: <span style="color: #60a5fa;">{appInfo().hasEventDelegator ? '✓ Available' : '✗ Missing'}</span></div>
+            <div style="padding: 4px 0;">rootElement: <span style="color: #60a5fa;">&lt;{appInfo().rootElement}&gt;</span></div>
+          </div>
+        </div>
+      )}
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; border-left: 4px solid #fbbf24;">
+        <div style="color: #fbbf24; font-weight: bold; margin-bottom: 10px; font-size: 14px;">📊 ApplicationRoot API:</div>
+        <div style="color: rgba(255,255,255,0.9); font-family: 'Consolas', monospace; font-size: 13px;">
+          <div style="padding: 4px 0;">const app = pulse(Component, options);</div>
+          <div style="padding: 4px 0;">app.mount(): <span style="color: #10b981;">mounts component</span></div>
+          <div style="padding: 4px 0;">app.unmount(): <span style="color: #ef4444;">unmounts component</span></div>
+          <div style="padding: 4px 0;">app.rootElement: <span style="color: #60a5fa;">HTMLElement</span></div>
+          <div style="padding: 4px 0;">app.serviceManager: <span style="color: #60a5fa;">ServiceManager</span></div>
+          <div style="padding: 4px 0;">app.registry: <span style="color: #60a5fa;">Registry</span></div>
+          <div style="padding: 4px 0;">getCurrentAppRoot(): <span style="color: #60a5fa;">access from components</span></div>
+        </div>
+      </div>
+      
+      <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; color: white; font-size: 13px; margin-top: 15px;">
+        <strong>💡 This demonstrates:</strong> pulse() returns an ApplicationRoot instance containing serviceManager, registry, and eventDelegator for the entire app.
+      </div>
+      
+      <ConsoleLogViewer 
+        logs={logger.logs} 
+        onClear={logger.clear}
+        title="ApplicationRoot Inspection Logs"
+      />
+    </div>
+  );
+};

@@ -1,0 +1,29 @@
+/**
+ * Demo Section Component
+ * Shared showcase section wrapper with consistent styling
+ */
+
+import type { Accessor } from '@synetics/synetics.dev';
+
+interface DemoSectionProps {
+  title: string
+  description?: string
+  borderColor?: string
+  children: JSX.Element | Accessor<JSX.Element>
+}
+
+export const DemoSection = ({ title, description, borderColor = '#3b82f6', children }: DemoSectionProps) => {
+  const renderChildren = typeof children === 'function' ? children() : children;
+
+  return (
+    <section className="demo-section" style={`--section-accent: ${borderColor};`}>
+      <h3 className="demo-section__title">{title}</h3>
+      {description ? (
+        <p className="demo-section__description">{description}</p>
+      ) : null}
+      <div className="demo-section__content">
+        {renderChildren}
+      </div>
+    </section>
+  );
+};

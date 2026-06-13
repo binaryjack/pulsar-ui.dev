@@ -1,4 +1,4 @@
-/// <reference path="../../pulsar.dev/src/types/jsx.d.ts" />
+/// <reference path="../../synetics.dev/src/types/jsx.d.ts" />
 
 /**
  * Re-export JSX types from workspace root

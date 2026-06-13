@@ -1,11 +1,11 @@
 /**
- * @pulsar-framework/ui - Component Library
+ * @synetics/ui - Component Library
  *
- * Re-exports UI components and design tokens for the Pulsar framework.
+ * Re-exports UI components and design tokens for the Synetics framework.
  */
 
 // Re-export design tokens
-export * from '@pulsar-framework/design-tokens';
+export * from '@synetics/design-tokens';
 
 // Component exports - exporting from source directly for now
 export * from './components/atoms/avatar/index';

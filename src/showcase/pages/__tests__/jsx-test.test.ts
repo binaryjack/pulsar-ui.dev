@@ -4,7 +4,7 @@
  */
 
 import { beforeEach, describe, expect, it } from 'vitest';
-import { JsxTestPage } from '../jsx-test.psr';
+import { JsxTestPage } from '../jsx-test.syn';
 
 describe('JsxTestPage', () => {
   let container: HTMLElement;

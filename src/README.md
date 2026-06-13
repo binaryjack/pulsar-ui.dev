@@ -5,7 +5,7 @@
 ```
 src/
 ├── main.ts                 # Entry point - bootstraps Pulsar app
-├── main.psr                # Main App component with basic feature tests
+├── main.syn                # Main App component with basic feature tests
 ├── index.ts                # Module exports
 ├── types.ts                # Type definitions
 ├── components/             # Production UI components
@@ -14,8 +14,8 @@ src/
 ├── styles/                 # CSS styles
 ├── types/                  # TypeScript type definitions
 └── lab/                    # 🧪 Experimental & Test Files
-    ├── feature-tests.psr   # Comprehensive feature test suite
-    ├── test-*.psr          # Individual test files (35+ files)
+    ├── feature-tests.syn   # Comprehensive feature test suite
+    ├── test-*.syn          # Individual test files (35+ files)
     ├── main-*.ts/psr       # Alternative entry points
     ├── debug-tests/        # Debug test directory
     ├── tests/              # Test suite directory
@@ -41,7 +41,7 @@ src/
 
 ### 🧪 Feature Test Suite
 
-Located in `lab/feature-tests.psr`, this file systematically tests:
+Located in `lab/feature-tests.syn`, this file systematically tests:
 
 1. **Basic Component Rendering** - Props and JSX
 2. **createSignal** - Reactive state
@@ -58,18 +58,18 @@ Located in `lab/feature-tests.psr`, this file systematically tests:
 ### Basic Test (Current)
 
 ```bash
-cd packages/pulsar-ui.dev
+cd packages/synetics-ui.dev
 pnpm dev
 ```
 
-This runs `main.ts` → `main.psr` with basic signal functionality.
+This runs `main.ts` → `main.syn` with basic signal functionality.
 
 ### Full Feature Suite
 
 To test all features, update `main.ts`:
 
 ```typescript
-import { FeatureTestSuite } from './lab/feature-tests.psr';
+import { FeatureTestSuite } from './lab/feature-tests.syn';
 pulse(FeatureTestSuite(), { root: '#app' });
 ```
 
@@ -103,8 +103,8 @@ component MyComponent({ propName }: IMyProps) {
 
 **Moved to `lab/` folder:**
 
-- 35+ test files (`test-*.psr`)
-- Alternative main files (`main-*.ts`, `main-*.psr`)
+- 35+ test files (`test-*.syn`)
+- Alternative main files (`main-*.ts`, `main-*.syn`)
 - Debug directories (`debug-tests/`, `tests/`)
 - Experimental showcase variants
 - Disabled test runners
@@ -112,7 +112,7 @@ component MyComponent({ propName }: IMyProps) {
 **Kept in root:**
 
 - Production components
-- Main entry points (main.ts, main.psr)
+- Main entry points (main.ts, main.syn)
 - Type definitions
 - Design system
 - Showcase (stable version)
@@ -131,4 +131,4 @@ component MyComponent({ propName }: IMyProps) {
 
 - Component API: `/docs`
 - Architecture: `/docs/architecture`
-- Transformer: `packages/pulsar-transformer/README.md`
+- Transformer: `packages/synetics-transformer/README.md`

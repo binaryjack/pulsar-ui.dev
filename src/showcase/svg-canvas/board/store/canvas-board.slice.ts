@@ -1,6 +1,6 @@
 /** Board slice — reducer, actions, initial state. */
 
-import type { IStoreAction } from '@pulsar-framework/pulsar.dev';
+import type { IStoreAction } from '@synetics/synetics.dev';
 import type { IBoardSliceState, IDrawPoint, ToolKind } from '../model/i-board';
 
 // ── Initial state ─────────────────────────────────────────────────────────────

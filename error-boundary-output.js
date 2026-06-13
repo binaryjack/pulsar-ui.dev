@@ -3,7 +3,7 @@
  * Testing: Tryer/Catcher error boundary pattern
  */
 
-import { createSignal, Tryer, Catcher } from '@pulsar-framework/pulsar.dev';
+import { createSignal, Tryer, Catcher } from '@synetics/synetics.dev';
 
 // Components that can throw errors
 function SafeComponent() {

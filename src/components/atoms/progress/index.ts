@@ -3,5 +3,5 @@
  * Exports the Progress component
  */
 
-export { Progress } from './progress.psr';
+export { Progress } from './progress.syn';
 export type { IProgressProps } from './progress.type';

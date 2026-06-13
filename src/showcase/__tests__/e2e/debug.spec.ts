@@ -14,7 +14,7 @@ test('Debug - Check page state', async ({ page }) => {
   console.log('Body text length:', bodyText?.length);
   console.log('Body contains "ROUTER DEBUG":', bodyText?.includes('ROUTER DEBUG'));
   console.log('Body contains "Core Reactivity":', bodyText?.includes('Core Reactivity'));
-  console.log('Body contains "Pulsar Framework":', bodyText?.includes('Pulsar Framework'));
+  console.log('Body contains "Synetics framework":', bodyText?.includes('Synetics framework'));
 
   expect(true).toBe(true);
 });

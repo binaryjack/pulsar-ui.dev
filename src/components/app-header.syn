@@ -1,0 +1,43 @@
+/**
+ * App Header
+ * Sticky top bar with branding, theme toggle.
+ * Module-level theme signal — readable by any component.
+ */
+
+import { createSignal } from '@synetics/synetics.dev';
+
+// Read persisted theme; default dark
+const _initial = (() => {
+  try { return localStorage.getItem('__pulsar_theme__') as 'dark' | 'light' | null; } catch { return null; }
+})() ?? 'dark';
+
+export const [_appTheme, _setAppTheme] = createSignal<'dark' | 'light'>(_initial);
+
+export const AppHeader = () => {
+  const toggleTheme = () => {
+    const next: 'dark' | 'light' = _appTheme() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    _setAppTheme(next);
+    try { localStorage.setItem('__pulsar_theme__', next); } catch { /* noop */ }
+  };
+
+  return (
+    <header className="app-header">
+      <div className="app-header__brand">
+        <h1 className="app-header__logo">⚡ Pulsar</h1>
+        <span className="app-header__badge">v2</span>
+        <span className="app-header__subtitle">Framework Showcase</span>
+      </div>
+
+      <div className="app-header__actions">
+        <button
+          className="theme-toggle"
+          onClick={toggleTheme}
+          title="Toggle light / dark mode"
+          style={() => `background: transparent; border: 1px solid var(--color-border); color: var(--color-text-muted); width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 6px; cursor: pointer; font-size: 16px; transition: border-color 0.15s;`}>
+          {() => _appTheme() === 'dark' ? '☀️' : '🌙'}
+        </button>
+      </div>
+    </header>
+  );
+};

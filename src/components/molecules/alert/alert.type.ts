@@ -2,7 +2,7 @@
  * Alert component props interface
  */
 
-import type { Pulsar } from '@pulsar-framework/pulsar.dev';
+import type { Pulsar } from '@synetics/synetics.dev';
 import type { AlertVariant } from '../../enums/alert-variant.type';
 
 /**

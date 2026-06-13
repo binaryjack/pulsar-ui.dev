@@ -2,7 +2,7 @@
  * Slider component props interface
  */
 
-import type { Pulsar } from '@pulsar-framework/pulsar.dev';
+import type { Pulsar } from '@synetics/synetics.dev';
 
 export interface ISliderProps extends Pulsar.HtmlExtends<'div'> {
   /**

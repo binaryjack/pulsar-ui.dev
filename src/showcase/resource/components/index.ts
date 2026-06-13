@@ -2,14 +2,14 @@
  * Resource Components Index
  */
 
-export { CacheDemo } from './cache-demo.psr';
-export { CoordinationDemo } from './coordination-demo.psr';
-export { DeduplicationDemo } from './deduplication-demo.psr';
-export { ErrorResourceDemo } from './error-resource-demo.psr';
-export { ImageCard } from './image-card.psr';
-export { ImageGalleryDemo } from './image-gallery-demo.psr';
-export { RefetchClearDemo } from './refetch-clear-demo.psr';
-export { SuspendControlDemo } from './suspend-control-demo.psr';
-export { SuspenseSkeleton } from './suspense-skeleton.psr';
-export { UserCard } from './user-card.psr';
-export { WaitingDemo } from './waiting-demo.psr';
+export { CacheDemo } from './cache-demo.syn';
+export { CoordinationDemo } from './coordination-demo.syn';
+export { DeduplicationDemo } from './deduplication-demo.syn';
+export { ErrorResourceDemo } from './error-resource-demo.syn';
+export { ImageCard } from './image-card.syn';
+export { ImageGalleryDemo } from './image-gallery-demo.syn';
+export { RefetchClearDemo } from './refetch-clear-demo.syn';
+export { SuspendControlDemo } from './suspend-control-demo.syn';
+export { SuspenseSkeleton } from './suspense-skeleton.syn';
+export { UserCard } from './user-card.syn';
+export { WaitingDemo } from './waiting-demo.syn';

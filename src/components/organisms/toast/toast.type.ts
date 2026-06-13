@@ -2,7 +2,7 @@
  * Toast component props interface
  */
 
-import type { Pulsar } from '@pulsar-framework/pulsar.dev';
+import type { Pulsar } from '@synetics/synetics.dev';
 import type { AlertVariant } from '../../enums/alert-variant.type';
 
 export interface IToastProps extends Pulsar.HtmlExtends<'div'> {

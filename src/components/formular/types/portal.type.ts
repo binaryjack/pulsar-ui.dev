@@ -1,4 +1,4 @@
-/// <reference path="../../../pulsar.dev/pulsar.d.ts" />
+/// <reference path="../../../synetics.dev/pulsar.d.ts" />
 
 /**
  * Portal component type definitions

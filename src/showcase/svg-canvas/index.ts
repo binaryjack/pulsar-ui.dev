@@ -1,2 +1,2 @@
-export { LineCanvasDemo } from './board/components/line-canvas.psr';
-export { SvgCanvasPage } from './svg-canvas-page.psr';
+export { LineCanvasDemo } from './board/components/line-canvas.syn';
+export { SvgCanvasPage } from './svg-canvas-page.syn';

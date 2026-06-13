@@ -2,8 +2,8 @@
  * Routing Components Index
  */
 
-export { GuardDemo } from './guard-demo.psr';
-export { NavigationDemo } from './navigation-demo.psr';
-export { NestedOutletDemo } from './nested-outlet-demo.psr';
-export { ParamsDemo } from './params-demo.psr';
-export { QueryDemo } from './query-demo.psr';
+export { GuardDemo } from './guard-demo.syn';
+export { NavigationDemo } from './navigation-demo.syn';
+export { NestedOutletDemo } from './nested-outlet-demo.syn';
+export { ParamsDemo } from './params-demo.syn';
+export { QueryDemo } from './query-demo.syn';

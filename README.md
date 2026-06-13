@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/binaryjack/pulsar-design-system/main/art-kit/SVG/pulsar-logo.svg" alt="Pulsar UI" width="400"/>
+  <img src="https://raw.githubusercontent.com/binaryjack/synetics-design-system/main/art-kit/SVG/pulsar-logo.svg" alt="Pulsar UI" width="400"/>
 </p>
 
 <p align="center">
-  <strong>Component library for the Pulsar framework</strong>
+  <strong>Component library for the Synetics framework</strong>
 </p>
 
 <p align="center">
@@ -30,11 +30,11 @@
 
 ## About
 
-**@pulsar/ui** is the official component library for the Pulsar framework. It provides production-ready, accessible UI components built with fine-grained reactivity, TailwindCSS styling, and a fluent builder API for configuration.
+**@pulsar/ui** is the official component library for the Synetics framework. It provides production-ready, accessible UI components built with fine-grained reactivity, TailwindCSS styling, and a fluent builder API for configuration.
 
 ### Key Features
 
-- 🎨 **Design Tokens**: Uses [@pulsar/design-tokens](https://github.com/binaryjack/pulsar-design-system) for consistent styling
+- 🎨 **Design Tokens**: Uses [@pulsar/design-tokens](https://github.com/binaryjack/synetics-design-system) for consistent styling
 - 📏 **Size System**: Standardized sizing (xs, sm, md, lg, xl) across all components
 - 🎭 **Variant System**: Multiple style variants (solid, outline, ghost, soft)
 - 🏗️ **Builder Pattern**: Fluent API for component configuration
@@ -155,7 +155,7 @@ analytics.track('event');
 └── components/        # Component composition
 ```
 
-🔗 **View Source:** [packages/pulsar-ui.dev/src/showcase](./src/showcase)
+🔗 **View Source:** [packages/synetics-ui.dev/src/showcase](./src/showcase)
 
 ### Run Showcase Locally
 
@@ -176,7 +176,7 @@ pnpm add @pulsar/ui
 
 The component library requires:
 
-- `pulsar` - The Pulsar framework
+- `pulsar` - The Synetics framework
 - `@pulsar/design-tokens` - Design system tokens
 - `tailwindcss` - Utility-first CSS framework
 
@@ -330,16 +330,16 @@ new ComponentConfig(color) // 'primary' | 'secondary' | 'success' | 'warning' | 
 
 ## Ecosystem
 
-Part of the Pulsar framework ecosystem:
+Part of the Synetics framework ecosystem:
 
 | Package                   | Description                      | Repository                                                   |
 | ------------------------- | -------------------------------- | ------------------------------------------------------------ |
-| **pulsar.dev**            | Main reactive framework          | [GitHub](https://github.com/binaryjack/pulsar.dev)           |
-| **@pulsar/ui**            | Component library (this package) | [GitHub](https://github.com/binaryjack/pulsar-ui.dev)        |
-| **@pulsar/design-tokens** | Design tokens & brand assets     | [GitHub](https://github.com/binaryjack/pulsar-design-system) |
-| **@pulsar/transformer**   | JSX transformer                  | [GitHub](https://github.com/binaryjack/pulsar-transformer)   |
-| **@pulsar/vite-plugin**   | Vite integration                 | [GitHub](https://github.com/binaryjack/pulsar-vite-plugin)   |
-| **pulsar-demo**           | Example applications             | [GitHub](https://github.com/binaryjack/pulsar-demo)          |
+| **synetics.dev**            | Main reactive framework          | [GitHub](https://github.com/binaryjack/synetics.dev)           |
+| **@pulsar/ui**            | Component library (this package) | [GitHub](https://github.com/binaryjack/synetics-ui.dev)        |
+| **@pulsar/design-tokens** | Design tokens & brand assets     | [GitHub](https://github.com/binaryjack/synetics-design-system) |
+| **@pulsar/transformer**   | JSX transformer                  | [GitHub](https://github.com/binaryjack/synetics-transformer)   |
+| **@pulsar/vite-plugin**   | Vite integration                 | [GitHub](https://github.com/binaryjack/synetics-vite-plugin)   |
+| **synetics-demo**           | Example applications             | [GitHub](https://github.com/binaryjack/synetics-demo)          |
 
 ---
 
@@ -358,8 +358,8 @@ Contributions welcome! We need help with:
 
 ```bash
 # Clone the repository
-git clone https://github.com/binaryjack/pulsar-ui.dev.git
-cd pulsar-ui.dev
+git clone https://github.com/binaryjack/synetics-ui.dev.git
+cd synetics-ui.dev
 
 # Install dependencies
 pnpm install
@@ -384,7 +384,7 @@ pnpm dev
 
 ## License
 
-MIT License - Copyright (c) 2026 Pulsar Framework
+MIT License - Copyright (c) 2026 Synetics framework
 
 See [LICENSE](./LICENSE) for full details.
 
@@ -404,11 +404,11 @@ Design inspiration from:
 
 <p align="center">
   <strong>@pulsar/ui - v0.1.0</strong><br/>
-  Component library for the Pulsar framework
+  Component library for the Synetics framework
 </p>
 
 <p align="center">
-  <a href="https://github.com/binaryjack/pulsar-ui.dev">GitHub</a> •
-  <a href="https://github.com/binaryjack/pulsar.dev">Pulsar Framework</a> •
+  <a href="https://github.com/binaryjack/synetics-ui.dev">GitHub</a> •
+  <a href="https://github.com/binaryjack/synetics.dev">Synetics framework</a> •
   <a href="https://www.linkedin.com/in/tadeopiana/">Connect with the Creator</a>
 </p>

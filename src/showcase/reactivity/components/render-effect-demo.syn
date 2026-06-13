@@ -1,0 +1,78 @@
+/**
+ * createRenderEffect Demo
+ * Exercises createRenderEffect alongside createEffect to show registration order.
+ *
+ * Note: Pulsar's scheduler is synchronous — signal writes call subscribers
+ * immediately (no queueMicrotask/rAF). Both primitives fire in the same turn.
+ * createRenderEffect is an alias for createEffect in the current runtime and
+ * serves as a semantic marker for effects that must complete before the frame
+ * is composited. The log shows both fire in registration order.
+ */
+
+import { createSignal, createEffect, createRenderEffect } from '@synetics/synetics.dev';
+
+export component RenderEffectDemo() {
+  const [trigger, setTrigger] = createSignal(0);
+  const [entries, setEntries] = createSignal<{ label: string; color: string; ts: number }[]>([]);
+
+  const addEntry = (label: string, color: string) =>
+    setEntries((prev) => [...prev, { label, color, ts: performance.now() }].slice(-12));
+
+  // Registered first — fires first in both regular and re-run
+  createRenderEffect(() => {
+    trigger();
+    addEntry('createRenderEffect', '#a5b4fc');
+  });
+
+  // Registered second — fires second
+  createEffect(() => {
+    trigger();
+    addEntry('createEffect', '#34d399');
+  });
+
+  const clear = () => setEntries([]);
+
+  return (
+    <div class="demo-card">
+      <h3 class="demo-title">7️⃣ createRenderEffect — Sync-Before-Paint</h3>
+
+      <div
+        style="background: #0f172a; border: 1px solid #1e3a5f; border-radius: 6px; padding: 10px; margin-bottom: 14px; font-size: 12px; color: #94a3b8;"
+      >
+        <strong style="color: #60a5fa;">ℹ️ Pulsar scheduler note</strong>
+        <p style="margin: 4px 0 0;">
+          Pulsar's batch scheduler is synchronous — <code>createRenderEffect</code> is currently
+          an alias for <code>createEffect</code>. Both fire immediately on signal write.
+          The primitive exists as a semantic marker and upgrade path for when an async
+          scheduler is introduced.
+        </p>
+      </div>
+
+      <p class="demo-desc">
+        Both effects subscribe to <code>trigger</code>. Each trigger increments produce
+        two log entries in registration order: <span style="color: #a5b4fc;">createRenderEffect</span> first,
+        <span style="color: #34d399;"> createEffect</span> second.
+      </p>
+
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <button class="submit-btn" onClick={() => setTrigger((n) => n + 1)}>
+          ⚡ Trigger ({trigger()})
+        </button>
+        <button class="submit-btn" onClick={clear} style="background: #374151;">
+          Clear
+        </button>
+      </div>
+
+      <div class="state-panel">
+        <strong style="color: #94a3b8; font-size: 12px;">Execution log</strong>
+        <div style="max-height: 160px; overflow-y: auto; font-size: 11px; font-family: monospace; margin-top: 6px;">
+          {entries().map((e) => (
+            <div style={`color: ${e.color}; margin-bottom: 3px;`}>
+              <span style="color: #4b5563;">t={e.ts.toFixed(2)}ms</span> {e.label}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

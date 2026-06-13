@@ -4,7 +4,7 @@
  */
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ReactivityTestPage } from '../reactivity-test.psr';
+import { ReactivityTestPage } from '../reactivity-test.syn';
 
 describe('ReactivityTestPage', () => {
   let container: HTMLElement;

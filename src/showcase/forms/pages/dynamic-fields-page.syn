@@ -1,0 +1,245 @@
+/**
+ * Forms Demo — Dynamic Field Array
+ * Demonstrates: pre-created field slots with show/hide via count signal.
+ *
+ * Approach: formular does not natively support runtime field creation, so we
+ * pre-create N slots (MAX_EMAILS = 5) and reveal them one at a time.
+ * This models the most common real-world pattern: bounded dynamic lists.
+ *
+ * A `count` signal drives which slots are visible.
+ * "Add email" increments count (up to MAX_EMAILS).
+ * "Remove last" decrements count and clears the vacated slot.
+ *
+ * On submit: only the first `count` slots are included via getData() slice.
+ *
+ * Schema note: optional slots use plain f.string() (no .email() validator).
+ * Live email validation on `''` would fail the regex immediately when a slot
+ * is revealed or after removeLast clears it. Email format is checked in
+ * handleSubmit after extracting the visible values.
+ */
+
+import { createSignal, onCleanup } from '@synetics/synetics.dev';
+import { createForm, f } from '@synetics/formular.dev';
+import type { IExtendedInput, IFormular } from '@synetics/formular.dev';
+import { PageHeader } from '../../common/components/page-header.syn';
+import { FormProvider, TextField } from '@/components/formular';
+
+type DynamicEmailsData = {
+  email0: string;
+  email1: string;
+  email2: string;
+  email3: string;
+  email4: string;
+};
+
+const MAX_EMAILS = 5;
+
+const FIELD_KEYS: ReadonlyArray<keyof DynamicEmailsData> = [
+  'email0',
+  'email1',
+  'email2',
+  'email3',
+  'email4',
+];
+
+// Simple email regex used for submit-time format checking only.
+// Optional slots use f.string() (no live .email() validator) to avoid
+// 'invalid email' errors appearing on empty values.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+type SubmitStatus = 'idle' | 'success' | 'error';
+
+export component DynamicFieldsPage() {
+  const [form, setForm] = createSignal<IFormular<DynamicEmailsData> | null>(null);
+  const [count, setCount]               = createSignal<number>(1);
+  const [submitStatus, setSubmitStatus] = createSignal<SubmitStatus>('idle');
+  const [submitted, setSubmitted]       = createSignal<string[]>([]);
+  const [formatError, setFormatError]   = createSignal<string | null>(null);
+
+  createForm<DynamicEmailsData>({
+    schema: f.object({
+      // email0 is always visible — full live validation.
+      email0: f.string().email().nonempty().debounce(200),
+      // Slots 1-4 are optional. Using plain f.string() avoids the email regex
+      // firing on '' when a slot is first revealed or just cleared by removeLast.
+      // Format is enforced in handleSubmit.
+      email1: f.string().debounce(200),
+      email2: f.string().debounce(200),
+      email3: f.string().debounce(200),
+      email4: f.string().debounce(200),
+    }),
+    defaultValues: { email0: '', email1: '', email2: '', email3: '', email4: '' },
+  }).then(setForm);
+
+  onCleanup(() => form()?.clear());
+
+  const addEmail = () => {
+    setCount((c) => Math.min(c + 1, MAX_EMAILS));
+    setSubmitStatus('idle');
+    setFormatError(null);
+  };
+
+  const removeLast = () => {
+    const c = count();
+    if (c <= 1) return;
+    // Decrement first so the slot is hidden before setValue fires.
+    // This prevents the now-hidden field from briefly showing a validation error
+    // in response to being cleared.
+    setCount((prev) => Math.max(prev - 1, 1));
+    const f = form();
+    if (f) {
+      // field.clear() does not exist on IExtendedInput — clear() lives on IInputBase
+      // (field.input.clear()) or on IFormular (f.clearField). Use clearField via the form.
+      const key: keyof DynamicEmailsData = FIELD_KEYS[c - 1];
+      f.clearField(String(key));
+    }
+    setSubmitStatus('idle');
+    setFormatError(null);
+  };
+
+  const handleSubmit = async () => {
+    const f = form();
+    if (!f) return;
+
+    setFormatError(null);
+
+    // Only validate the visible email0 slot via formular (it has live validators).
+    // Slots 1-4 use plain f.string() so validateForm() has nothing to fire on them.
+    await f.validateForm();
+    const email0Field: IExtendedInput | undefined = f.getField('email0');
+    if (!email0Field?.input.isValid) {
+      setSubmitStatus('error');
+      return;
+    }
+
+    const data = f.getData() as Record<keyof DynamicEmailsData, unknown>;
+    const visibleKeys = FIELD_KEYS.slice(0, count());
+    const emails = visibleKeys
+      .map((key) => String(data[key] ?? '').trim())
+      .filter(Boolean);
+
+    // Submit-time email format check for optional slots (1-4).
+    const badIdx = emails.findIndex((e, i) => i > 0 && !EMAIL_RE.test(e));
+    if (badIdx !== -1) {
+      setFormatError(`Email ${badIdx + 1}: "${emails[badIdx]}" is not a valid email address.`);
+      setSubmitStatus('error');
+      return;
+    }
+
+    setSubmitted(emails);
+    setSubmitStatus('success');
+  };
+
+  return (
+    <div>
+      <PageHeader
+        title="Dynamic Field Array"
+        emoji="➕"
+        color="#f59e0b"
+        description="Pre-created slots (5 max) revealed one-by-one. Demonstrates bounded dynamic lists with formular."
+      />
+
+      {!form() ? (
+        <p class="status-loading">⏳ Initialising form…</p>
+      ) : (
+        <FormProvider form={form()!} onSaveCallback={() => {}} onQuitCallback={() => {}}>
+          <div class="demo-card">
+            <p class="demo-desc">
+              Formular manages a fixed set of <code>email0…email4</code> fields. Only
+              the first <strong>{() => String(count())}</strong> slot(s) are active and validated.
+            </p>
+
+            <div style="display:flex;flex-direction:column;gap:.75rem">
+              {/* Slot 0 — always visible */}
+              <div style="display:flex;align-items:flex-start;gap:.5rem">
+                <div style="flex:1">
+                  <TextField name="email0" label="Email 1" showErrors showGuides />
+                </div>
+              </div>
+
+              {/* Slot 1 */}
+              {() => count() > 1 ? (
+                <div style="display:flex;align-items:flex-start;gap:.5rem">
+                  <div style="flex:1">
+                    <TextField name="email1" label="Email 2" showErrors showGuides />
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Slot 2 */}
+              {() => count() > 2 ? (
+                <div style="display:flex;align-items:flex-start;gap:.5rem">
+                  <div style="flex:1">
+                    <TextField name="email2" label="Email 3" showErrors showGuides />
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Slot 3 */}
+              {() => count() > 3 ? (
+                <div style="display:flex;align-items:flex-start;gap:.5rem">
+                  <div style="flex:1">
+                    <TextField name="email3" label="Email 4" showErrors showGuides />
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Slot 4 */}
+              {() => count() > 4 ? (
+                <div style="display:flex;align-items:flex-start;gap:.5rem">
+                  <div style="flex:1">
+                    <TextField name="email4" label="Email 5" showErrors showGuides />
+                  </div>
+                </div>
+              ) : null}
+            </div>
+
+            {/* Controls */}
+            <div style="display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap">
+              <button
+                type="button"
+                class="btn-demo btn-demo--success btn-demo--sm"
+                onclick={addEmail}
+                disabled={() => count() >= MAX_EMAILS}
+              >
+                + Add email
+              </button>
+
+              <button
+                type="button"
+                class="btn-demo btn-demo--danger btn-demo--sm"
+                onclick={removeLast}
+                disabled={() => count() <= 1}
+              >
+                − Remove last
+              </button>
+
+              <button type="button" class="btn-demo btn-demo--primary btn-demo--sm" onclick={handleSubmit}>
+                Submit {() => String(count())} email{() => count() > 1 ? 's' : ''}
+              </button>
+            </div>
+
+            {/* Results */}
+            {() => submitStatus() === 'success' ? (
+              <div class="demo-banner demo-banner--success">
+                <strong>✓ Submitted</strong>
+                <ul style="margin-top:.25rem;font-size:.8rem;padding-left:1.25rem">
+                  {submitted().map((email, i) => (
+                    <li key={String(i)}>{email}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
+            {() => submitStatus() === 'error' ? (
+              <div class="demo-banner demo-banner--error">
+                <strong>✗ {() => formatError() ?? 'Fix validation errors above.'}</strong>
+              </div>
+            ) : null}
+
+          </div>
+        </FormProvider>
+      )}
+    </div>
+  );
+}

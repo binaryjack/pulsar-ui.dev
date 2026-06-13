@@ -4,7 +4,7 @@
  */
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { AboutPage } from '../about.psr';
+import { AboutPage } from '../about.syn';
 
 describe('AboutPage', () => {
   let container: HTMLElement;
@@ -25,7 +25,7 @@ describe('AboutPage', () => {
       container.appendChild(page);
 
       const heading = container.querySelector('h2');
-      expect(heading?.textContent).toContain('About Pulsar Framework');
+      expect(heading?.textContent).toContain('About Synetics framework');
     });
 
     it('should render key features list', () => {

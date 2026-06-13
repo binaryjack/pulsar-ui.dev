@@ -1,0 +1,66 @@
+/**
+ * PHASE 5: Context API & Dependency Injection
+ * Refactored with modular components
+ */
+
+import { PageHeader } from '../common/components/page-header.syn';
+import { DemoSection } from '../common/components/demo-section.syn';
+import { 
+  ThemeContext, 
+  ThemeProvider, 
+  UserContext, 
+  UserProvider, 
+  SettingsContext, 
+  SettingsProvider 
+} from './components/index.ts';
+import { ThemedBox } from './components/themed-box.syn';
+import { UserProfile } from './components/user-profile.syn';
+import { ThemeControls } from './components/theme-controls.syn';
+import { UserControls } from './components/user-controls.syn';
+import { MultiContextDashboard } from './components/multi-context-dashboard.syn';
+
+export component ContextTestPage() {
+  return (
+    <div>
+      <PageHeader 
+        title="Context API & Dependency Injection"
+        emoji="🔌"
+        color="#8b5cf6"
+        description="Demonstrates createContext, useContext, and Provider pattern"
+      />
+      
+      <ThemeProvider>
+        <UserProvider>
+          <SettingsProvider>
+            <DemoSection 
+              title="1️⃣ Theme Context" 
+              description="Share theme state across components without prop drilling"
+              borderColor="#8b5cf6">
+              <div style="margin-bottom: 20px;">
+                <ThemeControls />
+              </div>
+              <ThemedBox />
+            </DemoSection>
+            
+            <DemoSection 
+              title="2️⃣ User Context" 
+              description="Manage user authentication state globally"
+              borderColor="#10b981">
+              <div style="margin-bottom: 20px;">
+                <UserControls />
+              </div>
+              <UserProfile />
+            </DemoSection>
+            
+            <DemoSection 
+              title="3️⃣ Multiple Contexts" 
+              description="One component consuming ThemeContext + UserContext + SettingsContext simultaneously — change theme or user above and watch this update"
+              borderColor="#f59e0b">
+              <MultiContextDashboard />
+            </DemoSection>
+          </SettingsProvider>
+        </UserProvider>
+      </ThemeProvider>
+    </div>
+  );
+}

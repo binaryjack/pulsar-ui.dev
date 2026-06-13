@@ -2,5 +2,5 @@
  * Option component exports
  */
 
-export { Option } from './option.psr';
+export { Option } from './option.syn';
 export type { IOptionProps } from './option.type';

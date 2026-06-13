@@ -2,4 +2,4 @@
  * Tooltip component - Index
  */
 
-export { Tooltip } from './tooltip.psr';
+export { Tooltip } from './tooltip.syn';

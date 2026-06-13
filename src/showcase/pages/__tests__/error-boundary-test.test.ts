@@ -4,7 +4,7 @@
  */
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ErrorBoundaryTestPage } from '../error-boundary-test.psr';
+import { ErrorBoundaryTestPage } from '../error-boundary-test.syn';
 
 describe('ErrorBoundaryTestPage', () => {
   let container: HTMLElement;

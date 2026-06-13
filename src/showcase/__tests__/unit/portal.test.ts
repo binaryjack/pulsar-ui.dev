@@ -3,7 +3,7 @@
  * Tests portal rendering and positioning
  */
 
-import { createSignal } from '@pulsar-framework/pulsar.dev';
+import { createSignal } from '@synetics/synetics.dev';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('Portal Unit Tests', () => {

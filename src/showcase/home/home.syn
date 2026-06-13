@@ -1,0 +1,22 @@
+/**
+ * Pulsar UI Showcase - Home Page
+ * Refactored version
+ */
+
+import { Counter } from '../../lab/counter.syn';
+import { PageHeader } from '../common/components/page-header.syn';
+
+export component HomePage() {
+  return (
+    <div>
+      <PageHeader 
+        title="Welcome to Synetics framework"
+        emoji="🏠"
+        color="#10b981"
+        description="A reactive UI framework with signal-based state management. Below is a live demo of basic reactivity features."
+      />
+      
+      <Counter id="home-counter" />
+    </div>
+  );
+}

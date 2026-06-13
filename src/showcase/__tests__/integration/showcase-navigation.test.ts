@@ -4,7 +4,7 @@
  */
 
 import { beforeEach, describe, expect, it } from 'vitest';
-import { HomePage } from '../../home/home.psr';
+import { HomePage } from '../../home/home.syn';
 
 describe.skip('Showcase Navigation Integration', () => {
   let container: HTMLElement;
@@ -45,7 +45,7 @@ describe.skip('Showcase Navigation Integration', () => {
       const app = App();
       container.appendChild(app);
 
-      expect(container.textContent).toContain('Welcome to Pulsar Framework');
+      expect(container.textContent).toContain('Welcome to Synetics framework');
     });
 
     it('should navigate to reactivity page', (done) => {

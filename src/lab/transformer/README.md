@@ -1,13 +1,13 @@
 # Transformer Lab — Test Fixtures
 
-Each subfolder is an isolated test fixture for the Pulsar Babel transformer (`packages/pulsar-transformer`). The `.psr` files are **input sources** that the compiler processes — verifying the transformer correctly lowers Pulsar-specific syntax to plain JS/TS that browsers can execute.
+Each subfolder is an isolated test fixture for the Pulsar Babel transformer (`packages/synetics-transformer`). The `.syn` files are **input sources** that the compiler processes — verifying the transformer correctly lowers Pulsar-specific syntax to plain JS/TS that browsers can execute.
 
 ---
 
 ## File Naming Convention
 
 ```
-YYYY-MM-DD-HH-MM-<topic>.psr
+YYYY-MM-DD-HH-MM-<topic>.syn
 ```
 
 Folders with two files (e.g. `14:20` + `15:00`) contain a baseline and a revised version produced during the same session to fix a transform regression.
@@ -105,11 +105,11 @@ Folders with two files (e.g. `14:20` + `15:00`) contain a baseline and a revised
 From the workspace root:
 
 ```bash
-pnpm --filter pulsar-transformer test
+pnpm --filter synetics-transformer test
 ```
 
 To test a specific fixture manually:
 
 ```bash
-node analyze-full-pipeline.mjs packages/pulsar-ui.dev/src/lab/transformer/<folder>/<file>.psr
+node analyze-full-pipeline.mjs packages/synetics-ui.dev/src/lab/transformer/<folder>/<file>.syn
 ```

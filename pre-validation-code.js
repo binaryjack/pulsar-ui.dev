@@ -1,4 +1,4 @@
-import { $REGISTRY, createEffect, createSignal, insert, t_element } from '@pulsar-framework/pulsar.dev';
+import { $REGISTRY, createEffect, createSignal, insert, t_element } from '@synetics/synetics.dev';
 
 export interface ICounterProps {
   id?: string;

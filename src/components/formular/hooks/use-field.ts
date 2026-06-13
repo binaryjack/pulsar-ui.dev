@@ -37,8 +37,8 @@
  * ```
  */
 
-import type { IFieldGuide } from '@pulsar-framework/formular.dev';
-import { useSync } from '@pulsar-framework/pulsar.dev';
+import type { IFieldGuide } from '@synetics/formular.dev';
+import { useSync } from '@synetics/synetics.dev';
 import type { IFieldError, IValidationResult } from '../types';
 
 export interface IUseFieldResult {

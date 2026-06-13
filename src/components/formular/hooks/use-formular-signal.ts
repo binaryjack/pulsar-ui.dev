@@ -6,7 +6,7 @@
  * and trigger re-renders when the signal values change.
  */
 
-import { createSignal } from '@pulsar-framework/pulsar.dev';
+import { createSignal } from '@synetics/synetics.dev';
 
 /**
  * Subscribe a Pulsar signal to a formular.dev signal
@@ -22,7 +22,7 @@ export function useFormularSignal<T>(formularSignalGetter: () => T): [() => T, (
   console.warn(
     '[useFormularSignal] DEPRECATED: Pulsar createEffect cannot observe formular.dev signals. ' +
       'The returned signal will hold the initial value only and never update. ' +
-      'Use useField() from @pulsar-framework/pulsar-ui.dev instead.'
+      'Use useField() from @synetics/synetics-ui.dev instead.'
   );
   const [pulsarValue, setPulsarValue] = createSignal<T>(formularSignalGetter());
   return [pulsarValue, setPulsarValue];

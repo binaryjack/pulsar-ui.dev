@@ -1,0 +1,47 @@
+/**
+ * Boundary Section Component
+ * Reusable section for independent boundaries demo
+ */
+
+import type { Accessor } from '@synetics/synetics.dev';
+import { DemoButton } from '../../common/components/demo-button.syn';
+import { StatusIndicator } from '../../common/components/status-indicator.syn';
+import { SafeComponent } from './safe-component.syn';
+import { ErrorComponent } from './error-component.syn';
+import { ErrorDisplay } from './error-display.syn';
+
+interface BoundarySectionProps {
+  title: string
+  hasError: Accessor<boolean>
+  toggleError: () => void
+}
+
+export const BoundarySection = ({ title, hasError, toggleError }: BoundarySectionProps) => {
+  return (
+    <div style="background: #1a1a1a; padding: 15px; border-radius: 4px;">
+      <h4 style="margin: 0 0 10px 0; color: white; font-size: 16px;">{title}</h4>
+      <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+        <DemoButton
+          onClick={toggleError}
+          color="#ef4444"
+          size="sm">
+          Toggle Error
+        </DemoButton>
+        <StatusIndicator status={hasError() ? 'error' : 'ok'} />
+      </div>
+      <boundary fallback={
+        <div style="padding: 10px; background: #7f1d1d; border-radius: 4px;">
+          <p style="margin: 0; color: #fca5a5; font-size: 12px;">
+            Render error in {title}
+          </p>
+        </div>
+      }>
+        {hasError() ? <ErrorComponent message={`${title} failed`} /> : (
+          <div style="padding: 10px; background: #10b981; color: white; border-radius: 4px; text-align: center;">
+            ✓ OK
+          </div>
+        )}
+      </boundary>
+    </div>
+  );
+};

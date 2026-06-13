@@ -9,7 +9,7 @@ import {
   createEffect,
   createMemo,
   createSignal,
-} from '@pulsar-framework/pulsar.dev';
+} from '@synetics/synetics.dev';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('Reactivity Unit Tests', () => {

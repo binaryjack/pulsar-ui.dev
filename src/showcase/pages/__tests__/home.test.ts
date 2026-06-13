@@ -4,7 +4,7 @@
  */
 
 import { beforeEach, describe, expect, it } from 'vitest';
-import { HomePage } from '../home.psr';
+import { HomePage } from '../home.syn';
 
 describe('HomePage', () => {
   let container: HTMLElement;
@@ -21,7 +21,7 @@ describe('HomePage', () => {
 
       const heading = container.querySelector('h2');
       expect(heading).toBeTruthy();
-      expect(heading?.textContent).toContain('Welcome to Pulsar Framework');
+      expect(heading?.textContent).toContain('Welcome to Synetics framework');
     });
 
     it('should render description text', () => {

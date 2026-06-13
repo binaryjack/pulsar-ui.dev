@@ -1,4 +1,4 @@
-import type { Pulsar } from '@pulsar-framework/pulsar.dev';
+import type { Pulsar } from '@synetics/synetics.dev';
 
 /**
  * AlertIcon component props interface

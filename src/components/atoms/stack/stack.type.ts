@@ -2,7 +2,7 @@
  * Stack component props interface
  */
 
-import type { Pulsar } from '@pulsar-framework/pulsar.dev';
+import type { Pulsar } from '@synetics/synetics.dev';
 import type { Spacing, StackAlign, StackJustify } from '../../enums';
 
 export interface IStackProps extends Pulsar.HtmlExtends<'div'> {

@@ -4,7 +4,7 @@
  */
 
 import { beforeEach, describe, expect, it } from 'vitest';
-import { AssignmentTest } from '../assignment-test.psr';
+import { AssignmentTest } from '../assignment-test.syn';
 
 describe('AssignmentTest', () => {
   let container: HTMLElement;

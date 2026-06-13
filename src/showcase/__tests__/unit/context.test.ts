@@ -3,7 +3,7 @@
  * Tests theme and user context providers
  */
 
-import { createSignal } from '@pulsar-framework/pulsar.dev';
+import { createSignal } from '@synetics/synetics.dev';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('Context Unit Tests', () => {

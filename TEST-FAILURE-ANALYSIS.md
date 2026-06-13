@@ -130,7 +130,7 @@ expect(container.textContent).toContain('Item 0'); // ✗ Missing
 
 **Enterprise-Grade Fix Required**:
 
-- Audit Show/For/Index implementation in pulsar.dev
+- Audit Show/For/Index implementation in synetics.dev
 - Verify children rendering logic in control flow components
 - Check PSR transformer handling of control flow JSX
 

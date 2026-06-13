@@ -4,7 +4,7 @@
  */
 
 import { beforeEach, describe, expect, it } from 'vitest';
-import { ControlFlowTestPage } from '../control-flow-test.psr';
+import { ControlFlowTestPage } from '../control-flow-test.syn';
 
 describe('ControlFlowTestPage', () => {
   let container: HTMLElement;

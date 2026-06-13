@@ -1,0 +1,53 @@
+/**
+ * Image Card Component
+ * Single image card with loading state
+ */
+
+import { createSignal, createEffect } from '@synetics/synetics.dev';
+
+interface ImageCardProps {
+  resource: any
+  index: number
+}
+
+export const ImageCard = ({ resource, index }: ImageCardProps) => {
+  // resource.isLoading / isSuccess are JS property getters backed by a signal
+  // internally. They must be read inside createEffect so the reactivity system
+  // tracks them. We bridge into local call-expression signals so the PSR
+  // transformer can promote the JSX ternaries to ShowRegistry.
+  const [loading, setLoading] = createSignal(resource.isLoading);
+  const [success, setSuccess] = createSignal(resource.isSuccess);
+  const [imgSrc, setImgSrc] = createSignal(resource.data);
+
+  createEffect(() => {
+    setLoading(resource.isLoading);
+    setSuccess(resource.isSuccess);
+    setImgSrc(resource.data);
+  });
+
+  return (
+    <div style="aspect-ratio: 3/2; background: #1a1a1a; border-radius: 8px; overflow: hidden; position: relative;">
+      {loading() ? (
+        <div style="width: 100%; height: 100%; display: flex; alignItems: center; justify-content: center; background: #334155;">
+          <div style="text-align: center;">
+            <div style="color: #06b6d4; font-size: 24px; margin-bottom: 5px;">⏳</div>
+            <div style="color: #94a3b8; font-size: 12px;">#{index}</div>
+          </div>
+        </div>
+      ) : null}
+
+      {success() ? (
+        <div style="position: relative; width: 100%; height: 100%;">
+          <img
+            src={imgSrc()}
+            alt={`Image ${index}`}
+            style="width: 100%; height: 100%; object-fit: cover;"
+          />
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 10px;">
+            <div style="color: white; font-size: 12px; font-weight: bold;">Image #{index}</div>
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+};

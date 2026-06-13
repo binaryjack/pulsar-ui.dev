@@ -10,8 +10,8 @@
 **Tests**: 2/2 passing  
 **Files Modified**:
 
-- `packages/pulsar.dev/src/error-boundary/catcher.ts` (lines 68-95)
-- `packages/pulsar.dev/src/error-boundary/error-boundary.types.ts` (lines 177-184)
+- `packages/synetics.dev/src/error-boundary/catcher.ts` (lines 68-95)
+- `packages/synetics.dev/src/error-boundary/error-boundary.types.ts` (lines 177-184)
 
 **Changes**:
 
@@ -35,7 +35,7 @@ pnpm test catcher-children
 **Tests**: Reduced errors from 12 to 11  
 **Files Modified**:
 
-- `packages/pulsar.dev/src/error-boundary/tryer.ts` (lines 59-85)
+- `packages/synetics.dev/src/error-boundary/tryer.ts` (lines 59-85)
 
 **Changes**:
 
@@ -126,8 +126,8 @@ expect(container.textContent).toContain('Item 0') // ✗ Missing (Index componen
 
 | Package                     | Total | Pass               | Fail | Health |
 | --------------------------- | ----- | ------------------ | ---- | ------ |
-| pulsar.dev (unit)           | N/A   | Catcher tests pass | N/A  | ✅     |
-| pulsar-ui.dev (integration) | 105   | 72                 | 33   | ⚠️ 69% |
+| synetics.dev (unit)           | N/A   | Catcher tests pass | N/A  | ✅     |
+| synetics-ui.dev (integration) | 105   | 72                 | 33   | ⚠️ 69% |
 
 **By Page**:
 

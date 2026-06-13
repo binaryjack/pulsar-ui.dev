@@ -1,0 +1,17 @@
+/**
+ * App Footer
+ * Slim footer with copyright and links.
+ */
+
+export const AppFooter = () => (
+  <footer className="app-footer">
+    <span>© 2026 Synetics framework — MIT License</span>
+    <div className="app-footer__links">
+      <a href="https://github.com/binaryjack/synetics.dev" target="_blank" rel="noopener noreferrer">
+        GitHub
+      </a>
+      <a href="/synetics-ui.dev/about">About</a>
+      <a href="/synetics-ui.dev/bootstrap">Get Started</a>
+    </div>
+  </footer>
+);

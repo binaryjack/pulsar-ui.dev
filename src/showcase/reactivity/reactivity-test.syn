@@ -1,0 +1,170 @@
+/**
+ * PHASE 1: Core Reactivity Tests
+ * Refactored with modular components
+ */
+
+import { createSignal, createEffect, createMemo, batch, useSync } from '@synetics/synetics.dev';
+import { PageHeader } from '../common/components/page-header.syn';
+import { DemoSection } from '../common/components/demo-section.syn';
+import { SignalDemo } from './components/signal-demo.syn';
+import { MemoDemo } from './components/memo-demo.syn';
+import { EffectDemo } from './components/effect-demo.syn';
+import { BatchDemo } from './components/batch-demo.syn';
+import { RenderEffectDemo } from './components/render-effect-demo.syn';
+import { UntrackDemo } from './components/untrack-demo.syn';
+import { UseSyncDemo } from './components/use-sync-demo.syn';
+import { ConsoleLogViewer } from '../common/components/console-log-viewer.syn';
+import type { LogEntry } from '../common/components/console-log-viewer.syn';
+
+export component ReactivityTestPage() {
+  // Signals
+  const [firstName, setFirstName] = createSignal('John');
+  const [lastName, setLastName] = createSignal('Doe');
+  const [age, setAge] = createSignal(25);
+  
+  // Memos
+  const fullName = createMemo(() => `${firstName()} ${lastName()}`);
+  const isAdult = createMemo(() => age() >= 18);
+  
+  // Effect run counter for batch demo
+  const [effectRunCount, setEffectRunCount] = createSignal(0);
+  const [effectLogs, setEffectLogs] = createSignal<LogEntry[]>([]);
+  
+  const addEffectLog = (message: string) => {
+    const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false });
+    setEffectLogs(logs => [...logs, { timestamp, level: 'log', message }]); // Use updater to avoid tracking effectLogs in effect
+  };
+  
+  const clearEffectLogs = () => setEffectLogs([]);
+  
+  // Effects
+  createEffect(() => {
+    const name = fullName(); // Track fullName changes ONLY (don't track effectRunCount to avoid infinite loop)
+    setEffectRunCount(c => c + 1); // Use updater function, don't read current value
+    const message = `🔄 Effect executed - Full name: ${name}`;
+    addEffectLog(message);
+    console.log(`[Effect] Full name changed to: ${name}`);
+  });
+  
+  // Batch handlers
+  const updateAll = () => {
+    batch(() => {
+      setFirstName('Jane');
+      setLastName('Smith');
+      setAge(30);
+    });
+  };
+  
+  const resetAll = () => {
+    batch(() => {
+      setFirstName('John');
+      setLastName('Doe');
+      setAge(25);
+    });
+  };
+  
+  return (
+    <div>
+      <PageHeader 
+        title="Core Reactivity Tests"
+        emoji="🧪"
+        color="#10b981"
+        description="Testing signals, effects, memos, and hooks"
+      />
+      
+      <DemoSection 
+        title="1️⃣ Multiple Signals" 
+        description="Create and manage multiple reactive signals"
+        borderColor="#3b82f6">
+        <SignalDemo 
+          firstName={firstName}
+          setFirstName={setFirstName}
+          lastName={lastName}
+          setLastName={setLastName}
+          age={age}
+          setAge={setAge}
+        />
+      </DemoSection>
+      
+      <DemoSection 
+        title="2️⃣ Computed Values (Memos)" 
+        description="Derived values that auto-update when dependencies change"
+        borderColor="#8b5cf6">
+        <MemoDemo fullName={fullName} isAdult={isAdult} />
+      </DemoSection>
+      
+      <DemoSection 
+        title="3️⃣ Side Effects (createEffect)" 
+        description="Run code in response to signal changes"
+        borderColor="#10b981">
+        <EffectDemo />
+      </DemoSection>
+      
+      <DemoSection 
+        title="4️⃣ Batched Updates" 
+        description="Update multiple signals without triggering intermediate effects"
+        borderColor="#f59e0b">
+        <BatchDemo 
+          updateAll={updateAll} 
+          resetAll={resetAll} 
+          effectRunCount={effectRunCount}
+        />
+      </DemoSection>
+      
+      <DemoSection 
+        title="📊 Effect Execution Monitor" 
+        description="Real-time tracking of effect runs (watch the counter grow as you change firstName/lastName)"
+        borderColor="#10b981">
+        <div style="padding: 15px; background: #1a1a1a; border-radius: 6px; margin-bottom: 15px;">
+          <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 8px;">
+            <div style="font-size: 48px; font-weight: bold; color: white; margin-bottom: 10px;">
+              {effectRunCount()}
+            </div>
+            <div style="color: white; font-size: 16px;">
+              Total Effect Executions
+            </div>
+          </div>
+        </div>
+        <ConsoleLogViewer 
+          logs={effectLogs} 
+          onClear={clearEffectLogs}
+          title="Effect Execution History"
+          maxHeight="250px"
+        />
+      </DemoSection>
+      
+      <section style="background: #1a1a1a; padding: 20px; border-radius: 8px; border: 2px solid #10b981;">
+        <h3 style="font-size: 20px; margin-bottom: 15px; color: #10b981;">
+          ✅ Test Status
+        </h3>
+        <ul style="list-style: none; padding: 0; color: #9ca3af;">
+          <li style="margin-bottom: 8px;">✅ Multiple signals working</li>
+          <li style="margin-bottom: 8px;">✅ Memos (computed values)</li>
+          <li style="margin-bottom: 8px;">✅ Effects (side effects)</li>
+              <li style="margin-bottom: 8px;">✅ Batch updates</li>
+        </ul>
+      </section>
+
+      <DemoSection
+        title="5️⃣ useSync — External Store Bridge"
+        description="useSync(subscribe, getSnapshot) — bridges non-Pulsar reactive stores into the Pulsar reactive graph."
+        borderColor="#6366f1">
+        <UseSyncDemo />
+      </DemoSection>
+
+      <DemoSection
+        title="6️⃣ untrack — Subscription-Free Read"
+        description="untrack(fn) reads a signal without subscribing. ⚠️ B-01: primitive not yet exported — stub demo."
+        borderColor="#f59e0b">
+        <UntrackDemo />
+      </DemoSection>
+
+      <DemoSection
+        title="7️⃣ createRenderEffect — Sync Before Paint"
+        description="createRenderEffect fires synchronously before paint. ⚠️ B-01: primitive not yet implemented — stub demo."
+        borderColor="#ef4444">
+        <RenderEffectDemo />
+      </DemoSection>
+    </div>
+  );
+}

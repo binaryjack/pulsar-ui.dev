@@ -1,6 +1,6 @@
 /** Modal slice — reducer, actions, initial state. */
 
-import type { IStoreAction } from '@pulsar-framework/pulsar.dev';
+import type { IStoreAction } from '@synetics/synetics.dev';
 import type { ICanvasModalState } from '../model/i-canvas-modal';
 
 // ── State ─────────────────────────────────────────────────────────────────────

@@ -1,4 +1,4 @@
-# Contributing to pulsar-ui.dev
+# Contributing to synetics-ui.dev
 
 Thank you for your interest in contributing! Please see the [main contributing guide](../../CONTRIBUTING.md) for general guidelines.
 
@@ -12,13 +12,13 @@ cd ../..
 pnpm install
 
 # Build this package
-pnpm --filter @pulsar-framework/ui.dev build
+pnpm --filter @synetics/ui.dev build
 
 # Run tests
-pnpm --filter @pulsar-framework/ui.dev test
+pnpm --filter @synetics/ui.dev test
 
 # Watch mode
-pnpm --filter @pulsar-framework/ui.dev dev
+pnpm --filter @synetics/ui.dev dev
 ```
 
 ### Architecture
@@ -30,9 +30,9 @@ This package is part of the Visual Schema Builder monorepo. For detailed archite
 Please ensure all tests pass before submitting a pull request:
 
 ```bash
-pnpm --filter @pulsar-framework/ui.dev test
-pnpm --filter @pulsar-framework/ui.dev typecheck
-pnpm --filter @pulsar-framework/ui.dev lint
+pnpm --filter @synetics/ui.dev test
+pnpm --filter @synetics/ui.dev typecheck
+pnpm --filter @synetics/ui.dev lint
 ```
 
 ### Documentation

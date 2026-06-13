@@ -2,7 +2,7 @@
  * HTTP Components Index
  */
 
-export { AbortDemo } from './abort-demo.psr';
-export { BasicRequestsDemo } from './basic-requests-demo.psr';
-export { InterceptorsDemo } from './interceptors-demo.psr';
-export { RetryDemo } from './retry-demo.psr';
+export { AbortDemo } from './abort-demo.syn';
+export { BasicRequestsDemo } from './basic-requests-demo.syn';
+export { InterceptorsDemo } from './interceptors-demo.syn';
+export { RetryDemo } from './retry-demo.syn';

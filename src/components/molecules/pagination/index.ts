@@ -3,5 +3,5 @@
  * Exports the Pagination component
  */
 
-export { Pagination } from './pagination.psr';
+export { Pagination } from './pagination.syn';
 export type { IPaginationProps } from './pagination.type';

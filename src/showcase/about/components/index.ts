@@ -2,6 +2,6 @@
  * About Components Index
  */
 
-export { DetailsSection } from './details-section.psr';
-export { FeatureList } from './feature-list.psr';
-export { RouteInfo } from './route-info.psr';
+export { DetailsSection } from './details-section.syn';
+export { FeatureList } from './feature-list.syn';
+export { RouteInfo } from './route-info.syn';

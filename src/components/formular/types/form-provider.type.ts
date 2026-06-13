@@ -1,10 +1,10 @@
-/// <reference path="../../../pulsar.dev/pulsar.d.ts" />
+/// <reference path="../../../synetics.dev/pulsar.d.ts" />
 
 /**
  * FormProvider component prop types
  */
 
-import type { IFormular } from '@pulsar-framework/formular.dev';
+import type { IFormular } from '@synetics/formular.dev';
 
 /**
  * Props for the FormProvider component

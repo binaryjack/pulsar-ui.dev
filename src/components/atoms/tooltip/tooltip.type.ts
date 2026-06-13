@@ -2,7 +2,7 @@
  * Tooltip component props interface
  */
 
-import type { Pulsar } from '@pulsar-framework/pulsar.dev';
+import type { Pulsar } from '@synetics/synetics.dev';
 import type { TooltipPlacement } from '../../enums';
 
 export interface ITooltipProps extends Pulsar.HtmlExtends<'div'> {

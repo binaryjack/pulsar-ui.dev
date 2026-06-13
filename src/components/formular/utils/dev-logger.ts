@@ -3,7 +3,7 @@
  * These will be stripped out in production builds
  */
 
-import { isDev } from '@pulsar-framework/pulsar.dev/env';
+import { isDev } from '@synetics/synetics.dev/env';
 
 const isDevMode = isDev();
 

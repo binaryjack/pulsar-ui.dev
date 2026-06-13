@@ -105,8 +105,8 @@
 
 ## GitHub Pages Showcase
 
-Live examples at: `https://binaryjack.github.io/pulsar-ui.dev/`
+Live examples at: `https://binaryjack.github.io/synetics-ui.dev/`
 
 ---
 
-Track progress: [GitHub Projects](https://github.com/binaryjack/pulsar-ui.dev/projects)
+Track progress: [GitHub Projects](https://github.com/binaryjack/synetics-ui.dev/projects)

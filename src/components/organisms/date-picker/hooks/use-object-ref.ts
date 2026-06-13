@@ -1,4 +1,4 @@
-import { useRef } from '@pulsar-framework/pulsar.dev';
+import { useRef } from '@synetics/synetics.dev';
 
 /**
  * useObjectRef is a hook that simplifies working with DOM refs by providing a typed ref object and a casted reference to its current value.

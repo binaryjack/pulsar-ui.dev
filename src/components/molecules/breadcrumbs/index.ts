@@ -4,5 +4,5 @@
  */
 
 export type { IBreadcrumbItemProps } from './breadcrumb-item.type';
-export { BreadcrumbItem, Breadcrumbs } from './breadcrumbs.psr';
+export { BreadcrumbItem, Breadcrumbs } from './breadcrumbs.syn';
 export type { IBreadcrumbsProps } from './breadcrumbs.type';

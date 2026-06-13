@@ -1,0 +1,64 @@
+/**
+ * Dependency Injection Demo Component
+ * Demonstrates REAL useService() hook usage
+ */
+
+import { useService } from '@synetics/synetics.dev';
+import type { IConfigService } from '../types/config-service.types.ts';
+import { ConfigServiceResolvedView } from '../components/config-service-resolved-view.syn';
+import { ConfigServiceErrorView } from '../components/config-service-error-view.syn';
+
+export const DIDemo = () => {
+  // REAL SERVICE RESOLUTION - This is how you use DI in components
+  let config: IConfigService | null = null;
+  let error: Error | null = null;
+  
+  try {
+    config = useService<IConfigService>('config');
+    console.log('[DIDemo] ✅ Service resolved:', config);
+  } catch (err) {
+    error = err as Error;
+    console.warn('[DIDemo] ⚠️ Service not available:', err);
+  }
+  
+  const getThemeStyles = () => {
+    const theme = config?.theme;
+    if (theme === 'dark') {
+      return {
+        background: 'linear-gradient(135deg, #1f2937 0%, #111827 100%)',
+        textColor: '#d1d5db'
+      };
+    }
+    return {
+      background: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)',
+      textColor: 'white'
+    };
+  };
+  
+  return (
+    <div style={`margin-bottom: 20px; padding: 20px; background: ${getThemeStyles().background}; border-radius: 8px; transition: all 0.5s ease;`}>
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="font-size: 48px; margin-bottom: 10px;">🔌</div>
+        <div style={`color: ${getThemeStyles().textColor}; font-size: 18px; font-weight: bold; margin-bottom: 20px; transition: color 0.5s ease;`}>
+          Dependency Injection with useService()
+        </div>
+      </div>
+      
+      {config ? (
+        <ConfigServiceResolvedView config={config} />
+      ) : (
+        <ConfigServiceErrorView error={error || new Error('Unknown error')} />
+      )}
+      
+      <div style={`background: rgba(0,0,0,0.2); padding: 15px; border-radius: 6px; color: ${getThemeStyles().textColor}; font-size: 13px; margin-top: 15px; transition: color 0.5s ease;`}>
+        <strong>💡 Real-World Pattern:</strong>
+        <ul style="margin: 10px 0 0 20px; line-height: 1.8;">
+          <li><strong>main.ts:</strong> Register services with ServiceManager, pass to pulse()</li>
+          <li><strong>Component:</strong> Call useService&lt;T&gt;('identifier') to resolve</li>
+          <li><strong>Lifecycle:</strong> Singleton = same instance across all components</li>
+          <li><strong>Type-safe:</strong> Full TypeScript support for service interfaces</li>
+        </ul>
+      </div>
+    </div>
+  );
+};

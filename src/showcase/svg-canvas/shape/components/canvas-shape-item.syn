@@ -1,0 +1,110 @@
+/**
+ * CanvasShapeItem — thin orchestrator for a single shape entity.
+ *
+ * Square / Rectangle → CanvasRectBody + CanvasEntityCard.
+ * Diamond            → CanvasDiamondBody.
+ * Anchor group       → CanvasAnchorGroup (always in DOM, hidden by default).
+ */
+
+import { AnchorPosition }      from '../../shared/model/i-entity';
+import type { IShape }         from '../model/i-shape';
+import { ShapeKind }           from '../model/i-shape';
+import { CanvasAnchorGroup }   from './canvas-anchor-group.syn';
+import { CanvasDiamondBody }   from './canvas-diamond-body.syn';
+import { CanvasEntityCard }    from './canvas-entity-card.syn';
+import { CanvasRectBody }      from './canvas-rect-body.syn';
+
+interface ICanvasShapeItemProps {
+  shape:                  IShape
+  selectedId:             () => string | null
+  hoveredShapeId:         () => string | null
+  isDrawing:              () => boolean
+  onShapeDown:            (e: MouseEvent) => void
+  onAnchorDown:           (e: MouseEvent, pos: AnchorPosition) => void
+  onHoverEnter:           () => void
+  onHoverLeave:           () => void
+  onNameChange:           (name: string) => void
+  onCollapseToggle:       () => void
+  onDeleteShape:          () => void
+  onAddProperty:          () => void
+  onDeleteProperty:       (propId: string) => void
+  onPropertyNameChange:   (propId: string, name: string) => void
+  onSettingsOpen:         () => void
+  onPropertySettingsOpen: (propId: string) => void
+}
+
+export component CanvasShapeItem({
+  shape,
+  selectedId,
+  hoveredShapeId,
+  isDrawing,
+  onShapeDown,
+  onAnchorDown,
+  onHoverEnter,
+  onHoverLeave,
+  onNameChange,
+  onCollapseToggle,
+  onDeleteShape,
+  onAddProperty,
+  onDeleteProperty,
+  onPropertyNameChange,
+  onSettingsOpen,
+  onPropertySettingsOpen,
+}: ICanvasShapeItemProps) {
+  const sel     = () => selectedId() === shape.id;
+  // Force-read ALL three signals unconditionally every time.
+  // wire.js only subscribes signals that are read during the FIRST run (when
+  // _currentEffect is the wire effect). JS short-circuit would skip reading
+  // hoveredShapeId when selectedId already matches, meaning hoveredShapeId
+  // would never be subscribed — hover updates would be silently ignored after
+  // any SHAPES/UPDATE re-mount. Assigning to locals before the || prevents that.
+  const visible = () => {
+    const d = isDrawing();
+    const s = selectedId() === shape.id;
+    const h = hoveredShapeId() === shape.id;
+    return d || s || h;
+  };
+
+  return (
+    <g
+      data-entity-id={shape.id}
+      onMouseEnter={onHoverEnter}
+      onMouseLeave={onHoverLeave}>
+
+      {shape.kind === ShapeKind.Diamond
+        ? <CanvasDiamondBody
+            x={shape.x} y={shape.y} width={shape.width} height={shape.height}
+            name={shape.name} selected={sel}
+            onShapeDown={onShapeDown}
+          />
+        : <CanvasRectBody
+            x={shape.x} y={shape.y} width={shape.width} height={shape.height}
+            collapsed={shape.collapsed} selected={sel}
+          />
+      }
+
+      {() => shape.kind !== ShapeKind.Diamond ? (
+        <CanvasEntityCard
+          x={shape.x} y={shape.y} width={shape.width} height={shape.height}
+          name={shape.name} collapsed={shape.collapsed} properties={shape.properties}
+          onShapeDown={onShapeDown}
+          onNameChange={onNameChange}
+          onSettingsOpen={onSettingsOpen}
+          onCollapseToggle={onCollapseToggle}
+          onDeleteShape={onDeleteShape}
+          onAddProperty={onAddProperty}
+          onDeleteProperty={onDeleteProperty}
+          onPropertyNameChange={onPropertyNameChange}
+          onPropertySettingsOpen={onPropertySettingsOpen}
+        />
+      ) : null}
+
+      <CanvasAnchorGroup
+        shapeId={shape.id}
+        anchors={shape.anchors}
+        visible={visible}
+        onAnchorDown={onAnchorDown}
+      />
+    </g>
+  );
+}

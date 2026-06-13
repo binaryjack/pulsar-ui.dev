@@ -1,7 +1,7 @@
 /** Root canvas store — combines all feature slices + exports memoized selectors. */
 
-import type { IStoreAction } from '@pulsar-framework/pulsar.dev';
-import { createStore } from '@pulsar-framework/pulsar.dev';
+import type { IStoreAction } from '@synetics/synetics.dev';
+import { createStore } from '@synetics/synetics.dev';
 
 import { boardInitialState, boardReducer } from '../board/store/canvas-board.slice';
 import { lineInitialState, lineReducer } from '../line/store/canvas-line.slice';

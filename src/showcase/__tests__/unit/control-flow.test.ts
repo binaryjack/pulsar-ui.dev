@@ -3,7 +3,7 @@
  * Tests Show, For, and Index components
  */
 
-import { createSignal } from '@pulsar-framework/pulsar.dev';
+import { createSignal } from '@synetics/synetics.dev';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('Control Flow Unit Tests', () => {

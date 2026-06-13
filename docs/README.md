@@ -515,7 +515,7 @@ This improvement plan draws inspiration from:
 
 **Author**: Copilot for [Tadeo Piana](https://www.linkedin.com/in/tadeopiana/)  
 **Project**: Pulsar UI Component Library  
-**Repository**: [pulsar-ui.dev](https://github.com/binaryjack/pulsar-ui.dev)  
+**Repository**: [synetics-ui.dev](https://github.com/binaryjack/synetics-ui.dev)  
 **Last Updated**: January 29, 2026
 
 ---

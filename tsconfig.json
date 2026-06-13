@@ -17,28 +17,28 @@
     "strict": true,
     "skipLibCheck": true,
     "paths": {
-      "@pulsar-framework/design-tokens": ["../pulsar-design-system/dist/src/index.d.ts"],
-      "@pulsar-framework/design-tokens/*": ["../pulsar-design-system/dist/src/*"],
-      "@pulsar-framework/pulsar.dev": ["../pulsar.dev/dist/index.d.ts"],
-      "@pulsar-framework/pulsar.dev/*": ["../pulsar.dev/dist/*"],
-      "@pulsar-framework/formular.dev": ["../formular.dev/dist/types/formular-dev.es.d.ts"],
-      "@pulsar-framework/formular.dev/*": ["../formular.dev/dist/types/*"]
+      "@synetics/design-tokens": ["../synetics-design-system/dist/src/index.d.ts"],
+      "@synetics/design-tokens/*": ["../synetics-design-system/dist/src/*"],
+      "@synetics/synetics.dev": ["../synetics.dev/dist/index.d.ts"],
+      "@synetics/synetics.dev/*": ["../synetics.dev/dist/*"],
+      "@synetics/formular.dev": ["../formular.dev/dist/types/formular-dev.es.d.ts"],
+      "@synetics/formular.dev/*": ["../formular.dev/dist/types/*"]
     }
   },
   "files": [
-    "../pulsar.dev/src/types/jsx.d.ts",
-    "../pulsar.dev/src/types/psr-modules.d.ts",
+    "../synetics.dev/src/types/jsx.d.ts",
+    "../synetics.dev/src/types/psr-modules.d.ts",
     "src/css.d.ts",
     "src/types/psr-modules.d.ts"
   ],
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/**/*.psr",
+    "src/**/*.syn",
     "src/**/*.type.ts",
     "src/**/*.interface.ts",
     "src/**/*.enum.ts",
-    "../pulsar.dev/pulsar.d.ts"
+    "../synetics.dev/pulsar.d.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }

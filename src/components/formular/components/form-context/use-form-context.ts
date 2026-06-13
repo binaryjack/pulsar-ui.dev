@@ -4,7 +4,7 @@
  * Must be used within a FormProvider
  */
 
-import { useContext } from '@pulsar-framework/pulsar.dev';
+import { useContext } from '@synetics/synetics.dev';
 import type { IFormContext } from '../../types';
 import { FormContext } from './form-context';
 

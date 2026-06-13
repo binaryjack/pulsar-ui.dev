@@ -1,9 +1,9 @@
-import pulsar from '@pulsar-framework/vite-plugin';
+import pulsar from '@synetics/vite-plugin';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/pulsar-ui.dev/',
+  base: '/synetics-ui.dev/',
   plugins: [
     pulsar({
       debug: true, // Re-enable to see if plugin is being called
@@ -19,9 +19,9 @@ export default defineConfig({
     emptyOutDir: true,
   },
   optimizeDeps: {
-    extensions: ['.psr', '.ts', '.tsx', '.js', '.jsx'],
+    extensions: ['.syn', '.ts', '.tsx', '.js', '.jsx'],
   },
-  assetsInclude: [], // Don't treat .psr as assets
+  assetsInclude: [], // Don't treat .syn as assets
   server: {
     port: 3000,
     open: true,
@@ -29,12 +29,12 @@ export default defineConfig({
     // Exclude large test files from watch to reduce memory usage
     watch: {
       ignored: [
-        '**/test-comprehensive*.psr',
-        '**/test-real-world*.psr',
-        '**/test-edge-cases.psr',
-        '**/test-advanced.psr',
-        '**/test-complex.psr',
-        '**/showcase-app.psr',
+        '**/test-comprehensive*.syn',
+        '**/test-real-world*.syn',
+        '**/test-edge-cases.syn',
+        '**/test-advanced.syn',
+        '**/test-complex.syn',
+        '**/showcase-app.syn',
       ],
     },
   },
@@ -42,6 +42,6 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src'),
     },
-    extensions: ['.psr', '.ts', '.tsx', '.js', '.jsx', '.json'],
+    extensions: ['.syn', '.ts', '.tsx', '.js', '.jsx', '.json'],
   },
 });

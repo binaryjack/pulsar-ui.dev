@@ -2,7 +2,7 @@
  * Vitest Configuration for Pulsar UI Showcase Tests
  */
 
-import pulsar from '@pulsar-framework/vite-plugin';
+import pulsar from '@synetics/vite-plugin';
 import path from 'path';
 import { defineConfig } from 'vitest/config';
 
@@ -22,20 +22,20 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      include: ['src/showcase/pages/**/*.psr'],
+      include: ['src/showcase/pages/**/*.syn'],
       exclude: ['node_modules/', 'src/showcase/**/__tests__/**', 'dist/'],
     },
     testTimeout: 10000,
   },
   resolve: {
     alias: {
-      '@pulsar-framework/pulsar.dev': path.resolve(__dirname, '../pulsar.dev/src'),
+      '@synetics/synetics.dev': path.resolve(__dirname, '../synetics.dev/src'),
       '@': path.resolve(__dirname, 'src'),
     },
-    extensions: ['.psr', '.ts', '.tsx', '.js', '.jsx', '.json'],
+    extensions: ['.syn', '.ts', '.tsx', '.js', '.jsx', '.json'],
   },
   assetsInclude: [],
   optimizeDeps: {
-    extensions: ['.psr', '.ts', '.tsx', '.js', '.jsx'],
+    extensions: ['.syn', '.ts', '.tsx', '.js', '.jsx'],
   },
 });

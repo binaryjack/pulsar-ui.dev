@@ -4,7 +4,7 @@
  */
 
 import { beforeEach, describe, expect, it } from 'vitest';
-import { ContextTestPage } from '../context-test.psr';
+import { ContextTestPage } from '../context-test.syn';
 
 describe('ContextTestPage', () => {
   let container: HTMLElement;

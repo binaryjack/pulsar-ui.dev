@@ -2,7 +2,7 @@
  * Rating component props interface
  */
 
-import type { Pulsar } from '@pulsar-framework/pulsar.dev';
+import type { Pulsar } from '@synetics/synetics.dev';
 
 export interface IRatingProps extends Pulsar.HtmlExtends<'div'> {
   /**

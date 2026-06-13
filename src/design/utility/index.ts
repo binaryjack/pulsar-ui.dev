@@ -1,6 +1,6 @@
 /**
- * Re-export design utilities from pulsar-design-system
+ * Re-export design utilities from synetics-design-system
  */
 
-export * from '@pulsar-framework/design-tokens';
+export * from '@synetics/design-tokens';
 
