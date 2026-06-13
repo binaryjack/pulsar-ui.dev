@@ -21,7 +21,7 @@ const getInitials = (name: string): string => {
  * Avatar component - PSR syntax
  * Creates a user avatar - atomic component
  */
-component Avatar({
+export component Avatar({
   size = 'md',
   src,
   alt,
