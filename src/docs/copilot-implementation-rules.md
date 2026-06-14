@@ -47,14 +47,14 @@ you will find folders with primitive components names
   - Components 
     - extract the {...rest} of html dom elements away from components and use the same approache as be in React.
       - `interface IMyComponent extends React.ComponentProps<'div'> { ... }`  it will provide the ...rest properties regarding divs... 
-      -  I want the same mecanics here. `Pulsar.HtmlExtends<'div'>`  <= you probably should create it in the pulsar itself no ? 
+      -  I want the same mecanics here. `Synetics.HtmlExtends<'div'>`  <= you probably should create it in the pulsar itself no ? 
   
   -  in tsx files you have to write components in a tsx format using return with the actual HTML component (declarative) not imperative 
   -  implementation of a component exapmple: 
       //[component].type.ts
       ```ts
       
-      export interface IMyComponent extends Pulsar.HtmlExtends<'div'> { 
+      export interface IMyComponent extends Synetics.HtmlExtends<'div'> { 
         id: string
         name: string
       }

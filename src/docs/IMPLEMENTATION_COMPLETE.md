@@ -2,10 +2,10 @@
 
 ## ✅ All Architectural Fixes Applied
 
-### 1. **Pulsar.HtmlExtends Utility** ✅
-- Created `Pulsar.HtmlExtends<T>` type utility in Synetics framework
-- Located at: `packages/pulsar/src/types/html-extends.ts`
-- Exported from main Pulsar index
+### 1. **Synetics.HtmlExtends Utility** ✅
+- Created `Synetics.HtmlExtends<T>` type utility in Synetics framework
+- Located at: `packages/synetics.dev/src/types/html-extends.ts`
+- Exported from main Synetics index
 - Provides type-safe HTML element attribute extension (like React.ComponentProps)
 
 ### 2. **One Item Per File** ✅
@@ -67,14 +67,14 @@ const config = new ComponentConfig('primary')
 
 **Button Component** - `button.tsx`
 - ✅ Uses declarative TSX with `return` statement
-- ✅ Extends `Pulsar.HtmlExtends<'button'>`
+- ✅ Extends `Synetics.HtmlExtends<'button'>`
 - ✅ Accepts `config?: IComponentConfig`
 - ✅ Uses `{...rest}` for HTML props
 - ✅ Conditional rendering with JSX syntax
 
 **Input Component** - `input.tsx`
 - ✅ Uses declarative TSX with `return` statement
-- ✅ Extends `Pulsar.HtmlExtends<'input'>`
+- ✅ Extends `Synetics.HtmlExtends<'input'>`
 - ✅ Accepts `config?: IComponentConfig`
 - ✅ Uses `{...rest}` for HTML props
 - ✅ Conditional rendering for error states, prefix/suffix
@@ -83,7 +83,7 @@ const config = new ComponentConfig('primary')
 
 **IButtonProps:**
 ```typescript
-interface IButtonProps extends Pulsar.HtmlExtends<'button'> {
+interface IButtonProps extends Synetics.HtmlExtends<'button'> {
   readonly config?: IComponentConfig
   readonly label?: string
   readonly icon?: HTMLElement | string
@@ -99,7 +99,7 @@ interface IButtonProps extends Pulsar.HtmlExtends<'button'> {
 
 **IInputProps:**
 ```typescript
-interface IInputProps extends Pulsar.HtmlExtends<'input'> {
+interface IInputProps extends Synetics.HtmlExtends<'input'> {
   readonly config?: IComponentConfig
   readonly type?: InputType
   readonly value?: string | number
@@ -123,7 +123,7 @@ All button factories use the new builder pattern:
 - Updated README with builder pattern examples
 - Created EXAMPLES.ts with comprehensive usage examples
 - Documented all builder methods
-- Explained Pulsar.HtmlExtends pattern
+- Explained Synetics.HtmlExtends pattern
 
 ## Architecture Compliance
 
@@ -131,7 +131,7 @@ All button factories use the new builder pattern:
 ✅ **One item per file** - All types, enums, interfaces separated  
 ✅ **Builder pattern** - Fluent API for configuration  
 ✅ **Declarative TSX** - Components return JSX, not imperative DOM  
-✅ **Type-safe props** - Pulsar.HtmlExtends for HTML attributes  
+✅ **Type-safe props** - Synetics.HtmlExtends for HTML attributes  
 ✅ **No mixed types** - All extracted to separate files  
 ✅ **Kebab-case** - File naming consistent  
 ✅ **No `any` types** - Full type coverage maintained  
@@ -204,7 +204,7 @@ const input = Input({
 - Refactored Input component to TSX
 - Updated all factory functions
 - Created 3 enum type files
-- Updated all interfaces to extend Pulsar.HtmlExtends
+- Updated all interfaces to extend Synetics.HtmlExtends
 
 ### Documentation
 - Updated README.md

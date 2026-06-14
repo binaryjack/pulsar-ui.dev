@@ -1,5 +1,5 @@
 /**
- * Pulsar UI - Usage Examples
+ * Synetics UI - Usage Examples
  * Demonstrating the new Builder Pattern API
  */
 

@@ -114,19 +114,19 @@ export const Input = (props: IInputProps): HTMLElement =>
 Every component **MUST** accept both `config` and `styling` props using the builder pattern.
 
 ```tsx
-export interface IInputProps extends Pulsar.HtmlExtends<'input'> {
+export interface IInputProps extends Synetics.HtmlExtends<'input'> {
   readonly config?: IComponentConfig     // ✅ Configuration (size, variant, states)
   readonly styling?: IComponentStyling   // ✅ Styling (classes for states)
   // ... other props
 }
 ```
 
-### 6. Pulsar.HtmlExtends for Type Safety
-All components **MUST** extend `Pulsar.HtmlExtends<'element'>` to provide native HTML attributes via rest props.
+### 6. Synetics.HtmlExtends for Type Safety
+All components **MUST** extend `Synetics.HtmlExtends<'element'>` to provide native HTML attributes via rest props.
 
 ```tsx
 // ✅ CORRECT
-export interface IInputProps extends Pulsar.HtmlExtends<'input'> {
+export interface IInputProps extends Synetics.HtmlExtends<'input'> {
   readonly config?: IComponentConfig
   readonly value?: string | number
 }
@@ -158,7 +158,7 @@ config.loading ?
 ```tsx
 /**
  * Input component implementation
- * Framework: Pulsar
+ * Framework: Synetics
  */
 
 import { cn, inputSizeClasses, roundedClasses } from '../../../design/utility'
@@ -220,12 +220,12 @@ export const Input = ({
 ### Type Definition
 
 ```typescript
-import type { Pulsar } from 'pulsar'
+import type { Synetics } from 'pulsar'
 import { type InputType } from '../../enums/input-type.type'
 import { type IComponentConfig } from '../../utils/component-config-builder/component-config.type'
 import { type IComponentStyling } from '../../utils/component-styling-builder/component-styling.type'
 
-export interface IInputProps extends Omit<Pulsar.HtmlExtends<'input'>, 'value' | 'defaultValue'> {
+export interface IInputProps extends Omit<Synetics.HtmlExtends<'input'>, 'value' | 'defaultValue'> {
   // Component configuration
   readonly config?: IComponentConfig
   
@@ -300,7 +300,7 @@ return (
 - [ ] External `defaultConfig` and `defaultStyling` constants
 - [ ] Ternary operator in return statement (loading ? Skeleton : element)
 - [ ] Single element output (no wrappers)
-- [ ] Props extend `Pulsar.HtmlExtends<'element'>`
+- [ ] Props extend `Synetics.HtmlExtends<'element'>`
 - [ ] Accept `config?: IComponentConfig` and `styling?: IComponentStyling`
 - [ ] Use external size/rounded/shadow class mappings
 - [ ] No inline logic in className (use external constants)

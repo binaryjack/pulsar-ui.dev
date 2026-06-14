@@ -1,6 +1,6 @@
 # Transformer Lab — Test Fixtures
 
-Each subfolder is an isolated test fixture for the Pulsar Babel transformer (`packages/synetics-transformer`). The `.syn` files are **input sources** that the compiler processes — verifying the transformer correctly lowers Pulsar-specific syntax to plain JS/TS that browsers can execute.
+Each subfolder is an isolated test fixture for the Synetics Babel transformer (`packages/synetics-transformer`). The `.syn` files are **input sources** that the compiler processes — verifying the transformer correctly lowers Synetics-specific syntax to plain JS/TS that browsers can execute.
 
 ---
 

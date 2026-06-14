@@ -1,6 +1,6 @@
-# Pulsar UI Design Improvement - Documentation Summary
+# Synetics UI Design Improvement - Documentation Summary
 
-This document provides an overview of the comprehensive design improvement initiative for the Pulsar UI component library, based on Material Design 3 principles and Laws of UX.
+This document provides an overview of the comprehensive design improvement initiative for the Synetics UI component library, based on Material Design 3 principles and Laws of UX.
 
 ---
 
@@ -433,7 +433,7 @@ Active: 16% opacity overlay
 
 ## 🎉 Expected Outcomes
 
-After completing this initiative, the Pulsar UI library will have:
+After completing this initiative, the Synetics UI library will have:
 
 ✅ **Professional Polish**: Competitive with top design systems (Ant, Chakra, Material)  
 ✅ **Consistent Experience**: All components follow same patterns  
@@ -503,6 +503,10 @@ Week 6+:   Advanced features (micro-interactions)
 
 ## 🙏 Acknowledgments
 
+> ⚠️ **REBRANDING & DEPRECATION NOTICE**  
+> **Pulsar is now Synetics.** The original `pulsar-framework` packages have been officially deprecated. Please use the new `@synetics/*` namespace for all future development.
+
+
 This improvement plan draws inspiration from:
 
 - **Material Design 3** by Google
@@ -514,7 +518,7 @@ This improvement plan draws inspiration from:
 ---
 
 **Author**: Copilot for [Tadeo Piana](https://www.linkedin.com/in/tadeopiana/)  
-**Project**: Pulsar UI Component Library  
+**Project**: Synetics UI Component Library  
 **Repository**: [synetics-ui.dev](https://github.com/binaryjack/synetics-ui.dev)  
 **Last Updated**: January 29, 2026
 

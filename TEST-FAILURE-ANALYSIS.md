@@ -323,4 +323,4 @@ expect(container.textContent).toContain('Item 0'); // ✗ Missing
 
 - Fixes are localized (< 200 LOC per issue)
 - Patterns involve wrapping/adapting existing code
-- Solutions follow established Pulsar patterns
+- Solutions follow established Synetics patterns

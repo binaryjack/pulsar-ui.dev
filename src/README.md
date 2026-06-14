@@ -1,10 +1,10 @@
-# Pulsar UI - Source Structure
+# Synetics UI - Source Structure
 
 ## 📁 Clean Directory Structure
 
 ```
 src/
-├── main.ts                 # Entry point - bootstraps Pulsar app
+├── main.ts                 # Entry point - bootstraps Synetics app
 ├── main.syn                # Main App component with basic feature tests
 ├── index.ts                # Module exports
 ├── types.ts                # Type definitions
@@ -128,6 +128,10 @@ component MyComponent({ propName }: IMyProps) {
 7. Test async operations - data fetching patterns
 
 ## 📚 Documentation
+
+> ⚠️ **REBRANDING & DEPRECATION NOTICE**  
+> **Pulsar is now Synetics.** The original `pulsar-framework` packages have been officially deprecated. Please use the new `@synetics/*` namespace for all future development.
+
 
 - Component API: `/docs`
 - Architecture: `/docs/architecture`

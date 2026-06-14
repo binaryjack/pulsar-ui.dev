@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/binaryjack/synetics-design-system/main/art-kit/SVG/pulsar-logo.svg" alt="Pulsar UI" width="400"/>
+  <img src="https://raw.githubusercontent.com/binaryjack/synetics-design-system/main/art-kit/SVG/pulsar-logo.svg" alt="Synetics UI" width="400"/>
 </p>
 
 <p align="center">
@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/badge/version-0.7.0--alpha-blue" alt="Version 0.7.0-alpha"/>
   <img src="https://img.shields.io/badge/TypeScript-5.0+-blue" alt="TypeScript 5.0+"/>
   <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License"/>
-  <img src="https://img.shields.io/badge/Pulsar-0.7.0--alpha-blueviolet" alt="Pulsar 0.7.0-alpha"/>
+  <img src="https://img.shields.io/badge/Synetics-0.7.0--alpha-blueviolet" alt="Synetics 0.7.0-alpha"/>
 </p>
 
 <p align="center">
@@ -30,17 +30,17 @@
 
 ## About
 
-**@pulsar/ui** is the official component library for the Synetics framework. It provides production-ready, accessible UI components built with fine-grained reactivity, TailwindCSS styling, and a fluent builder API for configuration.
+**@synetics/ui** is the official component library for the Synetics framework. It provides production-ready, accessible UI components built with fine-grained reactivity, TailwindCSS styling, and a fluent builder API for configuration.
 
 ### Key Features
 
-- 🎨 **Design Tokens**: Uses [@pulsar/design-tokens](https://github.com/binaryjack/synetics-design-system) for consistent styling
+- 🎨 **Design Tokens**: Uses [@synetics/design-tokens](https://github.com/binaryjack/synetics-design-system) for consistent styling
 - 📏 **Size System**: Standardized sizing (xs, sm, md, lg, xl) across all components
 - 🎭 **Variant System**: Multiple style variants (solid, outline, ghost, soft)
 - 🏗️ **Builder Pattern**: Fluent API for component configuration
 - 🎯 **Type-Safe**: Full TypeScript support with strict typing
 - ♿ **Accessible**: ARIA attributes and keyboard navigation built-in
-- 🚀 **Pulsar-Native**: Built specifically for Pulsar's reactivity system
+- 🚀 **Synetics-Native**: Built specifically for Synetics's reactivity system
 - 💅 **TailwindCSS**: Utility-first styling with custom configuration
 - 📦 **Modular**: Clean architecture with one item per file
 
@@ -50,7 +50,7 @@
 
 **Explore 80+ Advanced Examples:** [GitHub Pages Showcase](#) _(Coming Soon)_
 
-The showcase demonstrates production-grade patterns from the Pulsar ecosystem:
+The showcase demonstrates production-grade patterns from the Synetics ecosystem:
 
 ### Featured Patterns
 
@@ -169,7 +169,7 @@ pnpm showcase:build # Build for production
 ## Installation
 
 ```bash
-pnpm add @pulsar/ui
+pnpm add @synetics/ui
 ```
 
 ### Dependencies
@@ -177,7 +177,7 @@ pnpm add @pulsar/ui
 The component library requires:
 
 - `pulsar` - The Synetics framework
-- `@pulsar/design-tokens` - Design system tokens
+- `@synetics/design-tokens` - Design system tokens
 - `tailwindcss` - Utility-first CSS framework
 
 ---
@@ -189,7 +189,7 @@ The component library requires:
 All components use a fluent builder pattern for configuration:
 
 ```typescript
-import { ComponentConfig, Button } from '@pulsar/ui';
+import { ComponentConfig, Button } from '@synetics/ui';
 
 // Create a configuration
 const config = new ComponentConfig('primary') // Start with color
@@ -211,7 +211,7 @@ const myButton = Button({
 ### Simple Usage
 
 ```typescript
-import { PrimaryButton, Input, Badge } from '@pulsar/ui';
+import { PrimaryButton, Input, Badge } from '@synetics/ui';
 
 // Use factory variants for quick setup
 const saveButton = PrimaryButton({
@@ -335,10 +335,10 @@ Part of the Synetics framework ecosystem:
 | Package                   | Description                      | Repository                                                   |
 | ------------------------- | -------------------------------- | ------------------------------------------------------------ |
 | **synetics.dev**            | Main reactive framework          | [GitHub](https://github.com/binaryjack/synetics.dev)           |
-| **@pulsar/ui**            | Component library (this package) | [GitHub](https://github.com/binaryjack/synetics-ui.dev)        |
-| **@pulsar/design-tokens** | Design tokens & brand assets     | [GitHub](https://github.com/binaryjack/synetics-design-system) |
-| **@pulsar/transformer**   | JSX transformer                  | [GitHub](https://github.com/binaryjack/synetics-transformer)   |
-| **@pulsar/vite-plugin**   | Vite integration                 | [GitHub](https://github.com/binaryjack/synetics-vite-plugin)   |
+| **@synetics/ui**            | Component library (this package) | [GitHub](https://github.com/binaryjack/synetics-ui.dev)        |
+| **@synetics/design-tokens** | Design tokens & brand assets     | [GitHub](https://github.com/binaryjack/synetics-design-system) |
+| **@synetics/transformer**   | JSX transformer                  | [GitHub](https://github.com/binaryjack/synetics-transformer)   |
+| **@synetics/vite-plugin**   | Vite integration                 | [GitHub](https://github.com/binaryjack/synetics-vite-plugin)   |
 | **synetics-demo**           | Example applications             | [GitHub](https://github.com/binaryjack/synetics-demo)          |
 
 ---
@@ -376,7 +376,7 @@ pnpm dev
 - ✅ One item per file (interfaces, types, implementations)
 - ✅ TypeScript strict mode (no `any` types)
 - ✅ Prototype-based classes for components
-- ✅ Use `Pulsar.HtmlExtends<T>` for HTML props
+- ✅ Use `Synetics.HtmlExtends<T>` for HTML props
 - ✅ Builder pattern for component configuration
 - ✅ Comprehensive JSDoc comments
 
@@ -403,7 +403,7 @@ Design inspiration from:
 ---
 
 <p align="center">
-  <strong>@pulsar/ui - v0.1.0</strong><br/>
+  <strong>@synetics/ui - v0.1.0</strong><br/>
   Component library for the Synetics framework
 </p>
 

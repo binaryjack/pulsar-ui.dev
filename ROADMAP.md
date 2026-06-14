@@ -1,4 +1,4 @@
-# Pulsar UI Component Library Roadmap
+# Synetics UI Component Library Roadmap
 
 **Current Version**: v0.7.0-alpha  
 **Target Release**: v1.0.0 (Q3 2026)
